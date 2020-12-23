@@ -27,6 +27,18 @@ services:
     environment:
       - PORT=$API_PORT
     working_dir: /instapod
+  authentication:
+    build: .
+    env_file:
+      - .env
+    command: yarn authentication dev
+    ports:
+      - $AUTHENTICATION_PORT:$AUTHENTICATION_PORT
+    volumes:
+      - ./packages/authentication:/instapod/packages/authentication
+    environment:
+      - PORT=$authentication_PORT
+    working_dir: /instapod
   web:
     build: .
     env_file:
@@ -37,3 +49,15 @@ services:
     volumes:
       - ./packages/web:/instapod/packages/web
     working_dir: /instapod
+
+  database_authentication:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=olaven
+      - MONGO_INITDB_ROOT_PASSWORD=password
+
+  database_api:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=olaven
+      - MONGO_INITDB_ROOT_PASSWORD=password

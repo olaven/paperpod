@@ -1,4 +1,14 @@
 {
     "name": "authentication",
-    "version": "0.0.1"
+    "version": "0.0.1",
+    "scripts": {
+        "dev": "ts-node-dev src/index.ts"
+    },
+    "dependencies": {
+        "common": "0.0.1",
+        "node-kall": "^1.0.71"
+    },
+    "devDependencies": {
+        "typescript": "^4.1.3"
+    }
 }

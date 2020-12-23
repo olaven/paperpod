@@ -1,0 +1,15 @@
+{
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "api": "yarn workspace api",
+        "web": "yarn workspace web",
+        "converter": "yarn workspace converter",
+        "common": "yarn workspace common"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.12.5"
+    }
+}

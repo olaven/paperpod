@@ -4,10 +4,12 @@
     "main": "./src/index.ts",
     "dependencies": {
         "dotenv": "^8.2.0",
-        "express": "^4.17.1"
+        "express": "^4.17.1",
+        "mongodb": "^3.6.3"
     },
     "devDependencies": {
         "@types/dotenv": "^8.2.0",
-        "@types/express": "^4.17.9"
+        "@types/express": "^4.17.9",
+        "@types/mongodb": "^3.6.3"
     }
 }

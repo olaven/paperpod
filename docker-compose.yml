@@ -35,7 +35,12 @@ services:
     volumes:
       - ./packages/authentication:/instapod/packages/authentication
     environment:
-      - PORT=$authentication_PORT
+      - PORT=$AUTHENTICATION_PORT
+      - MONGODB_NAME=$MONGODB_NAME
+      - MONGODB_USERNAME=$MONGODB_USERNAME
+      - MONGODB_PASSWORD=$MONGODB_PASSWORD
+      - MONGODB_HOST=database_authentication
+      - MONGODB_PORT=27017 #always true: https://hub.docker.com/_/mongo
     working_dir: /instapod
   web:
     build: .
@@ -53,11 +58,11 @@ services:
   database_authentication:
     image: mongo:latest
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=olaven
-      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
 
   database_api:
     image: mongo:latest
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=olaven
-      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD

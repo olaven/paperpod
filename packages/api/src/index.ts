@@ -2,8 +2,6 @@ import { CREATED, OK } from "node-kall";;
 import { server } from "common";
 
 
-
-
 server.boot("api", (api) => {
 
     api.post("/articles", (request, response) => {

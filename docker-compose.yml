@@ -1,5 +1,7 @@
 version: "3"
 services:
+  ## PACKAGES
+
   gateway:
     build: .
     env_file:
@@ -20,8 +22,6 @@ services:
     env_file:
       - .env
     command: yarn api dev
-    ports:
-      - $API_PORT:$API_PORT
     volumes:
       - ./packages/api:/instapod/packages/api
     environment:
@@ -32,8 +32,6 @@ services:
     env_file:
       - .env
     command: yarn authentication dev
-    ports:
-      - $AUTHENTICATION_PORT:$AUTHENTICATION_PORT
     volumes:
       - ./packages/authentication:/instapod/packages/authentication
     environment:
@@ -49,6 +47,8 @@ services:
     volumes:
       - ./packages/web:/instapod/packages/web
     working_dir: /instapod
+
+  ## DATABASES
 
   database_authentication:
     image: mongo:latest

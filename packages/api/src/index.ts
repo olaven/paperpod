@@ -1,5 +1,8 @@
 import { CREATED, OK } from "node-kall";
 import * as express from "express";
+import * as dotenv from "dotenv";
+dotenv.config();
+
 const app = express()
 
 app.post("/articles", (request, response) => {
@@ -14,6 +17,7 @@ app.get("/articles", (request, response) => {
 });
 
 const port = process.env.PORT;
+console.log("port", port);
 app.listen(port, () => {
 
     console.log("API is listening on port", port);

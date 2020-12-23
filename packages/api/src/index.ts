@@ -16,5 +16,5 @@ app.get("/articles", (request, response) => {
 const port = process.env.PORT;
 app.listen(port, () => {
 
-    console.log("API is listening");
+    console.log("API is listening on port", port);
 });

@@ -1,24 +1,24 @@
 version: "3"
 services:
   api:
-    image: node:14
+    build: .
     env_file:
       - .env
-    command: bash -c "yarn && yarn dev"
+    command: yarn api dev
     ports:
-      - 8080:8080
+      - $API_PORT:$API_PORT
     volumes:
-      - ./packages/api:/api
-    working_dir: /api
+      - ./packages/api:/instapod/packages/api
     environment:
       - PORT=$API_PORT
+    working_dir: /instapod
   web:
-    image: node:14
+    build: .
     env_file:
       - .env
-    command: bash -c "yarn && yarn dev --port $WEB_PORT"
+    command: yarn web dev
     ports:
-      - 3000:3000
+      - $WEB_PORT:$WEB_PORT
     volumes:
-      - ./packages/web:/web
-    working_dir: /web
+      - ./packages/web:/instapod/packages/web
+    working_dir: /instapod

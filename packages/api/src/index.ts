@@ -16,6 +16,12 @@ app.get("/articles", (request, response) => {
     response.status(OK).send("REtrieved");
 });
 
+app.use((request, response, next) => {
+
+    console.log("Got request to", request.url);
+    next();
+})
+
 const port = process.env.PORT;
 console.log("port", port);
 app.listen(port, () => {

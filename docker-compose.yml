@@ -1,5 +1,17 @@
 version: "3"
 services:
+  gateway:
+    build: .
+    env_file:
+      - .env
+    command: yarn gateway dev
+    ports:
+      - $GATEWAY_PORT:$GATEWAY_PORT
+    volumes:
+      - ./packages/gateway:/instapod/packages/gateway
+    environment:
+      - PORT=$GATEWAY_PORT
+    working_dir: /instapod
   api:
     build: .
     env_file:

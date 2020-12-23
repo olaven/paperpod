@@ -11,6 +11,9 @@ services:
       - ./packages/gateway:/instapod/packages/gateway
     environment:
       - PORT=$GATEWAY_PORT
+      - WEB_PORT=$WEB_PORT
+      - API_PORT=$API_PORT
+      - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
     working_dir: /instapod
   api:
     build: .

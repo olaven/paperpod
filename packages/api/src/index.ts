@@ -1,30 +1,19 @@
-import { CREATED, OK } from "node-kall";
-import * as express from "express";
-import * as dotenv from "dotenv";
-dotenv.config();
-
-const app = express()
-
-app.post("/articles", (request, response) => {
-
-    response.status(CREATED).send("Created");
-});
+import { CREATED, OK } from "node-kall";;
+import { server } from "common";
 
 
-app.get("/articles", (request, response) => {
 
-    response.status(OK).send("REtrieved");
-});
 
-app.use((request, response, next) => {
+server.boot("api", (api) => {
 
-    console.log("Got request to", request.url);
-    next();
-})
+    api.post("/articles", (request, response) => {
 
-const port = process.env.PORT;
-console.log("port", port);
-app.listen(port, () => {
+        response.status(CREATED).send("Created");
+    });
 
-    console.log("API is listening on port", port);
+
+    api.get("/articles", (request, response) => {
+
+        response.status(OK).send("Retrieved");
+    });
 });

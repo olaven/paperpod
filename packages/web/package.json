@@ -5,6 +5,8 @@
         "dev": "next"
     },
     "dependencies": {
+        "common": "0.0.1",
+        "node-kall": "^1.0.71",
         "next": "^10.0.4",
         "react": "^17.0.1",
         "react-dom": "^17.0.1"

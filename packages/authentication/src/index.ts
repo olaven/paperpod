@@ -4,7 +4,7 @@ import { NOT_FOUND } from "node-kall";
 
 server.boot("authentication", authentication => {
 
-    authentication.get("/:id", async (request, response) => {
+    authentication.get("/users/:id", async (request, response) => {
 
         const id = request.params.id;
         await server.withDatabase(async database => {
@@ -17,7 +17,7 @@ server.boot("authentication", authentication => {
     });
 
 
-    authentication.post("/", async (request, response) => {
+    authentication.post("/users", async (request, response) => {
 
         await server.withDatabase(async database => {
 

@@ -6,6 +6,7 @@ server.boot("authentication", authentication => {
 
     authentication.get("/:id", async (request, response) => {
 
+        console.log(Math.random())
         const id = request.params.id;
         await server.withDatabase(async database => {
 

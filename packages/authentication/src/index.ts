@@ -1,12 +1,11 @@
 import { server } from "common";
+import nanoid from "nanoid";
 import { NOT_FOUND } from "node-kall";
-
 
 server.boot("authentication", authentication => {
 
     authentication.get("/:id", async (request, response) => {
 
-        console.log(Math.random())
         const id = request.params.id;
         await server.withDatabase(async database => {
 
@@ -18,8 +17,15 @@ server.boot("authentication", authentication => {
     });
 
 
-    authentication.post("/", (request, response) => {
+    authentication.post("/", async (request, response) => {
 
-        response.send("HEllo, authentication!");
+        await server.withDatabase(async database => {
+
+            server.getUsers(database).insertOne({
+                id: nanoid.nanoid(),
+                email: "test@example.com",
+                password_hash: "hash of entered password."
+            })
+        });
     });
 });

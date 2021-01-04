@@ -32,6 +32,15 @@ services:
       - MONGODB_HOST=database_api
       - MONGODB_PORT=$MONGODB_PORT #always true: https://hub.docker.com/_/mongo
     working_dir: /instapod
+  converter:
+    build: .
+    env_file:
+      - .env
+    command: yarn converter dev
+    volumes:
+      - .:/instapod
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
   authentication:
     build: .
     env_file:

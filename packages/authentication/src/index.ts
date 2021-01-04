@@ -7,12 +7,12 @@ server.boot("authentication", authentication => {
 
     authentication.get("/users/:id", async (request, response) => {
 
-        const id = request.params.id;
+        const _id = request.params.id;
         await server.withDatabase(async database => {
 
             const user = await server
                 .getUsers(database)
-                .findOne({ id });
+                .findOne({ _id });
 
             if (user) response.json(user);
             else response.status(NOT_FOUND).send();
@@ -27,20 +27,18 @@ server.boot("authentication", authentication => {
 
         await server.withDatabase(async database => {
 
+            const withId = {
+                ...user,
+                _id: nanoid()
+            };
 
-            const id = nanoid();
             await server
                 .getUsers(database)
-                .insertOne({
-                    ...user,
-                    _id: id
-                });
+                .insertOne(withId);
 
             response
                 .status(CREATED)
-                .send({
-                    id
-                });
+                .send(withId);
         });
 
     });

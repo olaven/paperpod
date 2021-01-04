@@ -52,8 +52,6 @@ services:
     env_file:
       - .env
     command: yarn web dev
-    ports:
-      - $WEB_PORT:$WEB_PORT
     volumes:
       - ./packages:/instapod/packages
     working_dir: /instapod

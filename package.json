@@ -1,6 +1,6 @@
 {
     "private": true,
-    "license": "",
+    "license": "UNLICENSED",
     "workspaces": [
         "packages/*"
     ],

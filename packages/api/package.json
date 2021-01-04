@@ -1,5 +1,6 @@
 {
     "name": "api",
+    "license": "UNLICENSED",
     "version": "0.0.1",
     "scripts": {
         "dev": "ts-node-dev src/index.ts"

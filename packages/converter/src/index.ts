@@ -27,7 +27,8 @@ const writeToFile = async (response: google.cloud.texttospeech.v1.ISynthesizeSpe
     console.log('Audio content written to file: output.mp3');
 }
 
-// Creates a client
+
+//TODO: SHOULD RETURN URL TO FILE 
 export const convert = async (text: string) => {
 
     const client = new textToSpeech.TextToSpeechClient();

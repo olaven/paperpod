@@ -1,17 +1,18 @@
-import { CREATED, post } from "node-kall";
+import { CREATED, get, post } from "node-kall";
 import { models } from "common";
 import { useState } from "react";
-
-const postUser = async (user: models.User) => {};
 
 const Login = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const onClick = async () => {
-    const [status, retrieved] = await post("/authentication/users", {
-      email,
-      password_hash: password, //TODO: hash on server or client?
-    });
+    const [status, retrieved] = await post<models.User>(
+      "/authentication/users",
+      {
+        email,
+        password_hash: password, //TODO: hash on server or client?
+      }
+    );
 
     if (status === CREATED) {
       console.log("created a user: ", retrieved);
@@ -31,8 +32,25 @@ const Login = () => {
   );
 };
 
+const GetArticles = () => {
+  const [status, setStatus] = useState(-1);
+  const onClick = async () => {
+    const [status] = await get("/api/articles");
+    setStatus(status);
+  };
+
+  return (
+    <>
+      <button onClick={onClick}>get articles</button>
+      {status}
+    </>
+  );
+};
+
 const Index = () => (
   <div>
+    <GetArticles />
+    <br />
     <Login />
   </div>
 );

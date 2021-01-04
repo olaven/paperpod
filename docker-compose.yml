@@ -10,7 +10,7 @@ services:
     ports:
       - $GATEWAY_PORT:$GATEWAY_PORT
     volumes:
-      - ./packages:/instapod/packages
+      - .:/instapod
     environment:
       - PORT=$GATEWAY_PORT
       - WEB_PORT=$WEB_PORT
@@ -23,7 +23,7 @@ services:
       - .env
     command: yarn api dev
     volumes:
-      - ./packages:/instapod/packages
+      - .:/instapod
     environment:
       - PORT=$API_PORT
       - MONGODB_NAME=$MONGODB_NAME
@@ -38,7 +38,7 @@ services:
       - .env
     command: yarn authentication dev
     volumes:
-      - ./packages:/instapod/packages
+      - .:/instapod
     environment:
       - PORT=$AUTHENTICATION_PORT
       - MONGODB_NAME=$MONGODB_NAME
@@ -53,7 +53,7 @@ services:
       - .env
     command: yarn web dev
     volumes:
-      - ./packages:/instapod/packages
+      - .:/instapod
     working_dir: /instapod
 
   ## DATABASES

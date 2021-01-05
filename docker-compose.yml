@@ -9,8 +9,10 @@ services:
     command: yarn gateway dev
     ports:
       - $GATEWAY_PORT:$GATEWAY_PORT
-    volumes:
+    volumes: # Sync everything but node modules
       - .:/instapod
+      - /instapod/node_modules
+      - /instapod/packages/gateway/node_modules
     environment:
       - PORT=$GATEWAY_PORT
       - WEB_PORT=$WEB_PORT
@@ -22,8 +24,10 @@ services:
     env_file:
       - .env
     command: yarn api dev
-    volumes:
+    volumes: # Sync everything but node modules
       - .:/instapod
+      - /instapod/node_modules
+      - /instapod/packages/api/node_modules
     environment:
       - PORT=$API_PORT
       - MONGODB_NAME=$MONGODB_NAME
@@ -37,17 +41,21 @@ services:
     env_file:
       - .env
     command: yarn converter dev
-    volumes:
+    volumes: # Sync everything but node modules
       - .:/instapod
+      - /instapod/node_modules
+      - /instapod/packages/converter/node_module
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
   authentication:
     build: .
     env_file:
       - .env # workaround to solve issues with node_modules being compiled on mac
-    command: bash -c "npm rebuild bcrypt --build-from-source && yarn authentication dev"
-    volumes:
+    command: yarn authentication dev #bash -c "npm rebuild bcrypt --build-from-source && yarn authentication dev"
+    volumes: # Sync everything but node modules
       - .:/instapod
+      - /instapod/node_modules
+      - /instapod/packages/authentication/node_modules
     environment:
       - PORT=$AUTHENTICATION_PORT
       - MONGODB_NAME=$MONGODB_NAME
@@ -61,8 +69,10 @@ services:
     env_file:
       - .env
     command: yarn web dev
-    volumes:
+    volumes: # Sync everything but node modules
       - .:/instapod
+      - /instapod/node_modules
+      - /instapod/packages/web/node_module
     working_dir: /instapod
 
   ## DATABASES

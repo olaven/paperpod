@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import { ObjectID } from "mongodb";
 import { BAD_REQUEST, CREATED, NOT_FOUND } from "node-kall";
 import bcrypt from "bcrypt";
+import passport from "passport";
 
 server.boot("authentication", authentication => {
 
@@ -20,6 +21,17 @@ server.boot("authentication", authentication => {
             else response.status(NOT_FOUND).send();
         });
     });
+
+    // use passport-local passport.Strategy("local")
+
+    authentication.post(
+        "/login",
+        passport.authenticate('local'),
+        async (request, response) => {
+
+            console.log(request.user);
+            response.redirect("/profile/" + "USERID HERE");
+        });
 
 
     authentication.post("/users", async (request, response) => {

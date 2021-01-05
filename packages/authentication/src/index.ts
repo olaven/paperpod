@@ -25,8 +25,6 @@ server.boot("authentication", authentication => {
     authentication.post("/users", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
-        console.log("here with credeitnais", credentials);
-        console.log("test")
         if (!credentials || !credentials.email || !credentials.password) response.status(BAD_REQUEST).send("BAD USER");
 
         await server.withDatabase(async database => {
@@ -34,7 +32,7 @@ server.boot("authentication", authentication => {
             const user = {
                 email: credentials.email,
                 password_hash: bcrypt.hashSync(credentials.password, 10),
-                _id: new ObjectID(nanoid())
+                _id: nanoid() as any as ObjectID
             };
 
             await server

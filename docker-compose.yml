@@ -6,7 +6,7 @@ services:
     build: .
     env_file:
       - .env
-    command: yarn && yarn gateway dev
+    command: yarn gateway dev
     ports:
       - $GATEWAY_PORT:$GATEWAY_PORT
     volumes:
@@ -21,7 +21,7 @@ services:
     build: .
     env_file:
       - .env
-    command: yarn && yarn api dev
+    command: yarn api dev
     volumes:
       - .:/instapod
     environment:
@@ -36,7 +36,7 @@ services:
     build: .
     env_file:
       - .env
-    command: yarn && yarn converter dev
+    command: yarn converter dev
     volumes:
       - .:/instapod
     environment:
@@ -44,8 +44,8 @@ services:
   authentication:
     build: .
     env_file:
-      - .env
-    command: yarn && yarn authentication dev
+      - .env # workaround to solve issues with node_modules being compiled on mac
+    command: bash -c "npm rebuild bcrypt --build-from-source && yarn authentication dev"
     volumes:
       - .:/instapod
     environment:
@@ -60,7 +60,7 @@ services:
     build: .
     env_file:
       - .env
-    command: yarn && yarn web dev
+    command: yarn web dev
     volumes:
       - .:/instapod
     working_dir: /instapod

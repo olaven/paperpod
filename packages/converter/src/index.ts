@@ -1,51 +1,24 @@
-import textToSpeech from "@google-cloud/text-to-speech";
-
-import fs from "fs";
-import util from "util";
 
 import dotenv from "dotenv";
-import * as Translate from "@google-cloud/translate"
-import { google } from "@google-cloud/text-to-speech/build/protos/protos";
+import { textToAudio } from "./audio";
+import { upload } from "./upload";
 
 
 dotenv.config();
 
-const getLanguage = async (text: string) => {
-
-    const [detected] = await new Translate.v2.Translate().detect(
-        text
-    );
-
-    return detected.language;
-}
-
-//FIXME: Remove when testing is done. 
-const writeToFile = async (response: google.cloud.texttospeech.v1.ISynthesizeSpeechResponse) => {
-
-    const writeFile = util.promisify(fs.writeFile);
-    await writeFile('output.mp3', response.audioContent, 'binary');
-    console.log('Audio content written to file: output.mp3');
-}
-
-
-//TODO: SHOULD RETURN URL TO FILE 
+/**
+ * //TODO: implement 
+ * Converts given text to audio, 
+ * uploads it to storage and returns URL 
+ * to its location. 
+ */
 export const convert = async (text: string) => {
 
-    const client = new textToSpeech.TextToSpeechClient();
-
-    const language = await getLanguage(text);
-
-    const [response] = await client.synthesizeSpeech({
-        input: { text },
-        voice: { languageCode: language, ssmlGender: "FEMALE" },
-        audioConfig: { audioEncoding: "LINEAR16", speakingRate: 0.95 }
-    });
-
-    await writeToFile(response);
-
-
-    return response;
+    const audio = await textToAudio(text);
+    const filename = upload(audio);
+    console.log("UPLOADED: ", filename);
 }
+
 
 (async () => {
 

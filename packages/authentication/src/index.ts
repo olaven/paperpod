@@ -1,10 +1,12 @@
-import { server } from "common";
+import { models, server } from "common";
 import { nanoid } from "nanoid";
+import { ObjectID } from "mongodb";
 import { BAD_REQUEST, CREATED, NOT_FOUND } from "node-kall";
+import bcrypt from "bcrypt";
 
 server.boot("authentication", authentication => {
 
-
+    //FIXME: authorization 
     authentication.get("/users/:id", async (request, response) => {
 
         const _id = request.params.id;
@@ -22,23 +24,26 @@ server.boot("authentication", authentication => {
 
     authentication.post("/users", async (request, response) => {
 
-        const user = request.body;
-        if (!user) response.status(BAD_REQUEST).send("BAD USER");
+        const credentials = request.body as models.UserCredentials;
+        console.log("here with credeitnais", credentials);
+        console.log("test")
+        if (!credentials || !credentials.email || !credentials.password) response.status(BAD_REQUEST).send("BAD USER");
 
         await server.withDatabase(async database => {
 
-            const withId = {
-                ...user,
-                _id: nanoid()
+            const user = {
+                email: credentials.email,
+                password_hash: bcrypt.hashSync(credentials.password, 10),
+                _id: new ObjectID(nanoid())
             };
 
             await server
                 .getUsers(database)
-                .insertOne(withId);
+                .insertOne(user);
 
             response
                 .status(CREATED)
-                .send(withId);
+                .send(user);
         });
 
     });

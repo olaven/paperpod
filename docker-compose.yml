@@ -6,7 +6,7 @@ services:
     build: .
     env_file:
       - .env
-    command: yarn gateway dev
+    command: yarn && yarn gateway dev
     ports:
       - $GATEWAY_PORT:$GATEWAY_PORT
     volumes:
@@ -21,7 +21,7 @@ services:
     build: .
     env_file:
       - .env
-    command: yarn api dev
+    command: yarn && yarn api dev
     volumes:
       - .:/instapod
     environment:
@@ -36,7 +36,7 @@ services:
     build: .
     env_file:
       - .env
-    command: yarn converter dev
+    command: yarn && yarn converter dev
     volumes:
       - .:/instapod
     environment:
@@ -45,7 +45,7 @@ services:
     build: .
     env_file:
       - .env
-    command: yarn authentication dev
+    command: yarn && yarn authentication dev
     volumes:
       - .:/instapod
     environment:
@@ -60,7 +60,7 @@ services:
     build: .
     env_file:
       - .env
-    command: yarn web dev
+    command: yarn && yarn web dev
     volumes:
       - .:/instapod
     working_dir: /instapod

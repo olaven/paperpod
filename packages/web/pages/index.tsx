@@ -6,11 +6,11 @@ const Login = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const onClick = async () => {
-    const [status, retrieved] = await post<models.User>(
+    const [status, retrieved] = await post<models.UserCredentials>(
       "/authentication/users",
       {
         email,
-        password_hash: password, //TODO: hash on server or client?
+        password,
       }
     );
 

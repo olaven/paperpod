@@ -1,11 +1,11 @@
-import { Bucket, Storage } from "@google-cloud/storage";
+import { Storage } from "@google-cloud/storage";
 
-type FileName = `${string}/${string}`
+
 type BucketName = 'instapod-articles'
 
 
 
-export const upload = async (audio: Uint8Array, bucket: BucketName, filename: FileName) => {
+export const upload = async (audio: Uint8Array, bucket: BucketName, filename: string) => {
 
     new Storage()
         .bucket(bucket)

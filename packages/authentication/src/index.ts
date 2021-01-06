@@ -4,8 +4,34 @@ import { ObjectID } from "mongodb";
 import { BAD_REQUEST, CREATED, NOT_FOUND } from "node-kall";
 import bcrypt from "bcrypt";
 import passport from "passport";
+import local from "passport-local";
+
+const hash = (password: string) =>
+    bcrypt.hashSync(password, 10);
+
 
 server.boot("authentication", authentication => {
+
+    passport.use(new local.Strategy(
+        (email, password, done) => {
+
+            server.withDatabase(async database => {
+
+                const user = await server.getUsers(database).findOne({
+                    email
+                });
+
+                if (!user) {
+                    return done(null, false, { message: 'Incorrect username.' });
+                }
+                if (user.password_hash !== hash(password)) {
+                    return done(null, false, { message: 'Incorrect password.' });
+                }
+
+                return done(null, user);
+            });
+        }
+    ));
 
     //FIXME: authorization 
     authentication.get("/users/:id", async (request, response) => {
@@ -22,17 +48,6 @@ server.boot("authentication", authentication => {
         });
     });
 
-    // use passport-local passport.Strategy("local")
-
-    authentication.post(
-        "/login",
-        passport.authenticate('local'),
-        async (request, response) => {
-
-            console.log(request.user);
-            response.redirect("/profile/" + "USERID HERE");
-        });
-
 
     authentication.post("/users", async (request, response) => {
 
@@ -43,7 +58,7 @@ server.boot("authentication", authentication => {
 
             const user = {
                 email: credentials.email,
-                password_hash: bcrypt.hashSync(credentials.password, 10),
+                password_hash: hash(credentials.password),
                 _id: nanoid() as any as ObjectID
             };
 

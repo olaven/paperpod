@@ -1,22 +1,7 @@
 import { CREATED, get, post } from "node-kall";
 import { models } from "common";
-import { useState } from "react";
-
-const Login = () => (
-  <form action="/login" method="post">
-    <div>
-      <label>Email:</label>
-      <input type="text" name="username" />
-    </div>
-    <div>
-      <label>Password:</label>
-      <input type="password" name="password" />
-    </div>
-    <div>
-      <input type="submit" value="Log In" />
-    </div>
-  </form>
-);
+import { useContext, useState } from "react";
+import { UserContext } from "../components/UserContext";
 
 const Signup = () => {
   const [email, setEmail] = useState<string>();
@@ -63,13 +48,17 @@ const GetArticles = () => {
   );
 };
 
-const Index = () => (
-  <div>
-    <GetArticles />
-    <br />
-    <Signup />
-    <br />
-    <Login />
-  </div>
-);
+const Index = () => {
+  const { user } = useContext(UserContext);
+
+  console.log("user here", user);
+  return (
+    <div>
+      hei
+      <GetArticles />
+      <br />
+      <Signup />
+    </div>
+  );
+};
 export default Index;

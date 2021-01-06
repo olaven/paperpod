@@ -17,8 +17,9 @@ server.boot("authentication", authentication => {
         });
 
     //FIXME: authorization 
-    authentication.get("/users/:id", authenticated(), async (request, response) => {
+    authentication.get("/users/me", authenticated(), async (request, response) => {
 
+        console.log("REQUEST USER HERE");
         console.log(request.user);
         const _id = request.params.id;
         await server.withDatabase(async database => {

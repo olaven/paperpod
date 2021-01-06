@@ -2,7 +2,23 @@ import { CREATED, get, post } from "node-kall";
 import { models } from "common";
 import { useState } from "react";
 
-const Login = () => {
+const Login = () => (
+  <form action="/login" method="post">
+    <div>
+      <label>Email:</label>
+      <input type="text" name="username" />
+    </div>
+    <div>
+      <label>Password:</label>
+      <input type="password" name="password" />
+    </div>
+    <div>
+      <input type="submit" value="Log In" />
+    </div>
+  </form>
+);
+
+const Signup = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const onClick = async () => {
@@ -20,7 +36,7 @@ const Login = () => {
   };
   return (
     <>
-      email:
+      Signup: email:
       <input type="email" onChange={(event) => setEmail(event.target.value)} />
       password:
       <input
@@ -50,6 +66,8 @@ const GetArticles = () => {
 const Index = () => (
   <div>
     <GetArticles />
+    <br />
+    <Signup />
     <br />
     <Login />
   </div>

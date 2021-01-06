@@ -25,9 +25,9 @@ services:
       - .env
     command: yarn api dev
     volumes: # Sync everything but node modules
-      - .:/instapod
       - /instapod/node_modules
       - /instapod/packages/api/node_modules
+      - .:/instapod
     environment:
       - PORT=$API_PORT
       - MONGODB_NAME=$MONGODB_NAME

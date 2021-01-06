@@ -2,40 +2,24 @@ import { models, server } from "common";
 import { nanoid } from "nanoid";
 import { ObjectID } from "mongodb";
 import { BAD_REQUEST, CREATED, NOT_FOUND } from "node-kall";
-import bcrypt from "bcrypt";
-import passport from "passport";
-import local from "passport-local";
+import { hash } from "./hash";
+import { authenticated } from "./passport";
 
-const hash = (password: string) =>
-    bcrypt.hashSync(password, 10);
 
 
 server.boot("authentication", authentication => {
 
-    passport.use(new local.Strategy(
-        (email, password, done) => {
 
-            server.withDatabase(async database => {
+    authentication
+        .post("/login", authenticated(), (request, response) => {
 
-                const user = await server.getUsers(database).findOne({
-                    email
-                });
-
-                if (!user) {
-                    return done(null, false, { message: 'Incorrect username.' });
-                }
-                if (user.password_hash !== hash(password)) {
-                    return done(null, false, { message: 'Incorrect password.' });
-                }
-
-                return done(null, user);
-            });
-        }
-    ));
+            response.redirect("/")
+        });
 
     //FIXME: authorization 
-    authentication.get("/users/:id", async (request, response) => {
+    authentication.get("/users/:id", authenticated(), async (request, response) => {
 
+        console.log(request.user);
         const _id = request.params.id;
         await server.withDatabase(async database => {
 

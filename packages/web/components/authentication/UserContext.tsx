@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState, ReactChild } from "react";
 import { models } from "common";
 import { get, OK } from "node-kall";
 import { asyncEffect } from "../../helpers/asyncEffect";
@@ -29,7 +29,7 @@ const useUser = (): [models.User, () => Promise<void>] => {
   return [user, refreshUser];
 };
 
-export const UserContextProvider = ({ children }) => {
+export const UserContextProvider = ({ children }: ReactChild) => {
   const [user, refreshUser] = useUser();
 
   return (

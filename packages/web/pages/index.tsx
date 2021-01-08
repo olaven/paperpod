@@ -3,11 +3,12 @@ import { UserContext } from "../components/authentication/UserContext";
 import { asyncEffect } from "../helpers/asyncEffect";
 
 const Index = () => {
-  const { user, refreshUser } = useContext(UserContext);
+  const { refreshUser } = useContext(UserContext);
 
-  asyncEffect(refreshUser, []);
+  useEffect(() => {
+    refreshUser();
+  }, []);
 
-  console.log("user in index: ", user);
   return <>Index</>;
 };
 export default Index;

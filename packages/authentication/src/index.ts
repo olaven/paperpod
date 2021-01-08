@@ -1,13 +1,11 @@
 import { models, server } from "common";
 import { nanoid } from "nanoid";
-import { ObjectID, WithId } from "mongodb";
-import { BAD_REQUEST, CREATED, NOT_FOUND, NO_CONTENT, OK } from "node-kall";
+import { WithId } from "mongodb";
+import { OK } from "node-kall";
 import { compare, hash } from "./hash";
-import { authenticated } from "./passport";
 import session from "express-session"
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local"
-import express from "express"
 import { getUsers, withDatabase } from "common/src/server/server";
 
 
@@ -32,8 +30,9 @@ server.boot("authentication", app => {
                 _id: id
             });
 
+            console.log("Heisann hersann");
             console.log("Got id ", id, "and found user", user);
-            done(null, user)
+            done(null, user);
         });
     });
 
@@ -56,10 +55,9 @@ server.boot("authentication", app => {
                     done(null, user)
                 } else {
 
+                    console.log("Did not match as", email)
                     done(hash(password) + " does not match" + user.password_hash, null);
                 }
-
-
             })
         }
     ));
@@ -118,10 +116,20 @@ server.boot("authentication", app => {
                 email: credentials.email,
                 password_hash: await hash(credentials.password)
             }
-            await getUsers(database).insertOne(user as any as WithId<models.User>)
-            response.status(CREATED).json(user);
+            await getUsers(database).insertOne(user as any as WithId<models.User>);
+            response.redirect("/");
         });
     });
+
+    app.get(
+        "/users/me",
+        passport.authenticate('local'),
+        (request, response) => {
+
+            response.json({
+                id: "SOMETHING SOME USER"
+            })
+        })
 
 
 

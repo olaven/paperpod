@@ -4,18 +4,29 @@ import { UserContext, UserContextProvider } from '../components/UserContext';
 
 // import App from 'next/app'
 
-const TestRefreshUser = () => {
+const TestNavigation = () => {
 
     const { user, refreshUser } = useContext(UserContext);
-    return <button onClick={refreshUser}>
-        Refresh user: {user}
-    </button>
+    return <>
+        <br />
+        <div style={{ display: "flex" }}>
+            <button onClick={refreshUser}>
+                Refresh user: {user}
+            </button>
+            <a href="/login">
+                <button>login</button>
+            </a>
+            <a href="/signup">
+                <button>signup</button>
+            </a>
+        </div>
+    </>
 }
 
 function MyApp({ Component, pageProps }) {
     return <UserContextProvider>
         <Component {...pageProps} />
-        <TestRefreshUser />
+        <TestNavigation />
     </UserContextProvider>
 }
 

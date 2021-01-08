@@ -16,7 +16,7 @@ const useUser = (): [models.User, () => Promise<void>] => {
 
   const refreshUser = async () => {
     console.log("refreshing user");
-    const [status, user] = await get<models.User>("/authentication/users/me");
+    const [status, user] = await get<models.User>("/authentication/users/me/");
 
     setUser(status === OK ? user : null);
   };

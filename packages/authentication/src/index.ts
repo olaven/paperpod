@@ -1,4 +1,5 @@
 import { models, server } from "common";
+import express from "express"
 import { nanoid } from "nanoid";
 import { WithId } from "mongodb";
 import { OK } from "node-kall";
@@ -15,7 +16,6 @@ import { getUsers, withDatabase } from "common/src/server/server";
 
 server.boot("authentication", app => {
 
-    app.use(session({ secret: "some secret hello", saveUninitialized: false, resave: false }))
 
     passport.serializeUser(function (user, done) {
 
@@ -25,13 +25,14 @@ server.boot("authentication", app => {
 
     passport.deserializeUser(async function (id, done) {
 
+        console.log("upated Deserializing with", id);
         await withDatabase(async database => {
+
+
             const user = await getUsers(database).findOne({
                 _id: id
             });
 
-            console.log("Heisann hersann");
-            console.log("Got id ", id, "and found user", user);
             done(null, user);
         });
     });
@@ -62,6 +63,8 @@ server.boot("authentication", app => {
         }
     ));
 
+    app.use(express.json())
+    app.use(session({ secret: "some secret hello", saveUninitialized: true, resave: true }))
     app.use(passport.initialize());
     app.use(passport.session());
 
@@ -70,13 +73,12 @@ server.boot("authentication", app => {
         '/login',
         passport.authenticate('local', {
             successRedirect: '/',
-            failureRedirect: '/login'
+            failureRedirect: '/login?error=true'
         })
     );
 
     app.get(
         "/test",
-        passport.authenticate('local'),
         (request, response) => {
 
             console.log("Inside local authentication")
@@ -123,12 +125,16 @@ server.boot("authentication", app => {
 
     app.get(
         "/users/me",
-        passport.authenticate('local'),
         (request, response) => {
 
-            response.json({
-                id: "SOMETHING SOME USER"
-            })
+            request.isAuthenticated();
+            console.log(request.user);
+            if (request.isAuthenticated())
+                response.json(
+                    request.user
+                )
+            else
+                response.status(401)
         })
 
 

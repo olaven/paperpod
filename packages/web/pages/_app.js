@@ -11,7 +11,7 @@ const TestNavigation = () => {
         <br />
         <div style={{ display: "flex" }}>
             <button onClick={refreshUser}>
-                Refresh user: {user}
+                Refresh user: {user?._id}
             </button>
             <a href="/login">
                 <button>login</button>

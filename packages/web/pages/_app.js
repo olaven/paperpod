@@ -1,6 +1,6 @@
 
 import { useContext } from 'react';
-import { UserContext, UserContextProvider } from '../components/UserContext';
+import { UserContext, UserContextProvider, Login, Logout, Signup } from '../components/authentication/authentication'
 
 // import App from 'next/app'
 
@@ -9,16 +9,20 @@ const TestNavigation = () => {
     const { user, refreshUser } = useContext(UserContext);
     return <>
         <br />
-        <div style={{ display: "flex" }}>
+        <div>
+            <h2>Refresh user :</h2>
             <button onClick={refreshUser}>
                 Refresh user: {user?._id}
             </button>
-            <a href="/login">
-                <button>login</button>
-            </a>
-            <a href="/signup">
-                <button>signup</button>
-            </a>
+
+            <h2>Signup:</h2>
+            <Signup />
+
+            <h2>Login:</h2>
+            <Login />
+
+            <h2>Logout:</h2>
+            <Logout />
         </div>
     </>
 }

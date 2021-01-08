@@ -1,43 +1,73 @@
-import { hash } from "./hash";
-import { server } from "common";
-import passport from "passport";
-import local from "passport-local";
+import express from "express"
+import passport from "passport"
+import { Strategy as LocalStrategy } from "passport-local";
+import { models, server } from "common";
+import session from "express-session"
+import { compare, hash } from "./hash";
 
+passport.serializeUser((user, done) => {
 
+    done(null, (user as models.User)._id);
+});
 
-passport.use(new local.Strategy(
-    (email, password, done) => {
+passport.deserializeUser(async (id, done) => {
 
-        console.log("Inside strategy with", email, password)
-        server.withDatabase(async database => {
+    await server.withDatabase(async database => {
+
+        const user = await server.getUsers(database).findOne({
+            _id: id
+        });
+
+        done(null, user);
+    });
+});
+
+passport.use(new LocalStrategy(
+    {
+        usernameField: "email",
+        passwordField: "password"
+    },
+    async (email, password, done) => {
+
+        await server.withDatabase(async database => {
 
             const user = await server.getUsers(database).findOne({
                 email
             });
 
-            if (!user) {
-                return done(null, false, { message: 'Incorrect username.' });
-            }
-            if (user.password_hash !== hash(password)) {
-                return done(null, false, { message: 'Incorrect password.' });
-            }
+            if (user && (await compare(password, user.password_hash))) {
 
-            return done(null, user);
-        });
+                done(null, user)
+            } else {
+
+                done(hash(password) + " does not match" + user?.password_hash, null);
+            }
+        })
     }
 ));
 
-passport.serializeUser((user, done) => {
+export const configurePassport = (app: express.Express) => {
 
-    console.log("In serialize with: ", user);
-    done(null, user);
-});
+    app.use(express.json())
+    app.use(session({ secret: "some secret hello", saveUninitialized: true, resave: true }))
+    app.use(passport.initialize());
+    app.use(passport.session());
 
-passport.deserializeUser((user, done) => {
 
-    console.log("In deserialize with: ", user);
-    done(null, user);
-})
+    app.post(
+        '/login',
+        passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/login?error=true'
+        })
+    );
 
-export const authenticated = () =>
-    passport.authenticate('local', { failureRedirect: '/login' });
+    app.post(
+        "/logout",
+        (request, response) => {
+
+            request.logout();
+            response.redirect("/");
+        }
+    )
+}

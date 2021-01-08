@@ -1,11 +1,6 @@
 import { get } from "node-kall";
-import { useContext } from "react";
-import { UserContext } from "../components/UserContext";
 
-const Login = () => {
-  const { user } = useContext(UserContext);
-  console.log("User here");
-
+export const Login = () => {
   const fetchProtectedEndpoint = async () => {
     const [status, body] = await get("/authentication/test");
     console.log("received", status, body);
@@ -29,5 +24,3 @@ const Login = () => {
     </>
   );
 };
-
-export default Login;

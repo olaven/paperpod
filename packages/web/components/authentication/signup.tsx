@@ -1,9 +1,9 @@
 import { CREATED, get, post } from "node-kall";
 import { models } from "common";
 import { useContext, useState } from "react";
-import { UserContext } from "../components/UserContext";
+import { UserContext } from "./UserContext";
 
-const Signup = () => {
+export const Signup = () => {
   const { refreshUser } = useContext(UserContext);
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
@@ -37,5 +37,3 @@ const Signup = () => {
     </form>
   );
 };
-
-export default Signup;

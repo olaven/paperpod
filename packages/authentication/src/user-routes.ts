@@ -6,10 +6,9 @@ import express from "express";
 import { BAD_REQUEST } from "node-kall";
 
 export const userRoutes = express.Router()
-    .post("/users", async (err, request, response, next) => {
+    .post("/users", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
-
         if (!credentials || !credentials.email || !credentials.password)
             return response
                 .status(BAD_REQUEST)

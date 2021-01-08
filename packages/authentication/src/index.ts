@@ -1,60 +1,128 @@
 import { models, server } from "common";
 import { nanoid } from "nanoid";
-import { ObjectID } from "mongodb";
-import { BAD_REQUEST, CREATED, NOT_FOUND } from "node-kall";
-import { hash } from "./hash";
+import { ObjectID, WithId } from "mongodb";
+import { BAD_REQUEST, CREATED, NOT_FOUND, NO_CONTENT, OK } from "node-kall";
+import { compare, hash } from "./hash";
 import { authenticated } from "./passport";
+import session from "express-session"
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local"
+import express from "express"
+import { getUsers, withDatabase } from "common/src/server/server";
 
 
 
-server.boot("authentication", authentication => {
 
 
-    authentication
-        .post("/login", authenticated(), (request, response) => {
 
-            response.redirect("/")
-        });
+server.boot("authentication", app => {
 
-    //FIXME: authorization 
-    authentication.get("/users/me", authenticated(), async (request, response) => {
+    app.use(session({ secret: "some secret hello", saveUninitialized: false, resave: false }))
 
-        console.log("REQUEST USER HERE");
-        console.log(request.user);
-        const _id = request.params.id;
-        await server.withDatabase(async database => {
+    passport.serializeUser(function (user, done) {
 
-            const user = await server
-                .getUsers(database)
-                .findOne({ _id });
+        console.log("Inside serialize", user);
+        done(null, (user as models.User)._id);
+    });
 
-            if (user) response.json(user);
-            else response.status(NOT_FOUND).send();
+    passport.deserializeUser(async function (id, done) {
+
+        await withDatabase(async database => {
+            const user = await getUsers(database).findOne({
+                _id: id
+            });
+
+            console.log("Got id ", id, "and found user", user);
+            done(null, user)
         });
     });
 
+    passport.use(new LocalStrategy(
+        {
+            usernameField: "email",
+            passwordField: "password"
+        },
+        async function (email, password, done) {
 
-    authentication.post("/users", async (request, response) => {
+            console.log("Inside strategy", email, password);
+            await withDatabase(async database => {
+
+                const user = await getUsers(database).findOne({
+                    email
+                });
+
+                if (user && (await compare(password, user.password_hash))) {
+
+                    done(null, user)
+                } else {
+
+                    done(hash(password) + " does not match" + user.password_hash, null);
+                }
+
+
+            })
+        }
+    ));
+
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+
+    app.post(
+        '/login',
+        passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/login'
+        })
+    );
+
+    app.get(
+        "/test",
+        passport.authenticate('local'),
+        (request, response) => {
+
+            console.log("Inside local authentication")
+            response.json({
+                id: "some-id",
+                email: "test-strategy@mail.com",
+                password: "some random password",
+            })
+        }
+    )
+
+    app.get("/reset", async (request, response) => {
+
+
+        console.log("RESETTING")
+        await withDatabase(async database => {
+
+            const users = await getUsers(database).find({ email: "olav@sundfoer.com" });
+
+            console.log("going to delete", (await users.count()), "users")
+            await getUsers(database).deleteMany({
+                email: "olav@sundfoer.com"
+            });
+            response.status(OK).json("DONE");
+        });
+    })
+
+    app.post("/users", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
-        if (!credentials || !credentials.email || !credentials.password) response.status(BAD_REQUEST).send("BAD USER");
+        console.log("persist", credentials.email, "with password", credentials.password);
 
-        await server.withDatabase(async database => {
+        await withDatabase(async database => {
 
-            const user = {
+            const user: models.User = {
+                _id: nanoid(),
                 email: credentials.email,
-                password_hash: hash(credentials.password),
-                _id: nanoid() as any as ObjectID
-            };
-
-            await server
-                .getUsers(database)
-                .insertOne(user);
-
-            response
-                .status(CREATED)
-                .send(user);
+                password_hash: await hash(credentials.password)
+            }
+            await getUsers(database).insertOne(user as any as WithId<models.User>)
+            response.status(CREATED).json(user);
         });
-
     });
+
+
+
 });

@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "../components/UserContext";
 
 const Signup = () => {
+  const { refreshUser } = useContext(UserContext);
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const onClick = async () => {
@@ -17,6 +18,7 @@ const Signup = () => {
 
     if (status === CREATED) {
       console.log("created a user: ", retrieved);
+      refreshUser();
     }
   };
   return (
@@ -35,6 +37,7 @@ const Signup = () => {
 
 const GetArticles = () => {
   const [status, setStatus] = useState(-1);
+
   const onClick = async () => {
     const [status] = await get("/api/articles");
     setStatus(status);

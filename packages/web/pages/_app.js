@@ -1,11 +1,21 @@
 
-import { UserContextProvider } from '../components/UserContext';
+import { useContext } from 'react';
+import { UserContext, UserContextProvider } from '../components/UserContext';
 
 // import App from 'next/app'
+
+const TestRefreshUser = () => {
+
+    const { user, refreshUser } = useContext(UserContext);
+    return <button onClick={refreshUser}>
+        Refresh user: {user}
+    </button>
+}
 
 function MyApp({ Component, pageProps }) {
     return <UserContextProvider>
         <Component {...pageProps} />
+        <TestRefreshUser />
     </UserContextProvider>
 }
 

@@ -27,5 +27,17 @@ passport.use(new local.Strategy(
     }
 ));
 
+passport.serializeUser((user, done) => {
+
+    console.log("In serialize with: ", user);
+    done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+
+    console.log("In deserialize with: ", user);
+    done(null, user);
+})
+
 export const authenticated = () =>
     passport.authenticate('local', { failureRedirect: '/login' });

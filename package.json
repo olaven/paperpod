@@ -13,6 +13,7 @@
         "common": "yarn workspace common"
     },
     "dependencies": {
-        "@babel/runtime": "^7.12.5"
+        "@babel/runtime": "^7.12.5",
+        "ts-jest": "^26.4.4"
     }
 }

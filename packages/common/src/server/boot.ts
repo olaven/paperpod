@@ -12,6 +12,7 @@ export const boot = (path: string, callback: (handler: express.Express) => void)
     const handler = express();
 
     handler.use(express.json());
+    handler.use(express.urlencoded({ extended: true }))
     app.use("/" + path, handler);
 
     callback(handler);

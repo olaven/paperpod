@@ -3,7 +3,7 @@ import passport from "passport"
 import { Strategy as LocalStrategy } from "passport-local";
 import { models, server } from "common";
 import session from "express-session"
-import { compare, hash } from "./hash";
+import { compare, hash } from "./hash/hash";
 
 passport.serializeUser((user, done) => {
 
@@ -46,28 +46,24 @@ passport.use(new LocalStrategy(
     }
 ));
 
-export const configurePassport = (app: express.Express) => {
+export const withPassportConfiguration = (app: express.Express) =>
+    app
+        .use(express.json())
+        .use(session({ secret: "some secret hello", saveUninitialized: true, resave: true }))
+        .use(passport.initialize())
+        .use(passport.session())
+        .post(
+            '/login',
+            passport.authenticate('local', {
+                successRedirect: '/',
+                failureRedirect: '/login?error=true'
+            })
+        )
+        .post(
+            "/logout",
+            (request, response) => {
 
-    app.use(express.json())
-    app.use(session({ secret: "some secret hello", saveUninitialized: true, resave: true }))
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-
-    app.post(
-        '/login',
-        passport.authenticate('local', {
-            successRedirect: '/',
-            failureRedirect: '/login?error=true'
-        })
-    );
-
-    app.post(
-        "/logout",
-        (request, response) => {
-
-            request.logout();
-            response.redirect("/");
-        }
-    )
-}
+                request.logout();
+                response.redirect("/");
+            }
+        );

@@ -1,13 +1,24 @@
+import { appWithEnvironment } from "common/src/server/appWithEnvironment";
+import express from "express";
 import { boot } from "common/src/server/boot";
 import { createProxy } from "./proxy";
 
+const withProxies = (
+    pairs: [string, string][],
+    app = express()
+) => {
+    pairs.forEach(
+        ([path, target]) => createProxy(app)(path, target))
+    return app;
+}
 
-boot("", gateway => {
+export const app = withProxies(
+    [
+        ["/api", "http://api:" + process.env.API_PORT],
+        ["/authentication", "http://authentication:" + process.env.AUTHENTICATION_PORT],
+        ["/", "http://web:" + process.env.WEB_PORT],
+    ],
+    appWithEnvironment()
+)
 
-    const proxy = createProxy(gateway);
-    const { API_PORT, AUTHENTICATION_PORT, WEB_PORT } = process.env;
-
-    proxy("/api", "http://api:" + API_PORT);
-    proxy("/authentication", "http://authentication:" + AUTHENTICATION_PORT);
-    proxy("/", "http://web:" + WEB_PORT);
-});
+boot("", app);

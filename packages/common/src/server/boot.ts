@@ -1,21 +1,16 @@
-import bodyParser from "body-parser"
 import express from "express";
-import * as dotenv from "dotenv";
+import { appWithEnvironment } from "./appWithEnvironment";
 
+export const boot = (
+    path: string,
+    app = appWithEnvironment()
+) => {
 
-
-export const boot = (path: string, callback: (handler: express.Express) => void) => {
-
-    dotenv.config();
-
-    const app = express();
     const handler = express();
 
     handler.use(express.json());
     handler.use(express.urlencoded({ extended: true }))
     app.use("/" + path, handler);
-
-    callback(handler);
 
     const port = process.env.PORT;
     app.listen(port, () => {

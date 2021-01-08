@@ -1,17 +1,18 @@
 import { CREATED, OK } from "node-kall";;
 import { server } from "common";
+import { appWithEnvironment } from "common/src/server/appWithEnvironment";
 
 
-server.boot("api", (api) => {
-
-    api.post("/articles", (request, response) => {
+const app = appWithEnvironment()
+    .post("/articles", (request, response) => {
 
         response.status(CREATED).send("Created");
-    });
+    })
 
 
-    api.get("/articles", (request, response) => {
+    .get("/articles", (request, response) => {
 
         response.status(OK).send("Retrieved");
     });
-});
+
+server.boot("api", app);

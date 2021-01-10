@@ -1,9 +1,10 @@
-import { models, test } from "common";
+import { models, server, test } from "common";
 import { mocks } from "common/src/test/test";
 import faker from "faker";
 import { BAD_REQUEST, CREATED, FOUND, UNAUTHORIZED } from "node-kall";
 import supertest from "supertest";
 import { app } from "./app";
+import { compare } from "./hash/hash";
 
 describe("The authentication endpoint for users", () => {
 
@@ -50,6 +51,59 @@ describe("The authentication endpoint for users", () => {
             await postUser(credentials)
                 .expect(FOUND)
                 .expect("location", "/");
+        });
+
+        it("Results in a user being created if successful", async () => {
+
+            const credentials = test.mocks.credentials();
+            const before = await server.getUserByEmail(credentials.email);
+            expect(before).toBeNull();
+
+
+            await postUser(credentials).expect(FOUND);
+
+            const after = await server.getUserByEmail(credentials.email);
+            expect(after).toBeDefined();
+        });
+
+        it("Does create a user with correct email", async () => {
+
+            const credentials = test.mocks.credentials();
+            await postUser(credentials).expect(FOUND);
+
+            const user = await server.getUserByEmail(credentials.email);
+            expect(user.email).toEqual(credentials.email);
+        });
+
+        it("Does create a user with and id", async () => {
+
+            const credentials = test.mocks.credentials();
+            await postUser(credentials).expect(FOUND);
+
+            const user = await server.getUserByEmail(credentials.email);
+            expect(user._id).toBeDefined();
+            expect(user._id).not.toEqual(credentials.email);
+            expect(user._id).not.toEqual(credentials.password);
+        });
+
+        it("Does create a user, but does not store the password", async () => {
+
+            const credentials = test.mocks.credentials();
+            await postUser(credentials).expect(FOUND);
+
+            const user = await server.getUserByEmail(credentials.email);
+            expect(user.password_hash).not.toEqual(credentials.password);
+        });
+
+        it("Does create a user and stores hash comparable with bcrypt", async () => {
+
+            const credentials = test.mocks.credentials();
+            await postUser(credentials).expect(FOUND);
+
+            const user = await server.getUserByEmail(credentials.email);
+            expect(
+                await compare(credentials.password, user.password_hash)
+            ).toBe(true);
         });
     });
 

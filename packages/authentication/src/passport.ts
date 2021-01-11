@@ -3,7 +3,7 @@ import passport from "passport"
 import { Strategy as LocalStrategy } from "passport-local";
 import { models, server } from "common";
 import session from "express-session"
-import { compare, hash } from "./hash/hash";
+import { hash } from "./cryptography/cryptography";
 
 passport.serializeUser((user, done) => {
 
@@ -35,12 +35,12 @@ passport.use(new LocalStrategy(
                 email
             });
 
-            if (user && (await compare(password, user.password_hash))) {
+            if (user && (await hash.compare(password, user.password_hash))) {
 
                 done(null, user)
             } else {
 
-                done(hash(password) + " does not match" + user?.password_hash, null);
+                done(hash.hash(password) + " does not match" + user?.password_hash, null);
             }
         })
     }

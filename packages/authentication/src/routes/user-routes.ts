@@ -1,4 +1,4 @@
-import { hash } from "./hash/hash";
+import { hash } from "../hash/hash";
 import { nanoid } from "nanoid";
 import { models, server } from "common";
 import { WithId } from "mongodb";

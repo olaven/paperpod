@@ -15,4 +15,4 @@ const app = appWithEnvironment()
         response.status(OK).send("Retrieved");
     });
 
-server.boot("api", app);
+server.boot("/api", app);

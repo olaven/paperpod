@@ -1,6 +1,6 @@
 FROM node:14 
-COPY . /instapod
-WORKDIR /instapod
+COPY . /paperpod
+WORKDIR /paperpod
 RUN yarn install 
 
 

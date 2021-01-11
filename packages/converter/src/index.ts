@@ -17,7 +17,7 @@ export const convert =
         const audio = await textToAudio(article.text);
 
         const google_cloud_path = `${user._id}/${article.original_url}`
-        await upload(audio, "instapod-articles", google_cloud_path);
+        await upload(audio, "paperpod-articles", google_cloud_path);
 
 
         return {

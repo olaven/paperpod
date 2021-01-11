@@ -10,24 +10,24 @@ services:
     ports:
       - $GATEWAY_PORT:$GATEWAY_PORT
     volumes: # Sync everything but node modules
-      - .:/instapod
-      - /instapod/node_modules
-      - /instapod/packages/gateway/node_modules
+      - .:/paperpod
+      - /paperpod/node_modules
+      - /paperpod/packages/gateway/node_modules
     environment:
       - PORT=$GATEWAY_PORT
       - WEB_PORT=$WEB_PORT
       - API_PORT=$API_PORT
       - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
-    working_dir: /instapod
+    working_dir: /paperpod
   api:
     build: .
     env_file:
       - .env
     command: yarn api dev
     volumes: # Sync everything but node modules
-      - /instapod/node_modules
-      - /instapod/packages/api/node_modules
-      - .:/instapod
+      - /paperpod/node_modules
+      - /paperpod/packages/api/node_modules
+      - .:/paperpod
     environment:
       - PORT=$API_PORT
       - MONGODB_NAME=$MONGODB_NAME
@@ -35,16 +35,16 @@ services:
       - MONGODB_PASSWORD=$MONGODB_PASSWORD
       - MONGODB_HOST=database_api
       - MONGODB_PORT=$MONGODB_PORT #always true: https://hub.docker.com/_/mongo
-    working_dir: /instapod
+    working_dir: /paperpod
   converter:
     build: .
     env_file:
       - .env
     command: yarn converter dev
     volumes: # Sync everything but node modules
-      - .:/instapod
-      - /instapod/node_modules
-      - /instapod/packages/converter/node_module
+      - .:/paperpod
+      - /paperpod/node_modules
+      - /paperpod/packages/converter/node_module
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
   authentication:
@@ -53,9 +53,9 @@ services:
       - .env # workaround to solve issues with node_modules being compiled on mac
     command: yarn authentication dev #bash -c "npm rebuild bcrypt --build-from-source && yarn authentication dev"
     volumes: # Sync everything but node modules
-      - .:/instapod
-      - /instapod/node_modules
-      - /instapod/packages/authentication/node_modules
+      - .:/paperpod
+      - /paperpod/node_modules
+      - /paperpod/packages/authentication/node_modules
     environment:
       - PORT=$AUTHENTICATION_PORT
       - MONGODB_NAME=$MONGODB_NAME
@@ -63,17 +63,17 @@ services:
       - MONGODB_PASSWORD=$MONGODB_PASSWORD
       - MONGODB_HOST=database_authentication
       - MONGODB_PORT=$MONGODB_PORT #always true: https://hub.docker.com/_/mongo
-    working_dir: /instapod
+    working_dir: /paperpod
   web:
     build: .
     env_file:
       - .env
     command: yarn web dev
     volumes: # Sync everything but node modules
-      - .:/instapod
-      - /instapod/node_modules
-      - /instapod/packages/web/node_module
-    working_dir: /instapod
+      - .:/paperpod
+      - /paperpod/node_modules
+      - /paperpod/packages/web/node_module
+    working_dir: /paperpod
 
   ## DATABASES
 

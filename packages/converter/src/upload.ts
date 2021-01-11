@@ -1,7 +1,7 @@
 import { Storage } from "@google-cloud/storage";
 
 
-type BucketName = 'instapod-articles'
+type BucketName = 'paperpod-articles'
 
 
 
@@ -11,6 +11,6 @@ export const upload = async (audio: Uint8Array, bucket: BucketName, filename: st
         .bucket(bucket)
         .file(filename)
         .save(audio);
-    /* const bucket = getBucket("instapod-articles");
+    /* const bucket = getBucket("paperpod-articles");
     await bucket.file("test-file").save(audio); */
 }

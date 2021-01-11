@@ -1,32 +1,21 @@
+import jwt from "jsonwebtoken";
 import express from "express";
-import SignJWT, { JWTPayload } from 'jose/jwt/sign'
-import EncryptJWT from 'jose/jwt/encrypt'
-import jwtDecrypt from 'jose/jwt/decrypt'
 
+const sign = <T>(payload: T) =>
+    jwt.sign(payload as any, process.env.JWT_SECRET, {
+        expiresIn: "15m"
+    });
 
-const key = () => Buffer.from(
-    process.env.JWT_SECRET
-);
+const decode = <T>(token: string) =>
+    jwt.verify(token, process.env.JWT_SECRET) as any as T;
 
-const encrypt = <T>(payload: T) => new EncryptJWT(payload)
-    .setProtectedHeader({ alg: 'ES256' })
-    .setIssuedAt()
-    .setExpirationTime('2h')
-    .encrypt(
-        Buffer.from(process.env.JWT_SECRET)
-    );
-
-const decrypt = (jwt: string) => jwtDecrypt(jwt, key());
 
 export const jwtRoutes = express.Router()
     .get("", async (request, response) => {
 
 
-        const jwt = await encrypt({ some: "data" });
-        const decrypted = await decrypt(jwt);
+        const jwt = await sign({ some: "data", added: "more" });
+        const decrypted = await decode(jwt);
 
-        console.log(decrypted.payload);
-
-
-        response.send(decrypted.payload);
+        response.send(decrypted);
     })

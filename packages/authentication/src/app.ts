@@ -6,7 +6,6 @@ export const app =
     withPassportConfiguration(
         server.appWithEnvironment()
     )
-        .get("/test", (req, res) => res.send("hello"))
         .use("", userRoutes)
         .use("/jwt", jwtRoutes)
         .use((request, response, next) => {

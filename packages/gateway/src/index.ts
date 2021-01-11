@@ -12,11 +12,16 @@ const withProxies = (
     return app;
 }
 
+const mapping = (path: string, hostname: string, port: string): [string, string] => [
+    path,
+    "http://" + hostname + ":" + port
+]
+
 export const app = withProxies(
     [
-        ["/api", "http://api:" + process.env.API_PORT],
-        ["/authentication", "http://authentication:" + process.env.AUTHENTICATION_PORT],
-        ["/", "http://web:" + process.env.WEB_PORT],
+        mapping("/api", "api", process.env.API_PORT),
+        mapping("/authentication", "authentication", process.env.AUTHENTICATION_PORT),
+        mapping("/", "web", process.env.WEB_PORT),
     ],
     appWithEnvironment()
 )

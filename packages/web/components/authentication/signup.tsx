@@ -2,7 +2,6 @@ import { CREATED, get, post } from "node-kall";
 import { models } from "common";
 import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
-import { setTokenSourceMapRange } from "typescript";
 
 export const Signup = () => {
   const [email, setEmail] = useState<string>();
@@ -11,14 +10,13 @@ export const Signup = () => {
   const { setToken } = useContext(UserContext);
 
   const onClick = async () => {
-    const [status, retrieved] = await post<models.UserCredentials>(
-      "/authentication/users",
-      { email: email, password: password }
-    );
+    const [status, response] = await post<
+      models.UserCredentials,
+      models.TokenResponse
+    >("/authentication/users", { email: email, password: password });
 
     if (status === CREATED) {
-      //@ts-ignore
-      setToken(retrieved.token);
+      setToken(response.token);
     }
   };
   return (

@@ -5438,10 +5438,10 @@ node-int64@^0.4.0:
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
   integrity sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs=
 
-node-kall@^1.0.71:
-  version "1.0.71"
-  resolved "https://registry.yarnpkg.com/node-kall/-/node-kall-1.0.71.tgz#4f3a9759207dbdea3aef8aadea5e667c007f4961"
-  integrity sha512-9Burz3/2RHlfbj71IcvcD1gVHhqD/ztU444ExiLZPSPhMQFE/a8RMU1aEXDnMEHoFcDTI0tcFgYBCi5OOBR0UQ==
+node-kall@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/node-kall/-/node-kall-0.2.0.tgz#f9d5439bbc3dfd1af8bfffa516fb82e0b1f9623b"
+  integrity sha512-ya5i6rha0NjMgWi9/7iqvb4APCbBoT+AnPeJRSeLqqbArAbrG2DUiNFkpqRpw6osV9hV+EPPjpo88EDGxqQaFg==
 
 node-libs-browser@^2.2.1:
   version "2.2.1"

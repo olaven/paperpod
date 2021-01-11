@@ -10,7 +10,7 @@
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "http-proxy-middleware": "^1.0.6",
-        "node-kall": "^1.0.71",
+        "node-kall": "^0.2.0",
         "ts-node-dev": "^1.1.1"
     },
     "devDependencies": {

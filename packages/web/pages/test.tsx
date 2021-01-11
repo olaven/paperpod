@@ -1,9 +1,9 @@
 const Test = () => {
   const onClick = async () => {
-    const response = await fetch("/authentication/test", {
+    const response = await fetch("/authentication/users/me", {
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im9sYXZAc3VuZGZvZXIuY29tIiwiX2lkIjoiZW4gZWxsZXIgYW5uZW4gYnJ1a2VyaWQiLCJpYXQiOjE2MTAzOTYxODcsImV4cCI6MTYxMDM5NzA4N30.JMo6NVtqw8kbHLYUasa4FwAEW-LZ6j4Lc5X5bGu8YEQ",
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJwN3hjd3UzNHVCd09RS29scUdtOEgiLCJlbWFpbCI6Im9sYXZAc3VuZGZvZXIuY29tIiwicGFzc3dvcmRfaGFzaCI6IiQyYiQxMCRhWldIWTIwSmtwWHR5UktVdE05SG91VWQycVpvL1V3em1aYnVPM3psN3QvLlRHaVBGbm1kTyIsImlhdCI6MTYxMDM5OTQ5NiwiZXhwIjoxNjEwNDAwMzk2fQ.Fzqr5DNPkApiBjOqomNxq_2yvNmKL-1zc9mYVbfAFX4",
       },
     });
 
@@ -13,7 +13,7 @@ const Test = () => {
       console.log("User: from web token", user);
     }
   };
-  return <button onClick={onClick}>fetch token</button>;
+  return <button onClick={onClick}>Fetch /me with token</button>;
 };
 
 export default Test;

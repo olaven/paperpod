@@ -3,22 +3,22 @@ import { nanoid } from "nanoid";
 import { models, server } from "common";
 import { WithId } from "mongodb";
 import express from "express";
-import { BAD_REQUEST, FORBIDDEN, UNAUTHORIZED } from "node-kall";
+import { BAD_REQUEST, CREATED, FORBIDDEN, OK, UNAUTHORIZED } from "node-kall";
+import { getUserByEmail } from "common/src/server/server";
+import { sign } from "jsonwebtoken";
 
-const getBearerToken = (request: express.Request) =>
-    request.headers.authorization
-        ?.split("Bearer ")[0]
 
 const authenticatedWithToken = (handler: (request: express.Request, response: express.Response, user: models.User) => any) =>
     (request: express.Request, response: express.Response) => {
+
+        const getBearerToken = (request: express.Request) =>
+            request.headers.authorization.replace("Bearer ", "");
 
         const token = getBearerToken(request);
 
         if (!token) return response
             .status(UNAUTHORIZED)
             .end();
-
-        console.log("TOKEN:", token);
 
         try {
 
@@ -37,22 +37,52 @@ const authenticatedWithToken = (handler: (request: express.Request, response: ex
         }
     }
 
+
+const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {
+
+    console.log("in validation with", email, password);
+    if (!email || !password) return false;
+
+
+    console.log("GOING TO USER");
+    return server.withDatabase(async database => {
+
+        const user = await server.getUsers(database).findOne({
+            email
+        });
+
+        console.log("FOUND USER")
+
+        return user && (await hash.compare(password, user.password_hash));
+    })
+}
+
+
 export const userRoutes = express.Router()
-    .get("/test", authenticatedWithToken((request, response, user) => {
+    .post("/users/session", async (request, response) => {
 
-        console.log("Got user: ", user);
-        response.send(user);
-    }))
-    .get("/token", (request, response) => {
+        const credentials = request.body as models.UserCredentials;
+        if (await credentialsAreValid(credentials)) {
 
-        response.send(jwt.sign<models.User>({
-            email: "olav@sundfoer.com",
-            _id: "en eller annen brukerid"
-        }));
+            const user = await getUserByEmail(credentials.email);
+            const token = jwt.sign(user);
+
+            return response
+                .status(CREATED)
+                .send({
+                    token
+                });
+        } else {
+
+            return response
+                .status(UNAUTHORIZED)
+                .send()
+        }
     })
     .post("/users", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
+        console.log("Here are the credentials", credentials);
         if (!credentials || !credentials.email || !credentials.password)
             return response
                 .status(BAD_REQUEST)
@@ -66,18 +96,16 @@ export const userRoutes = express.Router()
                 password_hash: await hash.hash(credentials.password)
             }
             await server.getUsers(database).insertOne(user as any as WithId<models.User>);
-            response.redirect("/");
+
+            const token = jwt.sign(user);
+            response
+                .status(CREATED)
+                .send({ token });
         });
     })
     .get(
         "/users/me",
-        (request, response) => {
+        authenticatedWithToken((request, response, user) => {
 
-            if (request.isAuthenticated())
-                response.json({
-                    ...request.user,
-                    password_hash: null,//NOTE: no reason to send this and potential security risk 
-                })
-            else
-                response.status(401)
-        });
+            response.json(user);
+        }));

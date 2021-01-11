@@ -1,26 +1,44 @@
-import { get } from "node-kall";
+import { CREATED, post } from "node-kall";
+import { useContext, useState } from "react";
+import { UserContext } from "./UserContext";
 
 export const Login = () => {
-  const fetchProtectedEndpoint = async () => {
-    const [status, body] = await get("/authentication/test");
-    console.log("received", status, body);
+  const { setToken } = useContext(UserContext);
+  const [email, setEmail] = useState<string>(null);
+  const [password, setPassword] = useState<string>(null);
+
+  const onLogin = async () => {
+    const [status, body] = await post("/authentication/users/session", {
+      email,
+      password,
+    });
+
+    if (status === CREATED) {
+      //@ts-ignore
+      setToken(body.token);
+    } else {
+      console.log("Hello", status);
+    }
   };
   return (
     <>
-      <button onClick={fetchProtectedEndpoint}>fetch protected endpoint</button>
-      <form action="/authentication/login" method="post">
-        <div>
-          <label>Email:</label>
-          <input type="text" name="email" />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" name="password" />
-        </div>
-        <div>
-          <input type="submit" value="Log In" />
-        </div>
-      </form>
+      <label>Email:</label>
+      <input
+        type="text"
+        onChange={(event) => {
+          setEmail(event.target.value);
+        }}
+      />
+
+      <label>Password:</label>
+      <input
+        type="password"
+        onChange={(event) => {
+          setPassword(event.target.value);
+        }}
+      />
+
+      <button onClick={onLogin}>Log in</button>
     </>
   );
 };

@@ -3,8 +3,8 @@ import { mocks } from "common/src/test/test";
 import faker from "faker";
 import { OK, BAD_REQUEST, CREATED, FOUND, UNAUTHORIZED } from "node-kall";
 import supertest from "supertest";
-import { app } from "./app";
-import { compare } from "./hash/hash";
+import { app } from "../app";
+import { hash } from "../cryptography/cryptography";
 
 describe("The authentication endpoint for users", () => {
 
@@ -116,7 +116,7 @@ describe("The authentication endpoint for users", () => {
 
             const user = await server.getUserByEmail(credentials.email);
             expect(
-                await compare(credentials.password, user.password_hash)
+                await hash.compare(credentials.password, user.password_hash)
             ).toBe(true);
         });
     });

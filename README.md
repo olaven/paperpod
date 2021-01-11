@@ -1,3 +1,5 @@
+__This project is still very much work in progress.__ More details to come.
+
 # paperpod 
 ## Assets
 * [Design Workspace in Figma](https://www.figma.com/file/VSrR5BIGv7BkliMdcwvA8q/Paperpod?node-id=0%3A1)

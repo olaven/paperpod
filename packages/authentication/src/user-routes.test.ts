@@ -167,5 +167,54 @@ describe("The authentication endpoint for users", () => {
             const { body } = await getMe(agent);
             expect(body.email).toEqual(credentials.email);
         });
+
+        it("Responds with OK if user is logged in", () => {
+
+            const agent = supertest.agent(app);
+            agent
+                .post("/users")
+                .send(test.mocks.credentials());
+
+            agent
+                .get("/users/me")
+                .expect(OK);
+        });
+
+        it("Does return user data", async () => {
+
+            const agent = supertest.agent(app);
+            agent
+                .post("/users")
+                .send(test.mocks.credentials());
+
+            const response = await agent
+                .get("/users/me")
+                .expect(OK);
+
+            expect(response.body.email).toBeDefined();
+            expect(response.body._id).toBeDefined();
+        });
+
+        it("TIMEOUT when awaiting", async () => {
+
+            await supertest(app)
+                .get("/users/me")
+        });
+
+        it("TIMEOUT when using .then", (done) => {
+
+            supertest(app)
+                .get("/users/me")
+                .then(response => {
+
+                    done();
+                });
+        });
+
+        it("WORKING when not using promises at all", () => {
+
+            supertest(app)
+                .get("/users/me");
+        });
     });
 });

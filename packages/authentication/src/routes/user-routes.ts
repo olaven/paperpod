@@ -1,47 +1,19 @@
-import { hash, jwt } from "../cryptography/cryptography";
+import { hash } from "../cryptography/cryptography";
 import { nanoid } from "nanoid";
 import { models, server } from "common";
 import { WithId } from "mongodb";
 import express from "express";
-import { BAD_REQUEST, CREATED, FORBIDDEN, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
+import { BAD_REQUEST, CONFLICT, CREATED, FORBIDDEN, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
 import { getUserByEmail } from "common/src/server/server";
-import { sign } from "jsonwebtoken";
-import { authenticate } from "passport";
+import { withAuthentication } from "common/src/server/middleware/middleware";
 
 
-const authenticatedWithToken = (handler: (request: express.Request, response: express.Response, user: models.User) => any) =>
-    (request: express.Request, response: express.Response) => {
-
-        const getBearerToken = (request: express.Request) =>
-            request.headers.authorization.replace("Bearer ", "");
-
-        const token = getBearerToken(request);
-
-        if (!token) return response
-            .status(UNAUTHORIZED)
-            .end();
-
-        try {
-
-            const user = jwt.decode<models.User>(token);
-
-            if (!user) return response
-                .status(FORBIDDEN)
-                .end();
-
-            handler(request, response, user);
-        } catch {
-
-            //i.e. malformed token 
-            return response
-                .send(BAD_REQUEST);
-        }
-    }
 
 
 const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {
 
     console.log("in validation with", email, password);
+
     if (!email || !password) return false;
 
 
@@ -66,7 +38,7 @@ export const userRoutes = express.Router()
         if (await credentialsAreValid(credentials)) {
 
             const user = await getUserByEmail(credentials.email);
-            const token = jwt.sign(user);
+            const token = server.jwt.sign(user);
 
             return response
                 .status(CREATED)
@@ -80,7 +52,7 @@ export const userRoutes = express.Router()
                 .send()
         }
     })
-    .delete("/users/sessions", authenticatedWithToken(
+    .delete("/users/sessions", withAuthentication(
         (request, response, user) => {
 
             //FIXME: somehow invalidate old token 
@@ -92,13 +64,19 @@ export const userRoutes = express.Router()
     .post("/users", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
-        console.log("Here are the credentials", credentials);
+
         if (!credentials || !credentials.email || !credentials.password)
             return response
                 .status(BAD_REQUEST)
                 .send();
 
+
         await server.withDatabase(async database => {
+
+            const existing = await server.getUserByEmail(credentials.email);
+            if (existing) return response
+                .status(CONFLICT)
+                .send();
 
             const user: models.User = {
                 _id: nanoid(),
@@ -107,7 +85,7 @@ export const userRoutes = express.Router()
             }
             await server.getUsers(database).insertOne(user as any as WithId<models.User>);
 
-            const token = jwt.sign(user);
+            const token = server.jwt.sign(user);
             response
                 .status(CREATED)
                 .send({ token });
@@ -115,7 +93,7 @@ export const userRoutes = express.Router()
     })
     .get(
         "/users/me",
-        authenticatedWithToken((request, response, user) => {
+        withAuthentication((request, response, user) => {
 
             response.json(user);
         }));

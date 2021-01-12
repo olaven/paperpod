@@ -1,5 +1,4 @@
 import { server } from "common";
-import { withPassportConfiguration } from "./passport";
 import { userRoutes } from "./routes/routes";
 
 export const app =

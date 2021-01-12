@@ -16,3 +16,5 @@ export const decode = <T>(token: string) => {
 
     return data as any as T;
 }
+
+

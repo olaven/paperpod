@@ -6,7 +6,7 @@ import supertest from "supertest";
 import { app } from "../app";
 import { hash } from "../cryptography/cryptography";
 
-describe("The authentication endpoint for users", () => {
+describe.skip("The authentication endpoint for users", () => {
 
     const signUp = (credentials = test.mocks.credentials(), agent = supertest.agent(app)) => {
 

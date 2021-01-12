@@ -10,9 +10,8 @@ const app = appWithEnvironment()
     })
 
 
-    .get("/articles", (request, response) => {
-
-        response.status(OK).send("Retrieved");
-    });
+    .get("/articles", server.middleware.withAuthentication(request, response, user => {
+        
+    }));
 
 server.boot("/api", app);

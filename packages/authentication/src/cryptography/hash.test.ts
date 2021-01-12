@@ -1,7 +1,6 @@
 
-import { compare } from "bcrypt";
 import faker from "faker";
-import { hash } from "./hash";
+import { hash, compare } from "./hash";
 
 
 

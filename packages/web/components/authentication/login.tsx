@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 
 export const Login = () => {
-  const { setToken } = useContext(UserContext);
+  const { setToken, user } = useContext(UserContext);
   const [email, setEmail] = useState<string>(null);
   const [password, setPassword] = useState<string>(null);
 
@@ -19,10 +19,13 @@ export const Login = () => {
 
     if (status === CREATED) {
       setToken(response.token);
+      console.log("Got a token", response.token);
     } else {
-      console.log("Hello", status);
+      throw status + " when creating session";
     }
   };
+
+  console.log(user);
   return (
     <>
       <label>Email:</label>

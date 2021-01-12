@@ -13,10 +13,10 @@ export const UserContext = createContext<{
   setToken: (t: string) => null,
 });
 
-const useUser = (token: string): [models.User, () => Promise<void>] => {
+const useUser = (token: string): models.User => {
   const [user, setUser] = useState<models.User>(null);
 
-  const refreshUser = async () => {
+  asyncEffect(async () => {
     if (!token) return setUser(null);
     const [status, user] = await get<models.User>("/authentication/users/me/", {
       headers: {
@@ -26,17 +26,14 @@ const useUser = (token: string): [models.User, () => Promise<void>] => {
 
     console.log("user", user);
     setUser(status === OK ? user : null);
-  };
+  }, [token]);
 
-  asyncEffect(refreshUser, [token]);
-
-  return [user, refreshUser];
+  return user;
 };
 
 export const UserContextProvider = ({ children }: any) => {
   const [token, setToken] = useState<string>(null);
-
-  const [user] = useUser(token);
+  const user = useUser(token);
 
   return (
     <UserContext.Provider value={{ user, setToken, token }}>

@@ -1,7 +1,22 @@
 import { useContext } from "react";
-import { UserContext } from "../components/authentication/authentication";
+import {
+  UserContext,
+  Signup,
+  Login,
+  Logout,
+} from "../components/authentication/authentication";
 
 const Index = () => {
-  return <>Index</>;
+  const { user } = useContext(UserContext);
+  return (
+    <>
+      {!user && <Signup />}
+      <br />
+      {!user && <Login />}
+
+      {user && <>logged in as {user.email}</>}
+      {user && <Logout />}
+    </>
+  );
 };
 export default Index;

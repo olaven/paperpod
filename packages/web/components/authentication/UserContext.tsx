@@ -24,7 +24,6 @@ const useUser = (token: string): models.User => {
       },
     });
 
-    console.log("user", user);
     setUser(status === OK ? user : null);
   }, [token]);
 

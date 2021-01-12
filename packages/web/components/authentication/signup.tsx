@@ -2,6 +2,7 @@ import { CREATED, get, post } from "node-kall";
 import { models } from "common";
 import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
+import { signup } from "./authFetchers";
 
 export const Signup = () => {
   const [email, setEmail] = useState<string>();
@@ -10,10 +11,7 @@ export const Signup = () => {
   const { setToken } = useContext(UserContext);
 
   const onClick = async () => {
-    const [status, response] = await post<
-      models.UserCredentials,
-      models.TokenResponse
-    >("/authentication/users", { email: email, password: password });
+    const [status, response] = await signup({ email, password });
 
     if (status === CREATED) {
       setToken(response.token);

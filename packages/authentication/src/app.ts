@@ -3,9 +3,7 @@ import { withPassportConfiguration } from "./passport";
 import { userRoutes } from "./routes/routes";
 
 export const app =
-    withPassportConfiguration(
-        server.appWithEnvironment()
-    )
+    server.appWithEnvironment()
         .use("", userRoutes)
         .use((request, response, next) => {
 

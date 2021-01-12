@@ -3,9 +3,10 @@ import { nanoid } from "nanoid";
 import { models, server } from "common";
 import { WithId } from "mongodb";
 import express from "express";
-import { BAD_REQUEST, CREATED, FORBIDDEN, OK, UNAUTHORIZED } from "node-kall";
+import { BAD_REQUEST, CREATED, FORBIDDEN, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
 import { getUserByEmail } from "common/src/server/server";
 import { sign } from "jsonwebtoken";
+import { authenticate } from "passport";
 
 
 const authenticatedWithToken = (handler: (request: express.Request, response: express.Response, user: models.User) => any) =>
@@ -59,7 +60,7 @@ const credentialsAreValid = async ({ email, password }: models.UserCredentials) 
 
 
 export const userRoutes = express.Router()
-    .post("/users/session", async (request, response) => {
+    .post("/users/sessions", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
         if (await credentialsAreValid(credentials)) {
@@ -79,6 +80,15 @@ export const userRoutes = express.Router()
                 .send()
         }
     })
+    .delete("/users/sessions", authenticatedWithToken(
+        (request, response, user) => {
+
+            //FIXME: somehow invalidate old token 
+            response.send(NO_CONTENT).send({
+                token: null
+            });
+        }
+    ))
     .post("/users", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;

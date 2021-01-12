@@ -12,7 +12,7 @@ export const Login = () => {
     const [status, response] = await post<
       models.UserCredentials,
       models.TokenResponse
-    >("/authentication/users/session", {
+    >("/authentication/users/sessions", {
       email,
       password,
     });

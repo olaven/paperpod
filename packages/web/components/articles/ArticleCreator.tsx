@@ -1,0 +1,26 @@
+import { CREATED } from "node-kall";
+import { useContext, useState } from "react";
+import { UserContext } from "../authentication/UserContext";
+import { ArticleContext } from "./ArticleContext";
+import { postArticle } from "./articleFetchers";
+
+export const ArticleCreator = () => {
+  const { token } = useContext(UserContext);
+  const { resfreshArticles } = useContext(ArticleContext);
+  const [link, setLink] = useState<string>(null);
+  const onCreate = async () => {
+    const [status] = await postArticle({ link }, token);
+    if (status === CREATED) {
+      resfreshArticles();
+    } else {
+      console.log(status, "when posting article");
+    }
+  };
+
+  return (
+    <>
+      <input type="text" placeholder="link" />
+      <button onClick={onCreate}>create</button>
+    </>
+  );
+};

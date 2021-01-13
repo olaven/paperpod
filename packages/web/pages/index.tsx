@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Articles } from "../components/articles/Articles";
 import {
   UserContext,
   Signup,
@@ -14,8 +15,10 @@ const Index = () => {
       <br />
       {!user && <Login />}
 
-      {user && <>logged in as {user.email}</>}
       {user && <Logout />}
+      {user && <>logged in as {user.email}</>}
+
+      {user && <Articles />}
     </>
   );
 };

@@ -19,13 +19,11 @@ export const Login = () => {
 
     if (status === CREATED) {
       setToken(response.token);
-      console.log("Got a token", response.token);
     } else {
       throw status + " when creating session";
     }
   };
 
-  console.log(user);
   return (
     <>
       <label>Email:</label>

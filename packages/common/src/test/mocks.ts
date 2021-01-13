@@ -16,5 +16,5 @@ export const article = (): models.Article => ({
     original_url: faker.internet.url(),
     google_cloud_path: faker.internet.url(),
     text: faker.lorem.paragraphs(15),
-
+    owner_id: faker.random.uuid(),
 })

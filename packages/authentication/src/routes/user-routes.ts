@@ -1,10 +1,9 @@
 import { hash } from "../cryptography/cryptography";
 import { nanoid } from "nanoid";
 import { models, server } from "common";
-import { WithId } from "mongodb";
 import express from "express";
+import * as database from "../authdatabase/authdatabase"
 import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, UNAUTHORIZED } from "node-kall";
-import { getUserByEmail } from "common/src/server/server";
 import { withAuthentication } from "common/src/server/middleware/middleware";
 
 
@@ -12,16 +11,10 @@ const credentialsAreValid = async ({ email, password }: models.UserCredentials) 
 
     if (!email || !password) return false;
 
-    return server.withDatabase(async database => {
+    const user = await database.users.getByEmail(email);
+    const passwordEqual = await hash.compare(password, user?.password_hash);
 
-        const user = await server.getUsers(database).findOne({
-            email
-        });
-
-        console.log("FOUND USER")
-
-        return user && (await hash.compare(password, user.password_hash));
-    })
+    return user && passwordEqual;
 }
 
 
@@ -31,7 +24,7 @@ export const userRoutes = express.Router()
         const credentials = request.body as models.UserCredentials;
         if (await credentialsAreValid(credentials)) {
 
-            const user = await getUserByEmail(credentials.email);
+            const user = await database.users.getByEmail(credentials.email);
             const token = server.jwt.sign(user);
 
             return response
@@ -64,26 +57,23 @@ export const userRoutes = express.Router()
                 .status(BAD_REQUEST)
                 .send();
 
+        const existing = await database.users.getByEmail(credentials.email);
 
-        await server.withDatabase(async database => {
+        if (existing) return response
+            .status(CONFLICT)
+            .send();
 
-            const existing = await server.getUserByEmail(credentials.email);
-            if (existing) return response
-                .status(CONFLICT)
-                .send();
-
-            const user: models.User = {
-                _id: nanoid(),
-                email: credentials.email,
-                password_hash: await hash.hash(credentials.password)
-            }
-            await server.getUsers(database).insertOne(user as any as WithId<models.User>);
-
-            const token = server.jwt.sign(user);
-            response
-                .status(CREATED)
-                .send({ token });
+        const user = await database.users.insert({
+            _id: nanoid(),
+            email: credentials.email,
+            password_hash: await hash.hash(credentials.password)
         });
+
+        const token = server.jwt.sign(user);
+
+        return response
+            .status(CREATED)
+            .send({ token });
     })
     .get(
         "/users/me",

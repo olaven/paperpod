@@ -1,14 +1,13 @@
 import { server } from "common";
-import { withPassportConfiguration } from "./passport";
-import { userRoutes } from "./user-routes";
+import { userRoutes } from "./routes/routes";
 
 export const app =
-    withPassportConfiguration(
-        server.appWithEnvironment()
+    server.app.appWithEnvironment(
+        server.app.appWithBodyParser()
     )
         .use("", userRoutes)
-        .use((req, res, next) => {
+        .use((request, response, next) => {
 
-            console.log("midleware - ", req.path);
-            next();
+            console.log("In middleware, with a request pointing to", request.url)
+            next()
         });

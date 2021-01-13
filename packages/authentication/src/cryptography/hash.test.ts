@@ -1,8 +1,7 @@
 
-import { compare } from "bcrypt";
 import faker from "faker";
-import { decodedTextSpanIntersectsWith } from "typescript";
-import { hash } from "./hash";
+import { hash, compare } from "./hash";
+
 
 
 describe("Bcrypt module", () => {

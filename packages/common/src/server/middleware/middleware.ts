@@ -1,0 +1,1 @@
+export { withAuthentication } from "./withAuthentication";

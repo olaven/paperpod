@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 
-export const asyncEffect = (action: () => Promise<any>, triggers: any[]) =>
-    useEffect(
-        () => async () => {
-            console.log("RUnning async action");
-            await action();
-        },
-        triggers
-    );
+/**
+* Wraps `React.useEffect`, accepting an
+* async function 
+* @param action 
+* @param on 
+*/
+export const asyncEffect = (action: () => Promise<any>, on: any[]) =>
+    useEffect(() => {
+        action()
+    }, on);

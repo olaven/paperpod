@@ -1,14 +1,22 @@
-import { useContext, useEffect } from "react";
-import { UserContext } from "../components/authentication/UserContext";
-import { asyncEffect } from "../helpers/asyncEffect";
+import { useContext } from "react";
+import {
+  UserContext,
+  Signup,
+  Login,
+  Logout,
+} from "../components/authentication/authentication";
 
 const Index = () => {
-  const { refreshUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+  return (
+    <>
+      {!user && <Signup />}
+      <br />
+      {!user && <Login />}
 
-  useEffect(() => {
-    refreshUser();
-  }, []);
-
-  return <>Index</>;
+      {user && <>logged in as {user.email}</>}
+      {user && <Logout />}
+    </>
+  );
 };
 export default Index;

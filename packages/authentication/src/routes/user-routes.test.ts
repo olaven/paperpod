@@ -1,6 +1,7 @@
 import faker from "faker";
-import { models, server, test } from "common";
+import { models, test } from "common";
 import { jwt } from "common/src/server/server";
+import * as database from "../authdatabase/authdatabase";
 import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT } from "node-kall";
 import supertest from "supertest";
 import { app } from "../app";
@@ -76,13 +77,13 @@ describe("The authentication endpoint for users", () => {
         it("Results in a user being created if successful", async () => {
 
             const credentials = test.mocks.credentials();
-            const before = await server.getUserByEmail(credentials.email);
+            const before = await database.users.getByEmail(credentials.email);
             expect(before).toBeNull();
 
             await signUp(credentials)
                 .expect(CREATED);
 
-            const after = await server.getUserByEmail(credentials.email);
+            const after = await database.users.getByEmail(credentials.email);
             expect(after).toBeDefined();
         });
 
@@ -92,7 +93,7 @@ describe("The authentication endpoint for users", () => {
             await signUp(credentials)
                 .expect(CREATED);
 
-            const user = await server.getUserByEmail(credentials.email);
+            const user = await database.users.getByEmail(credentials.email);
             expect(user.email).toEqual(credentials.email);
         });
 
@@ -102,7 +103,7 @@ describe("The authentication endpoint for users", () => {
             await signUp(credentials)
                 .expect(CREATED);
 
-            const user = await server.getUserByEmail(credentials.email);
+            const user = await database.users.getByEmail(credentials.email);
             expect(user._id).toBeDefined();
             expect(user._id).not.toEqual(credentials.email);
             expect(user._id).not.toEqual(credentials.password);
@@ -114,7 +115,7 @@ describe("The authentication endpoint for users", () => {
             await signUp(credentials)
                 .expect(CREATED);
 
-            const user = await server.getUserByEmail(credentials.email);
+            const user = await database.users.getByEmail(credentials.email);
             expect(user.password_hash).not.toEqual(credentials.password);
         });
 
@@ -124,7 +125,7 @@ describe("The authentication endpoint for users", () => {
             await signUp(credentials)
                 .expect(CREATED);
 
-            const user = await server.getUserByEmail(credentials.email);
+            const user = await database.users.getByEmail(credentials.email);
             expect(
                 await hash.compare(credentials.password, user.password_hash)
             ).toBe(true);

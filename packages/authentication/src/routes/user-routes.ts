@@ -3,21 +3,15 @@ import { nanoid } from "nanoid";
 import { models, server } from "common";
 import { WithId } from "mongodb";
 import express from "express";
-import { BAD_REQUEST, CONFLICT, CREATED, FORBIDDEN, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
+import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, UNAUTHORIZED } from "node-kall";
 import { getUserByEmail } from "common/src/server/server";
 import { withAuthentication } from "common/src/server/middleware/middleware";
 
 
-
-
 const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {
-
-    console.log("in validation with", email, password);
 
     if (!email || !password) return false;
 
-
-    console.log("GOING TO USER");
     return server.withDatabase(async database => {
 
         const user = await server.getUsers(database).findOne({
@@ -95,5 +89,8 @@ export const userRoutes = express.Router()
         "/users/me",
         withAuthentication((request, response, user) => {
 
-            response.json(user);
+            response.json({
+                ...user,
+                password_hash: undefined
+            });
         }));

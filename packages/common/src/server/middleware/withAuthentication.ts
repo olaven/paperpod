@@ -9,7 +9,6 @@ const getBearerToken = (request: express.Request) =>
 export const withAuthentication = (handler: (request: express.Request, response: express.Response, user: models.User) => any) =>
     (request: express.Request, response: express.Response) => {
 
-
         const token = getBearerToken(request);
 
         if (!token) return response

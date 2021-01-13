@@ -1,6 +1,5 @@
-import { appWithEnvironment } from "common/src/server/appWithEnvironment";
 import express from "express";
-import { boot } from "common/src/server/boot";
+import { server } from "common"
 import { createProxy } from "./proxy";
 
 const withProxies = (
@@ -23,7 +22,7 @@ export const app = withProxies(
         mapping("/authentication", "authentication", process.env.AUTHENTICATION_PORT),
         mapping("/", "web", process.env.WEB_PORT),
     ],
-    appWithEnvironment()
+    server.app.appWithEnvironment()
 )
 
-boot("", app);
+server.boot("", app);

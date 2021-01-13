@@ -1,10 +1,8 @@
 import express from "express";
-import { appWithEnvironment } from "./appWithEnvironment";
+import { appWithEnvironment } from "./app/appWithEnvironment";
 
 export const boot = (path: string, app = appWithEnvironment()) =>
     express()
-        .use(express.json())
-        .use(express.urlencoded({ extended: true }))
         .use(path, app)
         .listen(process.env.PORT, () => {
 

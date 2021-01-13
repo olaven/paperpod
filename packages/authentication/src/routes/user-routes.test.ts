@@ -129,6 +129,16 @@ describe("The authentication endpoint for users", () => {
                 await hash.compare(credentials.password, user.password_hash)
             ).toBe(true);
         });
+
+        it("Responds with CONFLICT if attempting to create the same user twice", async () => {
+
+            const credentials = test.mocks.credentials();
+            await signUp(credentials)
+                .expect(CREATED);
+
+            await signUp(credentials)
+                .expect(CONFLICT);
+        });
     });
 
     describe("GET endpoint for retrieving information about the logged in user", () => {

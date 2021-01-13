@@ -51,15 +51,13 @@ export const userRoutes = express.Router()
     .post("/users", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
-        console.log("I am here with credentials: ", credentials)
 
         if (!credentials || !credentials.email || !credentials.password)
             return response
                 .status(BAD_REQUEST)
                 .send();
 
-        const existing = database.users.getByEmail(credentials.email);
-
+        const existing = await database.users.getByEmail(credentials.email);
 
         if (existing) return response
             .status(CONFLICT)

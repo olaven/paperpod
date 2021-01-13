@@ -1,3 +1,4 @@
+import express from "express"
 import faker from "faker";
 import { models, test } from "common";
 import { jwt } from "common/src/server/server";
@@ -16,9 +17,45 @@ describe("The authentication endpoint for users", () => {
             .post("/users")
             .send(credentials as any);
 
-    const extractBearerToken = async (test: supertest.Test) =>
-        (await test).body.token
+    const extractBearerToken = async (test: supertest.Test) => {
 
+        const { body: { token } } = await test;
+        return token;
+    }
+
+
+
+    describe("Local test utils", () => {
+
+        describe("extractBearerToken", () => {
+
+            it("Does extract something defined", async () => {
+
+                const token = await extractBearerToken(
+                    signUp()
+                );
+
+                expect(token).toBeDefined();
+            });
+
+            it("Does returns the correct token", async () => {
+
+
+                const sentToken = faker.random.uuid();
+                const app = express().get("/", (request, response) => {
+                    response.json({
+                        token: sentToken
+                    });
+                });
+
+                const retrievedToken = await extractBearerToken(
+                    supertest(app).get("/")
+                );
+
+                expect(sentToken).toEqual(retrievedToken);
+            })
+        });
+    });
 
     describe("POST request for creating new users", () => {
 

@@ -26,6 +26,7 @@ services:
       - .:/paperpod
     environment:
       - PORT=$API_PORT
+      - JWT_SECRET=$JWT_SECRET
       - MONGODB_NAME=$MONGODB_NAME
       - MONGODB_USERNAME=$MONGODB_USERNAME
       - MONGODB_PASSWORD=$MONGODB_PASSWORD

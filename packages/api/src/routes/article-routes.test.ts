@@ -29,17 +29,17 @@ describe("The api for articles", () => {
             expect(status).not.toEqual(NOT_IMPLEMENTED);
         });
 
-        it("Does respond with UNAUTHORIZED if no token is passed", () => {
+        it("Does respond with UNAUTHORIZED if no token is passed",async  () => {
 
-            post(null)
-                .expect(UNAUTHORIZED);
+            const { status } = await post(null)
+            expect(status).toEqual(UNAUTHORIZED);
         });
 
-        it("Does respond with 201 if a valid request is made", () => {
+        it("Does respond with 201 if a valid request is made", async () => {
 
             const token = jwt.sign(test.mocks.user()); 
-            post(token)
-                .expect(CREATED);
+            const { status } = await post(token); 
+            expect(status).toEqual(CREATED);
         });
 
         it("Does return an article on valid request",async  () => {
@@ -82,17 +82,17 @@ describe("The api for articles", () => {
 
     describe("Retrieving articles", () => {
 
-        it("Does respond with UNAUTHORIZED if not logged in", () => {
+        it("Does respond with UNAUTHORIZED if not logged in", async () => {
 
-            get(null)
-                .expect(UNAUTHORIZED);
+            const { status } = await get(null)
+            expect(status).toEqual(UNAUTHORIZED);
         });
 
-        it("responds with OK if user is logged in", () => {
+        it("responds with OK if user is logged in",async  () => {
 
             const token = jwt.sign(test.mocks.user())
-            get(token)
-                .expect(OK);
+            const { status }  = await get(token)
+            expect(status).toEqual(OK);
         });
     })
 });

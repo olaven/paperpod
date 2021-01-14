@@ -3,7 +3,7 @@ import faker from "faker";
 import { models, test } from "common";
 import { jwt } from "common/src/server/server";
 import * as database from "../authdatabase/authdatabase";
-import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT } from "node-kall";
+import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT, FORBIDDEN } from "node-kall";
 import supertest from "supertest";
 import { app } from "../app";
 import { hash } from "../cryptography/cryptography";
@@ -61,42 +61,44 @@ describe("The authentication endpoint for users", () => {
 
         it("Does respond with BAD_REQUEST if no user is sent", async () => {
 
-            await signUp(null)
-                .expect(BAD_REQUEST);
+            const { status } = await signUp(null)
+            expect(status).toEqual(BAD_REQUEST);
         });
 
         it("Does respond with BAD_REQUEST if password is undefined", async () => {
 
-            await signUp({
+            const { status } = await signUp({
                 ...test.mocks.credentials(),
                 password: undefined,
-            })
-                .expect(BAD_REQUEST);
+            });
+            expect(status).toEqual(BAD_REQUEST);
         });
 
         it("Does respond with BAD_REQUEST if email is undefined", async () => {
 
-            await signUp({
+            const { status } = await signUp({
                 ...test.mocks.credentials(),
                 email: undefined,
-            })
-                .expect(BAD_REQUEST);
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
         });
 
         it("Does respond with BAD_REQUEST if email and password are both undefined", async () => {
 
-            await signUp({
+            const { status } = await signUp({
                 email: undefined,
                 password: undefined,
-            })
-                .expect(BAD_REQUEST);
+            }); 
+
+            expect(status).toEqual(BAD_REQUEST);
         });
 
         it("Redirects to front page if successful", async () => {
 
             const credentials = test.mocks.credentials();
-            await signUp(credentials)
-                .expect(CREATED)
+            const { status } = await signUp(credentials)
+            expect(status).toEqual(CREATED);
         });
 
         it("Returns a token containint the correct user on signup", async () => {
@@ -117,8 +119,8 @@ describe("The authentication endpoint for users", () => {
             const before = await database.users.getByEmail(credentials.email);
             expect(before).toBeNull();
 
-            await signUp(credentials)
-                .expect(CREATED);
+            const { status } = await signUp(credentials)
+            expect(status).toEqual(CREATED);
 
             const after = await database.users.getByEmail(credentials.email);
             expect(after).toBeDefined();
@@ -127,8 +129,8 @@ describe("The authentication endpoint for users", () => {
         it("Does create a user with correct email", async () => {
 
             const credentials = test.mocks.credentials();
-            await signUp(credentials)
-                .expect(CREATED);
+            const { status } = await signUp(credentials)
+            expect(status).toEqual(CREATED);
 
             const user = await database.users.getByEmail(credentials.email);
             expect(user.email).toEqual(credentials.email);
@@ -137,8 +139,8 @@ describe("The authentication endpoint for users", () => {
         it("Does create a user with and id", async () => {
 
             const credentials = test.mocks.credentials();
-            await signUp(credentials)
-                .expect(CREATED);
+            const { status } = await signUp(credentials)
+            expect(status).toEqual(CREATED);
 
             const user = await database.users.getByEmail(credentials.email);
             expect(user._id).toBeDefined();
@@ -149,8 +151,8 @@ describe("The authentication endpoint for users", () => {
         it("Does create a user, but does not store the password", async () => {
 
             const credentials = test.mocks.credentials();
-            await signUp(credentials)
-                .expect(CREATED);
+            const { status } = await signUp(credentials)
+            expect(status).toEqual(CREATED);
 
             const user = await database.users.getByEmail(credentials.email);
             expect(user.password_hash).not.toEqual(credentials.password);
@@ -159,8 +161,8 @@ describe("The authentication endpoint for users", () => {
         it("Does create a user and stores hash comparable with bcrypt", async () => {
 
             const credentials = test.mocks.credentials();
-            await signUp(credentials)
-                .expect(CREATED);
+            const { status } = await signUp(credentials)
+            expect(status).toEqual(CREATED);
 
             const user = await database.users.getByEmail(credentials.email);
             expect(
@@ -171,11 +173,11 @@ describe("The authentication endpoint for users", () => {
         it("Responds with CONFLICT if attempting to create the same user twice", async () => {
 
             const credentials = test.mocks.credentials();
-            await signUp(credentials)
-                .expect(CREATED);
+            const firstResponse = await signUp(credentials)
+            expect(firstResponse.status).toEqual(CREATED);
 
-            await signUp(credentials)
-                .expect(CONFLICT);
+            const secondResponse = await signUp(credentials)
+            expect(secondResponse.status).toEqual(CONFLICT);
         });
     });
 
@@ -188,22 +190,27 @@ describe("The authentication endpoint for users", () => {
 
         it("Responds with UNAUTHORIZED if the user is not logged in", async () => {
 
-            getMe(null)
-                .expect(UNAUTHORIZED);
+            const { status } = await getMe(null)
+            expect(status).toEqual(UNAUTHORIZED);
         });
 
-        it("Resopnds with UNAUTHORIZED if the JWT token is present, but not valid", async () => {
+        it("Resopnds with FORBIDDEN if the JWT token is present, but not valid", async () => {
 
-            getMe(faker.random.uuid());
+            //a token from jwt.io, not encrypted with the same secret 
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+            const { status } = await getMe(token);
+            expect(status).toEqual(FORBIDDEN);
         });
 
         it("Responds with OK if the user is logged in", async () => {
 
-            getMe(
+            const { status } = await getMe(
                 await extractBearerToken(
                     signUp()
                 )
-            ).expect(OK);
+            ); 
+            
+            expect(status).toEqual(OK)
         });
 
         it("Returns the user object if the user is logged in", async () => {
@@ -235,40 +242,30 @@ describe("The authentication endpoint for users", () => {
             const credentials = test.mocks.credentials();
 
 
-            const { body } = await getMe(
+            const { body, status } = await getMe(
                 await extractBearerToken(
                     signUp(credentials)
                 )
-            ).expect(OK);
+            )
 
+            expect(status).toEqual(OK);
             expect(body.email).toEqual(credentials.email);
         });
 
-        it("Responds with UNAUTHORIZED if there's no token", () => {
+        it("Responds with FORBIDDEN if there is a token, but it's not properly formatted", async () => {
 
-            getMe(null).expect(UNAUTHORIZED)
+            const { status } = await getMe("badly formatted token")
+            expect(status).toEqual(FORBIDDEN)
         });
-
-        it("Responds with BAD_REQUEST if there is a token, but it's not properly formatted", () => {
-
-            getMe("badly formatted token").expect(BAD_REQUEST);
-        });
-
-        it("something fishy is going on", () => {
-
-            getMe(null).expect(CONFLICT)
-        })
 
         it("Responds with OK if user is logged in", async () => {
 
-            const agent = supertest.agent(app);
-            agent
-                .post("/users")
-                .send(test.mocks.credentials());
+            const token =await  extractBearerToken(
+                signUp()
+            )
 
-            agent
-                .get("/users/me")
-                .expect(OK);
+            const { status } = await getMe(token)            
+            expect(status).toEqual(OK);
         });
     });
 });

@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "scripts": {
         "dev": "ts-node-dev src/index.ts",
-        "test": "jest"
+        "test": "jest --detectOpenHandles"
     },
     "dependencies": {
         "common": "0.0.1",

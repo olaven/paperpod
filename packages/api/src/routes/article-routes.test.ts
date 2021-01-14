@@ -18,7 +18,8 @@ describe("The api for articles", () => {
 
     const get = (token: string) =>
         supertest(app)
-            .get("/articles");
+            .get("/articles")
+            .set("Authorization", "Bearer " + token);
 
     describe("the POST-endpoint for articles", () => {
 
@@ -68,6 +69,14 @@ describe("The api for articles", () => {
 
             expect(inBefore).toBeFalsy(); 
             expect(inAfter).toBeTruthy(); 
+        });
+
+        it("Does not accept an article if it's not containting a valid link", async () => {
+
+            const token = jwt.sign(test.mocks.user()); 
+            post(token, {
+                link: "not-a-url"
+            }).expect(BAD_REQUEST);
         });
     });
 

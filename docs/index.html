@@ -15,48 +15,63 @@
     <title>Paperpod</title>
 
     <style>
+        a {
+            color: inherit;
+        }
+
         #container {
+            font-family: 'Roboto', sans-serif;
             width: 100vw;
             height: 100vh;
             display: flex;
-            justify-content: center;
-        }
-
-        #content {
-            width: 50vw;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-
             flex-direction: column;
-            align-items: flex-start;
+
+            align-items: center;
         }
 
-        .about {
-            width: 55vw;
-            font-size: 1.55em;
+        #logo-container,
+        #text-container {
+            display: flex;
+            justify-content: center;
+            width: 50vw;
         }
 
-        #logo {
-            height: 13vh
+        @media screen and (max-width: 992px) {
+
+            #logo-container,
+            #text-container {
+                font-size: 1.2em;
+                width: 95vw;
+            }
         }
 
-        a {
-            color: inherit;
+        #logo-container img {
+            width: 79%;
+        }
+
+        #text-container {
+            font-size: 1.79em;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
 
 <body>
     <div id="container">
-
-        <div id="content">
+        <div id="logo-container">
             <img id="logo" src="./logo.svg" />
+        </div>
+        <div id="text-container">
             <p class="about">
                 Don't have <b>time</b> to read the articles you want?
                 <br />
                 How about <b>listening</b> to them instead?
                 <br /><br />
-                <b>Paperpod</b> converts any article on the web to digestible <b>podcast</b>-episodes.
+                <b>Paperpod</b> converts any article on the web.
+                <a href="mailto:olav@sundfoer.com?subject=Paperpod&body=Please let me know when paperpod launches!">
+                    <b>Click here</b> to be notified when it <b>launches</b> ٩(^‿^)۶
+                </a>
             </p>
 
             <p class="about">

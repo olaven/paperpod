@@ -6,7 +6,7 @@ services:
     build: .
     env_file:
       - .env
-    command: bash -c "yarn && yarn gateway dev"
+    command: yarn gateway dev
     ports:
       - $GATEWAY_PORT:$GATEWAY_PORT
     volumes:
@@ -21,7 +21,7 @@ services:
     build: .
     env_file:
       - .env
-    command: bash -c "yarn && yarn api dev"
+    command: yarn api dev
     volumes:
       - .:/paperpod
     environment:
@@ -30,13 +30,12 @@ services:
       - MONGODB_USERNAME=$MONGODB_USERNAME
       - MONGODB_PASSWORD=$MONGODB_PASSWORD
       - MONGODB_HOST=database_api
-      - MONGODB_PORT=$MONGODB_PORT #always true: https://hub.docker.com/_/mongo
     working_dir: /paperpod
   converter:
     build: .
     env_file:
       - .env
-    command: bash -c "yarn && yarn converter dev"
+    command: yarn converter dev
     volumes:
       - .:/paperpod
     environment:
@@ -44,8 +43,8 @@ services:
   authentication:
     build: .
     env_file:
-      - .env # workaround to solve issues with node_modules being compiled on mac
-    command: bash -c "yarn && yarn authentication dev" #bash -c "npm rebuild bcrypt --build-from-source && yarn authentication dev""
+      - .env
+    command: yarn authentication dev
     volumes:
       - .:/paperpod
     environment:
@@ -55,13 +54,12 @@ services:
       - MONGODB_USERNAME=$MONGODB_USERNAME
       - MONGODB_PASSWORD=$MONGODB_PASSWORD
       - MONGODB_HOST=database_authentication
-      - MONGODB_PORT=$MONGODB_PORT #always true: https://hub.docker.com/_/mongo
     working_dir: /paperpod
   web:
     build: .
     env_file:
       - .env
-    command: bash -c "yarn && yarn web dev"
+    command: yarn web dev
     volumes:
       - .:/paperpod
     working_dir: /paperpod

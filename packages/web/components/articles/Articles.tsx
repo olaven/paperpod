@@ -6,6 +6,6 @@ export const Articles = () => (
   <ArticleContextProvider>
     <h1>Your articles</h1>
     <ArticleCreator />
-    <ArticleList articles={[]} />
+    <ArticleList />
   </ArticleContextProvider>
 );

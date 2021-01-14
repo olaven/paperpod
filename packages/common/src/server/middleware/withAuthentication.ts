@@ -24,10 +24,12 @@ export const withAuthentication = (handler: (request: express.Request, response:
                 .end();
 
             handler(request, response, user);
-        } catch {
+        } catch (error) {
 
+            console.error("Error parsing token", token, error)
             //i.e. malformed token 
             return response
-                .send(BAD_REQUEST);
+                .status(BAD_REQUEST)
+                .end();
         }
     }

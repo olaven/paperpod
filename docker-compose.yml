@@ -31,6 +31,7 @@ services:
       - MONGODB_USERNAME=$MONGODB_USERNAME
       - MONGODB_PASSWORD=$MONGODB_PASSWORD
       - MONGODB_HOST=database_api
+      - MONGODB_PORT=27017
     working_dir: /paperpod
   converter:
     build: .
@@ -55,6 +56,7 @@ services:
       - MONGODB_USERNAME=$MONGODB_USERNAME
       - MONGODB_PASSWORD=$MONGODB_PASSWORD
       - MONGODB_HOST=database_authentication
+      - MONGODB_PORT=27017
     working_dir: /paperpod
   web:
     build: .

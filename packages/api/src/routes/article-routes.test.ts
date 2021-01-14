@@ -13,7 +13,7 @@ describe("The api for articles", () => {
     const post = (token: string, payload = test.mocks.articlePayload()) =>
         supertest(app)
             .post("/articles")
-            .set("Authorization", "Bearer" + token)
+            .set("Authorization", "Bearer " + token)
             .send(payload); 
 
     const get = (token: string) =>

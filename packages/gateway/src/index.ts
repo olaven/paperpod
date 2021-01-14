@@ -7,7 +7,7 @@ const withProxies = (
     app = express()
 ) => {
     pairs.forEach(
-        ([path, target]) => createProxy(app)(path, target))
+        ([path, target]) => createProxy(app)(path, target)); 
     return app;
 }
 
@@ -22,7 +22,8 @@ export const app = withProxies(
         mapping("/authentication", "authentication", process.env.AUTHENTICATION_PORT),
         mapping("/", "web", process.env.WEB_PORT),
     ],
-    server.app.appWithEnvironment()
+    server.app
+        .appWithEnvironment()
 )
 
 server.boot("", app);

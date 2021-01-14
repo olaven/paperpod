@@ -13,4 +13,5 @@ __This project is still very much work in progress.__ More details to come.
   * AUTHENTICATION_PORT
   * WEB_PORT
   * GOOGLE_APPLICATION_CREDENTIALS=/paperpod/service-account.json (if located in root)
+  * JWT_SECRET
 * `docker-compose up -d`

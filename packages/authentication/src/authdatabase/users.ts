@@ -11,7 +11,6 @@ export const getByEmail = (email: string) =>
     );
 
 export const insert = (user: models.User) =>
-    withUsers(async collection => {
-        collection.insertOne(user as any as WithId<models.User>)
-        return user;
-    });
+    withUsers(
+        server.database.persistHandler(user)
+    );

@@ -1,5 +1,6 @@
 import { models } from "common";
 import { del, get, post } from "node-kall";
+import { bearer } from "../../helpers/bearer";
 
 export const signup = (credentials: models.UserCredentials) =>
     post<
@@ -16,16 +17,11 @@ export const login = (credentials: models.UserCredentials) =>
 export const logout = (token: string) =>
     del<models.TokenResponse>(
         "/authentication/users/sessions",
-        {
-            headers: {
-                authorization: "Bearer " + token,
-            }
-        }
+        bearer(token),
     );
 
 export const getMe = (token: string) =>
-    get<models.User>("/authentication/users/me/", {
-        headers: {
-            authorization: "Bearer " + token,
-        },
-    })
+    get<models.User>(
+        "/authentication/users/me/", 
+        bearer(token)
+    ); 

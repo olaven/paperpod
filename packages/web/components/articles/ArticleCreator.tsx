@@ -9,6 +9,7 @@ export const ArticleCreator = () => {
   const { resfreshArticles } = useContext(ArticleContext);
   const [link, setLink] = useState<string>(null);
   const onCreate = async () => {
+
     const [status] = await postArticle({ link }, token);
     if (status === CREATED) {
       resfreshArticles();
@@ -19,7 +20,7 @@ export const ArticleCreator = () => {
 
   return (
     <>
-      <input type="text" placeholder="link" />
+      <input type="text" placeholder="link" onChange={(event) => setLink(event.target.value)}/>
       <button onClick={onCreate}>create</button>
     </>
   );

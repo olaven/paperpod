@@ -6,7 +6,7 @@ const connectionString = () =>
     `mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}`
 
 export const withCollection = <T>(collection: string) =>
-    async (action: (collection: Collection<T>) => Promise<T>) => {
+    async <G = T> (action: (collection: Collection<T>) => Promise<G>) => {
 
         const client = await MongoClient.connect(connectionString(), {});
         const database = client.db(MONGODB_NAME);

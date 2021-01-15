@@ -1,12 +1,10 @@
-import dotenv from "dotenv";
 import { models } from "common";
 import { textToAudio } from "./audio";
 import { upload } from "./upload";
 
 
-dotenv.config();
-
 /**
+ * @requires process.env.GOOGLE_APPLICATION_CREDENTIALS to be defined
  * Converts given text to audio, 
  * uploads it to storage and returns 
  * the updated article 
@@ -33,6 +31,7 @@ export const convert =
         {
             original_url: "https://nrk.no/test",
             text: 'dette er litt tekst som jeg har skrevet som en test heisann.',
+            owner_id: "some-owner-id"
         },
         {
             _id: "test-id",

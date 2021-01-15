@@ -4,14 +4,15 @@ import * as jwt from "../jwt/jwt";
 import { models } from "../..";
 
 const getBearerToken = (request: express.Request) =>
-    request.headers.authorization.replace("Bearer ", "");
+    request.headers.authorization?.replace("Bearer ", "");
 
 export const withAuthentication = (handler: (request: express.Request, response: express.Response, user: models.User) => any) =>
     (request: express.Request, response: express.Response) => {
 
         const token = getBearerToken(request);
 
-        if (!token) return response
+        console.log("Going to validate token" ,token)
+        if (!token || token === 'null') return response
             .status(UNAUTHORIZED)
             .end();
 
@@ -24,10 +25,11 @@ export const withAuthentication = (handler: (request: express.Request, response:
                 .end();
 
             handler(request, response, user);
-        } catch {
+        } catch (error) {
 
             //i.e. malformed token 
             return response
-                .send(BAD_REQUEST);
+                .status(FORBIDDEN)
+                .end();
         }
     }

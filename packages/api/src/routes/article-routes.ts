@@ -1,8 +1,8 @@
 import express from 'express'
-import { server, models } from "common";
+import { server, models } from "@paperpod/common";
+import { convert } from "@paperpod/converter";
 import { BAD_REQUEST, CREATED, OK } from "node-kall";
 import * as database from "../database/database";
-
 
 const isValidURL = (string: string) => {
     var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
@@ -17,8 +17,8 @@ export const articleRoutes = express.Router()
             if (!isValidURL(link)) return response
                 .status(BAD_REQUEST)
                 .send("`link` has to be a valid URL");
-                
-            //FIXME: link validation 
+
+            convert()            
 
             const article = await database.articles.persist({
                 owner_id: user._id, 

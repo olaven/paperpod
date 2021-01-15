@@ -1,4 +1,4 @@
-import { models, server } from "common";
+import { models, server } from "@paperpod/common";
 import { WithId } from "mongodb";
 
 const withUsers = server.database.withCollection<models.User>("users");

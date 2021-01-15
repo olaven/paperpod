@@ -1,4 +1,4 @@
-import { models } from "common";
+import { models } from "@paperpod/common";
 import { textToAudio } from "./audio";
 import { upload } from "./upload";
 

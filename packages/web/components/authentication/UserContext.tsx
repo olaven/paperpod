@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState, ReactChild } from "react";
-import { models } from "common";
+import { models } from "@paperpod/common";
 import { get, OK } from "node-kall";
 import { asyncEffect } from "../../helpers/asyncEffect";
 

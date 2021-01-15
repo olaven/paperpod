@@ -1,7 +1,7 @@
 import express from "express"
 import faker from "faker";
-import { models, test, server } from "common";
-import { jwt } from "common/src/server/server";
+import { models, test, server } from "@paperpod/common";
+import { jwt } from "@paperpod/common/src/server/server";
 import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT, NOT_IMPLEMENTED } from "node-kall";
 import supertest from "supertest";
 import { app } from "../app";

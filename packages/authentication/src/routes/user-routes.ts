@@ -1,10 +1,10 @@
 import { hash } from "../cryptography/cryptography";
 import { nanoid } from "nanoid";
-import { models, server } from "common";
+import { models, server } from "@paperpod/common";
 import express from "express";
 import * as database from "../authdatabase/authdatabase"
 import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, UNAUTHORIZED } from "node-kall";
-import { withAuthentication } from "common/src/server/middleware/middleware";
+import { withAuthentication } from "@paperpod/common/src/server/middleware/middleware";
 
 
 const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {

@@ -1,5 +1,5 @@
 import { CREATED, get, post } from "node-kall";
-import { models } from "common";
+import { models } from "@paperpod/common";
 import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 import { signup } from "./authFetchers";

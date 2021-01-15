@@ -1,4 +1,4 @@
-import { server, models } from "common";
+import { server, models } from "@paperpod/common";
 
 const withArticle = server.database.withCollection<models.Article>("articles");
 

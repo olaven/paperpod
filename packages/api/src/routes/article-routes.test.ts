@@ -49,7 +49,6 @@ describe("The api for articles", () => {
 
             expect(body._id).toBeDefined();
             expect(body.original_url).toBeDefined();
-            expect(body.google_cloud_path).toBeDefined();
             expect(body.text).toBeDefined();
             expect(body.owner_id).toBeDefined();
         }); 

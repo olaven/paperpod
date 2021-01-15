@@ -10,20 +10,14 @@ import { upload } from "./upload";
  * the updated article 
  */
 export const convertToAudio =
-    async (article: models.Article, user: models.User): Promise<models.Article> => {
+    async (article: models.Article): Promise<models.Article> => {
 
         const audio = await textToAudio(article.text);
 
         const filename = server.utils.article.getFilename(article); 
         await upload(audio, "paperpod-articles", filename);
 
-
-        console.log("Did this work", filename)
-
-        return {
-            ...article,
-            google_cloud_path: "REMOVE THIS IF ID WORKS? " + filename
-        }
+        return article 
     }
 
 

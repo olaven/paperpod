@@ -17,16 +17,12 @@ export const articleRoutes = express.Router()
             if (!isValidURL(link)) return response
                 .status(BAD_REQUEST)
                 .send("`link` has to be a valid URL");
-
-                //FIXME: implemnt somehwere
-                
-                
+                                
                 const article = await database.articles.persist(
                     await convertToAudio(
                         await convertToText (
                             { original_url: link, owner_id: user._id }
                         ),
-                        user 
                     )
                 )
 

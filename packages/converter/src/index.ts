@@ -1,4 +1,4 @@
-import { models } from "@paperpod/common";
+import { models, server } from "@paperpod/common";
 import { textToAudio } from "./audio";
 import { upload } from "./upload";
 
@@ -14,14 +14,15 @@ export const convertToAudio =
 
         const audio = await textToAudio(article.text);
 
-        const google_cloud_path = `${user._id}/${article.original_url}`
-        await upload(audio, "paperpod-articles", google_cloud_path);
+        const filename = server.utils.article.getFilename(article); 
+        await upload(audio, "paperpod-articles", filename);
 
-        console.log("Did this work", google_cloud_path)
+
+        console.log("Did this work", filename)
 
         return {
             ...article,
-            google_cloud_path
+            google_cloud_path: "REMOVE THIS IF ID WORKS? " + filename
         }
     }
 

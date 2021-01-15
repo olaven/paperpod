@@ -23,6 +23,18 @@ describe("The api for articles", () => {
 
     describe("the POST-endpoint for articles", () => {
 
+        jest.mock("@paperpod/converter", () => ({
+            convertToAudio: (article: models.Article) => {
+                console.log("INSIDE AUDIO CONVERTER MOCK");
+                return article
+            },
+            convertToText: (article: models.Article) => {
+                
+                console.log("INSIDE AUDIO TEXT MOCK");
+                return article; 
+            },
+        })); 
+
         it("Does respond with something other than NOT_IMPLEMENTED", async () => {
 
             const { status } = await supertest(app).post("/articles"); 

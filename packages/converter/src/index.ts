@@ -9,7 +9,7 @@ import { upload } from "./upload";
  * uploads it to storage and returns 
  * the updated article 
  */
-export const convert =
+export const convertToAudio =
     async (article: models.Article, user: models.User): Promise<models.Article> => {
 
         const audio = await textToAudio(article.text);
@@ -17,6 +17,7 @@ export const convert =
         const google_cloud_path = `${user._id}/${article.original_url}`
         await upload(audio, "paperpod-articles", google_cloud_path);
 
+        console.log("Did this work", google_cloud_path)
 
         return {
             ...article,
@@ -25,18 +26,10 @@ export const convert =
     }
 
 
-(async () => {
-
-    await convert(
-        {
-            original_url: "https://nrk.no/test",
-            text: 'dette er litt tekst som jeg har skrevet som en test heisann.',
-            owner_id: "some-owner-id"
-        },
-        {
-            _id: "test-id",
-            email: "test@mail.com",
-            password_hash: "passord test does not matte here"
-        }
-    )
-})()
+//TODO: implement 
+export const convertToText = 
+    async (article: models.Article): Promise<models.Article> => 
+        ({
+            ...article, 
+            text: "dette er en test-tekst fordi jeg ikke har implementert funksjonaliteten"
+        })

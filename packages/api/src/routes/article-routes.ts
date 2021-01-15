@@ -1,6 +1,6 @@
 import express from 'express'
 import { server, models } from "@paperpod/common";
-import { convert } from "@paperpod/converter";
+import { convertToAudio, convertToText } from "@paperpod/converter";
 import { BAD_REQUEST, CREATED, OK } from "node-kall";
 import * as database from "../database/database";
 
@@ -18,14 +18,17 @@ export const articleRoutes = express.Router()
                 .status(BAD_REQUEST)
                 .send("`link` has to be a valid URL");
 
-            convert()            
-
-            const article = await database.articles.persist({
-                owner_id: user._id, 
-                original_url: link, 
-                text: "GET TEXT", //FIXME, 
-                google_cloud_path: "SOMETHING" //FIXME, 
-            })
+                //FIXME: implemnt somehwere
+                
+                
+                const article = await database.articles.persist(
+                    await convertToAudio(
+                        await convertToText (
+                            { original_url: link, owner_id: user._id }
+                        ),
+                        user 
+                    )
+                )
 
             console.log("GOing tor epsond with", article); 
             response

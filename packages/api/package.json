@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "scripts": {
         "dev": "ts-node-dev src/index.ts",
-        "test": "jest --detectOpenHandles"
+        "test": "jest"
     },
     "dependencies": {
         "common": "0.0.1",
@@ -15,6 +15,7 @@
         "ts-node-dev": "^1.1.1"
     },
     "devDependencies": {
+        "@shelf/jest-mongodb": "^1.2.3",
         "@types/dotenv": "^8.2.0",
         "@types/express": "^4.17.9",
         "@types/supertest": "^2.0.10",

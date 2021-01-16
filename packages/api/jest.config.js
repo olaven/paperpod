@@ -1,4 +1,9 @@
+const typescript = require("ts-jest/jest-preset"); 
+const mongodb = require("@shelf/jest-mongodb/jest-preset"); 
+
 module.exports = {
-    preset: 'ts-jest',
-    testEnvironment: 'node',
+    ...typescript, 
+    ...mongodb,
+
+  //  testEnvironment: 'node',
 };

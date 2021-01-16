@@ -59,8 +59,9 @@ const getHtml = async (url: string) => {
 
     console.log("before starting")
     const browser = await puppeteer.launch({
+        executablePath: process.env.PUPPETEER_EXEC_PATH,
         headless: true,
-        args: ["--disable-setuid-sandbox"],
+        args: ["--disable-setuid-sandbox", "--no-sandbox"],
         ignoreHTTPSErrors: true,
     });
 

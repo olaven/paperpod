@@ -1,4 +1,3 @@
-import https from "https";
 import unfluff from "unfluff";
 import puppeteer from "puppeteer";
 
@@ -20,14 +19,45 @@ export const getTextualData =
         }
     }
 
+
+
+const waitTillHTMLRendered = async (page: puppeteer.Page, timeout = 30000) => {
+    const checkDurationMsecs = 1000;
+    const maxChecks = timeout / checkDurationMsecs;
+    let lastHTMLSize = 0;
+    let checkCounts = 1;
+    let countStableSizeIterations = 0;
+    const minStableSizeIterations = 3;
+
+    while (checkCounts++ <= maxChecks) {
+        let html = await page.content();
+        let currentHTMLSize = html.length;
+
+        let bodyHTMLSize = await page.evaluate(() => document.body.innerHTML.length);
+
+        console.log('last: ', lastHTMLSize, ' <> curr: ', currentHTMLSize, " body html size: ", bodyHTMLSize);
+
+        if (lastHTMLSize != 0 && currentHTMLSize == lastHTMLSize)
+            countStableSizeIterations++;
+        else
+            countStableSizeIterations = 0; //reset the counter
+
+        if (countStableSizeIterations >= minStableSizeIterations) {
+            console.log("Page rendered fully..");
+            break;
+        }
+
+        lastHTMLSize = currentHTMLSize;
+        await page.waitFor(checkDurationMsecs);
+    }
+};
 /**
  * Using Puppeteer (or a browser-emulator in general) makes it possible for 
  * me to access text that is not directly provided, but client side rendered. 
  */
 const getHtml = async (url: string) => {
 
-    console.log("besore starting")
-
+    console.log("before starting")
     const browser = await puppeteer.launch({
         headless: true,
         args: ["--disable-setuid-sandbox"],
@@ -36,7 +66,10 @@ const getHtml = async (url: string) => {
 
     console.log(`Started browser ${browser}`);
     const page = await browser.newPage()
-    await page.goto(url, { waitUntil: 'domcontentloaded' })
+    await page.goto(url, { 'waitUntil': "networkidle2" });
+    //await waitTillHTMLRendered(page);
+
+    //await page.waitFor("*")
 
     const html = await page.content()
     await browser.close()
@@ -44,32 +77,3 @@ const getHtml = async (url: string) => {
     return html;
 }
 
-/**
- * Relying on Nodes native HTTP instead 
- * of 1) modifying `kall` or 2) depending on 
- * yet another http library. 
- */
-const request = (url: URL) =>
-    new Promise((resolve, reject) => {
-
-        const options = {
-            hostname: url.hostname,
-            path: url.pathname,
-            port: 443,
-            method: 'GET'
-        }
-
-        const req = https.request(options, res => {
-            console.log(`statusCode: ${res.statusCode}`)
-
-            res.on('data', data => {
-                resolve(data.toString())
-            })
-        })
-
-        req.on('error', error => {
-            reject(error);
-        });
-
-        req.end();
-    });

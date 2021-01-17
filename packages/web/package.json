@@ -3,6 +3,8 @@
     "license": "UNLICENSED",
     "version": "0.0.1",
     "scripts": {
+        "start": "next start",
+        "build": "next build",
         "dev": "next"
     },
     "dependencies": {

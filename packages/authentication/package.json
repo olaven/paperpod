@@ -1,5 +1,5 @@
 {
-    "name": "authentication",
+    "name": "@paperpod/authentication",
     "license": "UNLICENSED",
     "version": "0.0.1",
     "scripts": {
@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
-        "common": "0.0.1",
+        "@paperpod/common": "0.0.1",
         "express-session": "^1.17.1",
         "mongodb": "^3.6.3",
         "nanoid": "^3.1.20",

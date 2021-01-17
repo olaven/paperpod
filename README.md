@@ -8,10 +8,15 @@ __This project is still very much work in progress.__ More details to come.
 
 ## Setup 
 * `.env` containing: 
-  * GATEWAY_PORT
-  * API_PORT
-  * AUTHENTICATION_PORT
-  * WEB_PORT
-  * GOOGLE_APPLICATION_CREDENTIALS=/paperpod/service-account.json (if located in root)
-  * JWT_SECRET
+  * GATEWAY_PORT=8080
+  * API_PORT=8082
+  * AUTHENTICATION_PORT=8081
+  * WEB_PORT=3000
+  * JWT_SECRET=some-long-secret-hush-now-please
+  * MONGODB_NAME=mongoname
+  * MONGODB_USERNAME=olaven
+  * MONGODB_PASSWORD=mongopassword
+  * MONGODB_PORT_AUTHENTICATION=5434
+  * MONGODB_PORT_API=5433
+  * GOOGLE_APPLICATION_CREDENTIALS=/paperpod/service-account.json 
 * `docker-compose up -d`

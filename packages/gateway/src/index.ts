@@ -1,5 +1,5 @@
 import express from "express";
-import { server } from "common"
+import { server } from "@paperpod/common"
 import { createProxy } from "./proxy";
 
 const withProxies = (

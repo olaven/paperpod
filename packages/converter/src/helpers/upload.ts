@@ -7,6 +7,7 @@ type BucketName = 'paperpod-articles'
 
 export const upload = async (audio: Uint8Array, bucket: BucketName, filename: string) => {
 
+    console.log("Going to upload to", bucket);
     new Storage()
         .bucket(bucket)
         .file(filename)

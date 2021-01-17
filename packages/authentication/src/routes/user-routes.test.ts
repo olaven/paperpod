@@ -1,7 +1,7 @@
 import express from "express"
 import faker from "faker";
-import { models, test } from "common";
-import { jwt } from "common/src/server/server";
+import { models, test } from "@paperpod/common";
+import { jwt } from "@paperpod/common/src/server/server";
 import * as database from "../authdatabase/authdatabase";
 import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT, FORBIDDEN } from "node-kall";
 import supertest from "supertest";

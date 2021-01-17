@@ -1,4 +1,4 @@
-import { models, test } from "common";
+import { models, test } from "@paperpod/common";
 import { sign, decode } from "./jwt";
 
 const replaceAt = (string: string, index: number, replacement: string) =>

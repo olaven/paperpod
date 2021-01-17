@@ -1,5 +1,5 @@
 {
-    "name": "api",
+    "name": "@paperpod/api",
     "license": "UNLICENSED",
     "version": "0.0.1",
     "scripts": {
@@ -7,7 +7,8 @@
         "test": "jest --detectOpenHandles"
     },
     "dependencies": {
-        "common": "0.0.1",
+        "@paperpod/common": "0.0.1",
+        "@paperpod/converter": "0.0.1",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "node-kall": "^0.2.0",

@@ -89,7 +89,7 @@ describe("The authentication endpoint for users", () => {
             const { status } = await signUp({
                 email: undefined,
                 password: undefined,
-            }); 
+            });
 
             expect(status).toEqual(BAD_REQUEST);
         });
@@ -208,8 +208,8 @@ describe("The authentication endpoint for users", () => {
                 await extractBearerToken(
                     signUp()
                 )
-            ); 
-            
+            );
+
             expect(status).toEqual(OK)
         });
 
@@ -260,12 +260,42 @@ describe("The authentication endpoint for users", () => {
 
         it("Responds with OK if user is logged in", async () => {
 
-            const token =await  extractBearerToken(
+            const token = await extractBearerToken(
                 signUp()
             )
 
-            const { status } = await getMe(token)            
+            const { status } = await getMe(token)
             expect(status).toEqual(OK);
+        });
+    });
+
+    describe("PUT endpont for token refresh", () => {
+
+        const refreshToken = (oldToken: string) =>
+            supertest(app)
+                .put("/users/sessions")
+                .set("Authorization", "Bearer " + oldToken)
+
+        it("Responds with OK on valid request", async () => {
+
+            const token = await extractBearerToken(signUp());
+            const { status } = await refreshToken(token);
+
+            expect(status).toEqual(OK);
+        });
+
+        it("Responds with a different token on valid request", async () => {
+
+            const oldToken = await extractBearerToken(signUp());
+
+            await test.sleep(1200); //to update JWT `.iat`
+            const response = await refreshToken(oldToken);
+            const newToken = response.body.token;
+
+            expect(oldToken).toBeDefined();
+            expect(newToken).toBeDefined();
+            console.log(`Old token is ${oldToken} and new token is ${newToken}`)
+            expect(oldToken).not.toEqual(newToken);
         });
     });
 });

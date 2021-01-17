@@ -1,19 +1,57 @@
+import { useContext } from "react";
+import { UserContext } from "../components/authentication/UserContext";
+
+function fetchStream(reader: ReadableStreamDefaultReader) {
+  
+  let charsReceived = 0;
+
+  // read() returns a promise that resolves
+  // when a value has been received
+  reader.read().then(function callback({ done, value }) {
+    // Result objects contain two properties:
+    // done  - true if the stream has already given you all its data.
+    // value - some data. Always undefined when done is true.
+    if (done) {
+      console.log("Stream complete");
+  //    para.textContent = value;
+      return;
+    }
+
+    // value for fetch streams is a Uint8Array
+    charsReceived += value.length;
+    console.log(value);
+
+    // Read some more, and call this function again
+    return reader.read().then(callback);
+  });
+}
+
 const Test = () => {
+  
+  
+  const fileId = "600421de4db37d009debdf23"
+  const { token } = useContext(UserContext);
+
   const onClick = async () => {
-    const response = await fetch("/authentication/users/me", {
+
+    console.log(`Fetching file ${fileId} with token ${token}`);
+    const response = await fetch(`/api/files/${fileId}`, {
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJwN3hjd3UzNHVCd09RS29scUdtOEgiLCJlbWFpbCI6Im9sYXZAc3VuZGZvZXIuY29tIiwicGFzc3dvcmRfaGFzaCI6IiQyYiQxMCRhWldIWTIwSmtwWHR5UktVdE05SG91VWQycVpvL1V3em1aYnVPM3psN3QvLlRHaVBGbm1kTyIsImlhdCI6MTYxMDM5OTQ5NiwiZXhwIjoxNjEwNDAwMzk2fQ.Fzqr5DNPkApiBjOqomNxq_2yvNmKL-1zc9mYVbfAFX4",
+          `Bearer ${token}`, 
       },
     });
 
-    console.log(response.status);
+  
+    
     if (response.status === 200) {
-      const user = await response.json();
-      console.log("User: from web token", user);
+      
+      fetchStream(
+        response.body.getReader()
+      )
     }
   };
-  return <button onClick={onClick}>Fetch /me with token</button>;
+  return <button onClick={onClick}>get article file</button>;
 };
 
 export default Test;

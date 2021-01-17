@@ -12,21 +12,20 @@ const isValidURL = (string: string) => {
 export const articleRoutes = express.Router()
     .post("/articles", server.middleware.withAuthentication(
         async (request, response, user) => {
-            
-            const { link } = request.body as models.ArticlePayload; 
+
+            const { link } = request.body as models.ArticlePayload;
             if (!isValidURL(link)) return response
                 .status(BAD_REQUEST)
                 .send("`link` has to be a valid URL");
-                                
-                const article = await database.articles.persist(
-                    await convertToAudio(
-                        await convertToText (
-                            { original_url: link, owner_id: user._id }
-                        ),
-                    )
-                )
 
-            console.log("GOing tor epsond with", article); 
+            const article = await database.articles.persist(
+                await convertToAudio(
+                    await convertToText(
+                        { original_url: link, owner_id: user._id }
+                    ),
+                )
+            )
+
             response
                 .status(CREATED)
                 .json(
@@ -36,7 +35,6 @@ export const articleRoutes = express.Router()
     )
     .get("/articles", server.middleware.withAuthentication(async (request, response, user) => {
 
-        const articles = await database.articles.getByOwner(user._id); 
-        console.log("articles: ", articles);
+        const articles = await database.articles.getByOwner(user._id);
         response.status(OK).json(articles);
     }))

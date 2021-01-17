@@ -1,5 +1,5 @@
 import express from "express";
-import { UNAUTHORIZED, FORBIDDEN, BAD_REQUEST } from "node-kall";
+import { UNAUTHORIZED, FORBIDDEN } from "node-kall";
 import * as jwt from "../jwt/jwt";
 import { models } from "../..";
 

@@ -1,5 +1,5 @@
 import { models, server } from "@paperpod/common";
-import { upload, textToAudio, getTextualData } from "./helpers/helpers";
+import { textToAudio, getTextualData } from "./helpers/helpers";
 
 
 /**
@@ -13,10 +13,10 @@ export const convertToAudio =
 
         const audio = await textToAudio(article.text);
 
-        const filename = server.utils.article.getFilename(article); 
-        await upload(audio, "paperpod-articles", filename);
+        const filename = server.utils.article.getFilename(article);
+        await server.storage.upload(audio, "paperpod-articles", filename);
 
-        return article 
+        return article
     }
 
 
@@ -25,14 +25,13 @@ export const convertToAudio =
  * @requires process.env.GOOGLE_APPLICATION_CREDENTIALS to be defined
  * @returns article with extracted text 
  */
-export const convertToText = 
+export const convertToText =
     async (article: models.Article): Promise<models.Article> => {
 
         //FIXME: add title property
-        const { text, title } =await  getTextualData(article.original_url); 
+        const { text, title } = await getTextualData(article.original_url);
         return {
             text,
-            ...article, 
+            ...article,
         }
     }
-        

@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState, ReactChild } from "react";
 import { models } from "@paperpod/common";
 import { get, OK } from "node-kall";
 import { asyncEffect } from "../../helpers/asyncEffect";
+import { refreshToken } from "./authFetchers";
 
 export const UserContext = createContext<{
   user: models.User;
@@ -35,28 +36,27 @@ export const UserContextProvider = ({ children }: any) => {
   const [token, setToken] = useState<string>(null);
   const user = useUser(token);
 
-  /*
-  TODO: go over this, implement backend endpoint and make sure that it works 
   useEffect(() => {
 
     if (!token) return null;
     const id = setInterval(async () => {
 
-      const [status, token ] = await get<string>("/authentication/users/session/token"); 
+      const [status, response ] = await refreshToken(token); 
+      
       if (status === OK) {
-        setToken(token); 
+        
+        setToken(response.token); 
       } else {
 
-        console.error(`error refreshing token ${status}`); 
+        console.error(`error refreshing token ${status} with token ${token}`); 
       }
-    }, 10000 * 180) //i.e. three minutes 
+    }, 1000 * 600) //i.e. ten minutes 
 
     return () => {
 
       clearInterval(id); 
     }
   });
-  */ 
 
   return (
     <UserContext.Provider value={{ user, setToken, token }}>

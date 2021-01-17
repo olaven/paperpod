@@ -3,8 +3,9 @@ import { nanoid } from "nanoid";
 import { models, server } from "@paperpod/common";
 import express from "express";
 import * as database from "../authdatabase/authdatabase"
-import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, UNAUTHORIZED } from "node-kall";
+import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
 import { withAuthentication } from "@paperpod/common/src/server/middleware/middleware";
+import { jwt } from "@paperpod/common/src/server/server";
 
 
 const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {
@@ -43,9 +44,23 @@ export const userRoutes = express.Router()
         (request, response, user) => {
 
             //FIXME: somehow invalidate old token 
-            response.send(NO_CONTENT).send({
-                token: null
-            });
+            response
+                .status(NO_CONTENT)
+                .send({
+                    token: null
+                });
+        }
+    ))
+    .put("/users/sessions", withAuthentication(
+        async (request, response, user) => {
+
+            const token = server.jwt.sign(user);
+            console.log(`token: ${token}`);
+            response
+                .status(OK)
+                .send({
+                    token
+                });
         }
     ))
     .post("/users", async (request, response) => {

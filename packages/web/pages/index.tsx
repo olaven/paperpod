@@ -6,7 +6,6 @@ import {
   Login,
   Logout,
 } from "../components/authentication/authentication";
-import Test from "./test";
 
 const Index = () => {
   
@@ -22,7 +21,6 @@ const Index = () => {
       {user && <>logged in as {user.email}</>}
 
       {user && <Articles />}
-      <Test />
     </>
   );
 };

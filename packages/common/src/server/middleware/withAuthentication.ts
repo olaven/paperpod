@@ -11,7 +11,6 @@ export const withAuthentication = (handler: (request: express.Request, response:
 
         const token = getBearerToken(request);
 
-        console.log("Going to validate token" ,token)
         if (!token || token === 'null') return response
             .status(UNAUTHORIZED)
             .end();

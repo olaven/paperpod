@@ -5,13 +5,15 @@ type BucketName = 'paperpod-articles'
 
 
 
-export const upload = async (audio: Uint8Array, bucket: BucketName, filename: string) => {
-
-    console.log("Going to upload to", bucket);
+export const upload = (audio: Uint8Array, bucket: BucketName, filename: string) =>
     new Storage()
         .bucket(bucket)
         .file(filename)
         .save(audio);
-    /* const bucket = getBucket("paperpod-articles");
-    await bucket.file("test-file").save(audio); */
-}
+
+//FIXME: see if this can be used to stream data to client, as shown with readstream here: https://stackoverflow.com/questions/13106096/stream-files-in-node-express-to-client
+export const download = async (filename: string, bucket: BucketName) =>
+    new Storage()
+        .bucket(bucket)
+        .file(filename)
+        .createReadStream(); 

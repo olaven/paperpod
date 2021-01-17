@@ -1,5 +1,5 @@
-import { models } from "@paperpod/common";
 import { useContext } from "react";
+import { Player } from "../player/Player";
 import { ArticleContext } from "./ArticleContext";
 
 export const ArticleList = () => {
@@ -8,7 +8,10 @@ export const ArticleList = () => {
 
   return <>
     {articles.map(article => 
-      <div>{article.original_url}</div>  
+      <div>
+        {article.original_url} - "{article._id}"
+        <Player article_id={article._id}/>
+      </div>  
     )}
   </>
 }

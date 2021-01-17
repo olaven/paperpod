@@ -1,3 +1,2 @@
-export * from "./audio"; 
-export * from "./text"; 
-export * from "./upload"; 
+export * from "./audio";
+export * from "./text";

@@ -4,3 +4,4 @@ export * as database from "./database/database"
 export * as middleware from "./middleware/middleware";
 export * as jwt from "./jwt/jwt"
 export * as utils from "./utils/utils"
+export * as storage from "./storage"

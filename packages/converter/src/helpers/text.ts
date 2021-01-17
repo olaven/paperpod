@@ -8,10 +8,8 @@ export const getTextualData =
         const html = await getHtml(
             url
         ).catch(error => console.error("Puppeteer error", error));
-        console.log("Got page contenet with puppeteer: ", html);
-        console.log("HTML FOUND", html);
+
         const extracted = unfluff.lazy(html);
-        console.log("text found: ", extracted.text());
 
         return {
             title: extracted.title(),
@@ -57,15 +55,14 @@ const waitTillHTMLRendered = async (page: puppeteer.Page, timeout = 30000) => {
  */
 const getHtml = async (url: string) => {
 
-    console.log("before starting")
     const browser = await puppeteer.launch({
         executablePath: process.env.PUPPETEER_EXEC_PATH,
         headless: true,
+        //FIXME: security considerations without sandbox? Read up on this. 
         args: ["--disable-setuid-sandbox", "--no-sandbox"],
         ignoreHTTPSErrors: true,
     });
 
-    console.log(`Started browser ${browser}`);
     const page = await browser.newPage()
     await page.goto(url, { 'waitUntil': "networkidle2" });
     //await waitTillHTMLRendered(page);

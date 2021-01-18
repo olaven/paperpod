@@ -23,7 +23,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/web:latest
+          repository: ${{ github.repository }}/web
           tags: latest
   publish-api:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/api:latest
+          repository: ${{ github.repository }}/api
           tags: latest
   publish-authentication:
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/authentication:latest
+          repository: ${{ github.repository }}/authentication
           tags: latest
   publish-gateway:
     runs-on: ubuntu-latest
@@ -68,5 +68,5 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/gateway:latest
+          repository: ${{ github.repository }}/gateway
           tags: latest

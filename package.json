@@ -5,12 +5,12 @@
         "packages/*"
     ],
     "scripts": {
-        "api": "yarn workspace api",
-        "web": "yarn workspace web",
-        "authentication": "yarn workspace authentication",
-        "gateway": "yarn workspace gateway",
-        "converter": "yarn workspace converter",
-        "common": "yarn workspace common"
+        "api": "yarn workspace @paperpod/api",
+        "web": "yarn workspace @paperpod/web",
+        "authentication": "yarn workspace @paperpod/authentication",
+        "gateway": "yarn workspace @paperpod/gateway",
+        "converter": "yarn workspace @paperpod/converter",
+        "common": "yarn workspace @paperpod/common"
     },
     "dependencies": {
         "@babel/runtime": "^7.12.5"

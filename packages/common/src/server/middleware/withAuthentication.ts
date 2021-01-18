@@ -1,5 +1,5 @@
 import express from "express";
-import { UNAUTHORIZED, FORBIDDEN, BAD_REQUEST } from "node-kall";
+import { UNAUTHORIZED, FORBIDDEN } from "node-kall";
 import * as jwt from "../jwt/jwt";
 import { models } from "../..";
 
@@ -11,7 +11,6 @@ export const withAuthentication = (handler: (request: express.Request, response:
 
         const token = getBearerToken(request);
 
-        console.log("Going to validate token" ,token)
         if (!token || token === 'null') return response
             .status(UNAUTHORIZED)
             .end();

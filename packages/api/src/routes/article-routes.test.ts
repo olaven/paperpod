@@ -1,7 +1,7 @@
 import express from "express"
 import faker from "faker";
-import { models, test, server } from "common";
-import { jwt } from "common/src/server/server";
+import { models, test, server } from "@paperpod/common";
+import { jwt } from "@paperpod/common/src/server/server";
 import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT, NOT_IMPLEMENTED } from "node-kall";
 import supertest from "supertest";
 import { app } from "../app";
@@ -22,6 +22,18 @@ describe("The api for articles", () => {
             .set("Authorization", "Bearer " + token);
 
     describe("the POST-endpoint for articles", () => {
+
+        jest.mock("@paperpod/converter", () => ({
+            convertToAudio: (article: models.Article) => {
+                console.log("INSIDE AUDIO CONVERTER MOCK");
+                return article
+            },
+            convertToText: (article: models.Article) => {
+                
+                console.log("INSIDE AUDIO TEXT MOCK");
+                return article; 
+            },
+        })); 
 
         it("Does respond with something other than NOT_IMPLEMENTED", async () => {
 
@@ -49,7 +61,6 @@ describe("The api for articles", () => {
 
             expect(body._id).toBeDefined();
             expect(body.original_url).toBeDefined();
-            expect(body.google_cloud_path).toBeDefined();
             expect(body.text).toBeDefined();
             expect(body.owner_id).toBeDefined();
         }); 

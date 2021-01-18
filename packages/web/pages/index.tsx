@@ -8,7 +8,9 @@ import {
 } from "../components/authentication/authentication";
 
 const Index = () => {
+  
   const { user } = useContext(UserContext);
+
   return (
     <>
       {!user && <Signup />}

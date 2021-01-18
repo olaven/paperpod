@@ -1,7 +1,8 @@
 import React, { createContext, useEffect, useState, ReactChild } from "react";
-import { models } from "common";
+import { models } from "@paperpod/common";
 import { get, OK } from "node-kall";
 import { asyncEffect } from "../../helpers/asyncEffect";
+import { refreshToken } from "./authFetchers";
 
 export const UserContext = createContext<{
   user: models.User;
@@ -31,8 +32,31 @@ const useUser = (token: string): models.User => {
 };
 
 export const UserContextProvider = ({ children }: any) => {
+
   const [token, setToken] = useState<string>(null);
   const user = useUser(token);
+
+  useEffect(() => {
+
+    if (!token) return null;
+    const id = setInterval(async () => {
+
+      const [status, response ] = await refreshToken(token); 
+      
+      if (status === OK) {
+        
+        setToken(response.token); 
+      } else {
+
+        console.error(`error refreshing token ${status} with token ${token}`); 
+      }
+    }, 1000 * 600) //i.e. ten minutes 
+
+    return () => {
+
+      clearInterval(id); 
+    }
+  });
 
   return (
     <UserContext.Provider value={{ user, setToken, token }}>

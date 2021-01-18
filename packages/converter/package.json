@@ -2,7 +2,10 @@
     "name": "@paperpod/converter",
     "license": "UNLICENSED",
     "version": "0.0.1",
-    "main": "./src/index.ts",
+    "main": "./dist/index.js",
+    "scripts": {
+        "build": "tsc"
+    },
     "dependencies": {
         "@google-cloud/text-to-speech": "^3.1.3",
         "@google-cloud/translate": "^6.0.5",

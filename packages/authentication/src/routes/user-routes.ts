@@ -4,8 +4,6 @@ import { models, server } from "@paperpod/common";
 import express from "express";
 import * as database from "../authdatabase/authdatabase"
 import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
-import { withAuthentication } from "@paperpod/common/src/server/middleware/middleware";
-import { jwt } from "@paperpod/common/src/server/server";
 
 
 const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {
@@ -40,7 +38,7 @@ export const userRoutes = express.Router()
                 .send()
         }
     })
-    .delete("/users/sessions", withAuthentication(
+    .delete("/users/sessions", server.middleware.withAuthentication(
         (request, response, user) => {
 
             //FIXME: somehow invalidate old token 
@@ -51,7 +49,7 @@ export const userRoutes = express.Router()
                 });
         }
     ))
-    .put("/users/sessions", withAuthentication(
+    .put("/users/sessions", server.middleware.withAuthentication(
         async (request, response, user) => {
 
             const token = server.jwt.sign(user);
@@ -93,7 +91,7 @@ export const userRoutes = express.Router()
     })
     .get(
         "/users/me",
-        withAuthentication((request, response, user) => {
+        server.middleware.withAuthentication((request, response, user) => {
 
             response.json({
                 ...user,

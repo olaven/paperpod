@@ -5,7 +5,8 @@
     "scripts": {
         "dev": "ts-node-dev src/index.ts",
         "test": "jest --detectOpenHandles",
-        "test-init": "ts-jest config:init"
+        "build": "tsc", 
+        "start": "node dist/index.js"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",

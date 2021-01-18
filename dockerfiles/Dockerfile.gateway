@@ -12,6 +12,4 @@ RUN yarn install
 RUN yarn workspaces run build
 
 ENV NODE_ENV production
-RUN yarn gateway start 
-
-CMD ["yarn", "start"]
+CMD ["yarn", "gateway", "start"]

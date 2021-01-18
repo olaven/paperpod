@@ -1,40 +1,18 @@
-# Based on https://gist.github.com/michal-wrzosek/ae94fc4fcbc0a25f68ad90c3756e56ea
-# docker build . -t web --file Dockerfile.web
-FROM node:10-alpine as build
-
-WORKDIR /usr/src/app
-
-COPY package.json .
-COPY yarn.lock .
-COPY tsconfig.json . 
-COPY packages/common ./packages/common
-COPY packages/web ./packages/web
-
-RUN yarn install --pure-lockfile --non-interactive
-
-#WORKDIR /usr/src/app/packages/common
-#RUN yarn build
-
-WORKDIR /usr/src/app/packages/web
-RUN yarn build
-
 FROM node:10-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package.json .
 COPY yarn.lock .
+COPY tsconfig.json .
+COPY ./packages/common /app/packages/common
+COPY ./packages/web /app/packages/web
 
-COPY --from=build /usr/src/app/packages/common/package.json /usr/src/app/packages/common/package.json
-COPY --from=build /usr/src/app/packages/common /usr/src/app/packages/common
-
-COPY --from=build /usr/src/app/packages/web/package.json /usr/src/app/packages/web/package.json
-COPY --from=build /usr/src/app/packages/web/.next /usr/src/app/packages/web/.next
+RUN yarn workspaces info
+RUN yarn install 
+RUN yarn web build 
 
 ENV NODE_ENV production
-
-RUN yarn install --pure-lockfile --non-interactive --production
-
-WORKDIR /usr/src/app/packages/web
+RUN yarn web start 
 
 CMD ["yarn", "start"]

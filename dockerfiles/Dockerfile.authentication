@@ -12,6 +12,4 @@ RUN yarn install
 RUN yarn authentication build 
 
 ENV NODE_ENV production
-RUN yarn authentication start 
-
-CMD ["yarn", "start"]
+CMD ["yarn", "authentication", "start"]

@@ -12,6 +12,4 @@ RUN yarn install
 RUN yarn web build 
 
 ENV NODE_ENV production
-RUN yarn web start 
-
-CMD ["yarn", "start"]
+CMD ["yarn", "web", "start"]

@@ -13,6 +13,5 @@ RUN yarn install
 RUN yarn api build 
 
 ENV NODE_ENV production
-RUN yarn api start 
 
-CMD ["yarn", "start"]
+CMD ["yarn", "api", "start"]

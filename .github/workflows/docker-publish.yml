@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - research/deployment #temporary
 
     # Publish `v1.2.3` tags as releases.
     tags:
@@ -24,9 +23,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/web
-          tag_with_sha: true
-          tag_with_ref: true
+          repository: ${{ github.repository }}/web:latest
   publish-api:
     runs-on: ubuntu-latest
     steps:
@@ -40,9 +37,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/api
-          tag_with_sha: true
-          tag_with_ref: true
+          repository: ${{ github.repository }}/api:latest
   publish-authentication:
     runs-on: ubuntu-latest
     steps:
@@ -56,9 +51,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/authentication
-          tag_with_sha: true
-          tag_with_ref: true
+          repository: ${{ github.repository }}/authentication:latest
   publish-gateway:
     runs-on: ubuntu-latest
     steps:
@@ -72,6 +65,4 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/gateway
-          tag_with_sha: true
-          tag_with_ref: true
+          repository: ${{ github.repository }}/gateway:latest

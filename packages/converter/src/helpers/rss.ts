@@ -54,9 +54,9 @@ export const toItemTag = (article: models.Article) =>
     [
       tag("title", article.title),
       tag("link", `https://paperpod.fm/api/files/${article._id}`),
-      tag("description", "FIXME: some value herer"),
+      tag("description", article.description),
       tag("guid", `${article._id}`),
-      tag("pubDate", "FIXME: some value herer"),
-      tag("author", "FIXME: some value herer"),
+      tag("pubDate", new Date(article.publication_timestamp).toUTCString()), //compatible with RFC822
+      tag("author", article.author),
     ]
   )

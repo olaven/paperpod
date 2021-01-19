@@ -4,8 +4,5 @@
         "outDir": "dist",
         "declaration": true,
         "allowJs": false
-    }, 
-    "exclude": [
-        "**/*.d.ts"
-    ]
+    }
 }

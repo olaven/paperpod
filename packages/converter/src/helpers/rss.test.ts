@@ -59,10 +59,10 @@ describe("Conversion from articles to RSS", () => {
         hasTagWithValue([
             ["title", article => article.title],
             ["link", article => `https://paperpod.fm/api/files/${article._id}`],
-            //["description", article => article.description], //FIXME: when #17 is fixed
+            ["description", article => article.description],
             ["guid", article => article._id],
-            //["pubDate", article => article.pubDate], //FIXME: when #17 if fixed
-            //["author", article => article.author], //FIXME: when #17 is fixed 
+            ["pubDate", article => new Date(article.publication_timestamp).toUTCString()],
+            ["author", article => article.author],
         ]);
     });
 

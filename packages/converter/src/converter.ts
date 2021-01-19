@@ -31,8 +31,9 @@ export const convertToText =
         //FIXME: add title property
         const { text, title } = await getTextualData(article.original_url);
         return {
-            text,
             ...article,
+            text,
+            title,
         }
     }
 

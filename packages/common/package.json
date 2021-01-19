@@ -2,7 +2,8 @@
     "name": "@paperpod/common",
     "license": "UNLICENSED",
     "version": "0.0.1",
-    "main": "./dist/index.js",
+    "main": "dist/src/index.js",
+    "types": "index",
     "scripts": {
         "test": "jest", 
         "build": "tsc"

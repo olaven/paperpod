@@ -1,5 +1,5 @@
 import { models, server } from "@paperpod/common";
-import { textToAudio, getTextualData } from "./helpers/helpers";
+import { textToAudio, toItemTag, getTextualData } from "./helpers/helpers";
 
 
 /**
@@ -38,3 +38,14 @@ export const convertToText =
             publication_timestamp
         }
     }
+
+
+/**
+ * Convert list of articles to an RSS feed 
+ */
+export const convertToRSS = (articles: models.Article[]) => {
+
+    const entires = articles.map(toItemTag);
+
+    //FIXME: implement
+}

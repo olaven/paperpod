@@ -14,6 +14,7 @@ export const credentials = (): models.UserCredentials => ({
 });
 
 export const article = (): models.Article => ({
+    title: `Article about ${faker.commerce.product()}`,
     description: faker.lorem.paragraph(),
     owner_id: faker.random.uuid(),
     author: `${faker.name.firstName()} ${faker.name.lastName()}`,

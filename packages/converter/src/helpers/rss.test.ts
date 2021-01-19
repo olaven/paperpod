@@ -1,8 +1,6 @@
-import { test } from "@paperpod/common";
-import { hasUncaughtExceptionCaptureCallback } from "process";
+import { test, server, models } from "@paperpod/common";
 import { serialize } from "serialize-xml";
 import { convertToRSSFeed, toItemTag } from "./rss";
-
 
 describe("Conversion from articles to RSS", () => {
 
@@ -10,6 +8,36 @@ describe("Conversion from articles to RSS", () => {
         serialize(
             toItemTag(article)
         )
+
+
+    const hasTags = (tags: string[]) => {
+
+        for (const tag of tags) {
+
+            const rss = serializeItem()
+            it(`Has a tag called ${tag}`, () => {
+
+                expect(rss).toContain(`<${tag}>`)
+                expect(rss).toContain(`</${tag}>`)
+            })
+        }
+    }
+
+    const hasTagWithValue = (pairs: [string, (article: models.Article) => string][]) => {
+
+        for (const [tag, getValue] of pairs) {
+
+            const article = test.mocks.article();
+            const rss = serializeItem(article);
+            const value = getValue(article);
+
+            it(`Does have ${tag} with value of ${value}`, () => {
+
+                expect(rss).toContain(`<${tag}>${value}</${tag}>`)
+            });
+        }
+
+    }
 
     describe("Converting article to single item", () => {
 
@@ -19,20 +47,23 @@ describe("Conversion from articles to RSS", () => {
             expect(() => { toItemTag(article) }).not.toThrow();
         });
 
-        it("Does contain title", () => {
+        hasTags([
+            "title",
+            "link",
+            "description",
+            "guid",
+            "pubDate",
+            "author",
+        ]);
 
-            const item = serializeItem();
-            expect(item.includes("<title>")).toBeTruthy();
-        });
-
-        it("Does contain the same title as the article", () => {
-
-            const article = test.mocks.article();
-            expect(article.title).toBeDefined();
-            const rss = serializeItem(article);
-            console.log("HERE IS RSS", rss);
-            expect(rss.includes(`<title>${article.title}</title>`)).toBeTruthy();
-        });
+        hasTagWithValue([
+            ["title", article => article.title],
+            ["link", article => `https://paperpod.fm/api/files/${article._id}`],
+            //["description", article => article.description], //FIXME: when #17 is fixed
+            ["guid", article => article._id],
+            //["pubDate", article => article.pubDate], //FIXME: when #17 if fixed
+            //["author", article => article.author], //FIXME: when #17 is fixed 
+        ]);
     });
 
     describe("Converting list of articles to feed", () => {
@@ -41,10 +72,10 @@ describe("Conversion from articles to RSS", () => {
         it("Does return something looking like RSS", () => {
 
             const rss = convertToRSSFeed([]);
-            console.log(`RSS HERE ${rss}`);
-            expect(rss.includes('<rss version="2.0">')).toBe(true);
-            expect(rss.includes("<channel>")).toBe(true);
-            expect(rss.includes("<link>")).toBe(true);
+            expect(rss).toContain('<rss version="2.0">');
+            expect(rss).toContain("<channel>");
+            expect(rss).toContain("<link>");
         });
-    })
+    });
+
 });

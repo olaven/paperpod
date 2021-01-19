@@ -53,10 +53,9 @@ export const toItemTag = (article: models.Article) =>
     "item",
     [
       tag("title", article.title),
-      tag("link", "FIXME: some value herer"),
+      tag("link", `https://paperpod.fm/api/files/${article._id}`),
       tag("description", "FIXME: some value herer"),
-      tag("source ", "FIXME: some value herer"),
-      tag("guid", "FIXME: some value herer"),
+      tag("guid", `${article._id}`),
       tag("pubDate", "FIXME: some value herer"),
       tag("author", "FIXME: some value herer"),
     ]

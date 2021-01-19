@@ -1,4 +1,4 @@
-import { models, test } from "@paperpod/common";
+import { models, test } from "../../index";
 import { sleep } from "../../test/test";
 import { sign, decode } from "./jwt";
 

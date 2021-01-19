@@ -29,10 +29,12 @@ export const convertToText =
     async (article: models.Article): Promise<models.Article> => {
 
         //FIXME: add title property
-        const { text, title } = await getTextualData(article.original_url);
+        const { text, title, description, publication_timestamp } = await getTextualData(article.original_url);
         return {
             ...article,
             text,
             title,
+            description,
+            publication_timestamp
         }
     }

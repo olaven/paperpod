@@ -14,10 +14,13 @@ export const credentials = (): models.UserCredentials => ({
 });
 
 export const article = (): models.Article => ({
-    title: faker.hacker.phrase(),
-    original_url: faker.internet.url(),
-    text: faker.lorem.paragraphs(15),
+    description: faker.lorem.paragraph(),
     owner_id: faker.random.uuid(),
+    author: `${faker.name.firstName()} ${faker.name.lastName()}`,
+    text: faker.lorem.paragraphs(15),
+    original_url: faker.internet.url(),
+    publication_timestamp: faker.date.past(3).getTime(),
+    added_timestamp: faker.date.recent(2).getTime(),
 });
 
 export const articlePayload = (): models.ArticlePayload => ({

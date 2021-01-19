@@ -6,6 +6,7 @@
     ],
     "scripts": {
         "build": "yarn workspaces run build",
+        "test": "yarn workspaces run test",
         "api": "yarn workspace @paperpod/api",
         "web": "yarn workspace @paperpod/web",
         "authentication": "yarn workspace @paperpod/authentication",

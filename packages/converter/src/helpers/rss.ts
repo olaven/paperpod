@@ -24,22 +24,40 @@
 
 import { serialize, tag, declaration } from "serialize-xml";
 import { models } from "@paperpod/common";
-export const articleToRSSItem = (article: models.Article) => {
 
-  const xml = serialize(
+export const convertToRSSFeed = (articles: models.Article[]) =>
+  serialize(
     tag("rss", [
       tag("channel", [
         tag("title", "Paperpod Feed"),
         tag("link", "LINK TO FEED"),
         tag("description", "This is your Paperpod Feed. Thanks for using Paperpod! Send articles, and they will appear here"),
         tag("ttl", "60"), //60 minutes
-        tag("image", [
-          tag("url", "https://paperpod.fm/logo.svg"), //TODO: image that's friendly for podcast players 
-          tag("link", "LINK TO FEED"),
-          tag("title", "Paperpod Feed")
-        ])]
-        //TODO: items (should be done here, what's implemented above should be done somewhere with access to all articles)
+        toImageTag(),
+        ...articles.map(toItemTag)
+      ],
       )],
       [["version", "2.0"]]
-    ))
-}
+    ),
+  )
+
+export const toImageTag = () =>
+  tag("image", [
+    tag("url", "https://paperpod.fm/logo.svg"), //TODO: image that's friendly for podcast players 
+    tag("link", "LINK TO FEED"),
+    tag("title", "Paperpod Feed")
+  ]);
+
+export const toItemTag = (article: models.Article) =>
+  tag(
+    "item",
+    [
+      tag("title", article.title),
+      tag("link", "FIXME: some value herer"),
+      tag("description", "FIXME: some value herer"),
+      tag("source ", "FIXME: some value herer"),
+      tag("guid", "FIXME: some value herer"),
+      tag("pubDate", "FIXME: some value herer"),
+      tag("author", "FIXME: some value herer"),
+    ]
+  )

@@ -16,7 +16,7 @@ export const rssRoutes = express.Router()
 
         const user_id = request.params.user_id;
 
-        if (!user_id)
+        if (!user_id || user_id === "null" || user_id === "undefined")
             return response
                 .status(UNAUTHORIZED)
                 .send();

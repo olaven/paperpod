@@ -1,9 +1,15 @@
 import supertest from "supertest";
 import { OK, UNAUTHORIZED } from "node-kall";
-import { test } from "@paperpod/common";
+import { models, test } from "@paperpod/common";
+import * as database from "../database/database";
 import { app } from "../app";
 
 describe("The RSS file endpoint", () => {
+
+    const persistArticle = (article: Partial<models.Article> = {}) =>
+        database.articles.persist(
+            test.mocks.article(article)
+        );
 
     describe("The endpoint for getting perosnal RSS-feeds", () => {
 
@@ -31,13 +37,26 @@ describe("The RSS file endpoint", () => {
         it("Does application/rss+xml on successful request", async () => {
 
             const { headers } = await getFeed();
-            expect(headers.get("Content-Type")).toEqual("application/rss+xml");
+            expect(headers["content-type"]).toEqual("application/rss+xml; charset=utf-8");
         });
 
-        it("Does return a valid XML file", async () => {
+        it("Does convert an rss field containint the data from all articles", async () => {
 
-            const { text } = await getFeed();
-            expect(text).toEqual("fail here to see value");
-        });
+            const user = test.mocks.user();
+
+            const articles = [
+                await persistArticle({ owner_id: user._id }),
+                await persistArticle({ owner_id: user._id }),
+                await persistArticle({ owner_id: user._id }),
+                await persistArticle({ owner_id: user._id }),
+            ]
+
+            const rss = (await getFeed(user)).text;
+            for (const article of articles) {
+
+                expect(rss).toContain(`<title>${article.title}</title>`);
+                expect(rss).toContain(`<description>${article.description}</description>`);
+            }
+        })
     });
 });

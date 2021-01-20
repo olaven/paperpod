@@ -13,7 +13,7 @@ export const credentials = (): models.UserCredentials => ({
     password: faker.internet.password(),
 });
 
-export const article = (): models.Article => ({
+export const article = (template: Partial<models.Article> = {}): models.Article => ({
     title: `Article about ${faker.commerce.product()}`,
     description: faker.lorem.paragraph(),
     owner_id: faker.random.uuid(),
@@ -22,6 +22,7 @@ export const article = (): models.Article => ({
     original_url: faker.internet.url(),
     publication_timestamp: faker.date.past(3).getTime(),
     added_timestamp: faker.date.recent(2).getTime(),
+    ...template,
 });
 
 export const articlePayload = (): models.ArticlePayload => ({

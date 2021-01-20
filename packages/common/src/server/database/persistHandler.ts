@@ -20,5 +20,5 @@ export const persistHandler = <T>(document: T) =>
 export const getByIdHandler = <T extends { _id: string }>(_id: string) =>
     collection =>
         collection.findOne({
-            _id: new mognodb.ObjectID(_id)
+            _id: new mognodb.ObjectID(_id.toString())
         })

@@ -2,7 +2,7 @@
     "name": "@paperpod/converter",
     "license": "UNLICENSED",
     "version": "0.0.1",
-    "main": "./dist/index.js",
+    "main": "./src/index.ts", 
     "scripts": {
         "build": "tsc",
         "test": "jest --detectOpenHandles"

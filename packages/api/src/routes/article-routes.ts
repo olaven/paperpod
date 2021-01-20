@@ -21,6 +21,7 @@ export const articleRoutes = express.Router()
             const article = await database.articles.persist(
                 await convertToAudio(
                     await convertToText(
+                        //@ts-ignore //FIXME: type definitions 
                         { original_url: link, owner_id: user._id }
                     ),
                 )

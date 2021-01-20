@@ -2,11 +2,9 @@
     "name": "@paperpod/common",
     "license": "UNLICENSED",
     "version": "0.0.1",
-    "main": "dist/src/index.js",
-    "types": "index",
+    "main": "./src/index.ts",
     "scripts": {
-        "test": "jest", 
-        "build": "tsc"
+        "test": "jest"
     },
     "dependencies": {
         "@google-cloud/storage": "^5.7.0",

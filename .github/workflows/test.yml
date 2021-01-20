@@ -17,4 +17,49 @@ jobs:
       - name: Run tests
         run: yarn api test
         env:
-          JWT_SECRET: The JWT secret in CI test environment for API tests
+          JWT_SECRET: The JWT secret in CI test environment for api tests
+  test-authentication:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use node:14
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - name: Install dependencies
+        run: yarn
+      - name: Run tests
+        run: yarn authentication test
+        env:
+          JWT_SECRET: The JWT secret in CI test environment for authentication tests
+  test-converter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use node:14
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - name: Install dependencies
+        run: yarn
+      - name: Run tests
+        run: yarn converter test
+        env:
+          JWT_SECRET: The JWT secret in CI test environment for converter tests
+  test-common:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use node:14
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - name: Install dependencies
+        run: yarn
+      - name: Run tests
+        run: yarn common test
+        env:
+          JWT_SECRET: The JWT secret in CI test environment for common tests

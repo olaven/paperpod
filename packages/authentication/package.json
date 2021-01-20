@@ -17,6 +17,7 @@
         "ts-node": "^9.1.1"
     },
     "devDependencies": {
+        "@shelf/jest-mongodb": "^1.2.3",
         "@types/bcryptjs": "^2.4.2",
         "@types/express-session": "^1.17.3",
         "@types/faker": "^5.1.5",

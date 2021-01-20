@@ -1,11 +1,11 @@
 export interface Article {
-    _id?: string,
+    _id: string,
     owner_id: string,
     original_url: string,
-    title?: string,
+    title: string,
     description: string,
     author: string,
-    text?: string,
+    text: string,
     publication_timestamp: number,
     added_timestamp: number,
 };

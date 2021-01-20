@@ -14,6 +14,7 @@ export const credentials = (): models.UserCredentials => ({
 });
 
 export const article = (template: Partial<models.Article> = {}): models.Article => ({
+    _id: faker.random.uuid(),
     title: `Article about ${faker.commerce.product()}`,
     description: faker.lorem.paragraph(),
     owner_id: faker.random.uuid(),

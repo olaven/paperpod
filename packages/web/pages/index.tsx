@@ -6,9 +6,12 @@ import {
   Login,
   Logout,
 } from "../components/authentication/authentication";
+import { Feed } from "../components/feed/Feed";
 
 const Index = () => {
+  
   const { user } = useContext(UserContext);
+
   return (
     <>
       {!user && <Signup />}
@@ -19,6 +22,8 @@ const Index = () => {
       {user && <>logged in as {user.email}</>}
 
       {user && <Articles />}
+
+      {user && <Feed />}
     </>
   );
 };

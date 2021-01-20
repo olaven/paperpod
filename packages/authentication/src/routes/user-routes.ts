@@ -1,10 +1,9 @@
 import { hash } from "../cryptography/cryptography";
 import { nanoid } from "nanoid";
-import { models, server } from "common";
+import { models, server } from "@paperpod/common";
 import express from "express";
 import * as database from "../authdatabase/authdatabase"
-import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, UNAUTHORIZED } from "node-kall";
-import { withAuthentication } from "common/src/server/middleware/middleware";
+import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
 
 
 const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {
@@ -39,13 +38,27 @@ export const userRoutes = express.Router()
                 .send()
         }
     })
-    .delete("/users/sessions", withAuthentication(
+    .delete("/users/sessions", server.middleware.withAuthentication(
         (request, response, user) => {
 
             //FIXME: somehow invalidate old token 
-            response.send(NO_CONTENT).send({
-                token: null
-            });
+            response
+                .status(NO_CONTENT)
+                .send({
+                    token: null
+                });
+        }
+    ))
+    .put("/users/sessions", server.middleware.withAuthentication(
+        async (request, response, user) => {
+
+            const token = server.jwt.sign(user);
+            console.log(`token: ${token}`);
+            response
+                .status(OK)
+                .send({
+                    token
+                });
         }
     ))
     .post("/users", async (request, response) => {
@@ -78,7 +91,7 @@ export const userRoutes = express.Router()
     })
     .get(
         "/users/me",
-        withAuthentication((request, response, user) => {
+        server.middleware.withAuthentication((request, response, user) => {
 
             response.json({
                 ...user,

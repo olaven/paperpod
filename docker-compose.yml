@@ -18,7 +18,9 @@ services:
       - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
     working_dir: /paperpod
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: ./packages/api/Dockerfile
     env_file:
       - .env
     command: yarn api dev
@@ -32,16 +34,8 @@ services:
       - MONGODB_PASSWORD=$MONGODB_PASSWORD
       - MONGODB_HOST=database_api
       - MONGODB_PORT=27017
-    working_dir: /paperpod
-  converter:
-    build: .
-    env_file:
-      - .env
-    command: yarn converter dev
-    volumes:
-      - .:/paperpod
-    environment:
       - GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
+    working_dir: /paperpod
   authentication:
     build: .
     env_file:

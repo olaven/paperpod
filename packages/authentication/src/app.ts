@@ -1,4 +1,4 @@
-import { server } from "common";
+import { server } from "@paperpod/common";
 import { userRoutes } from "./routes/routes";
 
 export const app =

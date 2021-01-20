@@ -1,4 +1,4 @@
-import { models } from "common";
+import { models } from "@paperpod/common";
 import { get, post } from "node-kall";
 import { bearer } from "../../helpers/bearer";
 

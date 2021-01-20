@@ -1,12 +1,14 @@
 {
-    "name": "web",
+    "name": "@paperpod/web",
     "license": "UNLICENSED",
     "version": "0.0.1",
     "scripts": {
+        "start": "next start",
+        "build": "next build",
         "dev": "next"
     },
     "dependencies": {
-        "common": "0.0.1",
+        "@paperpod/common": "0.0.1",
         "next": "^10.0.4",
         "node-kall": "^0.2.0",
         "react": "^17.0.1",

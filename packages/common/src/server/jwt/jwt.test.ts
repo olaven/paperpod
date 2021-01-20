@@ -1,4 +1,5 @@
-import { models, test } from "common";
+import { models, test } from "../../index";
+import { sleep } from "../../test/test";
 import { sign, decode } from "./jwt";
 
 const replaceAt = (string: string, index: number, replacement: string) =>
@@ -16,6 +17,15 @@ describe("Functions for working with JSON Web Tokens", () => {
             const token = sign(data);
 
             expect(typeof token).toEqual('string');
+        });
+
+        it("Does create a different token if created at a different time", async () => {
+
+            const first = sign({});
+            await sleep(1500); //>1s, for token `iat` (issued at) to be updated
+            const second = sign({});
+
+            expect(first).not.toEqual(second);
         });
     });
 

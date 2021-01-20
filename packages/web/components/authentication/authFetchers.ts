@@ -1,5 +1,6 @@
-import { models } from "common";
-import { del, get, post } from "node-kall";
+import { models } from "@paperpod/common";
+import { TokenResponse } from "@paperpod/common/src/models/models";
+import { del, get, post, put } from "node-kall";
 import { bearer } from "../../helpers/bearer";
 
 export const signup = (credentials: models.UserCredentials) =>
@@ -22,6 +23,13 @@ export const logout = (token: string) =>
 
 export const getMe = (token: string) =>
     get<models.User>(
-        "/authentication/users/me/", 
+        "/authentication/users/me/",
         bearer(token)
-    ); 
+    );
+
+export const refreshToken = (token: string) =>
+    put<models.TokenResponse>(
+        "/authentication/users/sessions",
+        null,
+        bearer(token)
+    );

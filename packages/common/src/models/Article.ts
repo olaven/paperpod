@@ -1,7 +1,11 @@
 export interface Article {
     _id?: string,
-    original_url: string,
-    google_cloud_path?: string,
-    text: string,
     owner_id: string,
+    original_url: string,
+    title?: string,
+    description: string,
+    author: string,
+    text?: string,
+    publication_timestamp: number,
+    added_timestamp: number,
 };

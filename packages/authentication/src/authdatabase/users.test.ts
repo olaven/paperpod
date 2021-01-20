@@ -1,4 +1,4 @@
-import { test } from "common";
+import { test } from "@paperpod/common";
 import { insert, getByEmail } from "./users";
 
 describe("The database interface for users", () => {

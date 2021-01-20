@@ -1,8 +1,10 @@
-import { server} from "common";
-import { articleRoutes } from "./routes/routes";
+import { server } from "@paperpod/common";
+import { articleRoutes, fileRoutes, rssRoutes } from "./routes/routes";
 
 
-export const app =server.app.appWithBodyParser(
+export const app = server.app.appWithBodyParser(
     server.app.appWithEnvironment()
-) .use(articleRoutes); 
-    
+)
+    .use(rssRoutes)
+    .use(articleRoutes)
+    .use(fileRoutes)

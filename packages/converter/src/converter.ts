@@ -26,13 +26,19 @@ export const convertToAudio =
  * @returns article with extracted text 
  */
 export const convertToText =
-    async (article: models.Article): Promise<models.Article> => {
+    async (article: {
+        _id: string,
+        owner_id: string,
+        original_url: string,
+        added_timestamp: number,
+    }): Promise<models.Article> => {
 
-        const { text, title, description, publication_timestamp } = await getTextualData(article.original_url);
+        const { text, title, author, description, publication_timestamp } = await getTextualData(article.original_url);
         return {
             ...article,
             text,
             title,
+            author,
             description,
             publication_timestamp
         }

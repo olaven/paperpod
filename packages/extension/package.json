@@ -1,0 +1,13 @@
+{
+    "name": "@paperpod/extension",
+    "license": "UNLICENSED",
+    "version": "0.0.1",
+    "main": "./src/index.ts", 
+    "dependencies": {
+        "@paperpod/common": "0.0.1"
+    },
+    "devDependencies": {
+        "@types/node": "^14.14.14",
+        "typescript": "^4.1.3"
+    }
+}

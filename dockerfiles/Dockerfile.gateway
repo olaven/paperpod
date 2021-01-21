@@ -2,14 +2,13 @@ FROM node:10-alpine
 
 WORKDIR /app
 
-COPY ../package.json .
-COPY ../yarn.lock .
-COPY ../tsconfig.json .
-COPY ../packages/common /app/packages/common
-COPY ../packages/gateway /app/packages/gateway
+COPY ./package.json .
+COPY ./yarn.lock .
+COPY ./tsconfig.json .
+COPY ./packages/common /app/packages/common
+COPY ./packages/gateway /app/packages/gateway
 
-RUN yarn install
-RUN yarn workspaces run build
+RUN yarn install --production
 
 ENV NODE_ENV production
 CMD ["yarn", "gateway", "start"]

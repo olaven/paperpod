@@ -3,46 +3,74 @@ services:
   ## PACKAGES
 
   gateway:
-    #image: docker.pkg.github.com/olaven/paperpod/gateway:latest
-    build:
-      context: .
-      dockerfile: ./Dockerfile.gateway
+    build: .
+    env_file:
+      - .env
+    command: yarn gateway dev
     ports:
-      - 80:80
+      - $GATEWAY_PORT:$GATEWAY_PORT
+    volumes:
+      - .:/paperpod
     environment:
-      - PORT=80
-      - API_PORT=8081
-      - AUTHENTICATION_PORT=8082
-      - WEB_PORT=3000
+      - PORT=$GATEWAY_PORT
+      - WEB_PORT=$WEB_PORT
+      - API_PORT=$API_PORT
+      - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
+    working_dir: /paperpod
   api:
     build:
       context: .
-      dockerfile: ./Dockerfile.api
+      dockerfile: ./packages/api/Dockerfile
+    env_file:
+      - .env
+    command: yarn api dev
+    volumes:
+      - .:/paperpod
     environment:
-      - PORT=8081
-      - JWT_SECRET="some super secret thing"
+      - PORT=$API_PORT
+      - JWT_SECRET=$JWT_SECRET
+      - MONGODB_NAME=$MONGODB_NAME
+      - MONGODB_USERNAME=$MONGODB_USERNAME
+      - MONGODB_PASSWORD=$MONGODB_PASSWORD
+      - MONGODB_HOST=database_api
+      - MONGODB_PORT=27017
+      - GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
+    working_dir: /paperpod
   authentication:
-    build:
-      context: .
-      dockerfile: ./Dockerfile.authentication
+    build: .
+    env_file:
+      - .env
+    command: yarn authentication dev
+    volumes:
+      - .:/paperpod
     environment:
-      - PORT=8082
-      - JWT_SECRET="some super secret thing"
+      - PORT=$AUTHENTICATION_PORT
+      - JWT_SECRET=$JWT_SECRET
+      - MONGODB_NAME=$MONGODB_NAME
+      - MONGODB_USERNAME=$MONGODB_USERNAME
+      - MONGODB_PASSWORD=$MONGODB_PASSWORD
+      - MONGODB_HOST=database_authentication
+      - MONGODB_PORT=27017
+    working_dir: /paperpod
   web:
-    build:
-      context: .
-      dockerfile: ./Dockerfile.web
+    build: .
+    env_file:
+      - .env
+    command: yarn web dev
+    volumes:
+      - .:/paperpod
+    working_dir: /paperpod
 
   ## DATABASES
 
-  # database_authentication:
-  #   image: mongo:latest
-  #   environment:
-  #     - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME
-  #     - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+  database_authentication:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
 
-  # database_api:
-  #   image: mongo:latest
-  #   environment:
-  #     - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME
-  #     - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+  database_api:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD

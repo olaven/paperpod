@@ -1,9 +1,12 @@
 import jwt from "jsonwebtoken";
 
-export const sign = <T>(payload: T) =>
-    jwt.sign(payload as any, process.env.JWT_SECRET, {
+export const sign = <T>(payload: T) => {
+
+    return jwt.sign(payload as any, process.env.JWT_SECRET, {
         expiresIn: "15m"
     });
+}
+
 
 export const decode = <T>(token: string) => {
 

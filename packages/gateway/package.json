@@ -3,9 +3,8 @@
     "license": "UNLICENSED",
     "version": "0.0.1",
     "scripts": {
-        "dev": "ts-node-dev src/index.ts", 
-        "build": "tsc",
-        "start": "node dist/index.js"
+        "dev": "ts-node-dev src/index.ts",
+        "start": "ts-node ./src/index.ts"
     },
     "dependencies": {
         "@paperpod/common": "0.0.1",
@@ -13,6 +12,7 @@
         "express": "^4.17.1",
         "http-proxy-middleware": "^1.0.6",
         "node-kall": "^0.2.0",
+        "ts-node": "^9.1.1",
         "ts-node-dev": "^1.1.1"
     },
     "devDependencies": {

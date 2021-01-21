@@ -5,18 +5,19 @@
     "scripts": {
         "dev": "ts-node-dev src/index.ts",
         "test": "jest --detectOpenHandles",
-        "build": "tsc", 
-        "start": "node dist/index.js"
+        "start": "ts-node ./src/index.ts"
     },
     "dependencies": {
-        "bcryptjs": "^2.4.3",
         "@paperpod/common": "0.0.1",
+        "bcryptjs": "^2.4.3",
         "express-session": "^1.17.1",
         "mongodb": "^3.6.3",
         "nanoid": "^3.1.20",
-        "node-kall": "^0.2.0"
+        "node-kall": "^0.2.0",
+        "ts-node": "^9.1.1"
     },
     "devDependencies": {
+        "@shelf/jest-mongodb": "^1.2.3",
         "@types/bcryptjs": "^2.4.2",
         "@types/express-session": "^1.17.3",
         "@types/faker": "^5.1.5",

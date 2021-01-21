@@ -1,5 +1,5 @@
 import { models, server } from "@paperpod/common";
-import { textToAudio, getTextualData } from "./helpers/helpers";
+import { textToAudio, toItemTag, getTextualData, convertToRSSFeed } from "./helpers/helpers";
 
 
 /**
@@ -26,12 +26,27 @@ export const convertToAudio =
  * @returns article with extracted text 
  */
 export const convertToText =
-    async (article: models.Article): Promise<models.Article> => {
+    async (article: {
+        _id: string,
+        owner_id: string,
+        original_url: string,
+        added_timestamp: number,
+    }): Promise<models.Article> => {
 
-        //FIXME: add title property
-        const { text, title } = await getTextualData(article.original_url);
+        const { text, title, author, description, publication_timestamp } = await getTextualData(article.original_url);
         return {
-            text,
             ...article,
+            text,
+            title,
+            author,
+            description,
+            publication_timestamp
         }
     }
+
+
+/**
+ * Convert list of articles to an RSS feed 
+ */
+export const convertToRSS = (articles: models.Article[]) =>
+    convertToRSSFeed(articles); 

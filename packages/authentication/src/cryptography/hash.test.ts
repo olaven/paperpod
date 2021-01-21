@@ -25,7 +25,8 @@ describe("Bcrypt module", () => {
             const value = faker.lorem.word();
             const hashed = await hash(value);
 
-            expect(compare(value, hashed)).resolves.toBe(true);
+            const result = await compare(value, hashed);
+            expect(result).toBe(true);
         });
 
         it("Does return true if base value is the same", async () => {
@@ -36,7 +37,8 @@ describe("Bcrypt module", () => {
             const hashed = await hash(value);
 
             expect(value).not.toEqual(other);
-            expect(compare(value, hashed)).resolves.toBe(true);
+            const result = await compare(value, hashed);
+            expect(result).toBe(true);
         });
     });
 })

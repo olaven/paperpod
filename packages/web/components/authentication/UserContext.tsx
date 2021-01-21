@@ -17,6 +17,8 @@ export const UserContext = createContext<{
 const useUser = (token: string): models.User => {
   const [user, setUser] = useState<models.User>(null);
 
+  console.log(user?._id);
+
   asyncEffect(async () => {
     if (!token) return setUser(null);
     const [status, user] = await get<models.User>("/authentication/users/me/", {

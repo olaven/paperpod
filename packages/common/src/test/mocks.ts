@@ -13,10 +13,17 @@ export const credentials = (): models.UserCredentials => ({
     password: faker.internet.password(),
 });
 
-export const article = (): models.Article => ({
-    original_url: faker.internet.url(),
-    text: faker.lorem.paragraphs(15),
+export const article = (template: Partial<models.Article> = {}): models.Article => ({
+    _id: faker.random.uuid(),
+    title: `Article about ${faker.commerce.product()}`,
+    description: faker.lorem.paragraph(),
     owner_id: faker.random.uuid(),
+    author: `${faker.name.firstName()} ${faker.name.lastName()}`,
+    text: faker.lorem.paragraphs(15),
+    original_url: faker.internet.url(),
+    publication_timestamp: faker.date.past(3).getTime(),
+    added_timestamp: faker.date.recent(2).getTime(),
+    ...template,
 });
 
 export const articlePayload = (): models.ArticlePayload => ({

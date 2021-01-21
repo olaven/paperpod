@@ -1,21 +1,23 @@
 import faker from "faker"
 import { models } from "@paperpod/common";
+import { convertToRSS as _convertToRSS } from "@paperpod/converter";
 
 
 
 export const convertToAudio =
     async (article: models.Article): Promise<models.Article> => {
 
-        console.log("INSIDE convert to audio mock");
         return article
     }
 
 export const convertToText =
     async (article: models.Article): Promise<models.Article> => {
 
-        console.log("INSIDE convert to text mock");
         return ({
             ...article,
             text: faker.lorem.paragraphs()
         })
     }
+
+//NOTE: not mocking, as this does not call any external API's 
+export const convertToRSS = _convertToRSS; 

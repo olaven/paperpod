@@ -1,7 +1,8 @@
 import express from 'express'
+import { nanoid } from "nanoid";
 import { server, models } from "@paperpod/common";
 import { convertToAudio, convertToText } from "@paperpod/converter";
-import { BAD_REQUEST, CREATED, OK } from "node-kall";
+import { BAD_REQUEST, CREATED, NETWORK_AUTHENTICATION_REQUIRED, OK } from "node-kall";
 import * as database from "../database/database";
 
 const isValidURL = (string: string) => {
@@ -20,11 +21,14 @@ export const articleRoutes = express.Router()
 
             const article = await database.articles.persist(
                 await convertToAudio(
-                    await convertToText(
-                        { original_url: link, owner_id: user._id }
-                    ),
+                    await convertToText({
+                        _id: nanoid(),
+                        original_url: link,
+                        owner_id: user._id,
+                        added_timestamp: Date.now(),
+                    })
                 )
-            )
+            );
 
             response
                 .status(CREATED)

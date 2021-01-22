@@ -1,6 +1,11 @@
 __This project is still very much work in progress.__ More details to come.
 
-# paperpod 
+# Paperpod 
+
+## Sponsors 
+Please consider [sponsoring](https://github.com/sponsors/olaven/) this project. 
+This will allow me to give you perks in return for your gratitude!
+
 ## Assets
 * [Design Workspace in Figma](https://www.figma.com/file/VSrR5BIGv7BkliMdcwvA8q/Paperpod?node-id=0%3A1)
 * [Any drawings from here](https://undraw.co/illustrations)

@@ -31,7 +31,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: ${{ github.repository }}/web
-          tags: latest
   publish-api:
     runs-on: ubuntu-latest
     steps:
@@ -52,7 +51,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: ${{ github.repository }}/api
-          tags: latest
   publish-authentication:
     runs-on: ubuntu-latest
     steps:
@@ -73,7 +71,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: ${{ github.repository }}/authentication
-          tags: latest
   publish-gateway:
     runs-on: ubuntu-latest
     steps:
@@ -94,4 +91,3 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: ${{ github.repository }}/gateway
-          tags: latest

@@ -1,0 +1,32 @@
+version: "3"
+services:
+  gateway:
+    image: gateway #TODO: update to actual image path
+    environment:
+      - PORT=$GATEWAY_PORT
+      - WEB_PORT=$WEB_PORT
+      - API_PORT=$API_PORT
+      - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
+  api:
+    image: api #TODO: update to actual image path
+    environment:
+      - PORT=$API_PORT
+      - JWT_SECRET=$JWT_SECRET
+      - MONGODB_NAME=$MONGODB_NAME
+      - MONGODB_USERNAME=$MONGODB_USERNAME
+      - MONGODB_PASSWORD=$MONGODB_PASSWORD
+      - MONGODB_HOST=$MONGODB_HOST
+      - MONGODB_PORT=$MONGODB_PORT # 27017
+      - GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
+  authentication:
+    image: authentication
+    environment:
+      - PORT=$AUTHENTICATION_PORT
+      - JWT_SECRET=$JWT_SECRET
+      - MONGODB_NAME=$MONGODB_NAME
+      - MONGODB_USERNAME=$MONGODB_USERNAME
+      - MONGODB_PASSWORD=$MONGODB_PASSWORD
+      - MONGODB_HOST=$MONGODB_HOST
+      - MONGODB_PORT=$MONGODB_PORT # 27017
+  web:
+    image: web

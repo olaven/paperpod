@@ -9,7 +9,7 @@ COPY ./packages/common /app/packages/common
 COPY ./packages/converter /app/packages/converter
 COPY ./packages/api /app/packages/api
 
-RUN yarn install --production
+RUN yarn install 
 
 ENV NODE_ENV production
 

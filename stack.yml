@@ -2,3 +2,8 @@ version: "3"
 services:
   gateway:
     image: gateway
+    environment:
+      - PORT=$GATEWAY_PORT
+      - WEB_PORT=$WEB_PORT
+      - API_PORT=$API_PORT
+      - AUTHENTICATION_PORT=$AUTHENTICATION_PORT

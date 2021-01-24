@@ -1,5 +1,5 @@
 import { models, server } from "@paperpod/common";
-import { textToAudio, toItemTag, getTextualData, convertToRSSFeed } from "./helpers/helpers";
+import { textToAudio, awsTextToAudio, getTextualData, convertToRSSFeed } from "./helpers/helpers";
 
 
 /**
@@ -18,6 +18,12 @@ export const convertToAudio =
 
         return article
     }
+
+export const aws = async (article: models.Article) => {
+
+    const stream = await awsTextToAudio(article.text);
+    return stream;
+}
 
 
 /**

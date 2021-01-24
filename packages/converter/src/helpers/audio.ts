@@ -1,6 +1,6 @@
 import textToSpeech from "@google-cloud/text-to-speech";
-//import * as Translate from "@google-cloud/translate"
 const { Translate } = require('@google-cloud/translate').v2;
+import { PollyClient, SynthesizeSpeechCommand, SynthesizeSpeechOutput } from "@aws-sdk/client-polly";
 
 const getLanguage = async (text: string) => {
 
@@ -26,4 +26,17 @@ export const textToAudio = async (text: string) => {
     });
 
     return response.audioContent as Uint8Array;
+}
+
+export const awsTextToAudio = async (text: string) => {
+
+    const command = new SynthesizeSpeechCommand({
+        Text: text,
+        OutputFormat: "mp3",
+        VoiceId: "Joanna"
+    });
+
+    const client = new PollyClient({ region: "eu-north-1" });
+    const data = await client.send(command);
+    return data.AudioStream
 }

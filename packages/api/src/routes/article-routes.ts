@@ -19,16 +19,13 @@ export const articleRoutes = express.Router()
                 .status(BAD_REQUEST)
                 .send("`link` has to be a valid URL");
 
-            const article = await database.articles.persist(
-                await convertToAudio(
-                    await convertToText({
-                        _id: nanoid(),
-                        original_url: link,
-                        owner_id: user._id,
-                        added_timestamp: Date.now(),
-                    })
-                )
-            );
+            //@ts-ignore
+            const article = await database.articles.persist({
+                _id: nanoid(),
+                original_url: link,
+                owner_id: user._id,
+                added_timestamp: Date.now(),
+            });
 
             response
                 .status(CREATED)

@@ -1,14 +1,14 @@
 version: "3"
 services:
   gateway:
-    image: docker.pkg.github.com/olaven/paperpod/gateway:latest
+    image: docker.pkg.github.com/olaven/paperpod/gateway:fix-automatic-tagging-of-docker-images
     environment:
       - PORT=$GATEWAY_PORT
       - WEB_PORT=$WEB_PORT
       - API_PORT=$API_PORT
       - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
   api:
-    image: docker.pkg.github.com/olaven/paperpod/api:latest
+    image: docker.pkg.github.com/olaven/paperpod/api:fix-automatic-tagging-of-docker-images
     environment:
       - PORT=$API_PORT
       - JWT_SECRET=$JWT_SECRET
@@ -19,7 +19,7 @@ services:
       - MONGODB_PORT=$MONGODB_PORT # 27017
       - GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
   authentication:
-    image: docker.pkg.github.com/olaven/paperpod/authentication:latest
+    image: docker.pkg.github.com/olaven/paperpod/authentication:fix-automatic-tagging-of-docker-images
     environment:
       - PORT=$AUTHENTICATION_PORT
       - JWT_SECRET=$JWT_SECRET
@@ -29,4 +29,4 @@ services:
       - MONGODB_HOST=$MONGODB_HOST
       - MONGODB_PORT=$MONGODB_PORT # 27017
   web:
-    image: docker.pkg.github.com/olaven/paperpod/web:latest
+    image: docker.pkg.github.com/olaven/paperpod/web:fix-automatic-tagging-of-docker-images

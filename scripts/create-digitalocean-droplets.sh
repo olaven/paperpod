@@ -9,5 +9,5 @@ function create_machine() {
 }
 
 create_machine paperpod-manager 
-create_machine paperpod-worker-1 # add as needed, may be ommited
-create_machine paperpod-worker-2 # add as needed, may be ommited
+#create_machine paperpod-worker-1 # add as needed, may be ommited
+#create_machine paperpod-worker-2 # add as needed, may be ommited

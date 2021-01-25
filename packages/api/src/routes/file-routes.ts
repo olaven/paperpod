@@ -2,7 +2,7 @@ import * as database from "../database/database";
 import { server } from "@paperpod/common";
 import express from "express";
 import { FORBIDDEN } from "node-kall";
-import { convertToAudioStream } from "@paperpod/converter";
+import { getAudioStream } from "@paperpod/converter";
 
 export const fileRoutes = express.Router()
     .get(
@@ -18,8 +18,9 @@ export const fileRoutes = express.Router()
                         .status(FORBIDDEN)
                         .end();
 
-                const stream = await convertToAudioStream(article)
-                //@ts-ignore NOTE: Typedefinition error. `pipe` does work, but is not specified in type definition. 
+                const stream = await getAudioStream(article);
+                console.log(`Got stream: ${stream}`);
+                //@ts-ignore NOTE: Type-error. Pipe does work. 
                 stream.pipe(response)
             })
     );

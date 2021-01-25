@@ -8,4 +8,5 @@ export interface Article {
     text: string,
     publication_timestamp: number,
     added_timestamp: number,
+    storage_uri: string,
 };

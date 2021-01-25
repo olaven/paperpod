@@ -53,10 +53,9 @@ const getHtml = async (url: string) => {
     });
 
     const page = await browser.newPage()
-    await page.goto(url, { 'waitUntil': "networkidle2", timeout: 0 });
-    //await waitTillHTMLRendered(page);
+    await page.goto(url);
 
-    //await page.waitFor("*")
+    await page.waitFor("*")
 
     const html = await page.content()
     await browser.close()

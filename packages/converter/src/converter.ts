@@ -2,48 +2,41 @@ import { models } from "@paperpod/common";
 import { getAudioStream as _getAudioStream, textToAudio, getTextualData, convertToRSSFeed } from "./helpers/helpers";
 
 /**
- * Takes article and returns an audio stream. 
+ * Triggers conversions and points the result to AWS S3
  * @param article 
  */
-export const triggerSpeechConversion = async (article: models.Article): Promise<models.Article> => ({
+export const withStorageUri = async (article: models.Article): Promise<models.Article> => ({
     ...article,
     storage_uri: await textToAudio(article.text, article._id)
-})
+});
 
-/**
- * 
- * @param article 
- */
-export const getAudioStream = _getAudioStream;
 
 
 /**
- * Converts given article url to text, 
+ * Converts given article url to textual data like, text, title, description and author
  * @returns article with extracted text 
  */
-export const convertToText =
-    async (article: {
-        _id: string,
-        owner_id: string,
-        original_url: string,
-        added_timestamp: number,
-        storage_uri: string,
-    }): Promise<models.Article> => {
-
-        const { text, title, author, description, publication_timestamp } = await getTextualData(article.original_url);
-        return {
-            ...article,
-            text,
-            title,
-            author,
-            description,
-            publication_timestamp
-        }
-    }
+export const withTextualData = async (article: {
+    _id: string,
+    owner_id: string,
+    original_url: string,
+    added_timestamp: number,
+    storage_uri: string,
+}): Promise<models.Article> => ({
+    ...article,
+    ...await getTextualData(article.original_url)
+});
 
 
 /**
  * Convert list of articles to an RSS feed 
  */
-export const convertToRSS = (articles: models.Article[]) =>
-    convertToRSSFeed(articles); 
+export const getRSSFeed = (articles: models.Article[]) =>
+    convertToRSSFeed(articles);
+
+
+/**
+* Download the audio of a given article 
+* @param article 
+*/
+export const getAudioStream = _getAudioStream;

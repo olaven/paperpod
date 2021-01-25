@@ -1,8 +1,8 @@
 import express from 'express'
 import { nanoid } from "nanoid";
 import { server, models } from "@paperpod/common";
-import { convertToText, triggerSpeechConversion } from "@paperpod/converter";
-import { BAD_REQUEST, CREATED, OK } from "node-kall";
+import { withTextualData, withStorageUri } from "@paperpod/converter";
+import { ACCEPTED, BAD_REQUEST, CREATED, OK } from "node-kall";
 import * as database from "../database/database";
 
 const isValidURL = (string: string) => {
@@ -19,17 +19,30 @@ export const articleRoutes = express.Router()
                 .status(BAD_REQUEST)
                 .send("`link` has to be a valid URL");
 
-            const article = await database.articles.persist(
 
-                await triggerSpeechConversion(
-                    //@ts-ignore
-                    await convertToText({
+            /*
+             TODO: 
+             actually waiting for all of this to happen takes a lot of time. 
+             It is much better if the endpoint responds wiht ACCEPTED at once, 
+             and returns the data it does have (e.g. url). 
+
+             The client can then display a "procesing"-mark or something similar 
+             while there's no data available.
+
+             Ideally, the server would ping the client back when converting is done. 
+             */
+
+            const article = await database.articles.persist(
+                await withStorageUri(
+                    await withTextualData({
                         _id: nanoid(),
                         original_url: link,
                         owner_id: user._id,
                         added_timestamp: Date.now(),
+                        storage_uri: null
                     })
-                ));
+                )
+            );
 
             response
                 .status(CREATED)

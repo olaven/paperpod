@@ -1,5 +1,5 @@
-import { models, server } from "@paperpod/common";
-import { getAudioStream, textToAudio, getTextualData, convertToRSSFeed } from "./helpers/helpers";
+import { models } from "@paperpod/common";
+import { getAudioStream as _getAudioStream, textToAudio, getTextualData, convertToRSSFeed } from "./helpers/helpers";
 
 /**
  * Takes article and returns an audio stream. 
@@ -14,8 +14,7 @@ export const triggerSpeechConversion = async (article: models.Article): Promise<
  * 
  * @param article 
  */
-export const getAudioStream = (article: models.Article) =>
-    getAudioStream(article)
+export const getAudioStream = _getAudioStream;
 
 
 /**

@@ -16,7 +16,6 @@ env \
     MONGODB_PASSWORD=$MONGODB_PASSWORD \ # these do not work rn, as no mongo is set
     MONGODB_HOST=$MONGODB_HOST \ # these do not work rn, as no mongo is set
     MONGODB_PORT=$MONGODB_PORT \ # 27017 \ # these do not work rn, as no mongo is set
-    GOOGLE_APPLICATION_CREDENTIALS=service-account.json \ 
     docker stack deploy -c stack.yml paperpod
 
 # export GATEWAY_PORT=8080

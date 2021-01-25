@@ -3,9 +3,9 @@ import { models } from "@paperpod/common";
 import { convertToRSS as _convertToRSS } from "@paperpod/converter";
 
 
-
-export const convertToAudio =
+export const convertToAudioStream =
     async (article: models.Article): Promise<models.Article> => {
+
 
         return article
     }

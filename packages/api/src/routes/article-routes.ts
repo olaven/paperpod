@@ -1,8 +1,8 @@
 import express from 'express'
 import { nanoid } from "nanoid";
 import { server, models } from "@paperpod/common";
-import { convertToAudio, convertToText } from "@paperpod/converter";
-import { BAD_REQUEST, CREATED, NETWORK_AUTHENTICATION_REQUIRED, OK } from "node-kall";
+import { convertToText } from "@paperpod/converter";
+import { BAD_REQUEST, CREATED, OK } from "node-kall";
 import * as database from "../database/database";
 
 const isValidURL = (string: string) => {
@@ -19,19 +19,18 @@ export const articleRoutes = express.Router()
                 .status(BAD_REQUEST)
                 .send("`link` has to be a valid URL");
 
-            //@ts-ignore
-            const article = await database.articles.persist({
-                _id: nanoid(),
-                original_url: link,
-                owner_id: user._id,
-                added_timestamp: Date.now(),
-            });
+            const article = await database.articles.persist(
+                await convertToText({
+                    _id: nanoid(),
+                    original_url: link,
+                    owner_id: user._id,
+                    added_timestamp: Date.now(),
+                })
+            );
 
             response
                 .status(CREATED)
-                .json(
-                    article
-                )
+                .json(article)
         })
     )
     .get("/articles", server.middleware.withAuthentication(async (request, response, user) => {

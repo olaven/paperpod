@@ -23,7 +23,6 @@ This will allow me to give you perks in return for your gratitude!
   * MONGODB_PASSWORD=mongopassword
   * MONGODB_PORT_AUTHENTICATION=5434
   * MONGODB_PORT_API=5433
-  * GOOGLE_APPLICATION_CREDENTIALS=/paperpod/service-account.json 
   * AWS_ACCESS_KEY_ID
   * AWS_SECRET_ACCESS_KEY
 * `docker-compose up -d`

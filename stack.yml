@@ -1,14 +1,14 @@
 version: "3"
 services:
   gateway:
-    image: gateway #TODO: update to actual image path
+    image: docker.pkg.github.com/olaven/paperpod/gateway:main
     environment:
       - PORT=$GATEWAY_PORT
       - WEB_PORT=$WEB_PORT
       - API_PORT=$API_PORT
       - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
   api:
-    image: api #TODO: update to actual image path
+    image: docker.pkg.github.com/olaven/paperpod/api:main
     environment:
       - PORT=$API_PORT
       - JWT_SECRET=$JWT_SECRET
@@ -17,9 +17,8 @@ services:
       - MONGODB_PASSWORD=$MONGODB_PASSWORD
       - MONGODB_HOST=$MONGODB_HOST
       - MONGODB_PORT=$MONGODB_PORT # 27017
-      - GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
   authentication:
-    image: authentication
+    image: docker.pkg.github.com/olaven/paperpod/authentication:main
     environment:
       - PORT=$AUTHENTICATION_PORT
       - JWT_SECRET=$JWT_SECRET
@@ -29,4 +28,4 @@ services:
       - MONGODB_HOST=$MONGODB_HOST
       - MONGODB_PORT=$MONGODB_PORT # 27017
   web:
-    image: web
+    image: docker.pkg.github.com/olaven/paperpod/web:main

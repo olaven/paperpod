@@ -1,7 +1,7 @@
 import express from 'express'
 import { nanoid } from "nanoid";
 import { server, models } from "@paperpod/common";
-import { convertToText } from "@paperpod/converter";
+import { convertToText, triggerSpeechConversion } from "@paperpod/converter";
 import { BAD_REQUEST, CREATED, OK } from "node-kall";
 import * as database from "../database/database";
 
@@ -20,13 +20,16 @@ export const articleRoutes = express.Router()
                 .send("`link` has to be a valid URL");
 
             const article = await database.articles.persist(
-                await convertToText({
-                    _id: nanoid(),
-                    original_url: link,
-                    owner_id: user._id,
-                    added_timestamp: Date.now(),
-                })
-            );
+
+                await triggerSpeechConversion(
+                    //@ts-ignore
+                    await convertToText({
+                        _id: nanoid(),
+                        original_url: link,
+                        owner_id: user._id,
+                        added_timestamp: Date.now(),
+                    })
+                ));
 
             response
                 .status(CREATED)

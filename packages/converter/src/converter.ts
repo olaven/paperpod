@@ -1,12 +1,21 @@
-import { models } from "@paperpod/common";
-import { textToAudio, getTextualData, convertToRSSFeed } from "./helpers/helpers";
+import { models, server } from "@paperpod/common";
+import { helperGetAudioStream, textToAudio, getTextualData, convertToRSSFeed } from "./helpers/helpers";
 
 /**
  * Takes article and returns an audio stream. 
  * @param article 
  */
-export const convertToAudioStream = (article: models.Article) =>
-    textToAudio(article.text) as Promise<ReadableStream<number>>;
+export const triggerSpeechConversion = async (article: models.Article): Promise<models.Article> => ({
+    ...article,
+    storage_uri: await textToAudio(article.text, article._id)
+})
+
+/**
+ * 
+ * @param article 
+ */
+export const getAudioStream = (article: models.Article) =>
+    helperGetAudioStream(article)
 
 
 /**
@@ -19,6 +28,7 @@ export const convertToText =
         owner_id: string,
         original_url: string,
         added_timestamp: number,
+        storage_uri: string,
     }): Promise<models.Article> => {
 
         const { text, title, author, description, publication_timestamp } = await getTextualData(article.original_url);

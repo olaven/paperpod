@@ -1,5 +1,5 @@
 import faker from "faker";
-import { applyTranslateLimit } from "./audio";
+import { limitCharLength } from "./audio";
 
 describe("Functions related to converting text to audio", () => {
 
@@ -14,7 +14,7 @@ describe("Functions related to converting text to audio", () => {
         it("does strip away when too long", () => {
 
             const text = randomString(5000);
-            const applied = applyTranslateLimit(text);
+            const applied = limitCharLength(text);
 
             expect(text.length).toEqual(5000);
             expect(applied.length).toEqual(1500);
@@ -23,14 +23,14 @@ describe("Functions related to converting text to audio", () => {
         it("Does keep the first 1500 characters of array", () => {
 
             const text = randomString(2000);
-            const applied = applyTranslateLimit(text);
+            const applied = limitCharLength(text);
             expect(text.startsWith(applied)).toBe(true);
         });
 
         it("Does not change strings <= 1500 in length", () => {
 
             const text = randomString(1499);
-            const applied = applyTranslateLimit(text);
+            const applied = limitCharLength(text);
 
             expect(text).toEqual(applied);
         });

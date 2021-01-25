@@ -1,28 +1,25 @@
 import { models, server } from "@paperpod/common";
-import { textToAudio, toItemTag, getTextualData, convertToRSSFeed } from "./helpers/helpers";
-
+import { helperGetAudioStream, textToAudio, getTextualData, convertToRSSFeed } from "./helpers/helpers";
 
 /**
- * @requires process.env.GOOGLE_APPLICATION_CREDENTIALS to be defined
- * Converts given text to audio, 
- * uploads it to storage and returns 
- * the updated article 
+ * Takes article and returns an audio stream. 
+ * @param article 
  */
-export const convertToAudio =
-    async (article: models.Article): Promise<models.Article> => {
+export const triggerSpeechConversion = async (article: models.Article): Promise<models.Article> => ({
+    ...article,
+    storage_uri: await textToAudio(article.text, article._id)
+})
 
-        const audio = await textToAudio(article.text);
-
-        const filename = server.utils.article.getFilename(article);
-        await server.storage.upload(audio, "paperpod-articles", filename);
-
-        return article
-    }
+/**
+ * 
+ * @param article 
+ */
+export const getAudioStream = (article: models.Article) =>
+    helperGetAudioStream(article)
 
 
 /**
  * Converts given article url to text, 
- * @requires process.env.GOOGLE_APPLICATION_CREDENTIALS to be defined
  * @returns article with extracted text 
  */
 export const convertToText =
@@ -31,6 +28,7 @@ export const convertToText =
         owner_id: string,
         original_url: string,
         added_timestamp: number,
+        storage_uri: string,
     }): Promise<models.Article> => {
 
         const { text, title, author, description, publication_timestamp } = await getTextualData(article.original_url);

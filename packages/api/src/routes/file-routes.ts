@@ -2,6 +2,7 @@ import * as database from "../database/database";
 import { server } from "@paperpod/common";
 import express from "express";
 import { FORBIDDEN } from "node-kall";
+import { getAudioStream } from "@paperpod/converter";
 
 export const fileRoutes = express.Router()
     .get(
@@ -17,9 +18,9 @@ export const fileRoutes = express.Router()
                         .status(FORBIDDEN)
                         .end();
 
-                const filename = server.utils.article.getFilename(article);
-                const stream = server.storage.downloadStream(filename, "paperpod-articles");
-
-                stream.pipe(response);
+                const stream = await getAudioStream(article);
+                console.log(`Got stream: ${stream}`);
+                //@ts-ignore NOTE: Type-error. Pipe does work. 
+                stream.pipe(response)
             })
     );

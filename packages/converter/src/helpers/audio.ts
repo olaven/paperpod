@@ -1,6 +1,7 @@
-import textToSpeech from "@google-cloud/text-to-speech";
-//import * as Translate from "@google-cloud/translate"
-const { Translate } = require('@google-cloud/translate').v2;
+import { PollyClient, SynthesizeSpeechCommand, StartSpeechSynthesisTaskCommand } from "@aws-sdk/client-polly";
+import { ComprehendClient, DetectDominantLanguageCommand } from "@aws-sdk/client-comprehend";
+import { server } from "@paperpod/common";
+
 
 /**
  * Google Translate has an upper character limit of 
@@ -8,38 +9,50 @@ const { Translate } = require('@google-cloud/translate').v2;
  * <= 1500 characters. 
  * @param text 
  */
-export const applyTranslateLimit = (text: string) =>
+export const limitCharLength = (text: string) =>
     text.length >= 1500 ?
         text.substring(0, 1500) :
         text;
 
 const getLanguage = async (text: string) => {
 
-    console.log("Getting language from text with length", text.length);
-    const [detected] = await new Translate()
-        .detect(
-            applyTranslateLimit(text)
-        )
-    return detected.language;
+    const client = new ComprehendClient({ region: "eu-west-1" });
+
+    const command = new DetectDominantLanguageCommand({
+        Text: limitCharLength(text)
+    });
+    const result = await client.send(command);
+
+    const [language] = result.Languages;
+    return language.LanguageCode
 }
 
+const voiceFromLanguage = (code: string) => ({
+    "en": "Joanna",
+    "no": "Liv"
+})[code]
+
 /**
- * Converts given text to audio data of 
- * spoken text. 
+ * Starts conversion to speech in S3
+ * TODO: Rename 
  * @param text 
  */
-export const textToAudio = async (text: string) => {
+export const textToAudio = async (text: string, keyName: string) => {
 
-    const client = new textToSpeech.TextToSpeechClient();
     const language = await getLanguage(text);
 
-    console.log(`going forwards with full text of length ${text.length}`);
-    const [response] = await client.synthesizeSpeech({
-        //        input: { ssml: text },
-        input: { text },
-        voice: { languageCode: language, ssmlGender: "FEMALE" },
-        audioConfig: { audioEncoding: "MP3", speakingRate: 0.90 },
+    console.log(`Detected language: ${language}`);
+
+    const command = new StartSpeechSynthesisTaskCommand({
+        Text: text,
+        OutputFormat: "mp3",
+        VoiceId: voiceFromLanguage(language),
+        OutputS3BucketName: "paperpod",
+        OutputS3KeyPrefix: keyName,
+        //OutputS3KeyPrefix
     });
 
-    return response.audioContent as Uint8Array;
+    const client = new PollyClient({ region: "eu-north-1" });
+    const data = await client.send(command);
+    return data.SynthesisTask.OutputUri
 }

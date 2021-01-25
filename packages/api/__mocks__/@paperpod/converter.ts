@@ -1,9 +1,9 @@
 import faker from "faker"
 import { models } from "@paperpod/common";
-import { convertToRSS as _convertToRSS } from "@paperpod/converter";
+import { getRSSFeed as _getRSSFeed } from "@paperpod/converter";
 
 
-export const triggerSpeechConversion =
+export const withStorageUri =
     async (article: models.Article): Promise<models.Article> => ({
         ...article,
         storage_uri: faker.internet.url()
@@ -12,7 +12,7 @@ export const triggerSpeechConversion =
 export const getAudioStream =
     async () => new ReadableStream()
 
-export const convertToText =
+export const withTextualData =
     async (article: models.Article): Promise<models.Article> => {
 
         return ({
@@ -22,4 +22,4 @@ export const convertToText =
     }
 
 //NOTE: not mocking, as this does not call any external API's 
-export const convertToRSS = _convertToRSS; 
+export const getRSSFeed = _getRSSFeed; 

@@ -12,7 +12,14 @@ const date = (extracted: any) =>
         undefined
 
 export const getTextualData =
-    async (url: string): Promise<Partial<models.Article>> => {
+    async (url: string): Promise<{
+        text: string,
+        title: string,
+        author: string,
+        description:
+        string,
+        publication_timestamp: number
+    }> => {
 
 
         const html = await getHtml(

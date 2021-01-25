@@ -3,13 +3,23 @@ import { ComprehendClient, DetectDominantLanguageCommand } from "@aws-sdk/client
 import { server } from "@paperpod/common";
 
 
-const getLanguage = async (text: string) => {
+/**
+ * Google Translate has an upper character limit of 
+ * 5000 characters. This function strips all characters
+ * <= 1500 characters. 
+ * @param text 
+ */
+export const limitCharLength = (text: string) =>
+    text.length >= 1500 ?
+        text.substring(0, 1500) :
+        text;
 
+const getLanguage = async (text: string) => {
 
     const client = new ComprehendClient({ region: "eu-west-1" });
 
     const command = new DetectDominantLanguageCommand({
-        Text: text
+        Text: limitCharLength(text)
     });
     const result = await client.send(command);
 

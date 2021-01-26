@@ -1,13 +1,12 @@
-name: Publish to docker hub
+name: Publish to Docker
 
 on:
   push:
     branches:
       - master
-      - research/digitalocean-deployment
 
 jobs:
-  publish-gateway-to-docker-hub:
+  publish-gateway:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,7 +34,7 @@ jobs:
           #   arg2=value2
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-  publish-api-to-docker-hub:
+  publish-api:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -63,7 +62,7 @@ jobs:
           #   arg2=value2
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-  publish-authentication-to-docker-hub:
+  publish-authentication:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -91,7 +90,7 @@ jobs:
           #   arg2=value2
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-  publish-web-to-docker-hub:
+  publish-web:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

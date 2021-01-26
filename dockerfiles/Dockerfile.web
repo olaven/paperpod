@@ -9,7 +9,11 @@ COPY ./packages/common /app/packages/common
 COPY ./packages/web /app/packages/web
 
 RUN yarn install  
+<<<<<<< HEAD
 RUN yarn build
 
+=======
+RUN yarn build 
+>>>>>>> main
 ENV NODE_ENV production
 CMD ["yarn", "web", "start"]

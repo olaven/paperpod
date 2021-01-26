@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM buildkite/puppeteer
 RUN apt-get install chromium-browser
 
 WORKDIR /app

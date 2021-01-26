@@ -1,10 +1,11 @@
+# run with: env GATEWAY_PORT=8080 WEB_PORT=3000 API_PORT=8081 AUTHENTICATION_PORT=8082 JWT_SECRET="jwt-token-secret-stack" MONGODB_NAME="SOMEMONONAME"MONGODB_USERNAME="SOMEMONGOUSERNAME" MONGODB_PASSWORD="SOMEMONGOPASSWORD" MONGODB_HOST="SOMEMOGNOHST" MONGODB_PORT=27017 AWS_ACCESS_KEY_ID="SOME ACCESS KEY" AWS_SECRET_ACCESS_KEY="SOME SECRET KEY" docker stack deploy -c stack.yml paperpod
 version: "3"
 services:
   gateway:
     command: yarn gateway start
     image: olaven/paperpod-gateway
     ports:
-      - 8080:8080
+      - $GATEWAY_PORT:$GATEWAY_PORT
     environment:
       - PORT=$GATEWAY_PORT
       - WEB_PORT=$WEB_PORT

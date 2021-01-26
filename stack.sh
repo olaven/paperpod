@@ -11,10 +11,11 @@ env \
     API_PORT=8081 \
     AUTHENTICATION_PORT=8082 \
     JWT_SECRET="JWT SECRET - Generate this randomly" \
-    MONGODB_NAME="Test database name" \ 
-    MONGODB_USERNAME="test database username" \ 
-    MONGODB_PASSWORD="test database password" \ 
-    MONGODB_HOST="test database host" \ 
-    MONGODB_PORT="test database port" \ 
-    GOOGLE_APPLICATION_CREDENTIALS=service-account.json \ 
+    MONGODB_NAME=$MONGODB_NAME \ # these do not work rn, as no mongo is set
+    MONGODB_USERNAME=$MONGODB_USERNAME \ # these do not work rn, as no mongo is set
+    MONGODB_PASSWORD=$MONGODB_PASSWORD \ # these do not work rn, as no mongo is set
+    MONGODB_HOST=$MONGODB_HOST \ # these do not work rn, as no mongo is set
+    MONGODB_PORT=$MONGODB_PORT \ # 27017 \ # these do not work rn, as no mongo is set
+    AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+    AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
     docker stack deploy -c stack.yml paperpod

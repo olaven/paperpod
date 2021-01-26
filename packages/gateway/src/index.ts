@@ -7,7 +7,7 @@ const withProxies = (
     app = express()
 ) => {
     pairs.forEach(
-        ([path, target]) => createProxy(app)(path, target)); 
+        ([path, target]) => createProxy(app)(path, target));
     return app;
 }
 
@@ -24,6 +24,10 @@ export const app = withProxies(
     ],
     server.app
         .appWithEnvironment()
-)
+).use((_, __, next) => {
+
+    console.log("Got something");
+    next();
+})
 
 server.boot("", app);

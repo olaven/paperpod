@@ -23,6 +23,7 @@ export const article = (template: Partial<models.Article> = {}): models.Article 
     original_url: faker.internet.url(),
     publication_timestamp: faker.date.past(3).getTime(),
     added_timestamp: faker.date.recent(2).getTime(),
+    storage_uri: faker.internet.url(),
     ...template,
 });
 

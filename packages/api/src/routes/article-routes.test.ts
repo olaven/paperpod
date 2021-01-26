@@ -14,7 +14,7 @@ describe("The api for articles", () => {
         supertest(app)
             .post("/articles")
             .set("Authorization", "Bearer " + token)
-            .send(payload); 
+            .send(payload);
 
     const get = (token: string) =>
         supertest(app)
@@ -24,24 +24,20 @@ describe("The api for articles", () => {
     describe("the POST-endpoint for articles", () => {
 
         jest.mock("@paperpod/converter", () => ({
-            convertToAudio: (article: models.Article) => {
-                console.log("INSIDE AUDIO CONVERTER MOCK");
-                return article
-            },
             convertToText: (article: models.Article) => {
-                
+
                 console.log("INSIDE AUDIO TEXT MOCK");
-                return article; 
+                return article;
             },
-        })); 
+        }));
 
         it("Does respond with something other than NOT_IMPLEMENTED", async () => {
 
-            const { status } = await supertest(app).post("/articles"); 
+            const { status } = await supertest(app).post("/articles");
             expect(status).not.toEqual(NOT_IMPLEMENTED);
         });
 
-        it("Does respond with UNAUTHORIZED if no token is passed",async  () => {
+        it("Does respond with UNAUTHORIZED if no token is passed", async () => {
 
             const { status } = await post(null)
             expect(status).toEqual(UNAUTHORIZED);
@@ -49,42 +45,42 @@ describe("The api for articles", () => {
 
         it("Does respond with 201 if a valid request is made", async () => {
 
-            const token = jwt.sign(test.mocks.user()); 
-            const { status } = await post(token); 
+            const token = jwt.sign(test.mocks.user());
+            const { status } = await post(token);
             expect(status).toEqual(CREATED);
         });
 
-        it("Does return an article on valid request",async  () => {
-            
-            const token = jwt.sign(test.mocks.user()); 
-            const { body } = await post(token);  
+        it("Does return an article on valid request", async () => {
+
+            const token = jwt.sign(test.mocks.user());
+            const { body } = await post(token);
 
             expect(body._id).toBeDefined();
             expect(body.original_url).toBeDefined();
             expect(body.text).toBeDefined();
             expect(body.owner_id).toBeDefined();
-        }); 
+        });
 
         it("Does return the new article after creation", async () => {
 
-            const token = jwt.sign(test.mocks.user()); 
-            const before = await (await get(token)).body as models.Article[]; 
+            const token = jwt.sign(test.mocks.user());
+            const before = await (await get(token)).body as models.Article[];
 
             const payload = test.mocks.articlePayload();
-            await post(token, payload); 
+            await post(token, payload);
 
-            const after = await (await get(token)).body as models.Article[]; 
+            const after = await (await get(token)).body as models.Article[];
 
-            const inBefore = before.find(article => article.original_url === payload.link); 
-            const inAfter = after.find(article => article.original_url === payload.link); 
+            const inBefore = before.find(article => article.original_url === payload.link);
+            const inAfter = after.find(article => article.original_url === payload.link);
 
-            expect(inBefore).toBeFalsy(); 
-            expect(inAfter).toBeTruthy(); 
+            expect(inBefore).toBeFalsy();
+            expect(inAfter).toBeTruthy();
         });
 
         it("Does not accept an article if it's not containting a valid link", async () => {
 
-            const token = jwt.sign(test.mocks.user()); 
+            const token = jwt.sign(test.mocks.user());
             post(token, {
                 link: "not-a-url"
             }).expect(BAD_REQUEST);
@@ -99,10 +95,10 @@ describe("The api for articles", () => {
             expect(status).toEqual(UNAUTHORIZED);
         });
 
-        it("responds with OK if user is logged in",async  () => {
+        it("responds with OK if user is logged in", async () => {
 
             const token = jwt.sign(test.mocks.user())
-            const { status }  = await get(token)
+            const { status } = await get(token)
             expect(status).toEqual(OK);
         });
     })

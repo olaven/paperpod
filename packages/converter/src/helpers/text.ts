@@ -12,7 +12,14 @@ const date = (extracted: any) =>
         undefined
 
 export const getTextualData =
-    async (url: string): Promise<Partial<models.Article>> => {
+    async (url: string): Promise<{
+        text: string,
+        title: string,
+        author: string,
+        description:
+        string,
+        publication_timestamp: number
+    }> => {
 
 
         const html = await getHtml(
@@ -46,10 +53,9 @@ const getHtml = async (url: string) => {
     });
 
     const page = await browser.newPage()
-    await page.goto(url, { 'waitUntil': "networkidle2" });
-    //await waitTillHTMLRendered(page);
+    await page.goto(url);
 
-    //await page.waitFor("*")
+    await page.waitFor("*")
 
     const html = await page.content()
     await browser.close()

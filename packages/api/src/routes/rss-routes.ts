@@ -1,6 +1,6 @@
 import express from "express";
 import * as database from "../database/database";
-import { convertToRSS } from "@paperpod/converter";
+import { getRSSFeed } from "@paperpod/converter";
 import { OK, UNAUTHORIZED } from "node-kall";
 
 
@@ -24,7 +24,7 @@ export const rssRoutes = express.Router()
         //TODO: Check if valid subscription 
 
         const articles = await database.articles.getByOwner(user_id);
-        const feed = convertToRSS(articles);
+        const feed = getRSSFeed(articles);
 
         return response
             .status(OK)

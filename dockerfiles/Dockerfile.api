@@ -1,4 +1,5 @@
 FROM node:10-alpine
+RUN apt-get install chromium-browser
 
 WORKDIR /app
 

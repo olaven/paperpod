@@ -1,5 +1,4 @@
 FROM buildkite/puppeteer
-RUN apt-get install chromium-browser
 
 WORKDIR /app
 

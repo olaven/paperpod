@@ -1,16 +1,9 @@
-#Fikse services: 
-# * ha med typedefs og typescript i prod 
-# * legge in `environment:`-entries i stack.yml
-# * eksportere variablene som trengs her  
-
-## TODO: Figure out how to pick up these variables from Github Secrets 
-
 env \
     GATEWAY_PORT=8080 \
     WEB_PORT=3000 \
     API_PORT=8081 \
     AUTHENTICATION_PORT=8082 \
-    JWT_SECRET="JWT SECRET - Generate this randomly" \
+    JWT_SECRET="jwt-token-secret-stack" \
     MONGODB_NAME=$MONGODB_NAME \ # these do not work rn, as no mongo is set
     MONGODB_USERNAME=$MONGODB_USERNAME \ # these do not work rn, as no mongo is set
     MONGODB_PASSWORD=$MONGODB_PASSWORD \ # these do not work rn, as no mongo is set

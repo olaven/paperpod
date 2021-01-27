@@ -37,7 +37,7 @@ const voiceFromLanguage = (code: string) => ({
  * TODO: Rename 
  * @param text 
  */
-export const textToAudio = async (text: string, keyName: string) => {
+export const textToAudio = async (text: string) => {
 
     const language = await getLanguage(text);
 
@@ -48,8 +48,6 @@ export const textToAudio = async (text: string, keyName: string) => {
         OutputFormat: "mp3",
         VoiceId: voiceFromLanguage(language),
         OutputS3BucketName: "paperpod",
-        OutputS3KeyPrefix: keyName,
-        //OutputS3KeyPrefix
     });
 
     const client = new PollyClient({ region: "eu-north-1" });

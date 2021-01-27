@@ -48,15 +48,17 @@ export const toImageTag = () =>
     tag("title", "Paperpod Feed")
   ]);
 
-export const toItemTag = (article: models.Article) =>
-  tag(
+export const toItemTag = (article: models.Article) => {
+  console.log("converting article", article)
+  return tag(
     "item",
     [
-      tag("title", article.title),
+      tag("title", `${article.title}`),
       tag("link", `https://paperpod.fm/api/files/${article._id}`),
-      tag("description", article.description),
+      tag("description", article.description || "TODO: description"),
       tag("guid", `${article._id}`),
-      tag("pubDate", new Date(article.publication_timestamp).toUTCString()), //compatible with RFC822
-      tag("author", article.author),
+      tag("pubDate", new Date(article.added_timestamp).toUTCString()), //compatible with RFC822
+      tag("author", article.author.toString() || "TODO Default author"),
     ]
   )
+}

@@ -1,5 +1,5 @@
 import { test } from "@paperpod/common";
-import { getById, persist } from "./articles";
+import { getById, persist, deleteById } from "./articles";
 describe("The database interface for articles", () => {
 
     describe("Getting articles by id", () => {
@@ -29,6 +29,21 @@ describe("The database interface for articles", () => {
 
             expect(persisted).toBeDefined();
             expect(persisted._id).toBeDefined();
+        });
+    });
+
+    describe("Deleting an article by id", () => {
+
+        it("Does actually remove on delete", async () => {
+
+            const persisted = await persist(test.mocks.article());
+            const before = await getById(persisted._id);
+            expect(persisted._id).toEqual(before._id);
+
+            await deleteById(before._id);
+
+            const after = await getById(persisted._id);
+            expect(after).toBeNull();
         })
     });
 });

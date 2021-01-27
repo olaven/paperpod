@@ -4,6 +4,8 @@ function create_machine() {
         --driver digitalocean \
         --digitalocean-region ams3 \
         --digitalocean-access-token $DOTOKEN \
+        --digitalocean-image ubuntu-18-04-x64 \
+        --digitalocean-size s-2vcpu-2gb \
         --engine-install-url https://releases.rancher.com/install-docker/19.03.9.sh \
         $1; 
 }

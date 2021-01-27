@@ -101,6 +101,23 @@ describe("The authentication endpoint for users", () => {
             expect(status).toEqual(CREATED);
         });
 
+        it("Stores user with the lowercase version of their email adress", async () => {
+
+
+            const email = `FlAkYcAsE${faker.internet.email()}`;
+            await signUp({
+                ...test.mocks.credentials(),
+                email
+            });
+
+            const withoutLowerCase = await database.users.getByEmail(email);
+            const lowercase = await database.users.getByEmail(email.toLowerCase());
+
+            expect(withoutLowerCase).toBeNull();
+            expect(lowercase).toBeDefined()
+            expect(lowercase.email).toEqual(email.toLowerCase());
+        })
+
         it("Returns a token containint the correct user on signup", async () => {
 
             const credentials = test.mocks.credentials();

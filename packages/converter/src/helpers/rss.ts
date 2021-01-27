@@ -58,7 +58,7 @@ export const toItemTag = (article: models.Article) => {
       tag("description", article.description || "TODO: description"),
       tag("guid", `${article._id}`),
       tag("pubDate", new Date(article.added_timestamp).toUTCString()), //compatible with RFC822
-      tag("author", article.author.toString() || "TODO Default author"),
+      tag("author", article.author || "TODO Default author"),
     ]
   )
 }

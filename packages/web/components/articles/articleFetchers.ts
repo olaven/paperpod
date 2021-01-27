@@ -1,5 +1,5 @@
 import { models } from "@paperpod/common";
-import { get, post } from "node-kall";
+import { del, get, post } from "node-kall";
 import { bearer } from "../../helpers/bearer";
 
 export const postArticle = (article: models.ArticlePayload, token: string) =>
@@ -9,9 +9,14 @@ export const postArticle = (article: models.ArticlePayload, token: string) =>
         bearer(token),
     );
 
+export const deleteArticle = (article: models.Article, token: string) =>
+    del<models.ArticlePayload, null>(
+        `/api/articles/${article._id}`,
+        bearer(token),
+    );
 
 export const getArticles = (token: string) =>
     get<models.Article[]>(
         "/api/articles",
-        bearer(token), 
+        bearer(token),
     )

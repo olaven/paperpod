@@ -61,7 +61,7 @@ describe("Conversion from articles to RSS", () => {
             ["link", article => `https://paperpod.fm/api/files/${article._id}`],
             ["description", article => article.description],
             ["guid", article => article._id],
-            ["pubDate", article => new Date(article.publication_timestamp).toUTCString()],
+            ["pubDate", article => new Date(article.added_timestamp).toUTCString()],
             ["author", article => article.author],
         ]);
     });

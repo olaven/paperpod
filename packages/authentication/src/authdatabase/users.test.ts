@@ -1,3 +1,4 @@
+import faker from "faker";
 import { test } from "@paperpod/common";
 import { insert, getByEmail } from "./users";
 

@@ -7,7 +7,7 @@ import { getAudioStream as _getAudioStream, textToAudio, getTextualData, convert
  */
 export const withStorageUri = async (article: models.Article): Promise<models.Article> => ({
     ...article,
-    storage_uri: await textToAudio(article.text, article._id)
+    storage_uri: await textToAudio(article.text)
 });
 
 
@@ -31,8 +31,10 @@ export const withTextualData = async (article: {
 /**
  * Convert list of articles to an RSS feed 
  */
-export const getRSSFeed = (articles: models.Article[]) =>
-    convertToRSSFeed(articles);
+export const getRSSFeed = (articles: models.Article[]) => {
+    console.log("Going to convert", articles);
+    return convertToRSSFeed(articles);
+}
 
 
 /**

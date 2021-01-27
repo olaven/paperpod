@@ -1,4 +1,3 @@
-import { models } from "@paperpod/common";
 import unfluff from "unfluff";
 import puppeteer from "puppeteer";
 
@@ -31,7 +30,7 @@ export const getTextualData =
         return {
             text: extracted.text(),
             title: extracted.title(),
-            author: extracted.author(),
+            author: extracted.author().join(", "),
             description: extracted.description(),
             publication_timestamp: date(extracted),
         }

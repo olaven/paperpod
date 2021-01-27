@@ -6,7 +6,7 @@ const withUsers = server.database.withCollection<models.User>("users");
 export const getByEmail = (email: string) =>
     withUsers(collection =>
         collection.findOne({
-            email: email
+            email
         })
     );
 

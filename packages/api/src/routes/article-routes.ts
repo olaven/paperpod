@@ -2,7 +2,7 @@ import express from 'express'
 import { nanoid } from "nanoid";
 import { server, models } from "@paperpod/common";
 import { withTextualData, withStorageUri } from "@paperpod/converter";
-import { ACCEPTED, BAD_REQUEST, CREATED, OK } from "node-kall";
+import { BAD_REQUEST, CREATED, OK, UNAUTHORIZED, NO_CONTENT } from "node-kall";
 import * as database from "../database/database";
 
 const isValidURL = (string: string) => {
@@ -54,3 +54,20 @@ export const articleRoutes = express.Router()
         const articles = await database.articles.getByOwner(user._id);
         response.status(OK).json(articles);
     }))
+    .delete("/articles/:id", server.middleware.withAuthentication(async (request, response, user) => {
+
+        const id = request.params.id;
+
+        if (!id)
+            return response.status(BAD_REQUEST).end();
+
+        const article = await database.articles.getById(id);
+
+
+        if (!article || article.owner_id !== user._id)
+            return response.status(UNAUTHORIZED).end();
+
+        await database.articles.deleteById(id);
+        return response.status(NO_CONTENT).end()
+    }));
+

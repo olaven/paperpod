@@ -4,12 +4,12 @@ import { models } from "..";
 //FIXME: separate test utils to separate package. This makes it possible to not include it (and its dependencies like faker) in production.
 export const user = (): models.User => ({
     _id: faker.random.uuid(),
-    email: faker.internet.email(),
+    email: faker.internet.email().toLowerCase(),
     password_hash: faker.random.alpha(),
 });
 
 export const credentials = (): models.UserCredentials => ({
-    email: faker.internet.email(),
+    email: faker.internet.email().toLowerCase(),
     password: faker.internet.password(),
 });
 

@@ -9,6 +9,13 @@ export const getByOwner = (owner_id: string) =>
         ).toArray()
     )
 
+export const deleteById = (_id: string) =>
+    withArticles<any>(collection =>
+        collection.deleteOne({
+            _id
+        })
+    );
+
 /* export const getById = (_id: string) =>
     withArticles(collection =>
         collection.findOne({
@@ -29,11 +36,6 @@ export const getByOriginalUrlAndOwner = (original_url: string, owner_id: string)
         })
     );
 
-//FIXME: delete me 
-export const getAll = () =>
-    withArticles<models.Article[]>(collection =>
-        collection.find({}).toArray()
-    )
 
 export const persist = (article: models.Article) =>
     withArticles(

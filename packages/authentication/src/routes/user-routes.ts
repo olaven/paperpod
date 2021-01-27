@@ -10,7 +10,7 @@ const credentialsAreValid = async ({ email, password }: models.UserCredentials) 
 
     if (!email || !password) return false;
 
-    const user = await database.users.getByEmail(email);
+    const user = await database.users.getByEmail(email.toLowerCase());
     const passwordEqual = await hash.compare(password, user?.password_hash);
 
     return user && passwordEqual;
@@ -21,9 +21,15 @@ export const userRoutes = express.Router()
     .post("/users/sessions", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
+        console.log(`
+            Got credentials: 
+            ${credentials.email}
+            ${credentials.password}
+        `)
         if (await credentialsAreValid(credentials)) {
 
-            const user = await database.users.getByEmail(credentials.email);
+
+            const user = await database.users.getByEmail(credentials.email.toLowerCase());
             const token = server.jwt.sign(user);
 
             return response
@@ -79,7 +85,7 @@ export const userRoutes = express.Router()
 
         const user = await database.users.insert({
             _id: nanoid(),
-            email: credentials.email,
+            email: credentials.email.toLowerCase(),
             password_hash: await hash.hash(credentials.password)
         });
 

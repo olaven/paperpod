@@ -1,5 +1,5 @@
 import faker from "faker";
-import { limitCharLength } from "./audio";
+import { limitCharLength, voiceFromLanguage } from "./audio";
 
 describe("Functions related to converting text to audio", () => {
 
@@ -33,6 +33,50 @@ describe("Functions related to converting text to audio", () => {
             const applied = limitCharLength(text);
 
             expect(text).toEqual(applied);
+        });
+    });
+
+    describe("Mapping between langauge code and voice", () => {
+
+        it("Does get correct voide for a given language", () => {
+
+            [
+                ["en", "Joanna"],
+                ["no", "Liv"],
+                ["ar", "Zeina"],
+                ["zh", "Zhiyu"],
+                ["da", "Naja"],
+                ["nl", "Lotte"],
+                ["fr", "Léa"],
+                ["de", "Marlene"],
+                ["hi", "Aditi"],
+                ["is", "Dóra"],
+                ["it", "Carla"],
+                ["ja", "Mizuki"],
+                ["ko", "Seoyeon"],
+                ["pl", "Ewa"],
+                ["pt", "Camila"],
+                ["ro", "Carmen"],
+                ["ru", "Tatyana"],
+                ["es", "Conchita"],
+                ["sv", "Astrid"],
+                ["tr", "Filiz"],
+                ["cy", "Gwyneth"],
+            ].forEach(([code, voice]) => {
+
+                expect(
+                    voiceFromLanguage(code)
+                ).toEqual(voice)
+            });
+        });
+
+        it("Does deafult to english", () => {
+
+            expect(
+                voiceFromLanguage(
+                    faker.lorem.word()
+                )
+            ).toEqual("en")
         });
     });
 })

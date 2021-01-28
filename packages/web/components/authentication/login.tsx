@@ -1,4 +1,4 @@
-import { models } from "@paperpod/common";
+import { models, validators } from "@paperpod/common";
 import { CREATED, post } from "node-kall";
 import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
@@ -42,7 +42,16 @@ export const Login = () => {
         }}
       />
 
-      <button onClick={onLogin}>Log in</button>
+      <button
+        disabled={!validators.validatePassword(password)}
+        onClick={onLogin}
+      >
+        Log in
+      </button>
+
+      {password && !validators.validatePassword(password) && <p color="red">
+        Your passis not strong enough
+      </p>}
     </>
   );
 };

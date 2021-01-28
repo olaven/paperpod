@@ -3,6 +3,7 @@ import { CREATED, post } from "node-kall";
 import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 
+
 export const Login = () => {
   const { setToken, user } = useContext(UserContext);
   const [email, setEmail] = useState<string>(null);
@@ -42,7 +43,11 @@ export const Login = () => {
         }}
       />
 
-      <button onClick={onLogin}>Log in</button>
+      <button
+        onClick={onLogin}
+      >
+        Log in
+      </button>
     </>
   );
 };

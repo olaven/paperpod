@@ -10,7 +10,7 @@ export const user = (): models.User => ({
 
 export const credentials = (): models.UserCredentials => ({
     email: faker.internet.email().toLowerCase(),
-    password: faker.internet.password(),
+    password: faker.internet.password(100),
 });
 
 export const article = (template: Partial<models.Article> = {}): models.Article => ({

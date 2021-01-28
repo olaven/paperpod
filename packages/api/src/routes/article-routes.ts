@@ -1,6 +1,7 @@
 import express from 'express'
 import { nanoid } from "nanoid";
-import { server, models } from "@paperpod/common";
+import { models } from "@paperpod/common";
+import { middleware } from "@paperpod/server";
 import { withTextualData, withStorageUri } from "@paperpod/converter";
 import { BAD_REQUEST, CREATED, OK, UNAUTHORIZED, NO_CONTENT } from "node-kall";
 import * as database from "../database/database";
@@ -11,7 +12,7 @@ const isValidURL = (string: string) => {
 };
 
 export const articleRoutes = express.Router()
-    .post("/articles", server.middleware.withAuthentication(
+    .post("/articles", middleware.withAuthentication(
         async (request, response, user) => {
 
             const { link } = request.body as models.ArticlePayload;
@@ -49,12 +50,12 @@ export const articleRoutes = express.Router()
                 .json(article)
         })
     )
-    .get("/articles", server.middleware.withAuthentication(async (request, response, user) => {
+    .get("/articles", middleware.withAuthentication(async (request, response, user) => {
 
         const articles = await database.articles.getByOwner(user._id);
         response.status(OK).json(articles);
     }))
-    .delete("/articles/:id", server.middleware.withAuthentication(async (request, response, user) => {
+    .delete("/articles/:id", middleware.withAuthentication(async (request, response, user) => {
 
         const id = request.params.id;
 

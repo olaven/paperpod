@@ -1,7 +1,7 @@
 import express from "express"
 import faker from "faker";
 import { models, test } from "@paperpod/common";
-import { jwt } from "@paperpod/common/src/server/server";
+import { jwt } from "@paperpod/server";
 import * as database from "../authdatabase/authdatabase";
 import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT, FORBIDDEN } from "node-kall";
 import supertest from "supertest";
@@ -20,6 +20,7 @@ describe("The authentication endpoint for users", () => {
     const extractBearerToken = async (test: supertest.Test) => {
 
         const { body: { token } } = await test;
+
         return token;
     }
 
@@ -118,13 +119,14 @@ describe("The authentication endpoint for users", () => {
             expect(lowercase.email).toEqual(email.toLowerCase());
         })
 
-        it("Returns a token containint the correct user on signup", async () => {
+        it("Returns a token containing the correct user on signup", async () => {
 
             const credentials = test.mocks.credentials();
             const response = await signUp(credentials);
 
             const token = response.body.token;
-
+            expect(response.body.token).toBeDefined();
+            expect(response.body.token).not.toBeNull()
             //NOTE: assumes test JWT_SECRET secret is present and same when creating and reading here
             const parsed = jwt.decode<models.User>(token);
             expect(parsed.email).toEqual(credentials.email);
@@ -153,7 +155,7 @@ describe("The authentication endpoint for users", () => {
             expect(user.email).toEqual(credentials.email);
         });
 
-        it("Does create a user with and id", async () => {
+        it("Does create a user with an id", async () => {
 
             const credentials = test.mocks.credentials();
             const { status } = await signUp(credentials)
@@ -195,6 +197,47 @@ describe("The authentication endpoint for users", () => {
 
             const secondResponse = await signUp(credentials)
             expect(secondResponse.status).toEqual(CONFLICT);
+        });
+
+        it("Returns BAD_REQUEST on users that have passwords shorter than 8 characters", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alphaNumeric(7),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+
+        it("returns BAD_REQUEST on users that have passwords without lowercase letters", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alphaNumeric(80).toLowerCase(),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+
+        it("returns BAD_REQUEST on users that have passwords without uppercase letters", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alphaNumeric(80).toUpperCase(),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+
+
+        it("returns BAD_REQUEST on users that don't have numbers", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alpha({ count: 50 }),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
         });
     });
 
@@ -316,3 +359,4 @@ describe("The authentication endpoint for users", () => {
         });
     });
 });
+

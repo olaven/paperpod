@@ -1,7 +1,7 @@
 import express from "express";
+import { models } from "@paperpod/common";
 import { UNAUTHORIZED, FORBIDDEN } from "node-kall";
 import * as jwt from "../jwt/jwt";
-import { models } from "../..";
 
 const getBearerToken = (request: express.Request) =>
     request.headers.authorization?.replace("Bearer ", "");

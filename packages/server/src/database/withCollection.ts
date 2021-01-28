@@ -24,7 +24,7 @@ const getDatabaseName = () =>
 export const withCollection = <T>(collection: string) =>
     async <G = T>(action: (collection: Collection<T>) => Promise<G>) => {
 
-        const client = await MongoClient.connect(connectionString(), {});
+        const client = await MongoClient.connect(connectionString(), { useUnifiedTopology: true });
         const database = client.db(
             getDatabaseName()
         );

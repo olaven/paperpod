@@ -1,6 +1,5 @@
-import { PollyClient, SynthesizeSpeechCommand, StartSpeechSynthesisTaskCommand } from "@aws-sdk/client-polly";
+import { PollyClient, StartSpeechSynthesisTaskCommand } from "@aws-sdk/client-polly";
 import { ComprehendClient, DetectDominantLanguageCommand } from "@aws-sdk/client-comprehend";
-import { server } from "@paperpod/common";
 
 
 /**

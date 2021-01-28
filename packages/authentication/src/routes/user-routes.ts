@@ -91,6 +91,7 @@ export const userRoutes = express.Router()
         });
 
         const token = jwt.sign(user);
+        console.log(`Returning token ${token} on POST`);
 
         return response
             .status(CREATED)

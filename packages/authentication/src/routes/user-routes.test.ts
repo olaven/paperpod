@@ -118,13 +118,14 @@ describe("The authentication endpoint for users", () => {
             expect(lowercase.email).toEqual(email.toLowerCase());
         })
 
-        it("Returns a token containint the correct user on signup", async () => {
+        it("Returns a token containing the correct user on signup", async () => {
 
             const credentials = test.mocks.credentials();
             const response = await signUp(credentials);
 
             const token = response.body.token;
-
+            expect(response.body.token).toBeDefined();
+            expect(response.body.token).not.toBeNull()
             //NOTE: assumes test JWT_SECRET secret is present and same when creating and reading here
             const parsed = jwt.decode<models.User>(token);
             expect(parsed.email).toEqual(credentials.email);

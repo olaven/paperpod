@@ -1,5 +1,3 @@
-
-
 /**
  * Validates the strenth of a password
  * * Minimum eight characters

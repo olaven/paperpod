@@ -3,11 +3,15 @@ import { CREATED, post } from "node-kall";
 import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";
 
+
 export const Login = () => {
   const { setToken, user } = useContext(UserContext);
   const [email, setEmail] = useState<string>(null);
   const [password, setPassword] = useState<string>(null);
 
+  /* const validators = {
+    validatePassword: (p: string) => { }
+  } */
   const onLogin = async () => {
     const [status, response] = await post<
       models.UserCredentials,
@@ -43,13 +47,13 @@ export const Login = () => {
       />
 
       <button
-        disabled={!validators.validatePassword(password)}
+        disabled={password && password !== null && !validators.validatePassword(password)}
         onClick={onLogin}
       >
         Log in
       </button>
 
-      {password && !validators.validatePassword(password) && <p color="red">
+      {password && password !== null && !validators.validatePassword(password) && <p color="red">
         Your passis not strong enough
       </p>}
     </>

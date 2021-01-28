@@ -27,10 +27,33 @@ const getLanguage = async (text: string) => {
     return language.LanguageCode
 }
 
-const voiceFromLanguage = (code: string) => ({
+/*
+language codes: https://docs.aws.amazon.com/comprehend/latest/dg/how-languages.html
+voices: https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
+*/
+export const voiceFromLanguage = (code: string) => ({
     "en": "Joanna",
-    "no": "Liv"
-})[code]
+    "no": "Liv",
+    "ar": "Zeina",
+    "zh": "Zhiyu",
+    "da": "Naja", //Mads 
+    "nl": "Lotte", //Ruben 
+    "fr": "Léa", //Céline/Celine, Mathieu
+    "de": "Marlene", //Vicki, Hans 
+    "hi": "Aditi",
+    "is": "Dóra", // "Karl"
+    "it": "Carla", //"Bianca", "Giorgio"
+    "ja": "Mizuki", //"Takumi"
+    "ko": "Seoyeon",
+    "pl": "Ewa", // "Maja", "Jacek", "Jan"
+    "pt": "Camila",// "Vitória", "Ricardo"
+    "ro": "Carmen",
+    "ru": "Tatyana", // "Maxim"
+    "es": "Conchita", // "Lucia", "Enrique"
+    "sv": "Astrid",
+    "tr": "Filiz",
+    "cy": "Gwyneth"
+})[code] || "en" // defaulting ot english 
 
 /**
  * Starts conversion to speech in S3

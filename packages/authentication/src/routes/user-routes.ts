@@ -1,6 +1,6 @@
 import { hash } from "../cryptography/cryptography";
 import { nanoid } from "nanoid";
-import { models, server } from "@paperpod/common";
+import { models, server, validators } from "@paperpod/common";
 import express from "express";
 import * as database from "../authdatabase/authdatabase"
 import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
@@ -72,7 +72,7 @@ export const userRoutes = express.Router()
         const credentials = request.body as models.UserCredentials;
         console.log("Attempting to sign up", credentials);
 
-        if (!credentials || !credentials.email || !credentials.password)
+        if (!credentials || !credentials.email || !credentials.password || !validators.validatePassword(credentials.password))
             return response
                 .status(BAD_REQUEST)
                 .send();

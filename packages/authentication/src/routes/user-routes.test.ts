@@ -196,6 +196,47 @@ describe("The authentication endpoint for users", () => {
             const secondResponse = await signUp(credentials)
             expect(secondResponse.status).toEqual(CONFLICT);
         });
+
+        it("Returns BAD_REQUEST on users that have passwords shorter than 8 characters", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alphaNumeric(7),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+
+        it("returns BAD_REQUEST on users that have passwords without lowercase letters", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alphaNumeric(80).toLowerCase(),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+
+        it("returns BAD_REQUEST on users that have passwords without uppercase letters", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alphaNumeric(80).toUpperCase(),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+
+
+        it("returns BAD_REQUEST on users that don't have numbers", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alpha({ count: 50 }),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
     });
 
     describe("GET endpoint for retrieving information about the logged in user", () => {

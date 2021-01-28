@@ -1,6 +1,7 @@
-import { server, models } from "@paperpod/common";
+import { models } from "@paperpod/common";
+import { database } from "@paperpod/server";
 
-const withArticles = server.database.withCollection<models.Article>("articles");
+const withArticles = database.withCollection<models.Article>("articles");
 
 export const getByOwner = (owner_id: string) =>
     withArticles<models.Article[]>(collection =>
@@ -25,7 +26,7 @@ export const deleteById = (_id: string) =>
  */
 export const getById = (_id: string) =>
     withArticles(
-        server.database.getByIdHandler(_id)
+        database.getByIdHandler(_id)
     )
 
 export const getByOriginalUrlAndOwner = (original_url: string, owner_id: string) =>
@@ -39,5 +40,5 @@ export const getByOriginalUrlAndOwner = (original_url: string, owner_id: string)
 
 export const persist = (article: models.Article) =>
     withArticles(
-        server.database.persistHandler(article)
+        database.persistHandler(article)
     );

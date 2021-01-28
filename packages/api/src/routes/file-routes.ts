@@ -1,5 +1,5 @@
 import * as database from "../database/database";
-import { server } from "@paperpod/common";
+import { middleware } from "@paperpod/server";
 import express from "express";
 import { FORBIDDEN } from "node-kall";
 import { getAudioStream } from "@paperpod/converter";
@@ -7,7 +7,7 @@ import { getAudioStream } from "@paperpod/converter";
 export const fileRoutes = express.Router()
     .get(
         "/files/:article_id",
-        server.middleware.withAuthentication(
+        middleware.withAuthentication(
             async (request, response, user) => {
 
                 const _id = (request.params.article_id as string).trim();

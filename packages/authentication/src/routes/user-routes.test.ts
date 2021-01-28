@@ -20,6 +20,7 @@ describe("The authentication endpoint for users", () => {
     const extractBearerToken = async (test: supertest.Test) => {
 
         const { body: { token } } = await test;
+
         return token;
     }
 
@@ -358,3 +359,4 @@ describe("The authentication endpoint for users", () => {
         });
     });
 });
+

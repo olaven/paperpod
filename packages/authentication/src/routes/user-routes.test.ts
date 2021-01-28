@@ -1,7 +1,7 @@
 import express from "express"
 import faker from "faker";
 import { models, test } from "@paperpod/common";
-import { jwt } from "@paperpod/common/src/server/server";
+import { jwt } from "@paperpod/server";
 import * as database from "../authdatabase/authdatabase";
 import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT, FORBIDDEN } from "node-kall";
 import supertest from "supertest";
@@ -153,7 +153,7 @@ describe("The authentication endpoint for users", () => {
             expect(user.email).toEqual(credentials.email);
         });
 
-        it("Does create a user with and id", async () => {
+        it("Does create a user with an id", async () => {
 
             const credentials = test.mocks.credentials();
             const { status } = await signUp(credentials)

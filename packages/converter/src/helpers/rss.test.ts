@@ -1,4 +1,4 @@
-import { test, server, models } from "@paperpod/common";
+import { test, models } from "@paperpod/common";
 import { serialize } from "serialize-xml";
 import { convertToRSSFeed, toItemTag } from "./rss";
 

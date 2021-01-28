@@ -1,6 +1,7 @@
+import { models, validators } from "@paperpod/common";
+import { jwt, middleware } from "@paperpod/server";
 import { hash } from "../cryptography/cryptography";
 import { nanoid } from "nanoid";
-import { models, server, validators } from "@paperpod/common";
 import express from "express";
 import * as database from "../authdatabase/authdatabase"
 import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
@@ -30,7 +31,7 @@ export const userRoutes = express.Router()
 
 
             const user = await database.users.getByEmail(credentials.email.toLowerCase());
-            const token = server.jwt.sign(user);
+            const token = jwt.sign(user);
 
             return response
                 .status(CREATED)
@@ -44,7 +45,7 @@ export const userRoutes = express.Router()
                 .send()
         }
     })
-    .delete("/users/sessions", server.middleware.withAuthentication(
+    .delete("/users/sessions", middleware.withAuthentication(
         (request, response, user) => {
 
             //FIXME: somehow invalidate old token 
@@ -55,10 +56,10 @@ export const userRoutes = express.Router()
                 });
         }
     ))
-    .put("/users/sessions", server.middleware.withAuthentication(
+    .put("/users/sessions", middleware.withAuthentication(
         async (request, response, user) => {
 
-            const token = server.jwt.sign(user);
+            const token = jwt.sign(user);
             console.log(`token: ${token}`);
             response
                 .status(OK)
@@ -89,7 +90,7 @@ export const userRoutes = express.Router()
             password_hash: await hash.hash(credentials.password)
         });
 
-        const token = server.jwt.sign(user);
+        const token = jwt.sign(user);
 
         return response
             .status(CREATED)
@@ -97,7 +98,7 @@ export const userRoutes = express.Router()
     })
     .get(
         "/users/me",
-        server.middleware.withAuthentication((request, response, user) => {
+        middleware.withAuthentication((request, response, user) => {
 
             response.json({
                 ...user,

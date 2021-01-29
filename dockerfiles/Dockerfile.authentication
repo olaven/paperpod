@@ -6,6 +6,7 @@ COPY ./package.json .
 COPY ./yarn.lock .
 COPY ./tsconfig.json .
 COPY ./packages/common /app/packages/common
+COPY ./packages/server /app/packages/server
 COPY ./packages/authentication /app/packages/authentication
 
 RUN yarn install 

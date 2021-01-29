@@ -16,7 +16,6 @@ const connectionString = () =>
         process.env.MONGO_URL : //as provided by https://github.com/shelfio/jest-mongodb
         `${MONGODB_PROTOCOL}://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}${port()}/${MONGODB_NAME}?retryWrites=true&w=majority`
 
-console.log(connectionString());
 /**
  * If this is in NODE_ENV = test, connect to @shelf/jest-mongodb.     
  * Otherwize, connect to .env.MONGODB_NAME

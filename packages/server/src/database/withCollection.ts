@@ -1,6 +1,11 @@
 import { Collection, MongoClient } from "mongodb";
 
-const { MONGODB_NAME, MONGODB_USERNAME, MONGODB_HOST, MONGODB_PASSWORD, MONGODB_PORT } = process.env
+const { MONGODB_NAME, MONGODB_USERNAME, MONGODB_HOST, MONGODB_PASSWORD, MONGODB_PORT, MONGODB_PROTOCOL } = process.env
+
+const port = () =>
+    MONGODB_PROTOCOL.includes("+srv") ?
+        '' :
+        `:${MONGODB_PORT}`
 
 /**
  * If this is in NODE_ENV = test, connect to @shelf/jest-mongodb. 
@@ -9,8 +14,9 @@ const { MONGODB_NAME, MONGODB_USERNAME, MONGODB_HOST, MONGODB_PASSWORD, MONGODB_
 const connectionString = () =>
     process.env.NODE_ENV === "test" ?
         process.env.MONGO_URL : //as provided by https://github.com/shelfio/jest-mongodb
-        `mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}`
+        `${MONGODB_PROTOCOL}://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}${port()}/${MONGODB_NAME}?retryWrites=true&w=majority`
 
+console.log(connectionString());
 /**
  * If this is in NODE_ENV = test, connect to @shelf/jest-mongodb.     
  * Otherwize, connect to .env.MONGODB_NAME

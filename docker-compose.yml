@@ -30,11 +30,12 @@ services:
     environment:
       - PORT=$API_PORT
       - JWT_SECRET=$JWT_SECRET
-      - MONGODB_NAME=$MONGODB_NAME
+      - MONGODB_NAME=api
       - MONGODB_USERNAME=$MONGODB_USERNAME
       - MONGODB_PASSWORD=$MONGODB_PASSWORD
-      - MONGODB_HOST=database_api
+      - MONGODB_HOST=paperpod-main-cluster.gzggm.mongodb.net #database_api
       - MONGODB_PORT=27017
+      - MONGODB_PROTOCOL=$MONGODB_PROTOCOL
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
     working_dir: /paperpod
@@ -48,11 +49,12 @@ services:
     environment:
       - PORT=$AUTHENTICATION_PORT
       - JWT_SECRET=$JWT_SECRET
-      - MONGODB_NAME=$MONGODB_NAME
+      - MONGODB_NAME=authentication
       - MONGODB_USERNAME=$MONGODB_USERNAME
       - MONGODB_PASSWORD=$MONGODB_PASSWORD
-      - MONGODB_HOST=database_authentication
+      - MONGODB_HOST=paperpod-main-cluster.gzggm.mongodb.net #database_authentication
       - MONGODB_PORT=27017
+      - MONGODB_PROTOCOL=$MONGODB_PROTOCOL
     working_dir: /paperpod
   web:
     build: .

@@ -1,0 +1,71 @@
+a {
+  color: inherit;
+}
+
+#container {
+  font-family: "Roboto", sans-serif;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+
+#logo-container,
+#text-container {
+  display: flex;
+  justify-content: center;
+  width: 50vw;
+}
+
+@media screen and (max-width: 992px) {
+  #logo-container,
+  #text-container {
+    font-size: 1.2em;
+    width: 95vw;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  form * {
+    margin-bottom: 1em;
+  }
+}
+
+#logo-container img {
+  width: 79%;
+}
+
+#text-container {
+  font-size: 1.79em;
+  flex-direction: column;
+  align-items: center;
+}
+
+#terms-and-conditions {
+  margin-top: 0.24em;
+  font-size: 0.5em;
+}
+
+#email-input {
+  padding: 5px;
+}
+
+#submit {
+  border: none;
+  background-color: white;
+  text-decoration: underline;
+}
+
+#faq-link {
+  position: absolute;
+  text-decoration: underline;
+  bottom: 5vh;
+  right: 5vw;
+  padding: 0.5vw;
+  border-radius: 15px;
+}

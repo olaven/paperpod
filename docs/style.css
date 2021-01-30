@@ -1,0 +1,12 @@
+a {
+  color: inherit;
+}
+
+#container {
+  font-family: "Roboto", sans-serif;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

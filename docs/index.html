@@ -11,24 +11,11 @@
     <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet" />
 
     <title>Paperpod</title>
 
     <style>
-        a {
-            color: inherit;
-        }
-
-        #container {
-            font-family: 'Roboto', sans-serif;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-
-            align-items: center;
-        }
-
         #logo-container,
         #text-container {
             display: flex;
@@ -65,9 +52,8 @@
         }
 
         #terms-and-conditions {
-
-            margin-top: .24em;
-            font-size: .5em;
+            margin-top: 0.24em;
+            font-size: 0.5em;
         }
 
         #email-input {
@@ -78,6 +64,15 @@
             border: none;
             background-color: white;
             text-decoration: underline;
+        }
+
+        #faq-link {
+            position: absolute;
+            text-decoration: underline;
+            bottom: 5vh;
+            right: 5vw;
+            padding: 0.5vw;
+            border-radius: 15px;
         }
     </style>
 </head>
@@ -97,9 +92,6 @@
 
                 <br />
                 <br />
-                <!--                 <a href="mailto:olav@sundfoer.com?subject=Paperpod&body=Please let me know when paperpod launches!"> -->
-                <!-- <b>Click here</b> to stay in the <b>loop</b> -->
-                <!-- </a> -->
                 Sign up below to stay in the loop ٩(^‿^)۶
             </p>
             <div id="revue-embed">
@@ -115,12 +107,10 @@
                     </div>
                 </form>
             </div>
-
-
-
-
-
         </div>
+        <a id="faq-link" href="./faq.html">
+            I have more questions
+        </a>
     </div>
 </body>
 

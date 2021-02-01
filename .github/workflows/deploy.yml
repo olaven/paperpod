@@ -34,7 +34,9 @@ jobs:
               MONGODB_USERNAME="SOMEMONGOUSERNAME" \
               MONGODB_PASSWORD="SOMEMONGOPASSWORD" \
               MONGODB_HOST="some mongo host" \
-              MONGODB_PORT=27017 \
+              MONGODB_PORT_AUTHENTICATION=27017 \
+              MONGODB_PORT_API=27017 \
+              MONGODB_PROTOCOL=mongodb+srv \
               AWS_ACCESS_KEY_ID="SOME ACCESS KEY" \
               AWS_SECRET_ACCESS_KEY="SOME SECRET KEY" \
               docker stack deploy -c $HOME/paperpod/scripts/stack.yml paperpod;

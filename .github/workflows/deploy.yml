@@ -19,10 +19,10 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
-          script_stop: true
-          script: | # clone paperpod if not there. If not, pull
-            git clone https://github.com/olaven/paperpod || (cd paperpod; git pull; cd ..)
-            cd paperpod
+          script_stop: true # git clone https://github.com/olaven/paperpod # alread run. Figure out how to be state-agnostic?
+          script: |
+            cd paperpod 
+            git pull 
             chmod +x ./scripts/stack.sh
             ./scripts/stack.sh
         env:

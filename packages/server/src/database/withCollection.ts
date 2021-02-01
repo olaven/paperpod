@@ -3,7 +3,7 @@ import { Collection, MongoClient } from "mongodb";
 const { MONGODB_NAME, MONGODB_USERNAME, MONGODB_HOST, MONGODB_PASSWORD, MONGODB_PORT, MONGODB_PROTOCOL } = process.env
 
 const port = () =>
-    MONGODB_PROTOCOL.includes("+srv") ?
+    MONGODB_PROTOCOL?.includes("+srv") ?
         '' :
         `:${MONGODB_PORT}`
 

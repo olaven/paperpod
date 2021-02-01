@@ -19,10 +19,12 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
-          script_stop: true # git clone https://github.com/olaven/paperpod # alread run. Figure out how to be state-agnostic?
+          script_stop: true # git clone https://github.com/olaven/paperpod # alread run. Figure out how to be state-agnostic? also remove checkout to `feature/ci-for-deployment`
           script: |
             cd paperpod 
             git pull 
+            git fetch
+            git checkout feature/ci-for-deployment 
             env \
               GATEWAY_PORT=80 \
               WEB_PORT=3000 \

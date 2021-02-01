@@ -24,21 +24,21 @@ jobs:
             git clone https://github.com/olaven/paperpod
             cd paperpod 
             export \
-              GATEWAY_PORT=$GATEWAY_PORT \
-              WEB_PORT=$WEB_PORT \
-              API_PORT=$API_PORT \
-              AUTHENTICATION_PORT=$AUTHENTICATION_PORT \
-              JWT_SECRET=$JWT_SECRET \
-              MONGODB_NAME_API=$MONGODB_NAME_API \
-              MONGODB_NAME_AUTHENTICATION=$MONGODB_NAME_AUTHENTICATION \
-              MONGODB_USERNAME=$MONGODB_USERNAME \
-              MONGODB_PASSWORD=$MONGODB_PASSWORD \
-              MONGODB_HOST=$MONGODB_HOST \
-              MONGODB_PORT_AUTHENTICATION=$MONGODB_PORT_AUTHENTICATION \
-              MONGODB_PORT_API=$MONGODB_PORT_API \
-              MONGODB_PROTOCOL=$MONGODB_PROTOCOL \
-              AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-              AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+              GATEWAY_PORT=${{ secrets.GATEWAY_PORT }} \
+              WEB_PORT=${{ secrets.WEB_PORT }} \
+              API_PORT=${{ secrets.API_PORT }} \
+              AUTHENTICATION_PORT=${{ secrets.AUTHENTICATION_PORT }} \
+              JWT_SECRET=${{ secrets.JWT_SECRET }} \
+              MONGODB_NAME_API=${{ secrets.MONGODB_NAME_API }} \
+              MONGODB_NAME_AUTHENTICATION=${{ secrets.MONGODB_NAME_AUTHENTICATION }} \
+              MONGODB_USERNAME=${{ secrets.MONGODB_USERNAME }} \
+              MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} \
+              MONGODB_HOST=${{ secrets.MONGODB_HOST }} \
+              MONGODB_PORT_AUTHENTICATION=${{ secrets.MONGODB_PORT_AUTHENTICATION }} \
+              MONGODB_PORT_API=${{ secrets.MONGODB_PORT_API }} \
+              MONGODB_PROTOCOL=${{ secrets.MONGODB_PROTOCOL }} \
+              AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+              AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
             env \
               GATEWAY_PORT=$GATEWAY_PORT \
               WEB_PORT=$WEB_PORT \
@@ -56,7 +56,6 @@ jobs:
               AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
               AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
               docker stack deploy -c $HOME/paperpod/scripts/stack.yml paperpod;
-          envs: GATEWAY_PORT, WEB_PORT, API_PORT, AUTHENTICATION_PORT, JWT_SECRET, MONGODB_NAME_API, MONGODB_NAME_AUTHENTICATION, MONGODB_USERNAME, MONGODB_PASSWORD, MONGODB_HOST, MONGODB_PORT_AUTHENTICATION, MONGODB_PORT_API, MONGODB_PROTOCOL, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
         env:
           GATEWAY_PORT: ${{ secrets.GATEWAY_PORT }}
           WEB_PORT: ${{ secrets.WEB_PORT }}

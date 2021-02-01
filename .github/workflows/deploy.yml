@@ -23,6 +23,22 @@ jobs:
             rm -rf ./paperpod
             git clone https://github.com/olaven/paperpod
             cd paperpod 
+            export \
+              GATEWAY_PORT=$GATEWAY_PORT \
+              WEB_PORT=$WEB_PORT \
+              API_PORT=$API_PORT \
+              AUTHENTICATION_PORT=$AUTHENTICATION_PORT \
+              JWT_SECRET=$JWT_SECRET \
+              MONGODB_NAME_API=$MONGODB_NAME_API \
+              MONGODB_NAME_AUTHENTICATION=$MONGODB_NAME_AUTHENTICATION \
+              MONGODB_USERNAME=$MONGODB_USERNAME \
+              MONGODB_PASSWORD=$MONGODB_PASSWORD \
+              MONGODB_HOST=$MONGODB_HOST \
+              MONGODB_PORT_AUTHENTICATION=$MONGODB_PORT_AUTHENTICATION \
+              MONGODB_PORT_API=$MONGODB_PORT_API \
+              MONGODB_PROTOCOL=$MONGODB_PROTOCOL \
+              AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+              AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
             env \
               GATEWAY_PORT=$GATEWAY_PORT \
               WEB_PORT=$WEB_PORT \

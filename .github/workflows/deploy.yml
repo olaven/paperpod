@@ -20,7 +20,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script_stop: true
           script: |
-            rm -f ./paperpod
+            rm -rf ./paperpod
             git clone https://github.com/olaven/paperpod
             cd paperpod 
             env \

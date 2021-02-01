@@ -19,7 +19,13 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
-          script: whoami && echo $FOO
+          script: |
+            git clone https://github.com/olaven/paperpod
+            cd paperpod
+            chmod +x ./scripts/setup-firewall-manager.sh
+            ./scripts/setup-firewall-manager.sh
+            chmod +x ./scripts/stack.sh
+            ./scripts/stack.sh
         env:
           FOO: "BAR"
           BAR: "FOO"

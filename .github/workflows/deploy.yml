@@ -1,9 +1,10 @@
 name: Deploy
 
-on: [push]
-branch:
-  - main
-  - feature/ci-for-deployments
+on:
+  push:
+    branches:
+      - main
+      - feature/ci-for-deployments
 
 jobs:
   test-api:

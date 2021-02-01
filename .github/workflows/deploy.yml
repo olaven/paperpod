@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - feature/ci-for-deployments
+      - feature/ci-for-deployment
 
 jobs:
   deploy-with-ssh:

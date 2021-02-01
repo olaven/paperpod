@@ -7,7 +7,7 @@ on:
       - feature/ci-for-deployments
 
 jobs:
-  test-api:
+  deploy-with-ssh:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

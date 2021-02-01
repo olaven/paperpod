@@ -20,8 +20,8 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
           script_stop: true
-          script: |
-            git clone https://github.com/olaven/paperpod
+          script: | # clone paperpod if not there. If not, pull
+            git clone https://github.com/olaven/paperpod || (cd paperpod; git pull; cd ..)
             cd paperpod
             chmod +x ./scripts/stack.sh
             ./scripts/stack.sh

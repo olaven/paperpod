@@ -1,26 +1,24 @@
 import * as database from "../database/database";
-import { middleware } from "@paperpod/server";
 import express from "express";
-import { FORBIDDEN } from "node-kall";
 import { getAudioStream } from "@paperpod/converter";
+import { NOT_FOUND } from "node-kall";
 
 export const fileRoutes = express.Router()
     .get(
         "/files/:article_id",
-        middleware.withAuthentication(
-            async (request, response, user) => {
+        async (request, response) => {
 
-                const _id = (request.params.article_id as string).trim();
-                const article = await database.articles.getById(_id);
+            const _id = (request.params.article_id as string).trim();
+            const article = await database.articles.getById(_id);
 
-                if (!article || article.owner_id !== user._id)
-                    return response
-                        .status(FORBIDDEN)
-                        .end();
+            if (!article)
+                return response
+                    .status(NOT_FOUND)
+                    .send();
 
-                const stream = await getAudioStream(article);
-                console.log(`Got stream: ${stream}`);
-                //@ts-ignore NOTE: Type-error. Pipe does work. 
-                stream.pipe(response)
-            })
+            const stream = await getAudioStream(article);
+            console.log(`Got stream: ${stream}`);
+            //@ts-ignore NOTE: Type-error. Pipe does work. 
+            stream.pipe(response)
+        }
     );

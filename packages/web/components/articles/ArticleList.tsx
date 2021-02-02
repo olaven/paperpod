@@ -36,7 +36,7 @@ export const ArticleList = () => {
 
   return <>
     {articles.map(article =>
-      <div>
+      <div id={article._id}>
         {article.original_url} - "{article._id}"
         <Player article_id={article._id} />
         <DeleteButton article={article} />

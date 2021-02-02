@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import { models } from "@paperpod/common";
 import { middleware } from "@paperpod/server";
 import { withTextualData, withStorageUri } from "@paperpod/converter";
-import { BAD_REQUEST, CREATED, OK, UNAUTHORIZED, NO_CONTENT } from "node-kall";
+import { BAD_REQUEST, CREATED, OK, UNAUTHORIZED, NO_CONTENT, NOT_FOUND, FORBIDDEN } from "node-kall";
 import * as database from "../database/database";
 
 const isValidURL = (string: string) => {
@@ -65,8 +65,15 @@ export const articleRoutes = express.Router()
         const article = await database.articles.getById(id);
 
 
-        if (!article || article.owner_id !== user._id)
-            return response.status(UNAUTHORIZED).end();
+        if (!article)
+            return response
+                .status(NOT_FOUND)
+                .end();
+
+        if (article.owner_id !== user._id)
+            return response
+                .status(FORBIDDEN)
+                .end();
 
         await database.articles.deleteById(id);
         return response.status(NO_CONTENT).end()

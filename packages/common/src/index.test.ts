@@ -13,14 +13,14 @@ describe("The exported modules from index", () => {
 
     it("does export models", () => {
         expect(index.models).toBeDefined();
-    })
+    });
     it("does export validators", () => {
         expect(index.validators).toBeDefined();
-    })
+    });
     it("does export constants", () => {
         expect(index.constants).toBeDefined();
-    })
+    });
     it("does export test", () => {
         expect(index.test).toBeDefined();
-    })
+    });
 });

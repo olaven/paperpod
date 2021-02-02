@@ -32,7 +32,6 @@ export const withTextualData = async (article: {
  * Convert list of articles to an RSS feed 
  */
 export const getRSSFeed = (articles: models.Article[]) => {
-    console.log("Going to convert", articles);
     return convertToRSSFeed(articles);
 }
 

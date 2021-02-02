@@ -10,6 +10,13 @@ export const getByEmail = (email: string) =>
         })
     );
 
+export const deleteUser = (_id: string) =>
+    withUsers(collection =>
+        collection.deleteOne({
+            _id
+        })
+    );
+
 export const insert = (user: models.User) =>
     withUsers(
         database.persistHandler(user)

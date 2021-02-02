@@ -1,5 +1,5 @@
 import { test } from "@paperpod/common";
-import { insert, getByEmail } from "./users";
+import { insert, getByEmail, deleteUser } from "./users";
 
 describe("The database interface for users", () => {
 
@@ -44,5 +44,21 @@ describe("The database interface for users", () => {
             expect(retrieved).not.toEqual(second);
 
         });
+    });
+
+
+    describe("Deleting users", () => {
+
+        it("Is possible to delete a user", async () => {
+
+            const user = await insert(test.mocks.user())
+
+            const before = await getByEmail(user.email);
+            await deleteUser(user._id);
+            const after = await getByEmail(user.email);
+
+            expect(before).toEqual(user);
+            expect(after).toBeNull();
+        })
     });
 })

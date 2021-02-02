@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "ts-node-dev src/index.ts",
         "test": "jest --detectOpenHandles --forceExit",
+        "test:debug": "node --inspect-brk jest --detectOpenHandles --forceExit --runInBand",
         "start": "ts-node ./src/index.ts"
     },
     "dependencies": {

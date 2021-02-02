@@ -7,6 +7,8 @@ import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT, FORBIDDEN } from "nod
 import supertest from "supertest";
 import { app } from "../app";
 import { hash } from "../cryptography/cryptography";
+import { credentialsAreValid } from "./user-routes";
+import { validateLocaleAndSetLanguage } from "typescript";
 
 //FIXME: Tests pass regardless of what status code I am checking.. This renders the tests useless.
 
@@ -23,8 +25,6 @@ describe("The authentication endpoint for users", () => {
 
         return token;
     }
-
-
 
     describe("Local test utils", () => {
 
@@ -55,6 +55,67 @@ describe("The authentication endpoint for users", () => {
 
                 expect(sentToken).toEqual(retrievedToken);
             })
+        });
+    });
+
+    describe("function validating credentials", () => {
+
+        it("Does not crash", async () => {
+
+            const user = await database.users.insert(test.mocks.user())
+            expect(credentialsAreValid({ email: user.email, password: faker.internet.password() })).resolves.not.toThrow();
+        });
+
+        it("Returns false if email is undefined", async () => {
+
+            expect(
+                await credentialsAreValid({ email: undefined, password: faker.internet.password() })
+            ).toBe(false);
+        });
+
+        it("Returns false if password is undefined", async () => {
+
+            const user = await database.users.insert(test.mocks.user())
+            expect(
+                await credentialsAreValid({ email: user.email, password: undefined })
+            ).toBe(false);
+        });
+
+        it("Returns false if there's no user with given email", async () => {
+
+            const email = faker.internet.email();
+            const user = await database.users.getByEmail(email);
+
+            expect(
+                await credentialsAreValid({ email, password: faker.internet.password() })
+            ).toBe(false);
+
+            expect(user).toEqual(null);
+        });
+
+        it("Returns false if the password is not the same as used when signing up", async () => {
+
+            const user = await database.users.insert(test.mocks.user());
+
+            expect(
+                await credentialsAreValid({ email: user.email, password: faker.internet.password() })
+            ).toBe(false);
+        });
+
+        it("returns true if the supplied password is correct", async () => {
+
+            const password = faker.internet.password();
+            const password_hash = await hash.hash(password);
+
+            const user = await database.users.insert({
+                ...test.mocks.user(),
+                password_hash
+            });
+
+            expect(user.password_hash).toEqual(password_hash);
+
+            const valid = await credentialsAreValid({ email: user.email, password });
+            expect(valid).toBe(true);
         });
     });
 

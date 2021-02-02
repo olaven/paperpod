@@ -7,14 +7,14 @@ import * as database from "../authdatabase/authdatabase"
 import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
 
 
-const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {
+export const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {
 
     if (!email || !password) return false;
 
     const user = await database.users.getByEmail(email.toLowerCase());
-    const passwordEqual = await hash.compare(password, user?.password_hash);
+    if (!user) return false;
 
-    return user && passwordEqual;
+    return await hash.compare(password, user?.password_hash);
 }
 
 
@@ -60,7 +60,6 @@ export const userRoutes = express.Router()
         async (request, response, user) => {
 
             const token = jwt.sign(user);
-            console.log(`token: ${token}`);
             response
                 .status(OK)
                 .send({
@@ -71,7 +70,6 @@ export const userRoutes = express.Router()
     .post("/users", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
-        console.log("Attempting to sign up", credentials);
 
         if (!credentials || !credentials.email || !credentials.password || !validators.validatePassword(credentials.password))
             return response

@@ -1,0 +1,1 @@
+export const APPLICATION_URL = `application.paperpod.fm`; //TODO: vary on env?

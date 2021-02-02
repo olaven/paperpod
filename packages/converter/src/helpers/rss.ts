@@ -1,36 +1,12 @@
-/*
-
-
-* `<rss version="2.0"></rss>` X
-  * `<channel></channel>`
-    * `<title></title>`
-    * `<link></link>`
-    * `<description></description>`
-    * `<ttl></ttl>` - hvor lang tid skal det gå før man oppdaterer 
-    * `<image></image>`
-      * `<url></url>`
-      * `<title></title>` (i praksis alltid samme verdi som channel.title)
-      * `<link></link>` (i praksis alltid samme verdi som channel.link)
-    * `<item></item>` - gjenta for hvert `<item>`. OBS: er ikke childs, men siblings av alt over 
-      * `<title></title>` - tittelen for dette elementet  
-      * `<link></link>` - linken til innholdet 
-      * `<description></description>` - beskrivelsen 
-      * `<source url="<SOME_URL>"></source>` - hvilken feed elementet kommer fra 
-      * `<guid></guid>` - ID For elementet 
-      * `<pubDate></pubDate>` - [format](https://www.ietf.org/rfc/rfc822.txt)
-      * `<author></author>` - den som har laget elementet (f.eks artikkel for [[paeprpod]])
-
-*/
-
 import { serialize, tag, declaration } from "serialize-xml";
-import { models } from "@paperpod/common";
+import { models, constants } from "@paperpod/common";
 
 export const convertToRSSFeed = (articles: models.Article[]) =>
   serialize(
     tag("rss", [
       tag("channel", [
         tag("title", "Paperpod Feed"),
-        tag("link", "LINK TO FEED"),
+        tag("link", constants.APPLICATION_URL),
         tag("description", "This is your Paperpod Feed. Thanks for using Paperpod! Send articles, and they will appear here"),
         tag("ttl", "60"), //60 minutes
         toImageTag(),
@@ -43,22 +19,20 @@ export const convertToRSSFeed = (articles: models.Article[]) =>
 
 export const toImageTag = () =>
   tag("image", [
-    tag("url", "https://paperpod.fm/logo.svg"), //TODO: image that's friendly for podcast players 
-    tag("link", "LINK TO FEED"),
+    tag("url", `${constants.APPLICATION_URL}/logo.svg`), //TODO: image that's friendly for podcast players 
+    tag("link", constants.APPLICATION_URL),
     tag("title", "Paperpod Feed")
   ]);
 
-export const toItemTag = (article: models.Article) => {
-  console.log("converting article", article)
-  return tag(
+export const toItemTag = (article: models.Article) =>
+  tag(
     "item",
     [
       tag("title", `${article.title}`),
-      tag("link", `https://paperpod.fm/api/files/${article._id}`),
-      tag("description", article.description || "TODO: description"),
+      tag("link", `${constants.APPLICATION_URL}/api/files/${article._id}`),
+      tag("description", article.description || "TODO: default description"),
       tag("guid", `${article._id}`),
       tag("pubDate", new Date(article.added_timestamp).toUTCString()), //compatible with RFC822
-      tag("author", article.author || "TODO Default author"),
+      tag("author", article.author || "Unspecified Author"),
     ]
   )
-}

@@ -2,15 +2,17 @@ import faker from "faker";
 import { models } from "..";
 
 //FIXME: separate test utils to separate package. This makes it possible to not include it (and its dependencies like faker) in production.
-export const user = (): models.User => ({
+export const user = (template: Partial<models.User> = {}): models.User => ({
     _id: faker.random.uuid(),
     email: faker.internet.email().toLowerCase(),
     password_hash: faker.random.alpha(),
+    ...template
 });
 
-export const credentials = (): models.UserCredentials => ({
+export const credentials = (template: Partial<models.UserCredentials> = {}): models.UserCredentials => ({
     email: faker.internet.email().toLowerCase(),
     password: faker.internet.password(100),
+    ...template,
 });
 
 export const article = (template: Partial<models.Article> = {}): models.Article => ({
@@ -27,6 +29,7 @@ export const article = (template: Partial<models.Article> = {}): models.Article 
     ...template,
 });
 
-export const articlePayload = (): models.ArticlePayload => ({
-    link: faker.internet.url()
+export const articlePayload = (template: Partial<models.ArticlePayload> = {}): models.ArticlePayload => ({
+    link: faker.internet.url(),
+    ...template
 }); 

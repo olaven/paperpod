@@ -1,3 +1,4 @@
+import stream from "stream";
 import faker from "faker"
 import { models } from "@paperpod/common";
 import { getRSSFeed as _getRSSFeed } from "@paperpod/converter";
@@ -10,7 +11,7 @@ export const withStorageUri =
     })
 
 export const getAudioStream =
-    async () => new ReadableStream()
+    async () => stream.Readable.from([])
 
 export const withTextualData =
     async (article: models.Article): Promise<models.Article> => {

@@ -1,4 +1,4 @@
-import { test, models } from "@paperpod/common";
+import { test, models, constants } from "@paperpod/common";
 import { serialize } from "serialize-xml";
 import { convertToRSSFeed, toItemTag } from "./rss";
 
@@ -58,7 +58,7 @@ describe("Conversion from articles to RSS", () => {
 
         hasTagWithValue([
             ["title", article => article.title],
-            ["link", article => `https://paperpod.fm/api/files/${article._id}`],
+            ["link", article => `${constants.APPLICATION_URL}/api/files/${article._id}`],
             ["description", article => article.description],
             ["guid", article => article._id],
             ["pubDate", article => new Date(article.added_timestamp).toUTCString()],

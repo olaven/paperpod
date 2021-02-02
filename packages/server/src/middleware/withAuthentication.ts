@@ -23,6 +23,8 @@ export const withAuthentication = (handler: (request: express.Request, response:
                 .status(FORBIDDEN)
                 .end();
 
+            //TODO: some user data validation. Does it look like a user? 
+
             handler(request, response, user);
         } catch (error) {
 

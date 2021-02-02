@@ -2,19 +2,19 @@ import { Collection, MongoClient } from "mongodb";
 
 const { MONGODB_NAME, MONGODB_USERNAME, MONGODB_HOST, MONGODB_PASSWORD, MONGODB_PORT, MONGODB_PROTOCOL } = process.env
 
-const ifCloud = <T, G = T>(on: T, el: G) =>
+export const ifCloud = <T, G = T>(onCloud: T, offCloud: G) =>
     () =>
-        MONGODB_PROTOCOL?.includes("+srv") ?
-            on :
-            el;
+        process.env.MONGODB_PROTOCOL?.includes("+srv") ?
+            onCloud :
+            offCloud;
 
-const port = ifCloud(
+export const port = ifCloud(
     '',
     `:${MONGODB_PORT}`
 );
 
-const urlSuffix = ifCloud(
-    `${MONGODB_NAME}?retryWrites = true & w=majority`,
+export const urlSuffix = ifCloud(
+    `${process.env.MONGODB_NAME}?retryWrites = true & w=majority`,
     ''
 );
 
@@ -23,11 +23,10 @@ const urlSuffix = ifCloud(
  * If this is in NODE_ENV = test, connect to @shelf/jest-mongodb. 
  * Else, connect to URL from .env variables
  */
-const connectionString = () =>
+export const connectionString = () =>
     process.env.NODE_ENV === "test" ?
         process.env.MONGO_URL : //as provided by https://github.com/shelfio/jest-mongodb
         `${MONGODB_PROTOCOL}://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}${port()}/${urlSuffix()}`
-console.log(`The connection string is ${connectionString()}`);
 
 
 /**

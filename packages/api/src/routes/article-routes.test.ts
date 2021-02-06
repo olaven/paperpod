@@ -1,8 +1,10 @@
+import faker from "faker";
 import { models, test } from "@paperpod/common";
 import { jwt } from "@paperpod/server";
-import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT, NOT_IMPLEMENTED } from "node-kall";
+import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT, NOT_IMPLEMENTED, NOT_FOUND, FORBIDDEN, NO_CONTENT } from "node-kall";
 import supertest from "supertest";
 import { app } from "../app";
+import { articles } from "../database/database";
 
 //FIXME: Tests pass regardless of what status code I am checking.. This renders the tests useless.
 
@@ -18,6 +20,11 @@ describe("The api for articles", () => {
         supertest(app)
             .get("/articles")
             .set("Authorization", "Bearer " + token);
+
+    const del = (token: string, _id: string) =>
+        supertest(app)
+            .delete(`/articles/${_id}`)
+            .set("Authorization", "Bearer " + token)
 
     describe("the POST-endpoint for articles", () => {
 
@@ -99,5 +106,62 @@ describe("The api for articles", () => {
             const { status } = await get(token)
             expect(status).toEqual(OK);
         });
-    })
+    });
+
+    describe("The endpoint for deleting articles", () => {
+
+        it("Responds with UNAUTHORIZED if not logged in", async () => {
+
+
+            const { status } = await del(null, "some-article-id");
+            expect(status).toEqual(UNAUTHORIZED);
+        });
+
+        it("Responds with NOT_FOUND if the article does not exist", async () => {
+
+            const token = jwt.sign(test.mocks.user())
+            const { status } = await del(token, faker.random.uuid());
+
+            expect(status).toEqual(NOT_FOUND);
+        });
+
+        it("Responds with FORBIDDEN if the user does not own the article", async () => {
+
+            const article = await articles.persist(test.mocks.article());
+            const token = jwt.sign(test.mocks.user());
+
+            const { status } = await del(token, article._id);
+            expect(status).toEqual(FORBIDDEN);
+        });
+
+        it("Responds with NO_CONTENT if the user tries to delete their own article", async () => {
+
+            const user = test.mocks.user();
+            const article = await articles.persist({
+                ...test.mocks.article(),
+                owner_id: user._id
+            });
+
+            const token = jwt.sign(user);
+
+            const { status } = await del(token, article._id);
+            expect(status).toEqual(NO_CONTENT);
+        });
+
+        it("Does actually delete article on valid request", async () => {
+
+            const user = test.mocks.user();
+            const article = await articles.persist({
+                ...test.mocks.article(),
+                owner_id: user._id
+            });
+
+            const token = jwt.sign(user);
+
+            await del(token, article._id);
+
+            const after = await articles.getById(article._id);
+            expect(after).toEqual(null);
+        });
+    });
 });

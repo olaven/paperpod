@@ -15,6 +15,7 @@
         "mongodb": "^3.6.3"
     },
     "devDependencies": {
+        "@shelf/jest-mongodb": "^1.2.3",
         "@types/dotenv": "^8.2.0",
         "@types/express": "^4.17.9",
         "@types/jsonwebtoken": "^8.5.0",

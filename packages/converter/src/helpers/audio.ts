@@ -52,7 +52,7 @@ export const voiceFromLanguage = (code: string) => ({
     "sv": "Astrid",
     "tr": "Filiz",
     "cy": "Gwyneth"
-})[code] || "en" // defaulting ot english 
+})[code] || "Joanna" // defaulting to english 
 
 /**
  * Starts conversion to speech in S3

@@ -76,7 +76,7 @@ describe("Functions related to converting text to audio", () => {
                 voiceFromLanguage(
                     faker.lorem.word()
                 )
-            ).toEqual("en")
+            ).toEqual("Joanna") //i.e. english voice
         });
     });
 })

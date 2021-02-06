@@ -1,6 +1,4 @@
-
 import express from "express";
-
 
 export const appWithBodyParser = (app = express()) =>
     app

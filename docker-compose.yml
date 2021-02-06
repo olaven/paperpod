@@ -1,15 +1,12 @@
 version: "3"
 services:
-  ## PACKAGES
-
   gateway:
     build: .
     env_file:
       - .env
     command: yarn gateway dev
     ports:
-      - 8080:8080
-      #- $GATEWAY_PORT:$GATEWAY_PORT
+      - $GATEWAY_PORT:$GATEWAY_PORT
     volumes:
       - .:/paperpod
     environment:

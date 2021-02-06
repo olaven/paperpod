@@ -17,7 +17,6 @@ export const fileRoutes = express.Router()
                     .send();
 
             const stream = await getAudioStream(article);
-            console.log(`Got stream: ${stream}`);
             //@ts-ignore NOTE: Type-error. Pipe does work. 
             stream.pipe(response)
         }

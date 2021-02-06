@@ -2322,6 +2322,11 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
+"@types/pdf-parse@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/pdf-parse/-/pdf-parse-1.1.0.tgz#5fa38dc17aa3437264b35f4a2c647d85bbff7650"
+  integrity sha512-kBLwxaDC5liFjVqfZgl3b2ritxUp1ZP/Gq8jkl/bvOAP0msY4aaDH8Nh2/ILPwQlcENKFBt/m9HKsciV8+nNbw==
+
 "@types/prettier@^2.0.0":
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.1.6.tgz#f4b1efa784e8db479cdb8b14403e2144b1e9ff03"

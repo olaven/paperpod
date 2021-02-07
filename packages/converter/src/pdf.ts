@@ -40,7 +40,7 @@ export const parseDate = (date: string) => {
         offsetPos = 14;
     }
     //@ts-ignore
-    const offset = date.substring(offsetPos).replaceAll("'", "");
+    const offset = date.substring(offsetPos).replace(/'/g, "");
     return new Date(
         `${year}-${month}-${day}T${hour}:${minute}:${second}${offset}`
     ).getTime();

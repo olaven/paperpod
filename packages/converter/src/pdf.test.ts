@@ -25,20 +25,6 @@ describe("Functions for converting pdf data to articles", () => {
         }).not.toThrow();
     });
 
-    it("Does return an Article", async () => {
-
-        const article = await pdfToArticle(sampleBuffer());
-        expect(article._id).toBeDefined();
-        expect(article.owner_id).toBeDefined();
-        expect(article.original_url).toBeDefined();
-        expect(article.title).toBeDefined();
-        expect(article.description).toBeDefined();
-        expect(article.author).toBeDefined();
-        expect(article.text).toBeDefined();
-        expect(article.publication_timestamp).toBeDefined();
-        expect(article.added_timestamp).toBeDefined();
-        expect(article.storage_uri).toBeDefined();
-    });
 
     it("Does return some text from an actual pdf", async () => {
 
@@ -55,5 +41,43 @@ describe("Functions for converting pdf data to articles", () => {
         expect(article.text).toContain(
             "Adobe® Portable Document Format (PDF) is a universal file format that preserves all"
         );
-    })
+    });
+
+    it("Does return a title", async () => {
+
+        const article = await pdfToArticle(sampleBuffer());
+        expect(article.title).toBeTruthy();
+    });
+
+    it("Does return a timestamp", async () => {
+
+        const article = await pdfToArticle(sampleBuffer());
+
+        expect(typeof article.publication_timestamp).toEqual("number");
+        expect(article.publication_timestamp).toBeTruthy();
+    });
+
+    it("Does return a timestamp with the correct year", async () => {
+
+        //NOTE: This test assumes a specific sample-pdf; 
+        const article = await pdfToArticle(sampleBuffer());
+        const year = new Date(article.publication_timestamp).getFullYear();
+        expect(year).toEqual(2000);
+    });
+
+
+    it("Does return a timestamp with the correct month", async () => {
+
+        //NOTE: This test assumes a specific sample-pdf; 
+        const article = await pdfToArticle(sampleBuffer());
+        const month = new Date(article.publication_timestamp).getMonth();
+        expect(month).toEqual(5);
+    });
+
+    it("Does return an author field with PDF creator", async () => {
+
+        //NOTE: This test assumes a specific sample-pdf; 
+        const article = await pdfToArticle(sampleBuffer());
+        expect(article.author).toEqual("cdaily");
+    });
 });

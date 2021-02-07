@@ -1,6 +1,6 @@
 import unfluff from "unfluff";
 import puppeteer from "puppeteer";
-import { ArticleWithoutText } from "./ArticleWithoutText";
+import { models } from "@paperpod/common";
 
 /**
  * returns the publication timestamp, if any. 
@@ -12,7 +12,7 @@ const date = (extracted: any) =>
         undefined
 
 export const extractTextFromWeb =
-    async (url: string): Promise<ArticleWithoutText> => {
+    async (url: string): Promise<models.ArticleWithoutTextualData> => {
 
         const html = await getHtml(url);
         const extracted = unfluff.lazy(html);
@@ -23,6 +23,7 @@ export const extractTextFromWeb =
             author: extracted.author().join(", "),
             description: extracted.description(),
             publication_timestamp: date(extracted),
+            original_url: url,
         }
     }
 

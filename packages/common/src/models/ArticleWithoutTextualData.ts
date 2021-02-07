@@ -1,4 +1,4 @@
-export type ArticleWithoutText = {
+export type ArticleWithoutTextualData = {
     text: string,
     title: string,
     author: string,

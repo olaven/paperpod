@@ -90,6 +90,16 @@ describe("The api for articles", () => {
                 link: "not-a-url"
             }).expect(BAD_REQUEST);
         });
+
+        it("Does not respond with NOT_IMPLEMENTED if link leads to a pdf", async () => {
+
+            const token = jwt.sign(test.mocks.user());
+            const { status } = await post(token, {
+                link: "https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf"
+            });
+
+            expect(status).not.toBe(NOT_IMPLEMENTED);
+        });
     });
 
     describe("Retrieving articles", () => {

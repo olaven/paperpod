@@ -30,8 +30,8 @@ export const getTextFromPdfStream =
 
         const data = await pdf(stream);
 
-        const { Title, CreationDate, Author } = data.info;
         const { text } = data;
+        const { Title, CreationDate, Author } = data.info;
 
 
         const publication_timestamp = parseDate(CreationDate);
@@ -42,6 +42,7 @@ export const getTextFromPdfStream =
             publication_timestamp,
             title: Title,
             author: Author,
+            description: ""
         };
     }
 

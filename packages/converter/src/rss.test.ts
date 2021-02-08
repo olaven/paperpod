@@ -64,6 +64,24 @@ describe("Conversion from articles to RSS", () => {
             ["pubDate", article => new Date(article.added_timestamp).toUTCString()],
             ["author", article => article.author],
         ]);
+
+        it("adds default article description if none is present", () => {
+
+            const serialized = serializeItem({
+                ...test.mocks.article(),
+                description: ''
+            });
+            expect(serialized).toContain(`default description`);
+        });
+
+        it("adds 'Unspecified Author' if no author is present", () => {
+
+            const serialized = serializeItem({
+                ...test.mocks.article(),
+                author: ''
+            });
+            expect(serialized).toContain("Unspecified Author");
+        })
     });
 
     describe("Converting list of articles to feed", () => {

@@ -6,8 +6,6 @@ import supertest from "supertest";
 import { app } from "../app";
 import { articles } from "../database/database";
 
-//FIXME: Tests pass regardless of what status code I am checking.. This renders the tests useless.
-
 describe("The api for articles", () => {
 
     const post = (token: string, payload = test.mocks.articlePayload()) =>

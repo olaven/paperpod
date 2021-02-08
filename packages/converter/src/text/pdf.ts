@@ -17,7 +17,7 @@ export const extractTextFromPDF =
 
         //TODO: error handling 
         const pdfStream = await downloadPDF(article.original_url);
-        const textualData = getTextFromPdfStream(article, pdfStream);
+        const textualData = await getTextFromPdfStream(article, pdfStream);
 
         return {
             ...article,

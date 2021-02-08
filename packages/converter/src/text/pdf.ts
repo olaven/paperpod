@@ -1,41 +1,49 @@
+import fetch from "node-fetch";
 import { models } from '@paperpod/common';
 import pdf from "pdf-parse";
+
+export const downloadPDF = async (url: string) => {
+
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+
+    return Buffer.from(
+        arrayBuffer
+    );
+}
 
 export const extractTextFromPDF =
     async (article: models.ArticleWithoutTextualData): Promise<models.Article> => {
 
-        const buffer = null; //TODO :Get buffer 
-        const textualData = await getTextFromPdfStream(buffer);
+        //TODO: error handling 
+        const pdfStream = await downloadPDF(article.original_url);
+        const textualData = getTextFromPdfStream(article, pdfStream);
+
         return {
             ...article,
             ...textualData,
+        }
+    };
+
+export const getTextFromPdfStream =
+    async (article: models.ArticleWithoutTextualData, stream: Buffer) => {
+
+        const data = await pdf(stream);
+
+        const { Title, CreationDate, Author } = data.info;
+        const { text } = data;
+
+
+        const publication_timestamp = parseDate(CreationDate);
+
+        return {
+            ...article,
+            text,
+            publication_timestamp,
+            title: Title,
+            author: Author,
         };
     }
-
-
-type TextualData = {
-    text: string,
-    publication_timestamp: number,
-    title: string,
-    author: string,
-}
-export const getTextFromPdfStream = async (stream: Buffer): Promise<TextualData> => {
-
-    const data = await pdf(stream);
-
-    const { Title, CreationDate, Author } = data.info;
-    const { text } = data;
-
-
-    const publication_timestamp = parseDate(CreationDate);
-
-    return {
-        text,
-        publication_timestamp,
-        title: Title,
-        author: Author,
-    };
-}
 
 //NOTE: adapted from: https://github.com/mozilla/pdf.js/blob/1de1ae0be6849911430e087decb744936ac56366/src/scripting_api/doc.js#L150-L175
 export const parseDate = (date: string) => {

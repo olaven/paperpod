@@ -1,25 +1,19 @@
-import fetch from "node-fetch";
-import { getTextFromPdfStream } from "./pdf";
+import { test, models } from "@paperpod/common";
+import { getTextFromPdfStream, downloadPDF } from "./pdf";
 
 describe("Functions for converting pdf data to articles", () => {
 
-    const downloadPDF = async (url: string) => {
-
-        const response = await fetch(url);
-        const arrayBuffer = await response.arrayBuffer();
-
-        return Buffer.from(
-            arrayBuffer
+    const convertComplexPDF = async (article = test.mocks.articleWithoutTextualData()) =>
+        getTextFromPdfStream(
+            article,
+            await downloadPDF("https://academicjournals.org/journal/IJCER/article-full-text-pdf/0208F0359126")
         );
-    }
 
-    const convertComplexPDF = async () => getTextFromPdfStream(
-        await downloadPDF("https://academicjournals.org/journal/IJCER/article-full-text-pdf/0208F0359126")
-    );
-
-    const convertSimplePDF = async () => getTextFromPdfStream(
-        await downloadPDF("https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf")
-    );
+    const convertSimplePDF = async (article = test.mocks.articleWithoutTextualData()) =>
+        getTextFromPdfStream(
+            article,
+            await downloadPDF("https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf")
+        );
 
     it("is defined and can be called", () => {
 
@@ -100,5 +94,5 @@ describe("Functions for converting pdf data to articles", () => {
 
         const article = await convertComplexPDF();
         expect(article.author).toBe("IEEE");
-    })
+    });
 });

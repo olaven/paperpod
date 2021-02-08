@@ -1,5 +1,5 @@
 export type ArticleWithoutTextualData = {
-    text: string,
+    text: string, //FIXME: figure out why textual data like title, text anuthor and description is specified here..
     title: string,
     author: string,
     description: string,

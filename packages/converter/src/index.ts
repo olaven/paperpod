@@ -2,7 +2,6 @@ import { models } from "@paperpod/common";
 import { getAudioStream as _getAudioStream } from "./storage";
 import { textToAudio } from "./audio";
 import { withTextualData as _withTextualData } from "./text/text"; //FIXME: clean up import of this and ArticleWIthoutTExt
-import { ArticleWithoutText } from "./text/ArticleWithoutText";
 import { convertToRSSFeed } from "./rss";
 
 /**
@@ -20,7 +19,7 @@ export const withStorageUri = async (article: models.Article): Promise<models.Ar
  * Converts given article url to textual data like, text, title, description and author
  * @returns article with extracted text 
  */
-export const withTextualData = async (article: ArticleWithoutText) =>
+export const withTextualData = async (article: models.ArticleWithoutTextualData) =>
     _withTextualData(article);
 
 /**

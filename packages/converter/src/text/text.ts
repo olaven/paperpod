@@ -1,11 +1,11 @@
 import { extractTextFromWeb } from "./web";
 import { models } from "@paperpod/common";
 
-const looksLikePdf = (url: string) => false;
+const looksLikePdf = (article: models.Article) => false;
 
-const convertPdf = (url: string) => { throw "NOT IMPLEMENTED" }
+const convertPdf = (article: models.Article) => { throw "NOT IMPLEMENTED" }
 
-export const withTextualData = ({ original_url }: models.ArticleWithoutTextualData) =>
-    looksLikePdf(original_url) ?
-        convertPdf(original_url) :
-        extractTextFromWeb(original_url);
+export const withTextualData = (article: models.ArticleWithoutTextualData) =>
+    looksLikePdf(article) ?
+        convertPdf(article) :
+        extractTextFromWeb(article);

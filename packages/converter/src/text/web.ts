@@ -12,18 +12,18 @@ const date = (extracted: any) =>
         undefined
 
 export const extractTextFromWeb =
-    async (url: string): Promise<models.ArticleWithoutTextualData> => {
+    async (article: models.ArticleWithoutTextualData): Promise<models.Article> => {
 
-        const html = await getHtml(url);
+        const html = await getHtml(article.original_url);
         const extracted = unfluff.lazy(html);
 
         return {
+            ...article,
             text: extracted.text(),
             title: extracted.title(),
             author: extracted.author().join(", "),
             description: extracted.description(),
             publication_timestamp: date(extracted),
-            original_url: url,
         }
     }
 

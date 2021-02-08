@@ -1,6 +1,5 @@
-import fs from "fs"
 import fetch from "node-fetch";
-import { pdfToArticle } from "./pdf";
+import { getTextFromPdfStream } from "./pdf";
 
 describe("Functions for converting pdf data to articles", () => {
 
@@ -14,11 +13,11 @@ describe("Functions for converting pdf data to articles", () => {
         );
     }
 
-    const convertComplexPDF = async () => pdfToArticle(
+    const convertComplexPDF = async () => getTextFromPdfStream(
         await downloadPDF("https://academicjournals.org/journal/IJCER/article-full-text-pdf/0208F0359126")
     );
 
-    const convertSimplePDF = async () => pdfToArticle(
+    const convertSimplePDF = async () => getTextFromPdfStream(
         await downloadPDF("https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf")
     );
 

@@ -1,7 +1,25 @@
 import { models } from '@paperpod/common';
 import pdf from "pdf-parse";
 
-export const pdfToArticle = async (stream: Buffer): Promise<Partial<models.Article>> => {
+export const extractTextFromPDF =
+    async (article: models.ArticleWithoutTextualData): Promise<models.Article> => {
+
+        const buffer = null; //TODO :Get buffer 
+        const textualData = await getTextFromPdfStream(buffer);
+        return {
+            ...article,
+            ...textualData,
+        };
+    }
+
+
+type TextualData = {
+    text: string,
+    publication_timestamp: number,
+    title: string,
+    author: string,
+}
+export const getTextFromPdfStream = async (stream: Buffer): Promise<TextualData> => {
 
     const data = await pdf(stream);
 

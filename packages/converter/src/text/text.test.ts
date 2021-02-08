@@ -38,12 +38,24 @@ describe("Function for text extraction", () => {
         expect(webSpy).toHaveBeenCalledTimes(1);
     });
 
-    it("Chooses pdf if the URL ends with .pdf", async () => {
+    it("Chooses PDF if the URL ends with .pdf", async () => {
 
         const [pdfSpy, webSpy] = mockExtraction();
         await withTextualData({
             ...test.mocks.articleWithoutTextualData(),
             original_url: "https://example.com/file.pdf"
+        });
+
+        expect(pdfSpy).toHaveBeenCalledTimes(1);
+        expect(webSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it("Chooses PDF if the URL ends with .PDF", async () => {
+
+        const [pdfSpy, webSpy] = mockExtraction();
+        await withTextualData({
+            ...test.mocks.articleWithoutTextualData(),
+            original_url: "https://example.com/file.PDF"
         });
 
         expect(pdfSpy).toHaveBeenCalledTimes(1);

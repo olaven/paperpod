@@ -7,7 +7,7 @@ describe("converter", () => {
 
     jest.mock("puppeteer");
 
-    describe.skip("withTextualData", () => {
+    describe("withTextualData", () => {
 
 
         it("Does not throw", () => {

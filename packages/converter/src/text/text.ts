@@ -37,7 +37,7 @@ const looksLikePdf = async (article: models.ArticleWithoutTextualData) => {
  * @param article article without textual data 
  * @returns the article, with textual data
  */
-export const withTextualData = (article: models.ArticleWithoutTextualData) =>
-    looksLikePdf(article) ?
+export const withTextualData = async (article: models.ArticleWithoutTextualData) =>
+    (await looksLikePdf(article)) ?
         extractTextFromPDF(article) :
         extractTextFromWeb(article);

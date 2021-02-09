@@ -6,8 +6,6 @@ import supertest from "supertest";
 import { app } from "../app";
 import { articles } from "../database/database";
 
-//FIXME: Tests pass regardless of what status code I am checking.. This renders the tests useless.
-
 describe("The api for articles", () => {
 
     const post = (token: string, payload = test.mocks.articlePayload()) =>
@@ -89,6 +87,16 @@ describe("The api for articles", () => {
             post(token, {
                 link: "not-a-url"
             }).expect(BAD_REQUEST);
+        });
+
+        it("Does not respond with NOT_IMPLEMENTED if link leads to a pdf", async () => {
+
+            const token = jwt.sign(test.mocks.user());
+            const { status } = await post(token, {
+                link: "https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf"
+            });
+
+            expect(status).not.toBe(NOT_IMPLEMENTED);
         });
     });
 

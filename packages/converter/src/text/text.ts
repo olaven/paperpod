@@ -1,4 +1,3 @@
-import "node-fetch";
 import { filterResponse, get } from "node-kall";
 import { models } from "@paperpod/common";
 import { extractTextFromWeb } from "./web";
@@ -22,7 +21,11 @@ const looksLikePdf = async (article: models.ArticleWithoutTextualData) => {
         return true;
 
     const { headers } = await filterResponse(get(article.original_url));
-    return headers.get("Content-Type") === "application/pdf";
+    const pdfHeader = headers["Content-Type"] === "application/pdf";
+
+    console.log(`pdf header: ${pdfHeader}`);
+
+    return pdfHeader;
 }
 
 

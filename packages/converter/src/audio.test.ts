@@ -3,6 +3,9 @@ import { limitCharLength, voiceFromLanguage } from "./audio";
 
 describe("Functions related to converting text to audio", () => {
 
+
+    jest.mock("node-kall");
+
     const randomString = (length: number) =>
         new Array(length)
             .fill(undefined)

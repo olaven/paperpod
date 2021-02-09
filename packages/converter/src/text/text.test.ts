@@ -6,22 +6,21 @@ import { withTextualData } from "./text";
 
 describe("Function for text extraction", () => {
 
-    const mockExtraction = () => [
-        jest.spyOn(pdf, "extractTextFromPDF"),
-        jest.spyOn(web, "extractTextFromWeb"),
-    ];
+    const mockExtraction = () => {
 
-    const mockKall = () => [
-        jest.spyOn(kall, "get")
-    ];
+        return [
+            jest.spyOn(pdf, "extractTextFromPDF"),
+            jest.spyOn(web, "extractTextFromWeb"),
+        ]
+    };
 
     beforeEach(() => {
 
         jest.resetAllMocks();
+        jest.mock("node-kall");
 
         //re-mock in test if the spy methods are needed
         mockExtraction();
-        mockKall();
     });
 
 
@@ -74,8 +73,8 @@ describe("Function for text extraction", () => {
 
     it("Does not check endpoint if the path ends in .pdf", async () => {
 
-        const [get] = mockKall();
         mockExtraction();
+        const get = jest.spyOn(kall, "get");
 
         await withTextualData({
             ...test.mocks.articleWithoutTextualData(),
@@ -87,8 +86,8 @@ describe("Function for text extraction", () => {
 
     it("Does check endpoint if the path does not end with .pdf", async () => {
 
-        const [get] = mockKall();
         mockExtraction();
+        const get = jest.spyOn(kall, "get");
 
         await withTextualData({
             ...test.mocks.articleWithoutTextualData(),
@@ -100,8 +99,8 @@ describe("Function for text extraction", () => {
 
     it("Does check endpoint if the path does not end with .PDF", async () => {
 
-        const [get] = mockKall();
         mockExtraction();
+        const get = jest.spyOn(kall, "get");
 
         await withTextualData({
             ...test.mocks.articleWithoutTextualData(),

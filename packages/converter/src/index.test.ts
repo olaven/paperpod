@@ -6,9 +6,9 @@ import { withTextualData, getRSSFeed } from "./index";
 describe("converter", () => {
 
     jest.mock("puppeteer");
-    jest.mock("node-kall");
 
-    describe("withTextualData", () => {
+    describe.skip("withTextualData", () => {
+
 
         it("Does not throw", () => {
 
@@ -19,7 +19,7 @@ describe("converter", () => {
             ).resolves.not.toThrow();
         });
 
-        it("Does return replce article data", async () => {
+        it("Does return article data", async () => {
 
             const original = test.mocks.article();
             const withData = await withTextualData(original);

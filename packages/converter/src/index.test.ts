@@ -6,6 +6,8 @@ import { withTextualData, getRSSFeed } from "./index";
 describe("converter", () => {
 
     jest.mock("puppeteer");
+    jest.mock("node-kall");
+
     describe("withTextualData", () => {
 
         it("Does not throw", () => {

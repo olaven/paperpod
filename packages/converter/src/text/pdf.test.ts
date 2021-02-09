@@ -1,4 +1,4 @@
-import { test, models } from "@paperpod/common";
+import { test } from "@paperpod/common";
 import { getTextFromPdfStream, downloadPDF } from "./pdf";
 
 describe("Functions for converting pdf data to articles", () => {

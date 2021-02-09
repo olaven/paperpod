@@ -1,3 +1,5 @@
+import "node-fetch";
+import { filterResponse, get } from "node-kall";
 import { models } from "@paperpod/common";
 import { extractTextFromWeb } from "./web";
 import { extractTextFromPDF } from "./pdf";
@@ -10,10 +12,18 @@ import { extractTextFromPDF } from "./pdf";
  * @param article 
  * @returns true if it looks likd PDF, false if not.
  */
-const looksLikePdf = (article: models.ArticleWithoutTextualData) =>
-    article.original_url
+const looksLikePdf = async (article: models.ArticleWithoutTextualData) => {
+
+    const endsWithPdf = article.original_url
         .toLowerCase()
         .endsWith(".pdf");
+
+    if (endsWithPdf)
+        return true;
+
+    const { headers } = await filterResponse(get(article.original_url));
+    return headers.get("Content-Type") === "application/pdf";
+}
 
 
 /**

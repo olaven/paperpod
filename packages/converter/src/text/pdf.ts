@@ -4,7 +4,7 @@ import pdf from "pdf-parse";
 
 export const downloadPDF = async (url: string) => {
 
-    const response = await fetch(url);
+    const response = await fetch(url); //TODO: replace with node-kall
     const arrayBuffer = await response.arrayBuffer();
 
     return Buffer.from(

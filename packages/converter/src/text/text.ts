@@ -20,10 +20,14 @@ const looksLikePdf = async (article: models.ArticleWithoutTextualData) => {
     if (endsWithPdf)
         return true;
 
-    const { headers } = await filterResponse(get(article.original_url));
-    const pdfHeader = headers["Content-Type"] === "application/pdf";
+    const response = await filterResponse(get(article.original_url));
 
-    console.log(`pdf header: ${pdfHeader}`);
+    //FIXME: fugly
+    const pdfHeader =
+        response.headers.get("Content-Type") === "application/pdf" ||
+        response.headers.get("content-type") === "application/pdf" ||
+        response.headers.get("content-type")?.includes("application/pdf") ||
+        response.headers.get("Content-Type")?.includes("application/pdf");
 
     return pdfHeader;
 }

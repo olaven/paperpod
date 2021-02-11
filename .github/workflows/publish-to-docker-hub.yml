@@ -27,7 +27,6 @@ jobs:
         with:
           context: .
           file: ./dockerfiles/Dockerfile.gateway
-          platforms: linux/amd64,linux/arm64,linux/386
           push: true
           tags: olaven/paperpod-gateway:latest
       - name: Image digest
@@ -54,7 +53,6 @@ jobs:
         with:
           context: .
           file: ./dockerfiles/Dockerfile.api
-          platforms: linux/amd64,linux/arm64,linux/386
           push: true
           tags: olaven/paperpod-api:latest
           # build-args: |
@@ -84,7 +82,6 @@ jobs:
         with:
           context: .
           file: ./dockerfiles/Dockerfile.authentication
-          platforms: linux/amd64,linux/arm64,linux/386
           push: true
           tags: olaven/paperpod-authentication:latest
           # build-args: |
@@ -114,7 +111,6 @@ jobs:
         with:
           context: .
           file: ./dockerfiles/Dockerfile.web
-          platforms: linux/amd64,linux/arm64,linux/386
           push: true
           tags: olaven/paperpod-web:latest
           # build-args: |

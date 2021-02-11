@@ -1,0 +1,9 @@
+{
+    "private": true,
+    "name": "@paperpod/ui",
+    "license": "UNLICENSED",
+    "version": "0.0.1",
+    "dependencies": {
+        "@stitches/react": "^0.0.2"
+    }
+}

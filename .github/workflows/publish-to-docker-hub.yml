@@ -32,6 +32,8 @@ jobs:
           tags: olaven/paperpod-gateway:latest
       - name: Image digest
         run: echo ${{ steps.docker_build_gateway.outputs.digest }}
+    outputs:
+      digest: ${{ steps.docker_build_gateway.outputs.digest }}
   publish-api:
     runs-on: ubuntu-latest
     steps:
@@ -116,3 +118,9 @@ jobs:
           #   arg2=value2
       - name: Image digest
         run: echo ${{ steps.docker_build_web.outputs.digest }}
+  separate_job:
+    runs-on: ubuntu-latest
+    needs: publish-gateway
+    steps:
+      - name: echo-digests-outside-of-their-jobs
+      - run: echo ${{ needs.publish-gateway.digest}}

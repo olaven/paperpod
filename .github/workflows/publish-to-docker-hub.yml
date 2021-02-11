@@ -123,4 +123,4 @@ jobs:
     needs: publish-gateway
     steps:
       - name: echo-digests-outside-of-their-jobs
-      - run: echo ${{ needs.publish-gateway.digest}}
+        run: echo ${{ needs.publish-gateway.digest}}

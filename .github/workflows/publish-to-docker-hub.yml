@@ -120,9 +120,80 @@ jobs:
         run: echo ${{ steps.docker_build_web.outputs.digest }}
     outputs:
       digest: ${{ steps.docker_build_web.outputs.digest }}
-  separate_job:
+  deploy:
     runs-on: ubuntu-latest
     needs: [publish-gateway, publish-api, publish-authentication, publish-web]
     steps:
       - name: echo-digests-outside-of-their-jobs
-        run: echo ${{ needs.publish-gateway.outputs.digest}} && echo ${{ needs.publish-api}} && echo ${{ needs.publish-authentication.outputs.digest}} &&  echo ${{ needs.publish-web.outputs.digest}}
+        run: echo ${{ needs.publish-gateway.outputs.digest}} && echo ${{ needs.publish-api.outputs.digest }} && echo ${{ needs.publish-authentication.outputs.digest}} &&  echo ${{ needs.publish-web.outputs.digest}}
+      - name: Checkout
+          uses: actions/checkout@v2
+        - name: executing remote ssh commands using password
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.SERVER_HOST }}
+            username: ${{ secrets.SERVER_USERNAME }}
+            password: ${{ secrets.SERVER_PASSWORD }}
+            port: ${{ secrets.SERVER_PORT }}
+            script_stop: true
+            script: |
+              rm -rf ./paperpod
+              git clone https://github.com/olaven/paperpod
+              cd paperpod 
+              export \
+                GATEWAY_PORT=${{ secrets.GATEWAY_PORT }} \
+                WEB_PORT=${{ secrets.WEB_PORT }} \
+                API_PORT=${{ secrets.API_PORT }} \
+                AUTHENTICATION_PORT=${{ secrets.AUTHENTICATION_PORT }} \
+                JWT_SECRET=${{ secrets.JWT_SECRET }} \
+                MONGODB_NAME_API=${{ secrets.MONGODB_NAME_API }} \
+                MONGODB_NAME_AUTHENTICATION=${{ secrets.MONGODB_NAME_AUTHENTICATION }} \
+                MONGODB_USERNAME=${{ secrets.MONGODB_USERNAME }} \
+                MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} \
+                MONGODB_HOST=${{ secrets.MONGODB_HOST }} \
+                MONGODB_PORT_AUTHENTICATION=${{ secrets.MONGODB_PORT_AUTHENTICATION }} \
+                MONGODB_PORT_API=${{ secrets.MONGODB_PORT_API }} \
+                MONGODB_PROTOCOL=${{ secrets.MONGODB_PROTOCOL }} \
+                AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+                AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \ 
+                GATEWAY_DIGEST=${{needs.publish-gateway.outputs.digest}} \
+                API_DIGEST=${{needs.publish-api.outputs.digest}} \
+                AUTHENTICATION_DIGEST=${{needs.publish-authentication.outputs.digest}} \
+                WEB_DIGEST=${{needs.publish-web.outputs.digest}} \
+              env \
+                GATEWAY_PORT=$GATEWAY_PORT \
+                WEB_PORT=$WEB_PORT \
+                API_PORT=$API_PORT \
+                AUTHENTICATION_PORT=$AUTHENTICATION_PORT \
+                JWT_SECRET=$JWT_SECRET \
+                MONGODB_NAME_API=$MONGODB_NAME_API \
+                MONGODB_NAME_AUTHENTICATION=$MONGODB_NAME_AUTHENTICATION \
+                MONGODB_USERNAME=$MONGODB_USERNAME \
+                MONGODB_PASSWORD=$MONGODB_PASSWORD \
+                MONGODB_HOST=$MONGODB_HOST \
+                MONGODB_PORT_AUTHENTICATION=$MONGODB_PORT_AUTHENTICATION \
+                MONGODB_PORT_API=$MONGODB_PORT_API \
+                MONGODB_PROTOCOL=$MONGODB_PROTOCOL \
+                AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+                AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+                GATEWAY_DIGEST=$GATEWAY_DIGEST \
+                API_DIGEST=$API_DIGEST \
+                AUTHENTICATION_DIGEST=$AUTHENTICATION_DIGEST \
+                WEB_DIGEST=$WEB_DIGEST \
+                docker stack deploy -c $HOME/paperpod/scripts/stack.yml paperpod;
+          env:
+            GATEWAY_PORT: ${{ secrets.GATEWAY_PORT }}
+            WEB_PORT: ${{ secrets.WEB_PORT }}
+            API_PORT: ${{ secrets.API_PORT }}
+            AUTHENTICATION_PORT: ${{ secrets.AUTHENTICATION_PORT }}
+            JWT_SECRET: ${{ secrets.JWT_SECRET }}
+            MONGODB_NAME_API: ${{ secrets.MONGODB_NAME_API }}
+            MONGODB_NAME_AUTHENTICATION: ${{ secrets.MONGODB_NAME_AUTHENTICATION }}
+            MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+            MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+            MONGODB_HOST: ${{ secrets.MONGODB_HOST }}
+            MONGODB_PORT_AUTHENTICATION: ${{ secrets.MONGODB_PORT_AUTHENTICATION }}
+            MONGODB_PORT_API: ${{ secrets.MONGODB_PORT_API }}
+            MONGODB_PROTOCOL: ${{ secrets.MONGODB_PROTOCOL }}
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

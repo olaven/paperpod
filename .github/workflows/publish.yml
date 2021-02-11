@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/use-digest-in-deploy
 
 jobs:
   publish-gateway:

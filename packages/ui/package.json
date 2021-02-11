@@ -3,6 +3,7 @@
     "name": "@paperpod/ui",
     "license": "UNLICENSED",
     "version": "0.0.1",
+    "main": "./src/index.ts",
     "dependencies": {
         "@stitches/react": "^0.0.2"
     }

@@ -11,10 +11,11 @@ const withProxies = (
     return app;
 }
 
-const mapping = (path: string, hostname: string, port: string): [string, string] => [
-    path,
-    "http://" + hostname + ":" + port
-]
+const mapping = (path: string, hostname: string, port: string): [string, string] =>
+    [
+        path,
+        "http://" + hostname + ":" + port
+    ]
 
 export const app = withProxies(
     [
@@ -22,8 +23,7 @@ export const app = withProxies(
         mapping("/authentication", "authentication", process.env.AUTHENTICATION_PORT),
         mapping("/", "web", process.env.WEB_PORT),
     ],
-    server.app
-        .appWithEnvironment()
+    server.app.appWithEnvironment()
 ).use((_, __, next) => {
 
     console.log("Got something");

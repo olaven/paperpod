@@ -16,8 +16,6 @@ const Index = () => {
   return (
     <>
 
-      <Button>Test Button</Button>
-      <Input placeholder="your@email.com" />
       {!user && <Signup />
       }
       <br />

@@ -1,9 +1,15 @@
 import { styled } from "./stitches.config";
 
-styled("button", {
-    backgroundColor: "grey",
+export const Button = styled("button", {
+    color: "$secondary",
+    backgroundColor: "$primary",
+    padding: "$3",
+    margin: "$3",
+    fontSize: "$21",
+    border: "$1 solid",
+    borderRadius: "6px",
+    transition: "all 0.1s ease 0s",
     ":hover": {
-        backgroundColor: "white",
-        transform: "scale(1.1)"
+        transform: "scale(1.05)",
     }
 }); 

@@ -9,6 +9,7 @@
     },
     "dependencies": {
         "@paperpod/common": "0.0.1",
+        "@paperpod/ui": "0.0.1",
         "next": "^9.4.0",
         "next-transpile-modules": "^6.0.0",
         "node-kall": "^1.0.81",

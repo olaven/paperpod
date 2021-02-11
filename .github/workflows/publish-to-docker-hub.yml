@@ -156,10 +156,10 @@ jobs:
               MONGODB_PROTOCOL=${{ secrets.MONGODB_PROTOCOL }} \
               AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
               AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \ 
-              GATEWAY_DIGEST=${{needs.publish-gateway.outputs.digest}} \
-              API_DIGEST=${{needs.publish-api.outputs.digest}} \
-              AUTHENTICATION_DIGEST=${{needs.publish-authentication.outputs.digest}} \
-              WEB_DIGEST=${{needs.publish-web.outputs.digest}} \
+              GATEWAY_DIGEST=${{ needs.publish-gateway.outputs.digest }} \
+              API_DIGEST=${{ needs.publish-api.outputs.digest }} \
+              AUTHENTICATION_DIGEST=${{ needs.publish-authentication.outputs.digest }} \
+              WEB_DIGEST=${{ needs.publish-web.outputs.digest }} 
             env \
               GATEWAY_PORT=$GATEWAY_PORT \
               WEB_PORT=$WEB_PORT \

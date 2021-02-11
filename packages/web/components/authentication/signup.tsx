@@ -1,5 +1,6 @@
 import { CREATED } from "node-kall";
 import { validators } from "@paperpod/common";
+import { Button, Input } from "@paperpod/ui";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { signup } from "./authFetchers";
@@ -33,7 +34,7 @@ export const Signup = () => {
   return (
     <>
       <label>Email:</label>
-      <input
+      <Input
         type="text"
         name="email"
         onChange={(event) => {
@@ -42,7 +43,7 @@ export const Signup = () => {
       />
 
       <label>Password:</label>
-      <input
+      <Input
         type="password"
         name="password"
         onChange={(event) => {
@@ -50,12 +51,12 @@ export const Signup = () => {
         }}
       />
 
-      <button
+      <Button
         onClick={onClick}
         disabled={!validPassword}
         value="Sign up">
         sign up
-      </button>
+      </Button>
       {!validPassword && <p>
         Enter a stronger password
       </p>}

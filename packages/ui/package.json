@@ -1,0 +1,10 @@
+{
+    "private": true,
+    "name": "@paperpod/ui",
+    "license": "UNLICENSED",
+    "version": "0.0.1",
+    "main": "./src/index.tsx",
+    "dependencies": {
+        "@stitches/react": "^0.0.2"
+    }
+}

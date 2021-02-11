@@ -125,4 +125,4 @@ jobs:
     needs: [publish-gateway, publish-api, publish-authentication, publish-web]
     steps:
       - name: echo-digests-outside-of-their-jobs
-        run: echo ${{ needs.publish-gateway.digest}} && echo ${{ needs.publish-api}} && echo ${{ needs.publish-authentication.digest}} &&  echo ${{ needs.publish-web.digest}}
+        run: echo ${{ needs.publish-gateway.outputs.digest}} && echo ${{ needs.publish-api}} && echo ${{ needs.publish-authentication.outputs.digest}} &&  echo ${{ needs.publish-web.outputs.digest}}

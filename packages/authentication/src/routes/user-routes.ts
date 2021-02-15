@@ -22,11 +22,6 @@ export const userRoutes = express.Router()
     .post("/users/sessions", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
-        console.log(`
-            Got credentials: 
-            ${credentials.email}
-            ${credentials.password}
-        `)
         if (await credentialsAreValid(credentials)) {
 
 

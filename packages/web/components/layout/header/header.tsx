@@ -1,5 +1,5 @@
 import { styled } from "@paperpod/ui";
-import { Image } from "./Image";
+import { Image } from "./image";
 import { Navbutton } from "./navbutton";
 
 const Container = styled("div", {

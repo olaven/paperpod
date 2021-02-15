@@ -4,7 +4,8 @@
     "version": "0.0.1",
     "main": "./src/index.ts",
     "scripts":{
-        "dev": "parcel popup.html"
+        "dev": "parcel index.html",
+        "build": "parcel build index.html --public-url=./"
     },
     "dependencies": {
         "@paperpod/common": "0.0.1",

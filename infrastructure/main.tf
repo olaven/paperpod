@@ -3,7 +3,7 @@ terraform {
 
   backend "s3" {
     bucket = "paperpod-terraform-state"
-    key    = "state/terraform.tfstate"
+    key    = "state"
     region = "eu-north-1"
   }
 

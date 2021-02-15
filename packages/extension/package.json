@@ -1,0 +1,21 @@
+{
+    "name": "@paperpod/extension",
+    "license": "UNLICENSED",
+    "version": "0.0.1",
+    "main": "./src/index.ts",
+    "scripts": {
+        "dev": "parcel index.html",
+        "build": "parcel build index.html --public-url=./"
+    },
+    "dependencies": {
+        "@paperpod/common": "0.0.1",
+        "@paperpod/ui": "0.0.1",
+        "node-kall": "^1.0.81"
+    },
+    "devDependencies": {
+        "@types/node": "^14.14.14",
+        "parcel-bundler": "^1.12.4",
+        "react": "^17.0.1",
+        "typescript": "^4.1.3"
+    }
+}

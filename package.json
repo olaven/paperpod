@@ -13,6 +13,7 @@
         "converter": "yarn workspace @paperpod/converter",
         "common": "yarn workspace @paperpod/common", 
         "server": "yarn workspace @paperpod/server", 
+        "extension": "yarn workspace @paperpod/extension", 
         "ui": "yarn workspace @paperpod/ui"
     },
     "dependencies": {

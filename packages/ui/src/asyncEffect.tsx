@@ -6,7 +6,8 @@ import { useEffect } from "react";
 * @param action 
 * @param on 
 */
-export const asyncEffect = (action: () => Promise<any>, on: any[]) =>
+//undo cache
+export const asyncEffect = (action, on) =>
     useEffect(() => {
         action()
     }, on);

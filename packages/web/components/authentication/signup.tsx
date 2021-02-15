@@ -1,12 +1,14 @@
-import { CREATED, get, post } from "node-kall";
-import { models } from "@paperpod/common";
-import { useContext, useState } from "react";
+import { CREATED } from "node-kall";
+import { validators } from "@paperpod/common";
+import { Button, Input } from "@paperpod/ui";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { signup } from "./authFetchers";
 
 export const Signup = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const [validPassword, setValidPassword] = useState(false);
 
   const { setToken } = useContext(UserContext);
 
@@ -17,10 +19,22 @@ export const Signup = () => {
       setToken(response.token);
     }
   };
+
+  useEffect(() => {
+
+    if (!password) return;
+    setValidPassword(
+      validators
+        .validatePassword(
+          password
+        )
+    )
+  }, [password]);
+
   return (
     <>
       <label>Email:</label>
-      <input
+      <Input
         type="text"
         name="email"
         onChange={(event) => {
@@ -29,7 +43,7 @@ export const Signup = () => {
       />
 
       <label>Password:</label>
-      <input
+      <Input
         type="password"
         name="password"
         onChange={(event) => {
@@ -37,9 +51,15 @@ export const Signup = () => {
         }}
       />
 
-      <button onClick={onClick} value="Sign up">
+      <Button
+        onClick={onClick}
+        disabled={!validPassword}
+        value="Sign up">
         sign up
-      </button>
+      </Button>
+      {!validPassword && <p>
+        Enter a stronger password
+      </p>}
     </>
   );
 };

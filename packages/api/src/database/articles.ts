@@ -1,6 +1,7 @@
-import { server, models } from "@paperpod/common";
+import { models } from "@paperpod/common";
+import { database } from "@paperpod/server";
 
-const withArticles = server.database.withCollection<models.Article>("articles");
+const withArticles = database.withCollection<models.Article>("articles");
 
 export const getByOwner = (owner_id: string) =>
     withArticles<models.Article[]>(collection =>
@@ -8,6 +9,13 @@ export const getByOwner = (owner_id: string) =>
             { owner_id }
         ).toArray()
     )
+
+export const deleteById = (_id: string) =>
+    withArticles<any>(collection =>
+        collection.deleteOne({
+            _id
+        })
+    );
 
 /* export const getById = (_id: string) =>
     withArticles(collection =>
@@ -18,7 +26,7 @@ export const getByOwner = (owner_id: string) =>
  */
 export const getById = (_id: string) =>
     withArticles(
-        server.database.getByIdHandler(_id)
+        database.getByIdHandler(_id)
     )
 
 export const getByOriginalUrlAndOwner = (original_url: string, owner_id: string) =>
@@ -29,13 +37,8 @@ export const getByOriginalUrlAndOwner = (original_url: string, owner_id: string)
         })
     );
 
-//FIXME: delete me 
-export const getAll = () =>
-    withArticles<models.Article[]>(collection =>
-        collection.find({}).toArray()
-    )
 
 export const persist = (article: models.Article) =>
     withArticles(
-        server.database.persistHandler(article)
+        database.persistHandler(article)
     );

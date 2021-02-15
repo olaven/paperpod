@@ -11,7 +11,9 @@
         "authentication": "yarn workspace @paperpod/authentication",
         "gateway": "yarn workspace @paperpod/gateway",
         "converter": "yarn workspace @paperpod/converter",
-        "common": "yarn workspace @paperpod/common"
+        "common": "yarn workspace @paperpod/common", 
+        "server": "yarn workspace @paperpod/server", 
+        "ui": "yarn workspace @paperpod/ui"
     },
     "dependencies": {
         "@babel/runtime": "^7.12.5"

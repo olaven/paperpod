@@ -1,12 +1,14 @@
 import express from "express"
 import faker from "faker";
 import { models, test } from "@paperpod/common";
-import { jwt } from "@paperpod/common/src/server/server";
+import { jwt } from "@paperpod/server";
 import * as database from "../authdatabase/authdatabase";
 import { OK, BAD_REQUEST, CREATED, UNAUTHORIZED, CONFLICT, FORBIDDEN } from "node-kall";
 import supertest from "supertest";
 import { app } from "../app";
 import { hash } from "../cryptography/cryptography";
+import { credentialsAreValid } from "./user-routes";
+import { validateLocaleAndSetLanguage } from "typescript";
 
 //FIXME: Tests pass regardless of what status code I am checking.. This renders the tests useless.
 
@@ -20,10 +22,9 @@ describe("The authentication endpoint for users", () => {
     const extractBearerToken = async (test: supertest.Test) => {
 
         const { body: { token } } = await test;
+
         return token;
     }
-
-
 
     describe("Local test utils", () => {
 
@@ -54,6 +55,67 @@ describe("The authentication endpoint for users", () => {
 
                 expect(sentToken).toEqual(retrievedToken);
             })
+        });
+    });
+
+    describe("function validating credentials", () => {
+
+        it("Does not crash", async () => {
+
+            const user = await database.users.insert(test.mocks.user())
+            expect(credentialsAreValid({ email: user.email, password: faker.internet.password() })).resolves.not.toThrow();
+        });
+
+        it("Returns false if email is undefined", async () => {
+
+            expect(
+                await credentialsAreValid({ email: undefined, password: faker.internet.password() })
+            ).toBe(false);
+        });
+
+        it("Returns false if password is undefined", async () => {
+
+            const user = await database.users.insert(test.mocks.user())
+            expect(
+                await credentialsAreValid({ email: user.email, password: undefined })
+            ).toBe(false);
+        });
+
+        it("Returns false if there's no user with given email", async () => {
+
+            const email = faker.internet.email();
+            const user = await database.users.getByEmail(email);
+
+            expect(
+                await credentialsAreValid({ email, password: faker.internet.password() })
+            ).toBe(false);
+
+            expect(user).toEqual(null);
+        });
+
+        it("Returns false if the password is not the same as used when signing up", async () => {
+
+            const user = await database.users.insert(test.mocks.user());
+
+            expect(
+                await credentialsAreValid({ email: user.email, password: faker.internet.password() })
+            ).toBe(false);
+        });
+
+        it("returns true if the supplied password is correct", async () => {
+
+            const password = faker.internet.password();
+            const password_hash = await hash.hash(password);
+
+            const user = await database.users.insert({
+                ...test.mocks.user(),
+                password_hash
+            });
+
+            expect(user.password_hash).toEqual(password_hash);
+
+            const valid = await credentialsAreValid({ email: user.email, password });
+            expect(valid).toBe(true);
         });
     });
 
@@ -101,13 +163,31 @@ describe("The authentication endpoint for users", () => {
             expect(status).toEqual(CREATED);
         });
 
-        it("Returns a token containint the correct user on signup", async () => {
+        it("Stores user with the lowercase version of their email adress", async () => {
+
+
+            const email = `FlAkYcAsE${faker.internet.email()}`;
+            await signUp({
+                ...test.mocks.credentials(),
+                email
+            });
+
+            const withoutLowerCase = await database.users.getByEmail(email);
+            const lowercase = await database.users.getByEmail(email.toLowerCase());
+
+            expect(withoutLowerCase).toBeNull();
+            expect(lowercase).toBeDefined()
+            expect(lowercase.email).toEqual(email.toLowerCase());
+        })
+
+        it("Returns a token containing the correct user on signup", async () => {
 
             const credentials = test.mocks.credentials();
             const response = await signUp(credentials);
 
             const token = response.body.token;
-
+            expect(response.body.token).toBeDefined();
+            expect(response.body.token).not.toBeNull()
             //NOTE: assumes test JWT_SECRET secret is present and same when creating and reading here
             const parsed = jwt.decode<models.User>(token);
             expect(parsed.email).toEqual(credentials.email);
@@ -136,7 +216,7 @@ describe("The authentication endpoint for users", () => {
             expect(user.email).toEqual(credentials.email);
         });
 
-        it("Does create a user with and id", async () => {
+        it("Does create a user with an id", async () => {
 
             const credentials = test.mocks.credentials();
             const { status } = await signUp(credentials)
@@ -178,6 +258,47 @@ describe("The authentication endpoint for users", () => {
 
             const secondResponse = await signUp(credentials)
             expect(secondResponse.status).toEqual(CONFLICT);
+        });
+
+        it("Returns BAD_REQUEST on users that have passwords shorter than 8 characters", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alphaNumeric(7),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+
+        it("returns BAD_REQUEST on users that have passwords without lowercase letters", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alphaNumeric(80).toLowerCase(),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+
+        it("returns BAD_REQUEST on users that have passwords without uppercase letters", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alphaNumeric(80).toUpperCase(),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+
+
+        it("returns BAD_REQUEST on users that don't have numbers", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                password: faker.random.alpha({ count: 50 }),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
         });
     });
 
@@ -299,3 +420,4 @@ describe("The authentication endpoint for users", () => {
         });
     });
 });
+

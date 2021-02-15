@@ -1,5 +1,7 @@
-import { server } from "@paperpod/common";
+import *  as database from "./database/database";
+import * as server from "@paperpod/server";
 import { articleRoutes, fileRoutes, rssRoutes } from "./routes/routes";
+
 
 
 export const app = server.app.appWithBodyParser(

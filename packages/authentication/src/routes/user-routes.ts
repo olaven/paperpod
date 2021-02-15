@@ -1,19 +1,20 @@
+import { models, validators } from "@paperpod/common";
+import { jwt, middleware } from "@paperpod/server";
 import { hash } from "../cryptography/cryptography";
 import { nanoid } from "nanoid";
-import { models, server } from "@paperpod/common";
 import express from "express";
 import * as database from "../authdatabase/authdatabase"
 import { BAD_REQUEST, CONFLICT, CREATED, NO_CONTENT, OK, UNAUTHORIZED } from "node-kall";
 
 
-const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {
+export const credentialsAreValid = async ({ email, password }: models.UserCredentials) => {
 
     if (!email || !password) return false;
 
-    const user = await database.users.getByEmail(email);
-    const passwordEqual = await hash.compare(password, user?.password_hash);
+    const user = await database.users.getByEmail(email.toLowerCase());
+    if (!user) return false;
 
-    return user && passwordEqual;
+    return await hash.compare(password, user?.password_hash);
 }
 
 
@@ -21,10 +22,16 @@ export const userRoutes = express.Router()
     .post("/users/sessions", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
+        console.log(`
+            Got credentials: 
+            ${credentials.email}
+            ${credentials.password}
+        `)
         if (await credentialsAreValid(credentials)) {
 
-            const user = await database.users.getByEmail(credentials.email);
-            const token = server.jwt.sign(user);
+
+            const user = await database.users.getByEmail(credentials.email.toLowerCase());
+            const token = jwt.sign(user);
 
             return response
                 .status(CREATED)
@@ -38,7 +45,7 @@ export const userRoutes = express.Router()
                 .send()
         }
     })
-    .delete("/users/sessions", server.middleware.withAuthentication(
+    .delete("/users/sessions", middleware.withAuthentication(
         (request, response, user) => {
 
             //FIXME: somehow invalidate old token 
@@ -49,11 +56,10 @@ export const userRoutes = express.Router()
                 });
         }
     ))
-    .put("/users/sessions", server.middleware.withAuthentication(
+    .put("/users/sessions", middleware.withAuthentication(
         async (request, response, user) => {
 
-            const token = server.jwt.sign(user);
-            console.log(`token: ${token}`);
+            const token = jwt.sign(user);
             response
                 .status(OK)
                 .send({
@@ -64,9 +70,8 @@ export const userRoutes = express.Router()
     .post("/users", async (request, response) => {
 
         const credentials = request.body as models.UserCredentials;
-        console.log("Attempting to sign up", credentials);
 
-        if (!credentials || !credentials.email || !credentials.password)
+        if (!credentials || !credentials.email || !credentials.password || !validators.validatePassword(credentials.password))
             return response
                 .status(BAD_REQUEST)
                 .send();
@@ -79,11 +84,11 @@ export const userRoutes = express.Router()
 
         const user = await database.users.insert({
             _id: nanoid(),
-            email: credentials.email,
+            email: credentials.email.toLowerCase(),
             password_hash: await hash.hash(credentials.password)
         });
 
-        const token = server.jwt.sign(user);
+        const token = jwt.sign(user);
 
         return response
             .status(CREATED)
@@ -91,7 +96,7 @@ export const userRoutes = express.Router()
     })
     .get(
         "/users/me",
-        server.middleware.withAuthentication((request, response, user) => {
+        middleware.withAuthentication((request, response, user) => {
 
             response.json({
                 ...user,

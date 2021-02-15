@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { UserContext } from "../authentication/UserContext"
+import { constants } from "@paperpod/common";
 
 export const Feed = () => {
 
@@ -17,7 +18,7 @@ export const Feed = () => {
       </button>
 
         Din feed: <a>
-            https://paperpod.fm/api/feeds/{user._id}
+            {constants.APPLICATION_URL}/api/feeds/{user._id}
         </a>
     </>
 }

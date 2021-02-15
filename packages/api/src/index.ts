@@ -1,4 +1,4 @@
-import { server } from "@paperpod/common";
+import { boot } from "@paperpod/server";
 import { app } from "./app";
 
-server.boot("/api", app);
+boot("/api", app);

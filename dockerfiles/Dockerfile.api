@@ -1,16 +1,16 @@
-FROM node:10-alpine
+FROM buildkite/puppeteer
 
 WORKDIR /app
 
-COPY ../package.json .
-COPY ../yarn.lock .
-COPY ../tsconfig.json .
-COPY ../packages/common /app/packages/common
-COPY ../packages/converter /app/packages/converter
-COPY ../packages/api /app/packages/api
+COPY ./package.json .
+COPY ./yarn.lock .
+COPY ./tsconfig.json .
+COPY ./packages/common /app/packages/common
+COPY ./packages/server /app/packages/server
+COPY ./packages/converter /app/packages/converter
+COPY ./packages/api /app/packages/api
 
-RUN yarn install
-RUN yarn api build 
+RUN yarn install 
 
 ENV NODE_ENV production
 

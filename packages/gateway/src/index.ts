@@ -1,5 +1,5 @@
 import express from "express";
-import { server } from "@paperpod/common"
+import * as server from "@paperpod/server"
 import { createProxy } from "./proxy";
 
 const withProxies = (
@@ -7,14 +7,15 @@ const withProxies = (
     app = express()
 ) => {
     pairs.forEach(
-        ([path, target]) => createProxy(app)(path, target)); 
+        ([path, target]) => createProxy(app)(path, target));
     return app;
 }
 
-const mapping = (path: string, hostname: string, port: string): [string, string] => [
-    path,
-    "http://" + hostname + ":" + port
-]
+const mapping = (path: string, hostname: string, port: string): [string, string] =>
+    [
+        path,
+        "http://" + hostname + ":" + port
+    ]
 
 export const app = withProxies(
     [
@@ -22,8 +23,11 @@ export const app = withProxies(
         mapping("/authentication", "authentication", process.env.AUTHENTICATION_PORT),
         mapping("/", "web", process.env.WEB_PORT),
     ],
-    server.app
-        .appWithEnvironment()
-)
+    server.app.appWithEnvironment()
+).use((_, __, next) => {
+
+    console.log("Got something");
+    next();
+})
 
 server.boot("", app);

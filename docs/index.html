@@ -11,24 +11,11 @@
     <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet" />
 
     <title>Paperpod</title>
 
     <style>
-        a {
-            color: inherit;
-        }
-
-        #container {
-            font-family: 'Roboto', sans-serif;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-
-            align-items: center;
-        }
-
         #logo-container,
         #text-container {
             display: flex;
@@ -43,6 +30,15 @@
                 font-size: 1.2em;
                 width: 95vw;
             }
+
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            form * {
+                margin-bottom: 1em;
+            }
         }
 
         #logo-container img {
@@ -53,6 +49,30 @@
             font-size: 1.79em;
             flex-direction: column;
             align-items: center;
+        }
+
+        #terms-and-conditions {
+            margin-top: 0.24em;
+            font-size: 0.5em;
+        }
+
+        #email-input {
+            padding: 5px;
+        }
+
+        #submit {
+            border: none;
+            background-color: white;
+            text-decoration: underline;
+        }
+
+        #faq-link {
+            position: absolute;
+            text-decoration: underline;
+            bottom: 5vh;
+            right: 5vw;
+            padding: 0.5vw;
+            border-radius: 15px;
         }
     </style>
 </head>
@@ -72,11 +92,25 @@
 
                 <br />
                 <br />
-                <a href="mailto:olav@sundfoer.com?subject=Paperpod&body=Please let me know when paperpod launches!">
-                    <b>Click here</b> to be notified when it <b>launches</b>
-                </a>٩(^‿^)۶
+                Sign up below to stay in the loop ٩(^‿^)۶
             </p>
+            <div id="revue-embed">
+                <form action="https://www.getrevue.co/profile/olaven/add_subscriber" method="post" id="revue-form"
+                    name="revue-form" target="_blank">
+                    <input id="email-input" placeholder="your@email.com" type="email" name="member[email]"
+                        id="member_email">
+                    <input type="submit" value="Subscribe" name="member[subscribe]" id="submit">
+                    <div id="terms-and-conditions">
+                        By subscribing, you agree with Revue’s
+                        <a target="_blank" href="https://www.getrevue.co/terms">Terms</a> and
+                        <a target="_blank" href="https://www.getrevue.co/privacy">Privacy Policy</a>.
+                    </div>
+                </form>
+            </div>
         </div>
+        <a id="faq-link" href="./faq.html">
+            I have more questions
+        </a>
     </div>
 </body>
 

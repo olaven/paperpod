@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet" />
+    <title>FAQ - Paperpod</title>
+
+    <style>
+        .faq-container {
+            font-size: 1.2em;
+            align-self: center;
+            width: 50vw;
+
+            transition: .1s;
+            transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1);
+            transition-property: all;
+        }
+
+        .faq-container:hover {
+            transform: scale(1.02);
+        }
+
+        .faq-container p {
+            width: 79%;
+            opacity: 0.79;
+        }
+
+        .faq-container:hover p {
+            opacity: 1;
+        }
+
+        #read-out {
+            margin-top: 7.9vh;
+            padding-bottom: 5vh;
+        }
+
+        @media screen and (max-width: 992px) {
+
+            .faq-container {
+                width: 100vw;
+            }
+
+            .faq-container p {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <a href="index.html">
+            <div id="logo-container">
+                <img id="logo" src="./logo.svg" />
+            </div>
+        </a>
+        <a class="faq-container">
+            <h2>What can I save with Paperpod?</h2>
+            <p>
+                You will be able to save any article on the web as
+                well as textual PDF files. More formats
+                are planned.
+            </p>
+        </a>
+        <div class="faq-container">
+            <h2>How many articles can I save?</h2>
+            <p>You can save as many articles as you want.</p>
+        </div>
+        <div class="faq-container">
+            <h2>How can I save articles to Paperpod?</h2>
+            <p>
+                Paperpod will have a "one-click" browser extension and an equaly simple mobile app. </p>
+        </div>
+        <div class="faq-container">
+            <h2>How can I listen to my saved articles?</h2>
+            <p>
+                You will get a personal podcast URL that you can add to the podcast player you already use.
+                Any article you save will appear as a new episode.
+            </p>
+            <p>
+                Support for a dedicated player may release in the future.
+            </p>
+        </div>
+        <div class="faq-container">
+            <h2>Will Paperpod cost money?</h2>
+            <p>
+                Yes, Paperpod will have an affordable subscription.
+                Having a transparent business model means
+                no shady stuff like selling your data.
+                To anyone. Ever.
+            </p>
+            <p>
+                A subscription model also allows for an <a href="https://github.com/olaven/paperpod">open
+                    development</a>,
+                where anyone can check out Paperpod's source code if they want to :-)
+            </p>
+        </div>
+
+        <h2 id="read-out">No answer? <a href="mailto:olav@sundfoer.com">Reach out!</a></h2>
+    </div>
+</body>
+
+</html>

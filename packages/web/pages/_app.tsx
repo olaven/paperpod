@@ -1,10 +1,13 @@
 import type { AppProps } from "next/app";
 import { UserContextProvider } from "../components/authentication/authentication";
+import { Layout } from "../components/layout/layout";
 
 function App({ Component, pageProps }: AppProps) {
   return (
     <UserContextProvider>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </UserContextProvider>
   );
 }

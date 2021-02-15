@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { Articles } from "../components/articles/Articles";
-import { Button, Input } from "@paperpod/ui";
 import {
   UserContext,
   Signup,
@@ -15,7 +14,6 @@ const Index = () => {
 
   return (
     <>
-      <h1>This is a change.</h1>
       {!user && <Signup />
       }
       <br />

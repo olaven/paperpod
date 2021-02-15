@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 import { models } from "@paperpod/common";
 import { OK } from "node-kall";
-import { asyncEffect } from "../../helpers/asyncEffect";
+import { asyncEffect } from "@paperpod/ui";
 import { getArticles } from "./articleFetchers";
 import { UserContext } from "../authentication/UserContext";
 
@@ -10,7 +10,7 @@ export const ArticleContext = createContext<{
   resfreshArticles: () => Promise<void>;
 }>({
   articles: [],
-  resfreshArticles: async () => {},
+  resfreshArticles: async () => { },
 });
 
 export const ArticleContextProvider = ({ children }: any) => {

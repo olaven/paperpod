@@ -1,13 +1,8 @@
-import { Input } from "@paperpod/ui";
 import React from 'react'
 import ReactDOM from 'react-dom'
-
-console.log('Hello from tsx!')
+import { Popup } from "./popup";
 
 ReactDOM.render(
-    <>
-        Her er det tekst
-        <Input placeholder="test" />
-    </>,
+    <Popup />,
     document.getElementById('root'),
 )

@@ -4,8 +4,9 @@ import { createStyled } from '@stitches/react';
 export const { styled, css } = createStyled({
     tokens: {
         colors: {
-            $primary: 'white', //'#0A585C',
-            $secondary: 'black', //'#EBF3FE',
+            $primary: 'white',
+            $secondary: 'black',
+            $grey: 'hsl(0, 0%, 36%)',
         },
         space: {
             $1: '1px',

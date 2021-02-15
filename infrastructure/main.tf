@@ -8,11 +8,14 @@ terraform {
   }
 
   /*
-  For the sake of this section, the term "environment account" refers to one of the accounts whose contents are managed by Terraform, separate from the administrative account described above.
+  For the sake of this section, the term "environment account" refers to one of the accounts 
+  whose contents are managed by Terraform, separate from the administrative account described above.
+  
+  Your environment accounts will eventually contain your own product-specific infrastructure. 
+  Along with this it must contain one or more IAM roles that grant sufficient access for 
+  Terraform to perform the desired management tasks.
 
-Your environment accounts will eventually contain your own product-specific infrastructure. Along with this it must contain one or more IAM roles that grant sufficient access for Terraform to perform the desired management tasks.
-
-IE-> Maa lese om IAM-roller 
+  IE-> Maa lese om IAM-roller 
   */
 
   required_providers {

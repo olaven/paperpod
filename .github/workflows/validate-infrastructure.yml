@@ -10,12 +10,12 @@ jobs:
         uses: hashicorp/setup-terraform@v1
       - name: Checkout repository
         uses: actions/checkout@v2
-      - id: initializing Terraform
+      - name: initializing Terraform
         run: terraform init -no-color
         working-directory: ./infrastructure
-      - id: validating syntax
+      - name: validating syntax
         run: terraform validate -no-color
         working-directory: ./infrastructure
-      - id: plan infrastructure changes
+      - name: plan infrastructure changes
         run: terraform plan -no-color
         working-directory: ./infrastructure

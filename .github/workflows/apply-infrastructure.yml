@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - main
-      - setup/terraform #TODO: Remove after tesing
 
 jobs:
   apply-infrastructure:

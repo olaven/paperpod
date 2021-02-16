@@ -5,7 +5,7 @@ const Container = styled("footer", {
     left: 0,
     bottom: 0,
     width: "100vw",
-    fontSize: "$21",
+    fontSize: "$twentyone",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",

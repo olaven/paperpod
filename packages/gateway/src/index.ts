@@ -1,33 +1,36 @@
-import express from "express";
+
+import fs from "fs";
+import http from "http";
+import https from "https";
 import * as server from "@paperpod/server"
-import { createProxy } from "./proxy";
+import { withProxies, mapping } from "./proxy";
 
-const withProxies = (
-    pairs: [string, string][],
-    app = express()
-) => {
-    pairs.forEach(
-        ([path, target]) => createProxy(app)(path, target));
-    return app;
+
+export const app = withProxies([
+    mapping("/api", "api", process.env.API_PORT),
+    mapping("/authentication", "authentication", process.env.AUTHENTICATION_PORT),
+    mapping("/", "web", process.env.WEB_PORT),],
+    server.app.appWithEnvironment()
+);
+
+const httpServer = http.createServer(app);
+
+
+httpServer.listen(process.env.PORT, () => {
+    console.log("HTTP Server is running");
+});
+
+if (process.env.NODE_ENV !== "development") {
+
+
+    const httpsServer = https.createServer({
+        key: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/privkey.pem', 'utf8'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/cert.pem', 'utf8'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/chain.pem', 'utf8'),
+    }, app);
+
+    httpsServer.listen(443, () => {
+
+        console.log("HTTPS server is running");
+    });
 }
-
-const mapping = (path: string, hostname: string, port: string): [string, string] => [
-    path,
-    "http://" + hostname + ":" + port
-]
-
-export const app = withProxies(
-    [
-        mapping("/api", "api", process.env.API_PORT),
-        mapping("/authentication", "authentication", process.env.AUTHENTICATION_PORT),
-        mapping("/", "web", process.env.WEB_PORT),
-    ],
-    server.app
-        .appWithEnvironment()
-).use((_, __, next) => {
-
-    console.log("Got something");
-    next();
-})
-
-server.boot("", app);

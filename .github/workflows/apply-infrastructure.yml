@@ -5,7 +5,7 @@ on:
       - setup/terraform #TODO: Remove after tesing
 
 jobs:
-  plan-infrastructure:
+  apply-infrastructure:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_TERRAFORM_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_TERRAFORM_SECRET_ACCESS_KEY }}

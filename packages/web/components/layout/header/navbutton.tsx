@@ -1,14 +1,14 @@
 import { styled } from "@paperpod/ui";
 
 export const Navbutton = styled("a", {
-    fontSize: "$34",
+    fontSize: "$thirtyfour",
     fontWeight: "lighter",
     alignSelf: "end",
     flexGrow: 15,
     textAlign: "center",
     transition: "ease-in-out .1s",
     opacity: .9,
-    ":hover": {
+    "&:hover": {
         textDecoration: "underline",
         transform: "scale(1.13)",
         cursor: "pointer",
@@ -19,7 +19,7 @@ export const Navbutton = styled("a", {
                 textDecoration: "underline",
                 transform: "scale(1.34)",
                 opacity: 1,
-                ":hover": {
+                "&:hover": {
                     transform: "scale(1.34)",
                     opacity: 1,
                 }

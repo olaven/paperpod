@@ -1,42 +1,40 @@
 // stitches.config.ts
-import { createStyled } from '@stitches/react';
+import { createCss } from '@stitches/react';
 
-export const { styled, css } = createStyled({
-    tokens: {
+export const { styled, css, getCssString } = createCss({
+    theme: {
         colors: {
-            $primary: 'white',
-            $secondary: 'black',
-            $grey: 'hsl(0, 0%, 36%)',
+            "primary": 'white',
+            "secondary": 'black',
+            "grey": 'hsl(0, 0%, 36%)',
         },
         space: {
-            $1: '1px',
-            $2: '2px',
-            $3: '3px',
-            $5: '5px',
-            $8: '8px',
-            $13: '13px',
-            $21: '21px',
-            $34: '34px',
-            $55: '55px',
-            $79: '79px',
-            $114: '114px',
+            one: '1px',
+            two: '2px',
+            three: '3px',
+            five: '5px',
+            eight: '8px',
+            thirteen: '13px',
+            twentyone: '21px',
+            thirtyfour: '34px',
+            fiftyfive: '55px',
+            seventynine: '79px',
+            onehunderedandfourteen: '114px',
         },
         fontSizes: {
-            $5: '5px',
-            $8: '8px',
-            $13: '13px',
-            $21: '21px',
-            $34: '34px',
-            $55: '55px',
-            $79: '79px',
-            $114: '114px',
-            $223: '223px',
-            $367: '367px',
+            five: '5px',
+            eight: '8px',
+            thirteen: '13px',
+            twentyone: '21px',
+            thirtyfour: '34px',
+            fiftyfive: '55px',
+            seventynine: '79px',
+            onehunderedandfourteen: '114px',
         }
     },
-    breakpoints: {
-        small: (rule) => `@media (max-width: 768px) { ${rule} }`,
-        large: rule => `@media (min-width: 768px) { ${rule} }`
+    conditions: {
+        small: `@media (max-width: 768px)`,
+        large: `@media (min-width: 768px)`,
     },
     utils: {},
 })

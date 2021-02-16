@@ -1,6 +1,25 @@
 # This file is maintained automatically by "terraform init".
 # Manual edits may be lost in future updates.
 
+provider "registry.terraform.io/franckverrot/stripe" {
+  version     = "1.7.0"
+  constraints = "1.7.0"
+  hashes = [
+    "h1:Mw5HsN2gtp9/ZHPytOF+lLTDki035C7OwQQzacHVA6M=",
+    "zh:0a61c4a913b9b05bab9c1b5c73914c23b4f481c74977fedf12c11d4ff4cb985e",
+    "zh:30eeba7545409722c527299ce4f59d1ea0f9c5d58d7482979fcdffc5a39c4842",
+    "zh:4406baa5f2c368d77bf62d03900696fc60289a3ad6dc311ccc03ee5d9778a30b",
+    "zh:488458f5263db5d21d9abf32dd33bff6a4c500672d88247bb453c25691c87ca1",
+    "zh:55120efc8fb4e96bcd29c6918fdb3b550456769aad23dd41aa0109d378c2622a",
+    "zh:959813dca2398bde7333369489c6569506019afa273f8fe7de3a52a10d958597",
+    "zh:981b54ca4cf19e55d9d7902f4ba0253ceb746e9e333f6b290f34f189861f9626",
+    "zh:c6831be202d6664867df9f66b759bcf022bbf995c7f9796815af094c93ae8304",
+    "zh:dc670f3ee8d0c3840f3d21a3f327e341065f89ecb3ecbb35fa29cb9f47900794",
+    "zh:ea55d05f05f9ed5f15737e425d0012f86fbebfe8179979614c0a53a972583f17",
+    "zh:fa45cb42db05fad8871023649e1aabcdb1984874ba03a071c184059bf580466b",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/aws" {
   version     = "2.70.0"
   constraints = "~> 2.70"

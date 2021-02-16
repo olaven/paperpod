@@ -24,7 +24,7 @@ resource "stripe_product" "product" {
 
 resource "stripe_plan" "product_plan" {
   product  = stripe_product.product.id
-  amount   = 800
+  amount   = 800 #resolves to 8$
   currency = "usd"
   interval = "month"
 }

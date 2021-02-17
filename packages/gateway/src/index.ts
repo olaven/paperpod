@@ -28,9 +28,9 @@ if (process.env.NODE_ENV !== "development") {
     try {
 
         const httpsServer = https.createServer({
-            key: fs.readFileSync('./certs/privkey.pem', 'utf8'),
-            cert: fs.readFileSync('./certs/cert.pem', 'utf8'),
-            ca: fs.readFileSync('./certs/chain.pem', 'utf8'),
+            key: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/privkey.pem', 'utf8'),
+            cert: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/cert.pem', 'utf8'),
+            ca: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/chain.pem', 'utf8'),
         }, app);
 
         httpsServer.listen(443, () => {

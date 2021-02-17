@@ -1,5 +1,6 @@
 import unfluff from "unfluff";
 import puppeteer from "puppeteer";
+import { models } from "@paperpod/common";
 
 /**
  * returns the publication timestamp, if any. 
@@ -10,24 +11,14 @@ const date = (extracted: any) =>
         new Date(extracted.date()).getTime() :
         undefined
 
-export const getTextualData =
-    async (url: string): Promise<{
-        text: string,
-        title: string,
-        author: string,
-        description:
-        string,
-        publication_timestamp: number
-    }> => {
+export const extractTextFromWeb =
+    async (article: models.ArticleWithoutTextualData): Promise<models.Article> => {
 
-
-        const html = await getHtml(
-            url
-        ).catch(error => console.error("Puppeteer error", error));
-
+        const html = await getHtml(article.original_url);
         const extracted = unfluff.lazy(html);
 
         return {
+            ...article,
             text: extracted.text(),
             title: extracted.title(),
             author: extracted.author().join(", "),

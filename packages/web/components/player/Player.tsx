@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { asyncEffect } from "../../helpers/asyncEffect";
+import { asyncEffect } from "@paperpod/ui";
 import { UserContext } from "../authentication/UserContext";
 import { fetchFile } from "./playerFetchers";
 

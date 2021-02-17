@@ -29,6 +29,20 @@ export const article = (template: Partial<models.Article> = {}): models.Article 
     ...template,
 });
 
+export const articleWithoutTextualData = (template: Partial<models.ArticleWithoutTextualData> = {}) => ({
+    _id: faker.random.uuid(),
+    owner_id: faker.random.uuid(),
+    text: faker.lorem.paragraphs(),
+    title: faker.lorem.sentence(),
+    author: `${faker.name.firstName()} ${faker.name.lastName()}`,
+    description: faker.lorem.paragraph(),
+    publication_timestamp: faker.date.past().getTime(),
+    added_timestamp: faker.date.recent().getTime(),
+    original_url: faker.internet.url(),
+    storage_uri: faker.internet.url(),
+});
+
+
 export const articlePayload = (template: Partial<models.ArticlePayload> = {}): models.ArticlePayload => ({
     link: faker.internet.url(),
     ...template

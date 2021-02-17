@@ -1,3 +1,4 @@
+import { Input, Button } from "@paperpod/ui";
 import { models } from "@paperpod/common";
 import { CREATED, post } from "node-kall";
 import { useContext, useState } from "react";
@@ -28,7 +29,7 @@ export const Login = () => {
   return (
     <>
       <label>Email:</label>
-      <input
+      <Input
         type="text"
         onChange={(event) => {
           setEmail(event.target.value);
@@ -36,18 +37,18 @@ export const Login = () => {
       />
 
       <label>Password:</label>
-      <input
+      <Input
         type="password"
         onChange={(event) => {
           setPassword(event.target.value);
         }}
       />
 
-      <button
+      <Button
         onClick={onLogin}
       >
         Log in
-      </button>
+      </Button>
     </>
   );
 };

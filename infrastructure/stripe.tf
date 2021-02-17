@@ -2,7 +2,7 @@
 
 variable "stripe_api_token" {
   type        = string
-  description = "API Token with proper access."
+  description = "Stripe API Token with proper access."
   sensitive   = true
 }
 

@@ -16,5 +16,9 @@ terraform {
       source  = "franckverrot/stripe"
       version = "1.7.0"
     }
+
+    github = {
+      source = "integrations/github"
+    }
   }
 }

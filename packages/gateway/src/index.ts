@@ -6,10 +6,12 @@ import * as server from "@paperpod/server"
 import { withProxies, mapping } from "./proxy";
 
 
-export const app = withProxies([
-    mapping("/api", "api", process.env.API_PORT),
-    mapping("/authentication", "authentication", process.env.AUTHENTICATION_PORT),
-    mapping("/", "web", process.env.WEB_PORT),],
+export const app = withProxies(
+    [
+        mapping("/api", "api", process.env.API_PORT),
+        mapping("/authentication", "authentication", process.env.AUTHENTICATION_PORT),
+        mapping("/", "web", process.env.WEB_PORT),
+    ],
     server.app.appWithEnvironment()
 );
 

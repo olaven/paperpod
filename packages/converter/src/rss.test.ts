@@ -54,7 +54,6 @@ describe("Conversion from articles to RSS", () => {
             "guid",
             "pubDate",
             "author",
-            "enclosure"
         ]);
 
         hasTagWithValue([
@@ -64,7 +63,6 @@ describe("Conversion from articles to RSS", () => {
             ["guid", article => article._id],
             ["pubDate", article => new Date(article.added_timestamp).toUTCString()],
             ["author", article => article.author],
-            ["author", article => "Paperpod by Krets AS"],
         ]);
 
         it("adds default article description if none is present", () => {
@@ -83,7 +81,17 @@ describe("Conversion from articles to RSS", () => {
                 author: ''
             });
             expect(serialized).toContain("Unspecified Author");
-        })
+        });
+
+        it("Adds proper enclosure tag", () => {
+
+            const article = test.mocks.article();
+            const serialized = serializeItem(article);
+
+            expect(serialized).toContain(
+                `<enclosure url="https://application.paperpod.fm/api/files/${article._id}" length="10" type="audio/mpeg"`
+            );
+        });
     });
 
     describe("Converting list of articles to feed", () => {
@@ -95,6 +103,7 @@ describe("Conversion from articles to RSS", () => {
             expect(rss).toContain('<rss version="2.0">');
             expect(rss).toContain("<channel>");
             expect(rss).toContain("<link>");
+            expect(rss).toContain("<author>Paperpod by Krets AS</author>");
         });
     });
 

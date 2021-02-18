@@ -1,4 +1,4 @@
-import { serialize, tag, declaration } from "serialize-xml";
+import { serialize, tag } from "serialize-xml";
 import { models, constants } from "@paperpod/common";
 
 /*

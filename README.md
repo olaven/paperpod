@@ -1,6 +1,6 @@
 __This project is still very much work in progress.__ More details to come.
 
-# Paperpod 
+# Paperpod
 
 ## Sponsors 
 Please consider [sponsoring](https://github.com/sponsors/olaven/) this project. 

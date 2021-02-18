@@ -1,31 +1,29 @@
 import { useContext } from "react";
-import { Articles } from "../components/articles/Articles";
-import {
-  UserContext,
-  Signup,
-  Login,
-  Logout,
-} from "../components/authentication/authentication";
-import { Feed } from "../components/feed/Feed";
+import { UserContext } from "../components/authentication/authentication";
+import { Paragraph, Button } from "@paperpod/ui";
 
 const Index = () => {
 
   const { user } = useContext(UserContext);
 
-  return (
-    <>
-      {!user && <Signup />
-      }
-      <br />
-      { !user && <Login />}
+  return <>
+    <Paragraph>
+      Paperpod turns articles and PDF files on the web into spoken audio.
+    </Paragraph>
+    <Paragraph>
+      Save articles from your web browser or phone.
+    </Paragraph>
+    <Paragraph>
+      Listen to them in the podcast player you already use.
+    </Paragraph>
 
-      { user && <Logout />}
-      { user && <>logged in as {user.email}</>}
+    <Paragraph>Sounds nice? {`<(^_^)>`}</Paragraph>
 
-      { user && <Articles />}
+    <Button>Signup</Button>
 
-      { user && <Feed />}
-    </>
-  );
+    <Paragraph>Already signed up?</Paragraph>
+    <Button>Login</Button>
+  </>
+
 };
 export default Index;

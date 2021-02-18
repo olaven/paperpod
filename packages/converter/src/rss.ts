@@ -1,14 +1,6 @@
 import { serialize, tag } from "serialize-xml";
 import { models, constants } from "@paperpod/common";
 
-/*
-
-//TODO: incorporate this into an item -> grabbed from https://hellointernet.fm
-<enclosure url="http://traffic.libsyn.com/hellointernet/136FinalFinal.mp3" type="audio/mpeg" />
-  <media:content url="http://traffic.libsyn.com/hellointernet/136FinalFinal.mp3" type="audio/mpeg" isDefault="true" medium="audio">
-  <media:title type="plain">H.I. #136: Dog Bingo</media:title>
-</media:content>
-*/
 
 export const convertToRSSFeed = (articles: models.Article[]) =>
   serialize(

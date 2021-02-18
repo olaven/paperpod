@@ -15,30 +15,15 @@ export const app = withProxies(
     server.app.appWithEnvironment()
 );
 
-const httpServer = http.createServer(app);
+const actualServer = process.env.NODE_ENV === "production" ?
+    https.createServer({
+        key: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/privkey.pem', 'utf8'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/cert.pem', 'utf8'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/chain.pem', 'utf8'),
+    }, app) :
+    http.createServer(app);
 
+actualServer.listen(process.env.PORT, () => {
 
-httpServer.listen(process.env.PORT, () => {
-    console.log("HTTP Server is running");
+    console.log(`Listening on ${process.env.PORT}`);
 });
-
-if (process.env.NODE_ENV !== "development") {
-
-
-    try {
-
-        const httpsServer = https.createServer({
-            key: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/privkey.pem', 'utf8'),
-            cert: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/cert.pem', 'utf8'),
-            ca: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/chain.pem', 'utf8'),
-        }, app);
-
-        httpsServer.listen(443, () => {
-
-            console.log("HTTPS server is running");
-        });
-    } catch (error) {
-
-        console.log(`Crashed with error: ${error}`);
-    }
-}

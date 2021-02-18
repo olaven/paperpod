@@ -54,6 +54,7 @@ describe("Conversion from articles to RSS", () => {
             "guid",
             "pubDate",
             "author",
+            "enclosure"
         ]);
 
         hasTagWithValue([
@@ -63,6 +64,7 @@ describe("Conversion from articles to RSS", () => {
             ["guid", article => article._id],
             ["pubDate", article => new Date(article.added_timestamp).toUTCString()],
             ["author", article => article.author],
+            ["author", article => "Paperpod by Krets AS"],
         ]);
 
         it("adds default article description if none is present", () => {

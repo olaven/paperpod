@@ -1,12 +1,22 @@
 import { serialize, tag, declaration } from "serialize-xml";
 import { models, constants } from "@paperpod/common";
 
+/*
+
+//TODO: incorporate this into an item -> grabbed from https://hellointernet.fm
+<enclosure url="http://traffic.libsyn.com/hellointernet/136FinalFinal.mp3" type="audio/mpeg" />
+  <media:content url="http://traffic.libsyn.com/hellointernet/136FinalFinal.mp3" type="audio/mpeg" isDefault="true" medium="audio">
+  <media:title type="plain">H.I. #136: Dog Bingo</media:title>
+</media:content>
+*/
+
 export const convertToRSSFeed = (articles: models.Article[]) =>
   serialize(
     tag("rss", [
       tag("channel", [
         tag("title", "Paperpod Feed"),
         tag("link", constants.APPLICATION_URL),
+        tag("author", "Paperpod by Krets AS"),
         tag("description", "This is your Paperpod Feed. Thanks for using Paperpod! Send articles, and they will appear here"),
         tag("ttl", "60"), //60 minutes
         toImageTag(),
@@ -34,5 +44,11 @@ export const toItemTag = (article: models.Article) =>
       tag("guid", `${article._id}`),
       tag("pubDate", new Date(article.added_timestamp).toUTCString()), //compatible with RFC822
       tag("author", article.author || "Unspecified Author"),
+      tag("enclosure", '', [
+        ['url', `${constants.APPLICATION_URL}/api/files/${article._id}`],
+        ['length', '10'], //FIXME: actual length
+        ['type', 'audio/mpeg']
+      ]),
+      /* <enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3" length="12216320" type="audio/mpeg" /> */
     ]
   )

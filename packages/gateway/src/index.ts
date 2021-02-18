@@ -23,6 +23,15 @@ const actualServer = process.env.NODE_ENV === "production" ?
     }, app) :
     http.createServer(app);
 
+const redirectServer = http.createServer(server.app.appWithEnvironment().use((request, response) => {
+    response.redirect(`https://${request.headers.host}${request.url}`);
+}));
+
+redirectServer.listen(80, () => {
+
+    console.log(`Redirecting to HTTPS on port 80`);
+});
+
 actualServer.listen(process.env.PORT, () => {
 
     console.log(`Listening on ${process.env.PORT}`);

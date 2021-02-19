@@ -42,26 +42,20 @@ const Login = () => {
         }
     }, [token]);
 
-    const onLogin = async (event) => {
+    const onLogin = async () => {
 
         const [status, response] = await login({
             email, password
         });
 
-        if (status === CREATED) {
-
-            setToken(response.token);
-            setShowError(false);
-        } else {
-
-            setShowError(true);
-        }
+        setToken(response?.token);
+        setShowError(status !== CREATED);
     }
 
     return <Wrapper>
         <Container>
             <Input onChange={(event) => { setEmail(event.target.value) }} placeholder="your@email.com" type="mail"></Input>
-            <Input onChange={(event) => { setPassword(event.target.value) }} placeholder="your password" type="password"></Input>
+            <Input onChange={(event) => { setPassword(event.target.value) }} placeholder="super secret password" type="password"></Input>
             <Button onClick={onLogin} disabled={!(email && password)}>Login</Button>
             {showError && <Paragraph error centered>
                 An unknown error occured when logging in..

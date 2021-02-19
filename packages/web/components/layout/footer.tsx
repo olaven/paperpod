@@ -1,15 +1,15 @@
 import { styled, Paragraph } from "@paperpod/ui"
 
 const Container = styled("footer", {
-    position: "fixed",
+    height: "20vh",
+    bottom: "-20vh",
+    position: "absolute",
     left: 0,
-    bottom: 0,
     width: "100vw",
     fontSize: "$twentyone",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    textAlign: "left"
+    alignItems: "flex-start",
 });
 
 export const Footer = () => <Container>

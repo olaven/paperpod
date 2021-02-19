@@ -13,6 +13,18 @@ export const Paragraph = styled("p", {
                 fontSize: "$thirtyfour",
                 lineHeight: "55px",
             }
+        },
+        error: {
+            true: {
+                color: "$error"
+            }
+        },
+        centered: {
+            true: {
+                textAlign: "center",
+                alignSelf: "center",
+                justifySelf: "center",
+            }
         }
     }
 });

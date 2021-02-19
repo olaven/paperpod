@@ -9,8 +9,7 @@ export const signup = (credentials: models.UserCredentials) =>
         models.TokenResponse
     >("/authentication/users", credentials);
 
-export const login = (credentials: models.UserCredentials) =>
-    post<
+export const login = (credentials: models.UserCredentials) => post<
         models.UserCredentials,
         models.TokenResponse
     >("/authentication/users/sessions", credentials);

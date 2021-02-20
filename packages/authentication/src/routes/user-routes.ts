@@ -66,7 +66,7 @@ export const userRoutes = express.Router()
 
         const credentials = request.body as models.UserCredentials;
 
-        if (!credentials || !credentials.email || !credentials.password || !validators.validatePassword(credentials.password))
+        if (!credentials || !credentials.email || !credentials.password || !validators.validatePassword(credentials.password) || !validators.validateEmail(credentials.email))
             return response
                 .status(BAD_REQUEST)
                 .send();
@@ -93,6 +93,7 @@ export const userRoutes = express.Router()
         "/users/me",
         middleware.withAuthentication((request, response, user) => {
 
+            //THINKABOUT: /users/:id
             response.json({
                 ...user,
                 password_hash: undefined

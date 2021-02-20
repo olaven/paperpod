@@ -8,7 +8,6 @@ import supertest from "supertest";
 import { app } from "../app";
 import { hash } from "../cryptography/cryptography";
 import { credentialsAreValid } from "./user-routes";
-import { validateLocaleAndSetLanguage } from "typescript";
 
 //FIXME: Tests pass regardless of what status code I am checking.. This renders the tests useless.
 
@@ -296,6 +295,16 @@ describe("The authentication endpoint for users", () => {
             const { status } = await signUp({
                 ...test.mocks.credentials(),
                 password: faker.random.alpha({ count: 50 }),
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+
+        it("returns BAD_REQUEST on users that don't have valid email addresses", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                email: "notemail.com"
             });
 
             expect(status).toEqual(BAD_REQUEST);

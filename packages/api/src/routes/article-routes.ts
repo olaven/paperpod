@@ -36,7 +36,7 @@ export const articleRoutes = express.Router()
 
             response
                 .status(CREATED)
-                .json(article)
+                .json(article); 
         })
     )
     .get("/articles", middleware.withAuthentication(async (request, response, user) => {

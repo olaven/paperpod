@@ -27,9 +27,9 @@ const redirectServer = http.createServer(server.app.appWithEnvironment().use((re
     response.redirect(`https://${request.headers.host}${request.url}`);
 }));
 
-redirectServer.listen(80, () => {
+redirectServer.listen(process.env.GATEWAY_HTTP_PORT, () => {
 
-    console.log(`Redirecting to HTTPS on port 80`);
+    console.log(`Redirecting to HTTPS from port ${process.env.GATEWAY_HTTP_PORT}`);
 });
 
 actualServer.listen(process.env.PORT, () => {

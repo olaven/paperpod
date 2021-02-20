@@ -1,21 +1,10 @@
-import express from "express";
+
+import fs from "fs";
+import http from "http";
+import https from "https";
 import * as server from "@paperpod/server"
-import { createProxy } from "./proxy";
+import { withProxies, mapping } from "./proxy";
 
-const withProxies = (
-    pairs: [string, string][],
-    app = express()
-) => {
-    pairs.forEach(
-        ([path, target]) => createProxy(app)(path, target));
-    return app;
-}
-
-const mapping = (path: string, hostname: string, port: string): [string, string] =>
-    [
-        path,
-        "http://" + hostname + ":" + port
-    ]
 
 export const app = withProxies(
     [
@@ -24,10 +13,26 @@ export const app = withProxies(
         mapping("/", "web", process.env.WEB_PORT),
     ],
     server.app.appWithEnvironment()
-).use((_, __, next) => {
+);
 
-    console.log("Got something");
-    next();
-})
+const actualServer = process.env.NODE_ENV === "production" ?
+    https.createServer({
+        key: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/privkey.pem', 'utf8'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/cert.pem', 'utf8'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/application.paperpod.fm/chain.pem', 'utf8'),
+    }, app) :
+    http.createServer(app);
 
-server.boot("", app);
+const redirectServer = http.createServer(server.app.appWithEnvironment().use((request, response) => {
+    response.redirect(`https://${request.headers.host}${request.url}`);
+}));
+
+redirectServer.listen(80, () => {
+
+    console.log(`Redirecting to HTTPS on port 80`);
+});
+
+actualServer.listen(process.env.PORT, () => {
+
+    console.log(`Listening on ${process.env.PORT}`);
+});

@@ -13,6 +13,6 @@ describe("Paperpod constants", () => {
 
     it("has expected application url", () => {
 
-        expect(APPLICATION_URL).toEqual("application.paperpod.fm");
+        expect(APPLICATION_URL).toEqual("https://application.paperpod.fm");
     });
 });

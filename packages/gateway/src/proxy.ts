@@ -1,8 +1,22 @@
+import express from "express";
 import querystring from "querystring";
-import e from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 
-export const createProxy = (handler: e.Express) =>
+export const withProxies = (
+    pairs: [string, string][],
+    app = express()
+) => {
+    pairs.forEach(
+        ([path, target]) => createProxy(app)(path, target));
+    return app;
+}
+
+export const mapping = (path: string, hostname: string, port: string): [string, string] => [
+    path,
+    "http://" + hostname + ":" + port
+]
+
+const createProxy = (handler: express.Express) =>
     (path: string, target: string) => {
 
         handler.use(path,

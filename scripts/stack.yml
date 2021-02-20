@@ -4,6 +4,7 @@ services:
     image: olaven/paperpod-gateway@$GATEWAY_DIGEST
     ports:
       - $GATEWAY_PORT:$GATEWAY_PORT
+      - $GATEWAY_HTTP_PORT:$GATEWAY_HTTP_PORT
     environment:
       - PORT=$GATEWAY_PORT
       - WEB_PORT=$WEB_PORT

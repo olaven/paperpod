@@ -141,6 +141,7 @@ jobs:
             cd paperpod 
             export \
               GATEWAY_PORT=${{ secrets.GATEWAY_PORT }} \
+              GATEWAY_HTTP_PORT=${{ secrets.GATEWAY_HTTP_PORT }} \
               WEB_PORT=${{ secrets.WEB_PORT }} \
               API_PORT=${{ secrets.API_PORT }} \
               AUTHENTICATION_PORT=${{ secrets.AUTHENTICATION_PORT }} \
@@ -161,6 +162,7 @@ jobs:
               WEB_DIGEST=${{ needs.publish-web.outputs.digest }} 
             env \
               GATEWAY_PORT=$GATEWAY_PORT \
+              GATEWAY_HTTP_PORT=$GATEWAY_HTTP_PORT \
               WEB_PORT=$WEB_PORT \
               API_PORT=$API_PORT \
               AUTHENTICATION_PORT=$AUTHENTICATION_PORT \
@@ -182,6 +184,7 @@ jobs:
               docker stack deploy -c $HOME/paperpod/scripts/stack.yml paperpod;
         env:
           GATEWAY_PORT: ${{ secrets.GATEWAY_PORT }}
+          GATEWAY_HTTP_PORT: ${{ secrets.GATEWAY_HTTP_PORT }}
           WEB_PORT: ${{ secrets.WEB_PORT }}
           API_PORT: ${{ secrets.API_PORT }}
           AUTHENTICATION_PORT: ${{ secrets.AUTHENTICATION_PORT }}

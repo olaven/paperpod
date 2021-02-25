@@ -18,6 +18,7 @@ This will allow me to give you perks in return for your gratitude!
   * API_PORT=8082
   * AUTHENTICATION_PORT=8081
   * WEB_PORT=3000
+  * DOCS_PORT=8083
   * JWT_SECRET=some-long-secret-hush-now-please
   * MONGODB_NAME=mongoname
   * MONGODB_USERNAME=olaven

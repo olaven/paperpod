@@ -10,10 +10,11 @@ export const app = withProxies(
     [
         mapping("/api", "api", process.env.API_PORT),
         mapping("/authentication", "authentication", process.env.AUTHENTICATION_PORT),
+        mapping("/docs", "docs", process.env.DOCS_PORT),
         mapping("/", "web", process.env.WEB_PORT),
     ],
     server.app.appWithEnvironment()
-);
+); 
 
 const actualServer = process.env.NODE_ENV === "production" ?
     https.createServer({

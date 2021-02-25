@@ -1,0 +1,12 @@
+{
+    "name": "@paperpod/docs",
+    "license": "UNLICENSED",
+    "version": "0.0.1",
+    "private": "true",
+    "scripts": {
+        "dev": "redoc-cli serve openapi.yml --watch --port $PORT"
+    },
+    "devDependencies": {
+        "redoc-cli": "^0.10.2"
+    }
+}

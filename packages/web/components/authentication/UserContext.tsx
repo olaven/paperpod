@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState, ReactChild } from "react";
 import { models } from "@paperpod/common";
 import { get, OK } from "node-kall";
-import { asyncEffect } from "@paperpod/ui";
 import { refreshToken } from "./authFetchers";
 
 export const UserContext = createContext<{
@@ -15,19 +14,23 @@ export const UserContext = createContext<{
 });
 
 const useUser = (token: string): models.User => {
+
   const [user, setUser] = useState<models.User>(null);
 
-  console.log(user?._id);
+  useEffect(() => {
 
-  asyncEffect(async () => {
-    if (!token) return setUser(null);
-    const [status, user] = await get<models.User>("/authentication/users/me/", {
-      headers: {
-        authorization: "Bearer " + token,
-      },
-    });
+    const fetchUser = async () => {
+      if (!token) return setUser(null);
+      const [status, user] = await get<models.User>("/authentication/users/me/", {
+        headers: {
+          authorization: "Bearer " + token,
+        },
+      });
+  
+      setUser(status === OK ? user : null);
+    }
 
-    setUser(status === OK ? user : null);
+    fetchUser();
   }, [token]);
 
   return user;

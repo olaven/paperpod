@@ -4,9 +4,16 @@
     "version": "0.0.1",
     "private": "true",
     "scripts": {
-        "dev": "redoc-cli serve openapi.yml --watch --port $PORT"
+        "dev": "ts-node-dev index.ts",
+        "start": "ts-node index.ts"
+    },
+    "dependencies": {
+        "@paperpod/server": "0.0.1",
+        "redoc-express": "^1.0.0"
     },
     "devDependencies": {
-        "redoc-cli": "^0.10.2"
+        "redoc-cli": "^0.10.2",
+        "ts-node": "^9.1.1",
+        "ts-node-dev": "^1.1.6"
     }
 }

@@ -10,9 +10,7 @@
 import { APPLICATION_URL } from "./constants";
 
 describe("Paperpod constants", () => {
-
-    it("has expected application url", () => {
-
-        expect(APPLICATION_URL).toEqual("https://application.paperpod.fm");
-    });
+  it("has expected application url", () => {
+    expect(APPLICATION_URL).toEqual("https://application.paperpod.fm");
+  });
 });

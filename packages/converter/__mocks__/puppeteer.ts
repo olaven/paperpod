@@ -1,11 +1,11 @@
 import faker from "faker";
 
 export default {
-    launch: () => ({
-        newPage: () => ({
-            goto: () => { },
-            waitFor: () => { },
-            content: () => `
+  launch: () => ({
+    newPage: () => ({
+      goto: () => {},
+      waitFor: () => {},
+      content: () => `
                 <!DOCTYPE html>
 
                 <head>
@@ -23,9 +23,8 @@ export default {
                     </body>
 
                 </html>
-            `
-        }),
-        close: () => { },
-    })
+            `,
+    }),
+    close: () => {},
+  }),
 };
-

@@ -3,53 +3,48 @@ import puppeteer from "puppeteer";
 import { models } from "@paperpod/common";
 
 /**
- * returns the publication timestamp, if any. 
+ * returns the publication timestamp, if any.
  * @param extracted the extracted data object fom `unfluff.lazy(html)`
  */
 const date = (extracted: any) =>
-    extracted.date() ?
-        new Date(extracted.date()).getTime() :
-        undefined
+  extracted.date() ? new Date(extracted.date()).getTime() : undefined;
 
-export const extractTextFromWeb =
-    async (article: models.ArticleWithoutTextualData): Promise<models.Article> => {
+export const extractTextFromWeb = async (
+  article: models.ArticleWithoutTextualData
+): Promise<models.Article> => {
+  const html = await getHtml(article.original_url);
+  const extracted = unfluff.lazy(html);
 
-        const html = await getHtml(article.original_url);
-        const extracted = unfluff.lazy(html);
-
-        return {
-            ...article,
-            text: extracted.text(),
-            title: extracted.title(),
-            author: extracted.author().join(", "),
-            description: extracted.description(),
-            publication_timestamp: date(extracted),
-        }
-    }
-
+  return {
+    ...article,
+    text: extracted.text(),
+    title: extracted.title(),
+    author: extracted.author().join(", "),
+    description: extracted.description(),
+    publication_timestamp: date(extracted),
+  };
+};
 
 /**
- * Using Puppeteer (or a browser-emulator in general) makes it possible for 
- * me to access text that is not directly provided, but client side rendered. 
+ * Using Puppeteer (or a browser-emulator in general) makes it possible for
+ * me to access text that is not directly provided, but client side rendered.
  */
 const getHtml = async (url: string) => {
+  const browser = await puppeteer.launch({
+    executablePath: process.env.PUPPETEER_EXEC_PATH,
+    headless: true,
+    //FIXME: security considerations without sandbox? Read up on this.
+    args: ["--disable-setuid-sandbox", "--no-sandbox"],
+    ignoreHTTPSErrors: true,
+  });
 
-    const browser = await puppeteer.launch({
-        executablePath: process.env.PUPPETEER_EXEC_PATH,
-        headless: true,
-        //FIXME: security considerations without sandbox? Read up on this. 
-        args: ["--disable-setuid-sandbox", "--no-sandbox"],
-        ignoreHTTPSErrors: true,
-    });
+  const page = await browser.newPage();
+  await page.goto(url);
 
-    const page = await browser.newPage()
-    await page.goto(url);
+  await page.waitFor("*");
 
-    await page.waitFor("*")
+  const html = await page.content();
+  await browser.close();
 
-    const html = await page.content()
-    await browser.close()
-
-    return html;
-}
-
+  return html;
+};

@@ -1,8 +1,6 @@
 {
-    "compilerOptions": {
-        "esModuleInterop": true, 
-    },  
-    "exclude": [
-        ".{1,}\\.test.(ts|js)"
-    ]
+  "compilerOptions": {
+    "esModuleInterop": true
+  },
+  "exclude": [".{1,}\\.test.(ts|js)"]
 }

@@ -1,11 +1,12 @@
 import { Footer } from "./footer";
-import { Header } from "./header/header"
+import { Header } from "./header/header";
 
 export const Layout = (props) => {
-
-    return <>
-        <Header />
-        {props.children}
-        <Footer />
+  return (
+    <>
+      <Header />
+      {props.children}
+      <Footer />
     </>
+  );
 };

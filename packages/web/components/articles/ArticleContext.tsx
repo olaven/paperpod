@@ -10,7 +10,7 @@ export const ArticleContext = createContext<{
   resfreshArticles: () => Promise<void>;
 }>({
   articles: [],
-  resfreshArticles: async () => { },
+  resfreshArticles: async () => {},
 });
 
 export const ArticleContextProvider = ({ children }: any) => {

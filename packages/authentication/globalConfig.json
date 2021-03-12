@@ -1,1 +1,3 @@
-{"mongoUri":"mongodb://127.0.0.1:62685/7524837e-a7c0-486d-bdcc-31d9cbcac55a?"}
+{
+  "mongoUri": "mongodb://127.0.0.1:62685/7524837e-a7c0-486d-bdcc-31d9cbcac55a?"
+}

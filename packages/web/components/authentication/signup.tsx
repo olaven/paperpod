@@ -21,14 +21,8 @@ export const Signup = () => {
   };
 
   useEffect(() => {
-
     if (!password) return;
-    setValidPassword(
-      validators
-        .validatePassword(
-          password
-        )
-    )
+    setValidPassword(validators.validatePassword(password));
   }, [password]);
 
   return (
@@ -51,15 +45,10 @@ export const Signup = () => {
         }}
       />
 
-      <Button
-        onClick={onClick}
-        disabled={!validPassword}
-        value="Sign up">
+      <Button onClick={onClick} disabled={!validPassword} value="Sign up">
         sign up
       </Button>
-      {!validPassword && <p>
-        Enter a stronger password
-      </p>}
+      {!validPassword && <p>Enter a stronger password</p>}
     </>
   );
 };

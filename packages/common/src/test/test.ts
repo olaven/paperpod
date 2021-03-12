@@ -1,2 +1,2 @@
-export * as mocks from "./mocks"
-export { sleep } from "./sleep"
+export * as mocks from "./mocks";
+export { sleep } from "./sleep";

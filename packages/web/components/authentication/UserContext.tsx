@@ -34,30 +34,24 @@ const useUser = (token: string): models.User => {
 };
 
 export const UserContextProvider = ({ children }: any) => {
-
   const [token, setToken] = useState<string>(null);
   const user = useUser(token);
 
   useEffect(() => {
-
     if (!token) return null;
     const id = setInterval(async () => {
-
       const [status, response] = await refreshToken(token);
 
       if (status === OK) {
-
         setToken(response.token);
       } else {
-
         console.error(`error refreshing token ${status} with token ${token}`);
       }
-    }, 1000 * 600) //i.e. ten minutes 
+    }, 1000 * 600); //i.e. ten minutes
 
     return () => {
-
       clearInterval(id);
-    }
+    };
   });
 
   return (

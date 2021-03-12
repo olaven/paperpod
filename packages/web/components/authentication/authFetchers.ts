@@ -1,5 +1,4 @@
 import { models } from "@paperpod/common";
-import { TokenResponse } from "@paperpod/common/src/models/models";
 import { del, get, post, put } from "node-kall";
 import { bearer } from "../../helpers/bearer";
 

@@ -28,19 +28,12 @@ const Container = styled("div", {
 
 const Login = () => {
 
-    const { token, setToken } = useContext(UserContext);
-    const router = useRouter();
+    const { setToken } = useContext(UserContext);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showError, setShowError] = useState(false);
 
-    useEffect(() => {
-
-        if (token) {
-            router.push("/home");
-        }
-    }, [token]);
 
     const onLogin = async () => {
 

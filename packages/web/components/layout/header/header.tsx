@@ -1,4 +1,5 @@
 import { styled } from "@paperpod/ui";
+import Link from "next/link";
 import { Image } from "./image";
 
 const Container = styled("div", {
@@ -9,7 +10,9 @@ const Container = styled("div", {
 
 
 export const Header = () => <Container>
-    <Image src="https://paperpod.fm/logo.svg" />
+    <Link href="/">
+        <Image src="https://paperpod.fm/logo.svg" />
+    </Link>
     {/* <Navbutton selected>Navbutton 1</Navbutton>
     <Navbutton>Navbutton 2</Navbutton>
     <Navbutton>Navbutton 3</Navbutton> */}

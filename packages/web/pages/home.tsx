@@ -5,7 +5,9 @@ import { UserContext } from "../components/authentication/UserContext"
 const Home = () => {
 
     const { user } = useContext(UserContext);
-    return <>You are logged in as {user.email}</>
+    return user? 
+        <div>you are logged in as {user.email}</div>: 
+        <div>loading.</div>
 }
 
 export default Home;

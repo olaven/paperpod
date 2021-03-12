@@ -12,6 +12,7 @@ export const credentialsAreValid = async ({ email, password }: models.UserCreden
     if (!email || !password) return false;
 
     const user = await database.users.getByEmail(email.toLowerCase());
+    console.log(`got user ${user}`);
     if (!user) return false;
 
     return await hash.compare(password, user?.password_hash);
@@ -25,6 +26,7 @@ export const userRoutes = express.Router()
         if (await credentialsAreValid(credentials)) {
 
 
+            console.log(`here with credentials ${JSON.stringify(credentials)}`); 
             const user = await database.users.getByEmail(credentials.email.toLowerCase());
             const token = jwt.sign(user);
 
@@ -35,6 +37,7 @@ export const userRoutes = express.Router()
                 });
         } else {
 
+            console.log(`weren't valid ${JSON.stringify(credentials)}`); 
             return response
                 .status(UNAUTHORIZED)
                 .send()

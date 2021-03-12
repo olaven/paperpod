@@ -1,5 +1,8 @@
 import { Paragraph, Button, A, styled } from "@paperpod/ui";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../components/authentication/UserContext";
 
 const Container = styled("div", {
   display: "flex",
@@ -8,6 +11,15 @@ const Container = styled("div", {
 });
 
 const Index = () => {
+
+  const { user } = useContext(UserContext); 
+const router = useRouter(); 
+  useEffect(() => {
+
+    if (user) {
+      router.push("/home")
+    }
+  }, [user]); 
 
   return <Container>
     <Paragraph size="larger">
@@ -18,7 +30,11 @@ const Index = () => {
 
     <Paragraph>Sounds nice? {`<(^_^)>`}</Paragraph>
 
-    <Button>Signup</Button>
+    <Button>
+      <Link href="/signup">
+        <A>Signup</A>
+      </Link>
+    </Button>
 
     <Paragraph>Already signed up?</Paragraph>
     <Button>

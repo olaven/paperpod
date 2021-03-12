@@ -4,33 +4,29 @@ import { UNAUTHORIZED, FORBIDDEN } from "node-kall";
 import * as jwt from "../jwt/jwt";
 
 const getBearerToken = (request: express.Request) =>
-    request.headers.authorization?.replace("Bearer ", "");
+  request.headers.authorization?.replace("Bearer ", "");
 
-export const withAuthentication = (handler: (request: express.Request, response: express.Response, user: models.User) => any) =>
-    (request: express.Request, response: express.Response) => {
+export const withAuthentication = (
+  handler: (
+    request: express.Request,
+    response: express.Response,
+    user: models.User
+  ) => any
+) => (request: express.Request, response: express.Response) => {
+  const token = getBearerToken(request);
 
-        const token = getBearerToken(request);
+  if (!token || token === "null") return response.status(UNAUTHORIZED).end();
 
-        if (!token || token === 'null') return response
-            .status(UNAUTHORIZED)
-            .end();
+  try {
+    const user = jwt.decode<models.User>(token);
 
-        try {
+    if (!user) return response.status(FORBIDDEN).end();
 
-            const user = jwt.decode<models.User>(token);
+    //TODO: some user data validation. Does it look like a user?
 
-            if (!user) return response
-                .status(FORBIDDEN)
-                .end();
-
-            //TODO: some user data validation. Does it look like a user? 
-
-            handler(request, response, user);
-        } catch (error) {
-
-            //i.e. malformed token 
-            return response
-                .status(FORBIDDEN)
-                .end();
-        }
-    }
+    handler(request, response, user);
+  } catch (error) {
+    //i.e. malformed token
+    return response.status(FORBIDDEN).end();
+  }
+};

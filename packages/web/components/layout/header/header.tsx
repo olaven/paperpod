@@ -3,15 +3,16 @@ import { Image } from "./image";
 import { Navbutton } from "./navbutton";
 
 const Container = styled("div", {
-    width: "100vw",
-    display: "flex",
-    justifyContent: "space-evenly",
+  width: "100vw",
+  display: "flex",
+  justifyContent: "space-evenly",
 });
 
-
-export const Header = () => <Container>
+export const Header = () => (
+  <Container>
     <Image src="https://paperpod.fm/logo.svg" />
     <Navbutton selected>Navbutton 1</Navbutton>
     <Navbutton>Navbutton 2</Navbutton>
     <Navbutton>Navbutton 3</Navbutton>
-</Container>
+  </Container>
+);

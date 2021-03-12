@@ -1,4 +1,4 @@
-const withTM = require("next-transpile-modules")(['@paperpod/common']);
+const withTM = require("next-transpile-modules")(["@paperpod/common"]);
 
 module.exports = withTM({
   webpack: (config) => {
@@ -8,7 +8,6 @@ module.exports = withTM({
     });
  */
 
-
-    return config
+    return config;
   },
 });

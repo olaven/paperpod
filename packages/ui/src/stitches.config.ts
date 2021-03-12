@@ -1,40 +1,40 @@
 // stitches.config.ts
-import { createCss } from '@stitches/react';
+import { createCss } from "@stitches/react";
 
 export const { styled, css, getCssString } = createCss({
-    theme: {
-        colors: {
-            "primary": 'white',
-            "secondary": 'black',
-            "grey": 'hsl(0, 0%, 36%)',
-        },
-        space: {
-            one: '1px',
-            two: '2px',
-            three: '3px',
-            five: '5px',
-            eight: '8px',
-            thirteen: '13px',
-            twentyone: '21px',
-            thirtyfour: '34px',
-            fiftyfive: '55px',
-            seventynine: '79px',
-            onehunderedandfourteen: '114px',
-        },
-        fontSizes: {
-            five: '5px',
-            eight: '8px',
-            thirteen: '13px',
-            twentyone: '21px',
-            thirtyfour: '34px',
-            fiftyfive: '55px',
-            seventynine: '79px',
-            onehunderedandfourteen: '114px',
-        }
+  theme: {
+    colors: {
+      primary: "white",
+      secondary: "black",
+      grey: "hsl(0, 0%, 36%)",
     },
-    conditions: {
-        small: `@media (max-width: 768px)`,
-        large: `@media (min-width: 768px)`,
+    space: {
+      one: "1px",
+      two: "2px",
+      three: "3px",
+      five: "5px",
+      eight: "8px",
+      thirteen: "13px",
+      twentyone: "21px",
+      thirtyfour: "34px",
+      fiftyfive: "55px",
+      seventynine: "79px",
+      onehunderedandfourteen: "114px",
     },
-    utils: {},
-})
+    fontSizes: {
+      five: "5px",
+      eight: "8px",
+      thirteen: "13px",
+      twentyone: "21px",
+      thirtyfour: "34px",
+      fiftyfive: "55px",
+      seventynine: "79px",
+      onehunderedandfourteen: "114px",
+    },
+  },
+  conditions: {
+    small: `@media (max-width: 768px)`,
+    large: `@media (min-width: 768px)`,
+  },
+  utils: {},
+});

@@ -5,107 +5,90 @@ import * as web from "./web";
 import { withTextualData } from "./text";
 
 describe("Function for text extraction", () => {
+  const spyOnExtractors = () => {
+    return [
+      jest.spyOn(pdf, "extractTextFromPDF"),
+      jest.spyOn(web, "extractTextFromWeb"),
+    ];
+  };
 
-    const spyOnExtractors = () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
 
-        return [
-            jest.spyOn(pdf, "extractTextFromPDF"),
-            jest.spyOn(web, "extractTextFromWeb"),
-        ]
-    };
+    //re-mock in test if the spy methods are needed
+    spyOnExtractors();
+  });
 
-    beforeEach(() => {
+  it("Does not throw", () => {
+    spyOnExtractors();
 
-        jest.resetAllMocks();
+    expect(withTextualData(test.mocks.article())).resolves.not.toThrow();
+  });
 
-        //re-mock in test if the spy methods are needed
-        spyOnExtractors();
+  it("Chooses web on a random url", async () => {
+    const [pdfSpy, webSpy] = spyOnExtractors();
+
+    await withTextualData(test.mocks.articleWithoutTextualData());
+
+    expect(pdfSpy).toHaveBeenCalledTimes(0);
+    expect(webSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("Chooses PDF if the URL ends with .pdf", async () => {
+    const [pdfSpy, webSpy] = spyOnExtractors();
+    await withTextualData({
+      ...test.mocks.articleWithoutTextualData(),
+      original_url: "https://example.com/file.pdf",
     });
 
+    expect(pdfSpy).toHaveBeenCalledTimes(1);
+    expect(webSpy).toHaveBeenCalledTimes(0);
+  });
 
-    it("Does not throw", () => {
-
-        spyOnExtractors();
-
-        expect(
-
-            withTextualData(
-                test.mocks.article()
-            )
-        ).resolves.not.toThrow();
+  it("Chooses PDF if the URL ends with .PDF", async () => {
+    const [pdfSpy, webSpy] = spyOnExtractors();
+    await withTextualData({
+      ...test.mocks.articleWithoutTextualData(),
+      original_url: "https://example.com/file.PDF",
     });
 
+    expect(pdfSpy).toHaveBeenCalledTimes(1);
+    expect(webSpy).toHaveBeenCalledTimes(0);
+  });
 
-    it("Chooses web on a random url", async () => {
+  it("Does not check endpoint if the path ends in .pdf", async () => {
+    spyOnExtractors();
+    const get = jest.spyOn(kall, "get");
 
-        const [pdfSpy, webSpy] = spyOnExtractors();
-
-        await withTextualData(test.mocks.articleWithoutTextualData());
-
-        expect(pdfSpy).toHaveBeenCalledTimes(0);
-        expect(webSpy).toHaveBeenCalledTimes(1);
+    await withTextualData({
+      ...test.mocks.articleWithoutTextualData(),
+      original_url: "https://example.com/file.pdf",
     });
 
-    it("Chooses PDF if the URL ends with .pdf", async () => {
+    expect(get).not.toHaveBeenCalled();
+  });
 
-        const [pdfSpy, webSpy] = spyOnExtractors();
-        await withTextualData({
-            ...test.mocks.articleWithoutTextualData(),
-            original_url: "https://example.com/file.pdf"
-        });
+  it("Does check endpoint if the path does not end with .pdf", async () => {
+    spyOnExtractors();
+    const get = jest.spyOn(kall, "get");
 
-        expect(pdfSpy).toHaveBeenCalledTimes(1);
-        expect(webSpy).toHaveBeenCalledTimes(0);
+    await withTextualData({
+      ...test.mocks.articleWithoutTextualData(),
+      original_url: "https://example.com/file",
     });
 
-    it("Chooses PDF if the URL ends with .PDF", async () => {
+    expect(get).toHaveBeenCalledTimes(1);
+  });
 
-        const [pdfSpy, webSpy] = spyOnExtractors();
-        await withTextualData({
-            ...test.mocks.articleWithoutTextualData(),
-            original_url: "https://example.com/file.PDF"
-        });
+  it("Does check endpoint if the path does not end with .PDF", async () => {
+    spyOnExtractors();
+    const get = jest.spyOn(kall, "get");
 
-        expect(pdfSpy).toHaveBeenCalledTimes(1);
-        expect(webSpy).toHaveBeenCalledTimes(0);
+    await withTextualData({
+      ...test.mocks.articleWithoutTextualData(),
+      original_url: "https://example.com/file",
     });
 
-    it("Does not check endpoint if the path ends in .pdf", async () => {
-
-        spyOnExtractors();
-        const get = jest.spyOn(kall, "get");
-
-        await withTextualData({
-            ...test.mocks.articleWithoutTextualData(),
-            original_url: "https://example.com/file.pdf"
-        });
-
-        expect(get).not.toHaveBeenCalled();
-    });
-
-    it("Does check endpoint if the path does not end with .pdf", async () => {
-
-        spyOnExtractors();
-        const get = jest.spyOn(kall, "get");
-
-        await withTextualData({
-            ...test.mocks.articleWithoutTextualData(),
-            original_url: "https://example.com/file"
-        });
-
-        expect(get).toHaveBeenCalledTimes(1);
-    });
-
-    it("Does check endpoint if the path does not end with .PDF", async () => {
-
-        spyOnExtractors();
-        const get = jest.spyOn(kall, "get");
-
-        await withTextualData({
-            ...test.mocks.articleWithoutTextualData(),
-            original_url: "https://example.com/file"
-        });
-
-        expect(get).toHaveBeenCalledTimes(1);
-    });
+    expect(get).toHaveBeenCalledTimes(1);
+  });
 });

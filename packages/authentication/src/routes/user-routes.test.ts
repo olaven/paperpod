@@ -8,7 +8,6 @@ import supertest from "supertest";
 import { app } from "../app";
 import { hash } from "../cryptography/cryptography";
 import { credentialsAreValid } from "./user-routes";
-import { validateLocaleAndSetLanguage } from "typescript";
 
 //FIXME: Tests pass regardless of what status code I am checking.. This renders the tests useless.
 
@@ -18,6 +17,12 @@ describe("The authentication endpoint for users", () => {
         agent
             .post("/users")
             .send(credentials as any);
+
+    const login = (credentials = test.mocks.credentials(), agent = supertest.agent(app)) => 
+        agent
+            .post("/users/sessions")
+            .send(credentials as any);
+        
 
     const extractBearerToken = async (test: supertest.Test) => {
 
@@ -300,6 +305,37 @@ describe("The authentication endpoint for users", () => {
 
             expect(status).toEqual(BAD_REQUEST);
         });
+
+        it("returns BAD_REQUEST on users that don't have valid email addresses", async () => {
+
+            const { status } = await signUp({
+                ...test.mocks.credentials(),
+                email: "notemail.com"
+            });
+
+            expect(status).toEqual(BAD_REQUEST);
+        });
+    });
+
+    describe("POST endpoint for creating new sessions",() => {
+
+        it("Does respond with 201 on succesful request", async () => {
+
+            const credentials = test.mocks.credentials(); 
+            await signUp(credentials);
+
+            const { status } = await login(credentials); 
+            expect(status).toBe(CREATED); 
+        });
+
+        it("Does respond with 401 if credentials are invalid", async () => {
+
+            const credentials = test.mocks.credentials();   
+            //NOTE: not signing up
+
+            const { status } = await login(credentials); 
+            expect(status).toBe(UNAUTHORIZED); 
+        })
     });
 
     describe("GET endpoint for retrieving information about the logged in user", () => {

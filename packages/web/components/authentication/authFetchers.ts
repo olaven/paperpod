@@ -1,5 +1,4 @@
 import { models } from "@paperpod/common";
-import { TokenResponse } from "@paperpod/common/src/models/models";
 import { del, get, post, put } from "node-kall";
 import { bearer } from "../../helpers/bearer";
 
@@ -9,8 +8,7 @@ export const signup = (credentials: models.UserCredentials) =>
         models.TokenResponse
     >("/authentication/users", credentials);
 
-export const login = (credentials: models.UserCredentials) =>
-    post<
+export const login = (credentials: models.UserCredentials) => post<
         models.UserCredentials,
         models.TokenResponse
     >("/authentication/users/sessions", credentials);

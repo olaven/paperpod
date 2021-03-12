@@ -3,6 +3,7 @@ import { models } from "@paperpod/common";
 import { get, OK } from "node-kall";
 import { asyncEffect } from "@paperpod/ui";
 import { refreshToken } from "./authFetchers";
+import { useRouter } from "next/router";
 
 export const UserContext = createContext<{
   user: models.User;
@@ -16,21 +17,25 @@ export const UserContext = createContext<{
 
 const useUser = (token: string): models.User => {
   const [user, setUser] = useState<models.User>(null);
+  const router = useRouter();
 
-  console.log(user?._id);
+  useEffect(() => {
+   (async () => {
 
-  asyncEffect(async () => {
-    if (!token) return setUser(null);
-    const [status, user] = await get<models.User>("/authentication/users/me/", {
-      headers: {
-        authorization: "Bearer " + token,
-      },
-    });
+     if (!token) return setUser(null);
+     const [status, user] = await get<models.User>("/authentication/users/me/", {
+       headers: {
+         authorization: "Bearer " + token,
+       },
+     });
+   
+     setUser(status === OK ? user : null);
+     if (user) router.push("/home");
 
-    setUser(status === OK ? user : null);
-  }, [token]);
+   })() 
+  }, []); 
 
-  return user;
+  return user; 
 };
 
 export const UserContextProvider = ({ children }: any) => {

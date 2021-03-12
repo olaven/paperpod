@@ -3,21 +3,24 @@ import { styled } from "./stitches.config";
 export const Button = styled("button", {
     color: "$secondary",
     backgroundColor: "$primary",
-    padding: "$three",
-    margin: "$three",
+    padding: "$thirteen",
+    paddingLeft: "$fiftyfive",
+    paddingRight: "$fiftyfive",
+    margin: "$five",
     fontSize: "$twentyone",
-    border: "border solid",
-    borderRadius: "6px",
-    transition: "all 0.1s ease 0s",
+    fontWeight: "lighter",
+    outline: 'none',
+    border: "solid 1px",
+    borderRadius: "15px",
+    transition: "all 0s ease 1s",
     "&:hover": {
-        transform: "scale(1.025)",
+        textDecoration: "underline",
         cursor: "pointer",
     },
     "&:disabled": {
         color: "grey",
         opacity: .79,
         "&:hover": {
-            transform: "scale(1)",
             cursor: "default",
         }
     }

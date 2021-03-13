@@ -1,5 +1,5 @@
 import faker from "faker";
-import { validatePassword } from "./validators";
+import { validateEmail, validatePassword } from "./validators";
 
 //https://stackoverflow.com/questions/20333654/array-map-doesnt-seem-to-work-on-uninitialized-arrays/42750274
 const array = (length: number) => new Array(length).fill(null);
@@ -37,6 +37,35 @@ describe("Common validators", () => {
       expect(/[0-9]/.test(password)).toEqual(true);
 
       expect(validatePassword(password)).toEqual(true);
+    });
+
+    describe("Validastion of emails", () => {
+
+        it("Does returns true on a valid email", () => {
+
+            const email = faker.internet.email();
+            expect(validateEmail(email)).toBe(true);
+        });
+
+        it("Does return false on email without @", () => {
+
+            expect(validateEmail("example.com")).toBe(false);
+        });
+
+        it("Does return false on email without TLD", () => {
+
+            expect(validateEmail("mail@example")).toBe(false);
+        });
+
+        it("Does return false on email without prefix to before host", () => {
+
+            expect(validateEmail("@example.com")).toBe(false);
+        });
+
+        it("Does return false on email without domain name", () => {
+
+            expect(validateEmail("mail@.com")).toBe(false);
+        });
     });
   });
 });

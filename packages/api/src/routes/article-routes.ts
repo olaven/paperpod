@@ -64,8 +64,7 @@ export const articleRoutes = express
 
       if (!article) return response.status(NOT_FOUND).end();
 
-      if (article.owner_id !== user.id)
-        return response.status(FORBIDDEN).end();
+      if (article.owner_id !== user.id) return response.status(FORBIDDEN).end();
 
       await database.articles.deleteById(id);
       return response.status(NO_CONTENT).end();

@@ -46,9 +46,9 @@ services:
       - PORT=$AUTHENTICATION_PORT
       - JWT_SECRET=$JWT_SECRET
       - PGHOST=database_authentication
-      - PGDATABASE=$PGDATABASE_API
-      - PGUSER=$PGUSER_API
-      - PGPASSWORD=$PGPASSWORD_API
+      - PGDATABASE=$PGDATABASE_AUTHENTICATION
+      - PGUSER=$PGUSER_AUTHENTICATION
+      - PGPASSWORD=$PGPASSWORD_AUTHENTICATION
     working_dir: /paperpod
   web:
     build: .

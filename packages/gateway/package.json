@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
+    "build": "tsc",
     "start": "ts-node ./src/index.ts"
   },
   "dependencies": {

@@ -12,7 +12,7 @@ describe("The mocks used when testing", () => {
 
     it("Does have defined properties", () => {
       const user = mocks.user();
-      expect(user._id).toBeDefined();
+      expect(user.id).toBeDefined();
       expect(user.email).toBeDefined();
       expect(user.password_hash).toBeDefined();
     });
@@ -57,7 +57,7 @@ describe("The mocks used when testing", () => {
 
     it("Does have defined properties", () => {
       const article = mocks.article();
-      expect(article._id).toBeDefined();
+      expect(article.id).toBeDefined();
       expect(article.owner_id).toBeDefined();
       expect(article.original_url).toBeDefined();
       expect(article.title).toBeDefined();

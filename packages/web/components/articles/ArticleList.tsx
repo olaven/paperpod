@@ -30,9 +30,9 @@ export const ArticleList = () => {
   return (
     <>
       {articles.map((article) => (
-        <div id={article._id}>
-          {article.original_url} - "{article._id}"
-          <Player article_id={article._id} />
+        <div id={article.id}>
+          {article.original_url} - "{article.id}"
+          <Player article_id={article.id} />
           <DeleteButton article={article} />
         </div>
       ))}

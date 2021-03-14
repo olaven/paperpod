@@ -11,7 +11,7 @@ export const postArticle = (article: models.ArticlePayload, token: string) =>
 
 export const deleteArticle = (article: models.Article, token: string) =>
   del<models.ArticlePayload, null>(
-    `/api/articles/${article._id}`,
+    `/api/articles/${article.id}`,
     bearer(token)
   );
 

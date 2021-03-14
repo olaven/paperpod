@@ -41,7 +41,7 @@ exports.shorthands = undefined;
 function up(pgm) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            pgm.sql("\n        CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"; \n        CREATE TABLE IF NOT EXISTS articles (\n            id uuid DEFAULT uuid_generate_v4(), \n            owner_id uuid, \n            original_url varchar(500), \n            title varchar(200), \n            description varchar(1500),\n            author varchar(400),\n            text varchar(50000), \n            publication_timestamp timestamptz, \n            added_timestamp timestamptz, \n            storage_uri varchar(200)\n        ); \n    ");
+            pgm.sql("\n        CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"; \n        CREATE TABLE IF NOT EXISTS articles (\n            id uuid DEFAULT uuid_generate_v4() PRIMARY KEY, \n            owner_id uuid, \n            original_url varchar(500), \n            title varchar(200), \n            description varchar(1500),\n            author varchar(400),\n            text varchar(50000), \n            publication_timestamp timestamptz, \n            added_timestamp timestamptz, \n            storage_uri varchar(200)\n        ); \n    ");
             return [2 /*return*/];
         });
     });

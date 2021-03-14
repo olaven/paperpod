@@ -10,7 +10,7 @@ describe("The RSS file endpoint", () => {
 
   describe("The endpoint for getting perosnal RSS-feeds", () => {
     const getFeed = (user = test.mocks.user()) =>
-      supertest(app).get(`/feeds/${user?._id}/`);
+      supertest(app).get(`/feeds/${user?.id}/`);
 
     it("Can be found", async () => {
       const { status } = await getFeed();
@@ -38,10 +38,10 @@ describe("The RSS file endpoint", () => {
       const user = test.mocks.user();
 
       const articles = [
-        await persistArticle({ owner_id: user._id }),
-        await persistArticle({ owner_id: user._id }),
-        await persistArticle({ owner_id: user._id }),
-        await persistArticle({ owner_id: user._id }),
+        await persistArticle({ owner_id: user.id }),
+        await persistArticle({ owner_id: user.id }),
+        await persistArticle({ owner_id: user.id }),
+        await persistArticle({ owner_id: user.id }),
       ];
 
       const rss = (await getFeed(user)).text;

@@ -2,7 +2,7 @@ import { first, rows } from "klart";
 import { models } from "@paperpod/common";
 
 export const getByOwner = (owner_id: string) =>
-  first<models.Article>("SELECT * FROM articles WHERE owner_id = $1", [
+  rows<models.Article>("SELECT * FROM articles WHERE owner_id = $1", [
     owner_id,
   ]);
 
@@ -31,7 +31,7 @@ export const getByOriginalUrlAndOwner = (
   );
 
 export const persist = (article: models.Article) =>
-  first(
+  first<models.Article>(
     `
       INSERT INTO
       articles (owner_id, original_url, title, description, author, text, publication_timestamp, added_timestamp, storage_uri) 

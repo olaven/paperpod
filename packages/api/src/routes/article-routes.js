@@ -60,7 +60,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.articleRoutes = void 0;
 var express_1 = __importDefault(require("express"));
-var nanoid_1 = require("nanoid");
 var server_1 = require("@paperpod/server");
 var converter_1 = require("@paperpod/converter");
 var node_kall_1 = require("node-kall");
@@ -84,9 +83,9 @@ exports.articleRoutes = express_1["default"]
                 _b = (_a = database.articles).persist;
                 _c = converter_1.withStorageUri;
                 return [4 /*yield*/, converter_1.withTextualData({
-                        _id: nanoid_1.nanoid(),
+                        id: null,
                         original_url: link,
-                        owner_id: user._id,
+                        owner_id: user.id,
                         added_timestamp: Date.now(),
                         storage_uri: null
                     })];
@@ -103,7 +102,7 @@ exports.articleRoutes = express_1["default"]
     var articles;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, database.articles.getByOwner(user._id)];
+            case 0: return [4 /*yield*/, database.articles.getByOwner(user.id)];
             case 1:
                 articles = _a.sent();
                 response.status(node_kall_1.OK).json(articles);
@@ -123,7 +122,7 @@ exports.articleRoutes = express_1["default"]
                 article = _a.sent();
                 if (!article)
                     return [2 /*return*/, response.status(node_kall_1.NOT_FOUND).end()];
-                if (article.owner_id !== user._id)
+                if (article.owner_id !== user.id)
                     return [2 /*return*/, response.status(node_kall_1.FORBIDDEN).end()];
                 return [4 /*yield*/, database.articles.deleteById(id)];
             case 2:

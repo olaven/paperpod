@@ -37,80 +37,84 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var common_1 = require("@paperpod/common");
-var articles_1 = require("./articles");
-describe("The database interface for articles", function () {
-    describe("Getting articles by id", function () {
-        it("Does get an article", function () { return __awaiter(void 0, void 0, void 0, function () {
+var users_1 = require("./users");
+describe("The database interface for users", function () {
+    describe("Persisting users", function () {
+        it("Is possible to persist without throwing", function () {
+            expect(users_1.insert(common_1.test.mocks.user())).resolves.not.toThrow();
+        });
+        it("Is possible to retrieve the user after persisting", function () { return __awaiter(void 0, void 0, void 0, function () {
             var persisted, retrieved;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, articles_1.persist(common_1.test.mocks.article())];
+                    case 0: return [4 /*yield*/, users_1.insert(common_1.test.mocks.user())];
                     case 1:
                         persisted = _a.sent();
-                        return [4 /*yield*/, articles_1.getById(persisted.id)];
+                        return [4 /*yield*/, users_1.getByEmail(persisted.email)];
                     case 2:
                         retrieved = _a.sent();
+                        expect(retrieved).toBeDefined();
                         expect(persisted).toEqual(retrieved);
-                        return [2 /*return*/];
-                }
-            });
-        }); });
-        it("Does not return another aticle if there are multiple present", function () { return __awaiter(void 0, void 0, void 0, function () {
-            var persisted, retrieved;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, articles_1.persist(common_1.test.mocks.article())];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, articles_1.persist(common_1.test.mocks.article())];
-                    case 2:
-                        persisted = _a.sent();
-                        return [4 /*yield*/, articles_1.persist(common_1.test.mocks.article())];
-                    case 3:
-                        _a.sent();
-                        return [4 /*yield*/, articles_1.getById(persisted.id)];
-                    case 4:
-                        retrieved = _a.sent();
-                        expect(persisted).toEqual(retrieved);
-                        return [2 /*return*/];
-                }
-            });
-        }); });
-        it("Does return a defined article", function () { return __awaiter(void 0, void 0, void 0, function () {
-            var persisted, retrieved;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, articles_1.persist(common_1.test.mocks.article())];
-                    case 1:
-                        persisted = _a.sent();
-                        return [4 /*yield*/, articles_1.getById(persisted.id)];
-                    case 2:
-                        retrieved = _a.sent();
-                        expect(persisted).toBeDefined();
-                        expect(persisted.id).toBeDefined();
                         return [2 /*return*/];
                 }
             });
         }); });
     });
-    describe("Deleting an article by id", function () {
-        it("Does actually remove on delete", function () { return __awaiter(void 0, void 0, void 0, function () {
-            var persisted, before, after;
+    describe("Retrieving users by email", function () {
+        it("Does return a user with the same email", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var persisted, retrieved;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, articles_1.persist(common_1.test.mocks.article())];
+                    case 0: return [4 /*yield*/, users_1.insert(common_1.test.mocks.user())];
                     case 1:
                         persisted = _a.sent();
-                        return [4 /*yield*/, articles_1.getById(persisted.id)];
+                        return [4 /*yield*/, users_1.getByEmail(persisted.email)];
+                    case 2:
+                        retrieved = _a.sent();
+                        expect(retrieved.email).toEqual(persisted.email);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Does not return other users, even though they are present", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var first, second, retrieved;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, users_1.insert(common_1.test.mocks.user())];
+                    case 1:
+                        first = _a.sent();
+                        return [4 /*yield*/, users_1.insert(common_1.test.mocks.user())];
+                    case 2:
+                        second = _a.sent();
+                        expect(first).not.toEqual(second);
+                        return [4 /*yield*/, users_1.getByEmail(first.email)];
+                    case 3:
+                        retrieved = _a.sent();
+                        expect(retrieved).toEqual(first);
+                        expect(retrieved).not.toEqual(second);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe("Deleting users", function () {
+        it("Is possible to delete a user", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var user, before, after;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, users_1.insert(common_1.test.mocks.user())];
+                    case 1:
+                        user = _a.sent();
+                        return [4 /*yield*/, users_1.getByEmail(user.email)];
                     case 2:
                         before = _a.sent();
-                        expect(persisted.id).toEqual(before.id);
-                        return [4 /*yield*/, articles_1.deleteById(before.id)];
+                        return [4 /*yield*/, users_1.deleteUser(user.id)];
                     case 3:
                         _a.sent();
-                        return [4 /*yield*/, articles_1.getById(persisted.id)];
+                        return [4 /*yield*/, users_1.getByEmail(user.email)];
                     case 4:
                         after = _a.sent();
+                        expect(before).toEqual(user);
                         expect(after).toBeNull();
                         return [2 /*return*/];
                 }

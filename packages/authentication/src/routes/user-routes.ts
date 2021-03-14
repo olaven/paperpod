@@ -77,7 +77,7 @@ export const userRoutes = express
     if (existing) return response.status(CONFLICT).send();
 
     const user = await database.users.insert({
-      _id: nanoid(),
+      id: null,
       email: credentials.email.toLowerCase(),
       password_hash: await hash.hash(credentials.password),
     });

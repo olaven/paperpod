@@ -44,10 +44,10 @@ describe("Conversion from articles to RSS", () => {
       ["title", (article) => article.title],
       [
         "link",
-        (article) => `${constants.APPLICATION_URL}/api/files/${article._id}`,
+        (article) => `${constants.APPLICATION_URL}/api/files/${article.id}`,
       ],
       ["description", (article) => article.description],
-      ["guid", (article) => article._id],
+      ["guid", (article) => article.id],
       ["pubDate", (article) => new Date(article.added_timestamp).toUTCString()],
       ["author", (article) => article.author],
     ]);
@@ -73,7 +73,7 @@ describe("Conversion from articles to RSS", () => {
       const serialized = serializeItem(article);
 
       expect(serialized).toContain(
-        `<enclosure url="https://application.paperpod.fm/api/files/${article._id}" length="10" type="audio/mpeg"`
+        `<enclosure url="https://application.paperpod.fm/api/files/${article.id}" length="10" type="audio/mpeg"`
       );
     });
   });

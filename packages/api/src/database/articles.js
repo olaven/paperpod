@@ -3,7 +3,7 @@ exports.__esModule = true;
 exports.persist = exports.getByOriginalUrlAndOwner = exports.getById = exports.deleteById = exports.getByOwner = void 0;
 var klart_1 = require("klart");
 var getByOwner = function (owner_id) {
-    return klart_1.first("SELECT * FROM articles WHERE owner_id = $1", [
+    return klart_1.rows("SELECT * FROM articles WHERE owner_id = $1", [
         owner_id,
     ]);
 };

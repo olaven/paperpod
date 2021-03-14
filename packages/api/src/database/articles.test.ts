@@ -4,7 +4,7 @@ describe("The database interface for articles", () => {
   describe("Getting articles by id", () => {
     it("Does get an article", async () => {
       const persisted = await persist(test.mocks.article());
-      const retrieved = await getById(persisted._id);
+      const retrieved = await getById(persisted.id);
 
       expect(persisted).toEqual(retrieved);
     });
@@ -14,28 +14,28 @@ describe("The database interface for articles", () => {
       const persisted = await persist(test.mocks.article());
       await persist(test.mocks.article());
 
-      const retrieved = await getById(persisted._id);
+      const retrieved = await getById(persisted.id);
       expect(persisted).toEqual(retrieved);
     });
 
     it("Does return a defined article", async () => {
       const persisted = await persist(test.mocks.article());
-      const retrieved = await getById(persisted._id);
+      const retrieved = await getById(persisted.id);
 
       expect(persisted).toBeDefined();
-      expect(persisted._id).toBeDefined();
+      expect(persisted.id).toBeDefined();
     });
   });
 
   describe("Deleting an article by id", () => {
     it("Does actually remove on delete", async () => {
       const persisted = await persist(test.mocks.article());
-      const before = await getById(persisted._id);
-      expect(persisted._id).toEqual(before._id);
+      const before = await getById(persisted.id);
+      expect(persisted.id).toEqual(before.id);
 
-      await deleteById(before._id);
+      await deleteById(before.id);
 
-      const after = await getById(persisted._id);
+      const after = await getById(persisted.id);
       expect(after).toBeNull();
     });
   });

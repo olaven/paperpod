@@ -71,7 +71,7 @@ describe("The RSS file endpoint", function () {
     describe("The endpoint for getting perosnal RSS-feeds", function () {
         var getFeed = function (user) {
             if (user === void 0) { user = common_1.test.mocks.user(); }
-            return supertest_1["default"](app_1.app).get("/feeds/" + (user === null || user === void 0 ? void 0 : user._id) + "/");
+            return supertest_1["default"](app_1.app).get("/feeds/" + (user === null || user === void 0 ? void 0 : user.id) + "/");
         };
         it("Can be found", function () { return __awaiter(void 0, void 0, void 0, function () {
             var status;
@@ -127,22 +127,22 @@ describe("The RSS file endpoint", function () {
                 switch (_b.label) {
                     case 0:
                         user = common_1.test.mocks.user();
-                        return [4 /*yield*/, persistArticle({ owner_id: user._id })];
+                        return [4 /*yield*/, persistArticle({ owner_id: user.id })];
                     case 1:
                         _a = [
                             _b.sent()
                         ];
-                        return [4 /*yield*/, persistArticle({ owner_id: user._id })];
+                        return [4 /*yield*/, persistArticle({ owner_id: user.id })];
                     case 2:
                         _a = _a.concat([
                             _b.sent()
                         ]);
-                        return [4 /*yield*/, persistArticle({ owner_id: user._id })];
+                        return [4 /*yield*/, persistArticle({ owner_id: user.id })];
                     case 3:
                         _a = _a.concat([
                             _b.sent()
                         ]);
-                        return [4 /*yield*/, persistArticle({ owner_id: user._id })];
+                        return [4 /*yield*/, persistArticle({ owner_id: user.id })];
                     case 4:
                         articles = _a.concat([
                             _b.sent()

@@ -35,63 +35,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
-var supertest_1 = __importDefault(require("supertest"));
-var faker_1 = __importDefault(require("faker"));
-var app_1 = require("../app");
-var database_1 = require("../database/database");
-var node_kall_1 = require("node-kall");
-var common_1 = require("@paperpod/common");
-describe("The api route for streaming files", function () {
-    var get = function (article_id) {
-        return supertest_1["default"](app_1.app).get("/files/" + article_id);
-    };
-    it("Does not respond with NOT_IMPLEMNTED", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var status;
+exports.down = exports.up = exports.shorthands = void 0;
+exports.shorthands = undefined;
+function up(pgm) {
+    return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, get(faker_1["default"].random.uuid())];
-                case 1:
-                    status = (_a.sent()).status;
-                    expect(status).not.toEqual(node_kall_1.NOT_IMPLEMENTED);
-                    return [2 /*return*/];
-            }
+            pgm.sql("\n        CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"; \n        CREATE TABLE IF NOT EXISTS users(\n            id uuid DEFAULT uuid_generate_v4() PRIMARY KEY, \n            email varchar(300), \n            password_hash varchar(1000)\n        );\n    ");
+            return [2 /*return*/];
         });
+    });
+}
+exports.up = up;
+function down(pgm) {
+    return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
+        return [2 /*return*/];
     }); });
-    it("Does respond with 404 if the article does not exist", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var id, article, status;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    id = faker_1["default"].random.uuid();
-                    return [4 /*yield*/, database_1.articles.getById(id)];
-                case 1:
-                    article = _a.sent();
-                    return [4 /*yield*/, get(id)];
-                case 2:
-                    status = (_a.sent()).status;
-                    expect(article).toEqual(null);
-                    expect(status).toEqual(node_kall_1.NOT_FOUND);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Responds with 200 if the article is present", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var article, status;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, database_1.articles.persist(common_1.test.mocks.article())];
-                case 1:
-                    article = _a.sent();
-                    return [4 /*yield*/, get(article.id)];
-                case 2:
-                    status = (_a.sent()).status;
-                    expect(status).toEqual(node_kall_1.OK);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-});
+}
+exports.down = down;

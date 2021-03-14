@@ -26,7 +26,7 @@ describe("The api route for streaming files", () => {
 
   it("Responds with 200 if the article is present", async () => {
     const article = await articles.persist(test.mocks.article());
-    const { status } = await get(article._id);
+    const { status } = await get(article.id);
 
     expect(status).toEqual(OK);
   });

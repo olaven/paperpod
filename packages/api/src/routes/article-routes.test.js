@@ -128,7 +128,7 @@ describe("The api for articles", function () {
                         return [4 /*yield*/, post(token)];
                     case 1:
                         body = (_a.sent()).body;
-                        expect(body._id).toBeDefined();
+                        expect(body.id).toBeDefined();
                         expect(body.original_url).toBeDefined();
                         expect(body.text).toBeDefined();
                         expect(body.owner_id).toBeDefined();
@@ -252,7 +252,7 @@ describe("The api for articles", function () {
                     case 1:
                         article = _a.sent();
                         token = server_1.jwt.sign(common_1.test.mocks.user());
-                        return [4 /*yield*/, del(token, article._id)];
+                        return [4 /*yield*/, del(token, article.id)];
                     case 2:
                         status = (_a.sent()).status;
                         expect(status).toEqual(node_kall_1.FORBIDDEN);
@@ -266,11 +266,11 @@ describe("The api for articles", function () {
                 switch (_a.label) {
                     case 0:
                         user = common_1.test.mocks.user();
-                        return [4 /*yield*/, database_1.articles.persist(__assign(__assign({}, common_1.test.mocks.article()), { owner_id: user._id }))];
+                        return [4 /*yield*/, database_1.articles.persist(__assign(__assign({}, common_1.test.mocks.article()), { owner_id: user.id }))];
                     case 1:
                         article = _a.sent();
                         token = server_1.jwt.sign(user);
-                        return [4 /*yield*/, del(token, article._id)];
+                        return [4 /*yield*/, del(token, article.id)];
                     case 2:
                         status = (_a.sent()).status;
                         expect(status).toEqual(node_kall_1.NO_CONTENT);
@@ -284,14 +284,14 @@ describe("The api for articles", function () {
                 switch (_a.label) {
                     case 0:
                         user = common_1.test.mocks.user();
-                        return [4 /*yield*/, database_1.articles.persist(__assign(__assign({}, common_1.test.mocks.article()), { owner_id: user._id }))];
+                        return [4 /*yield*/, database_1.articles.persist(__assign(__assign({}, common_1.test.mocks.article()), { owner_id: user.id }))];
                     case 1:
                         article = _a.sent();
                         token = server_1.jwt.sign(user);
-                        return [4 /*yield*/, del(token, article._id)];
+                        return [4 /*yield*/, del(token, article.id)];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, database_1.articles.getById(article._id)];
+                        return [4 /*yield*/, database_1.articles.getById(article.id)];
                     case 3:
                         after = _a.sent();
                         expect(after).toEqual(null);

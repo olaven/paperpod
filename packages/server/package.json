@@ -12,6 +12,7 @@
     "express": "^4.17.1",
     "faker": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
+    "klart": "^0.1.4",
     "mongodb": "^3.6.3"
   },
   "devDependencies": {

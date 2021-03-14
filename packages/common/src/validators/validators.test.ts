@@ -40,32 +40,26 @@ describe("Common validators", () => {
     });
 
     describe("Validastion of emails", () => {
+      it("Does returns true on a valid email", () => {
+        const email = faker.internet.email();
+        expect(validateEmail(email)).toBe(true);
+      });
 
-        it("Does returns true on a valid email", () => {
+      it("Does return false on email without @", () => {
+        expect(validateEmail("example.com")).toBe(false);
+      });
 
-            const email = faker.internet.email();
-            expect(validateEmail(email)).toBe(true);
-        });
+      it("Does return false on email without TLD", () => {
+        expect(validateEmail("mail@example")).toBe(false);
+      });
 
-        it("Does return false on email without @", () => {
+      it("Does return false on email without prefix to before host", () => {
+        expect(validateEmail("@example.com")).toBe(false);
+      });
 
-            expect(validateEmail("example.com")).toBe(false);
-        });
-
-        it("Does return false on email without TLD", () => {
-
-            expect(validateEmail("mail@example")).toBe(false);
-        });
-
-        it("Does return false on email without prefix to before host", () => {
-
-            expect(validateEmail("@example.com")).toBe(false);
-        });
-
-        it("Does return false on email without domain name", () => {
-
-            expect(validateEmail("mail@.com")).toBe(false);
-        });
+      it("Does return false on email without domain name", () => {
+        expect(validateEmail("mail@.com")).toBe(false);
+      });
     });
   });
 });

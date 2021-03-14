@@ -56,10 +56,9 @@ export const { styled, css, getCssString } = createCss({
       seventynine: "79px",
       onehunderedandfourteen: "114px",
     },
-  },
-  conditions: {
-    small: `@media (max-width: 768px)`,
-    large: `@media (min-width: 768px)`,
-  },
-  utils: {},
-});
+    conditions: {
+      small: `@media (max-width: 768px)`,
+      large: `@media (min-width: 768px)`,
+    },
+    utils: {},
+  });

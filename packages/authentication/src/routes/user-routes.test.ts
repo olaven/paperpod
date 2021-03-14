@@ -16,7 +16,6 @@ import { app } from "../app";
 import { hash } from "../cryptography/cryptography";
 import { credentialsAreValid } from "./user-routes";
 
-
 const signUp = (
   credentials = test.mocks.credentials(),
   agent = supertest.agent(app)
@@ -28,18 +27,14 @@ const extractBearerToken = async (test: supertest.Test) => {
   } = await test;
 
   return token;
+};
 
-}
-
-  const login = (credentials = test.mocks.credentials(), agent = supertest.agent(app)) => 
-      agent
-          .post("/users/sessions")
-          .send(credentials as any);
-
+const login = (
+  credentials = test.mocks.credentials(),
+  agent = supertest.agent(app)
+) => agent.post("/users/sessions").send(credentials as any);
 
 describe("The authentication endpoint for users", () => {
-        
-
   describe("Local test utils", () => {
     describe("extractBearerToken", () => {
       it("Does extract something defined", async () => {
@@ -226,187 +221,182 @@ describe("The authentication endpoint for users", () => {
     });
 
     it("returns BAD_REQUEST on users that don't have valid email addresses", async () => {
-
-        const { status } = await signUp({
-            ...test.mocks.credentials(),
-            email: "notemail.com"
-        });
-
-        expect(status).toEqual(BAD_REQUEST);
-    });
-  });
-
-    describe("POST endpoint for creating new sessions",() => {
-
-        it("Does respond with 201 on succesful request", async () => {
-
-            const credentials = test.mocks.credentials(); 
-            await signUp(credentials);
-
-            const { status } = await login(credentials); 
-            expect(status).toBe(CREATED); 
-        });
-
-        it("Does respond with 401 if credentials are invalid", async () => {
-
-            const credentials = test.mocks.credentials();   
-            //NOTE: not signing up
-
-            const { status } = await login(credentials); 
-            expect(status).toBe(UNAUTHORIZED); 
-        })
-    });
-
-    it("Does create a user, but does not store the password", async () => {
-      const credentials = test.mocks.credentials();
-      const { status } = await signUp(credentials);
-      expect(status).toEqual(CREATED);
-
-      const user = await database.users.getByEmail(credentials.email);
-      expect(user.password_hash).not.toEqual(credentials.password);
-    });
-
-    it("Does create a user and stores hash comparable with bcrypt", async () => {
-      const credentials = test.mocks.credentials();
-      const { status } = await signUp(credentials);
-      expect(status).toEqual(CREATED);
-
-      const user = await database.users.getByEmail(credentials.email);
-      expect(await hash.compare(credentials.password, user.password_hash)).toBe(
-        true
-      );
-    });
-
-    it("Responds with CONFLICT if attempting to create the same user twice", async () => {
-      const credentials = test.mocks.credentials();
-      const firstResponse = await signUp(credentials);
-      expect(firstResponse.status).toEqual(CREATED);
-
-      const secondResponse = await signUp(credentials);
-      expect(secondResponse.status).toEqual(CONFLICT);
-    });
-
-    it("Returns BAD_REQUEST on users that have passwords shorter than 8 characters", async () => {
       const { status } = await signUp({
         ...test.mocks.credentials(),
-        password: faker.random.alphaNumeric(7),
-      });
-
-      expect(status).toEqual(BAD_REQUEST);
-    });
-
-    it("returns BAD_REQUEST on users that have passwords without lowercase letters", async () => {
-      const { status } = await signUp({
-        ...test.mocks.credentials(),
-        password: faker.random.alphaNumeric(80).toLowerCase(),
-      });
-
-      expect(status).toEqual(BAD_REQUEST);
-    });
-
-    it("returns BAD_REQUEST on users that have passwords without uppercase letters", async () => {
-      const { status } = await signUp({
-        ...test.mocks.credentials(),
-        password: faker.random.alphaNumeric(80).toUpperCase(),
-      });
-
-      expect(status).toEqual(BAD_REQUEST);
-    });
-
-    it("returns BAD_REQUEST on users that don't have numbers", async () => {
-      const { status } = await signUp({
-        ...test.mocks.credentials(),
-        password: faker.random.alpha({ count: 50 }),
+        email: "notemail.com",
       });
 
       expect(status).toEqual(BAD_REQUEST);
     });
   });
 
-  describe("GET endpoint for retrieving information about the logged in user", () => {
-    const getMe = (token: string, agent = supertest(app)) =>
-      agent.get("/users/me").set("Authorization", "Bearer " + token);
-
-    it("Responds with UNAUTHORIZED if the user is not logged in", async () => {
-      const { status } = await getMe(null);
-      expect(status).toEqual(UNAUTHORIZED);
-    });
-
-    it("Resopnds with FORBIDDEN if the JWT token is present, but not valid", async () => {
-      //a token from jwt.io, not encrypted with the same secret
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-      const { status } = await getMe(token);
-      expect(status).toEqual(FORBIDDEN);
-    });
-
-    it("Responds with OK if the user is logged in", async () => {
-      const { status } = await getMe(await extractBearerToken(signUp()));
-
-      expect(status).toEqual(OK);
-    });
-
-    it("Returns the user object if the user is logged in", async () => {
-      const token = await extractBearerToken(signUp());
-      const { body } = await getMe(token).expect(OK);
-
-      expect(body.email).toBeDefined();
-      expect(body._id).toBeDefined();
-    });
-
-    it("Does not return the password hash to client", async () => {
-      expect(
-        (await getMe(await extractBearerToken(signUp()))).body.password_hash
-      ).toBeUndefined();
-    });
-
-    it("Does return user data for the correct user", async () => {
+  describe("POST endpoint for creating new sessions", () => {
+    it("Does respond with 201 on succesful request", async () => {
       const credentials = test.mocks.credentials();
+      await signUp(credentials);
 
-      const { body, status } = await getMe(
-        await extractBearerToken(signUp(credentials))
-      );
-
-      expect(status).toEqual(OK);
-      expect(body.email).toEqual(credentials.email);
+      const { status } = await login(credentials);
+      expect(status).toBe(CREATED);
     });
 
-    it("Responds with FORBIDDEN if there is a token, but it's not properly formatted", async () => {
-      const { status } = await getMe("badly formatted token");
-      expect(status).toEqual(FORBIDDEN);
-    });
+    it("Does respond with 401 if credentials are invalid", async () => {
+      const credentials = test.mocks.credentials();
+      //NOTE: not signing up
 
-    it("Responds with OK if user is logged in", async () => {
-      const token = await extractBearerToken(signUp());
-
-      const { status } = await getMe(token);
-      expect(status).toEqual(OK);
+      const { status } = await login(credentials);
+      expect(status).toBe(UNAUTHORIZED);
     });
   });
 
-  describe("PUT endpont for token refresh", () => {
-    const refreshToken = (oldToken: string) =>
-      supertest(app)
-        .put("/users/sessions")
-        .set("Authorization", "Bearer " + oldToken);
+  it("Does create a user, but does not store the password", async () => {
+    const credentials = test.mocks.credentials();
+    const { status } = await signUp(credentials);
+    expect(status).toEqual(CREATED);
 
-    it("Responds with OK on valid request", async () => {
-      const token = await extractBearerToken(signUp());
-      const { status } = await refreshToken(token);
-
-      expect(status).toEqual(OK);
-    });
-
-    it("Responds with a different token on valid request", async () => {
-      const oldToken = await extractBearerToken(signUp());
-
-      await test.sleep(1200); //to update JWT `.iat`
-      const response = await refreshToken(oldToken);
-      const newToken = response.body.token;
-
-      expect(oldToken).toBeDefined();
-      expect(newToken).toBeDefined();
-      expect(oldToken).not.toEqual(newToken);
-    });
+    const user = await database.users.getByEmail(credentials.email);
+    expect(user.password_hash).not.toEqual(credentials.password);
   });
 
+  it("Does create a user and stores hash comparable with bcrypt", async () => {
+    const credentials = test.mocks.credentials();
+    const { status } = await signUp(credentials);
+    expect(status).toEqual(CREATED);
+
+    const user = await database.users.getByEmail(credentials.email);
+    expect(await hash.compare(credentials.password, user.password_hash)).toBe(
+      true
+    );
+  });
+
+  it("Responds with CONFLICT if attempting to create the same user twice", async () => {
+    const credentials = test.mocks.credentials();
+    const firstResponse = await signUp(credentials);
+    expect(firstResponse.status).toEqual(CREATED);
+
+    const secondResponse = await signUp(credentials);
+    expect(secondResponse.status).toEqual(CONFLICT);
+  });
+
+  it("Returns BAD_REQUEST on users that have passwords shorter than 8 characters", async () => {
+    const { status } = await signUp({
+      ...test.mocks.credentials(),
+      password: faker.random.alphaNumeric(7),
+    });
+
+    expect(status).toEqual(BAD_REQUEST);
+  });
+
+  it("returns BAD_REQUEST on users that have passwords without lowercase letters", async () => {
+    const { status } = await signUp({
+      ...test.mocks.credentials(),
+      password: faker.random.alphaNumeric(80).toLowerCase(),
+    });
+
+    expect(status).toEqual(BAD_REQUEST);
+  });
+
+  it("returns BAD_REQUEST on users that have passwords without uppercase letters", async () => {
+    const { status } = await signUp({
+      ...test.mocks.credentials(),
+      password: faker.random.alphaNumeric(80).toUpperCase(),
+    });
+
+    expect(status).toEqual(BAD_REQUEST);
+  });
+
+  it("returns BAD_REQUEST on users that don't have numbers", async () => {
+    const { status } = await signUp({
+      ...test.mocks.credentials(),
+      password: faker.random.alpha({ count: 50 }),
+    });
+
+    expect(status).toEqual(BAD_REQUEST);
+  });
+});
+
+describe("GET endpoint for retrieving information about the logged in user", () => {
+  const getMe = (token: string, agent = supertest(app)) =>
+    agent.get("/users/me").set("Authorization", "Bearer " + token);
+
+  it("Responds with UNAUTHORIZED if the user is not logged in", async () => {
+    const { status } = await getMe(null);
+    expect(status).toEqual(UNAUTHORIZED);
+  });
+
+  it("Resopnds with FORBIDDEN if the JWT token is present, but not valid", async () => {
+    //a token from jwt.io, not encrypted with the same secret
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+    const { status } = await getMe(token);
+    expect(status).toEqual(FORBIDDEN);
+  });
+
+  it("Responds with OK if the user is logged in", async () => {
+    const { status } = await getMe(await extractBearerToken(signUp()));
+
+    expect(status).toEqual(OK);
+  });
+
+  it("Returns the user object if the user is logged in", async () => {
+    const token = await extractBearerToken(signUp());
+    const { body } = await getMe(token).expect(OK);
+
+    expect(body.email).toBeDefined();
+    expect(body._id).toBeDefined();
+  });
+
+  it("Does not return the password hash to client", async () => {
+    expect(
+      (await getMe(await extractBearerToken(signUp()))).body.password_hash
+    ).toBeUndefined();
+  });
+
+  it("Does return user data for the correct user", async () => {
+    const credentials = test.mocks.credentials();
+
+    const { body, status } = await getMe(
+      await extractBearerToken(signUp(credentials))
+    );
+
+    expect(status).toEqual(OK);
+    expect(body.email).toEqual(credentials.email);
+  });
+
+  it("Responds with FORBIDDEN if there is a token, but it's not properly formatted", async () => {
+    const { status } = await getMe("badly formatted token");
+    expect(status).toEqual(FORBIDDEN);
+  });
+
+  it("Responds with OK if user is logged in", async () => {
+    const token = await extractBearerToken(signUp());
+
+    const { status } = await getMe(token);
+    expect(status).toEqual(OK);
+  });
+});
+
+describe("PUT endpont for token refresh", () => {
+  const refreshToken = (oldToken: string) =>
+    supertest(app)
+      .put("/users/sessions")
+      .set("Authorization", "Bearer " + oldToken);
+
+  it("Responds with OK on valid request", async () => {
+    const token = await extractBearerToken(signUp());
+    const { status } = await refreshToken(token);
+
+    expect(status).toEqual(OK);
+  });
+
+  it("Responds with a different token on valid request", async () => {
+    const oldToken = await extractBearerToken(signUp());
+
+    await test.sleep(1200); //to update JWT `.iat`
+    const response = await refreshToken(oldToken);
+    const newToken = response.body.token;
+
+    expect(oldToken).toBeDefined();
+    expect(newToken).toBeDefined();
+    expect(oldToken).not.toEqual(newToken);
+  });
+});

@@ -20,22 +20,23 @@ const useUser = (token: string): models.User => {
   const router = useRouter();
 
   useEffect(() => {
-   (async () => {
+    (async () => {
+      if (!token) return setUser(null);
+      const [status, user] = await get<models.User>(
+        "/authentication/users/me/",
+        {
+          headers: {
+            authorization: "Bearer " + token,
+          },
+        }
+      );
 
-     if (!token) return setUser(null);
-     const [status, user] = await get<models.User>("/authentication/users/me/", {
-       headers: {
-         authorization: "Bearer " + token,
-       },
-     });
-   
-     setUser(status === OK ? user : null);
-     if (user) router.push("/home");
+      setUser(status === OK ? user : null);
+      if (user) router.push("/home");
+    })();
+  }, []);
 
-   })() 
-  }, []); 
-
-  return user; 
+  return user;
 };
 
 export const UserContextProvider = ({ children }: any) => {

@@ -32,8 +32,8 @@ services:
       - PGDATABASE=$PGDATABASE_API
       - PGUSER=$PGUSER_API
       - PGPASSWORD=$PGPASSWORD_API
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
+      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     working_dir: /paperpod
   authentication:
     build: .

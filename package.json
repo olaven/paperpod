@@ -19,6 +19,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "prettier --write \"./**/*.{ts,tsx,json}\"",
+      "post-commit": "git update-index -g"
     }
   },
   "dependencies": {

@@ -5,7 +5,7 @@ export const getByEmail = (email: string) =>
   first<models.User>("SELECT * FROM users WHERE email = $1", [email]);
 
 export const deleteUser = (id: string) =>
-  first<models.User>("SELECT * FROM users WHERE id = $1", [id]);
+  first<models.User>("DELETE FROM users WHERE id = $1", [id]);
 
 export const insert = (user: models.User) =>
   first<models.User>(
@@ -13,6 +13,7 @@ export const insert = (user: models.User) =>
       INSERT INTO 
       users (email, password_hash)
       VALUES ($1, $2)
+      RETURNING *; 
     `,
     [user.email, user.password_hash]
   );

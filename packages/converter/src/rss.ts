@@ -1,7 +1,6 @@
 import { serialize, tag } from "serialize-xml";
 import { models, constants } from "@paperpod/common";
 
-
 export const convertToRSSFeed = (articles: models.Article[]) =>
   serialize(
     tag(

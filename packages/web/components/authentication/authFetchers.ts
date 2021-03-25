@@ -8,10 +8,11 @@ export const signup = (credentials: models.UserCredentials) =>
     credentials
   );
 
-export const login = (credentials: models.UserCredentials) => post<
-        models.UserCredentials,
-        models.TokenResponse
-    >("/authentication/users/sessions", credentials);
+export const login = (credentials: models.UserCredentials) =>
+  post<models.UserCredentials, models.TokenResponse>(
+    "/authentication/users/sessions",
+    credentials
+  );
 
 export const logout = (token: string) =>
   del<models.TokenResponse>("/authentication/users/sessions", bearer(token));

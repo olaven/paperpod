@@ -16,5 +16,14 @@
     "server": "yarn workspace @paperpod/server",
     "extension": "yarn workspace @paperpod/extension",
     "ui": "yarn workspace @paperpod/ui"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "dependencies": {
+    "husky": "^5.2.0",
+    "pretty-quick": "^3.1.0"
   }
 }

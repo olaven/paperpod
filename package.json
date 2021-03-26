@@ -15,7 +15,8 @@
     "common": "yarn workspace @paperpod/common",
     "server": "yarn workspace @paperpod/server",
     "extension": "yarn workspace @paperpod/extension",
-    "ui": "yarn workspace @paperpod/ui"
+    "ui": "yarn workspace @paperpod/ui",
+    "prepare": "husky install"
   },
   "husky": {
     "hooks": {

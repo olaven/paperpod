@@ -22,8 +22,8 @@ const createProxy = (handler: express.Express) => (
     createProxyMiddleware({
       target,
       //Workaround while waiting for bugfix. See: https://github.com/chimurai/http-proxy-middleware/issues/320 and https://github.com/chimurai/http-proxy-middleware/pull/492
-      onProxyReq: (proxyReq, req, res) => {
-        if (!req.body || !Object.keys(req.body).length) {
+      onProxyReq: (proxyReq, request, response) => {
+        if (!request.body || !Object.keys(request.body).length) {
           return;
         }
 
@@ -34,11 +34,11 @@ const createProxy = (handler: express.Express) => (
         };
 
         if (contentType === "application/json") {
-          writeBody(JSON.stringify(req.body));
+          writeBody(JSON.stringify(request.body));
         }
 
         if (contentType === "application/x-www-form-urlencoded") {
-          writeBody(querystring.stringify(req.body));
+          writeBody(querystring.stringify(request.body));
         }
       },
     })

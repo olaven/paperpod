@@ -11,7 +11,7 @@
     "@aws-sdk/client-polly": "^3.3.0",
     "@aws-sdk/client-s3": "^3.3.0",
     "@paperpod/common": "0.0.1",
-    "node-kall": "^1.0.81",
+    "node-kall": "^1.0.83",
     "pdf-parse": "^1.1.1",
     "puppeteer": "^5.4.1",
     "serialize-xml": "^0.3.2",

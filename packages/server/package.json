@@ -13,7 +13,8 @@
     "faker": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
     "klart": "^0.1.4",
-    "mongodb": "^3.6.3"
+    "mongodb": "^3.6.3",
+    "node-kall": "^1.0.81"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

@@ -3,5 +3,8 @@
     "esModuleInterop": true,
     "outDir": "dist"
   },
-  "exclude": [".{1,}\\.test.(ts|js)"]
+  "exclude": [
+    ".{1,}\\.test.(ts|js)",
+    ".yarn",
+  ],
 }

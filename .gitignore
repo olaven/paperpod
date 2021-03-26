@@ -1,9 +1,4 @@
-.yarn/*
-!.yarn/cache
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
+
 .DS_Store
 **.mp3
 service-account.json

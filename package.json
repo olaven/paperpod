@@ -5,9 +5,8 @@
     "packages/*"
   ],
   "scripts": {
-    "all": "yarn workspaces foreach run",
-    "test": "yarn all test",
-    "build": "yarn all build",
+    "test": "yarn workspaces run test",
+    "build": "yarn workspaces run build",
     "api": "yarn workspace @paperpod/api",
     "web": "yarn workspace @paperpod/web",
     "authentication": "yarn workspace @paperpod/authentication",

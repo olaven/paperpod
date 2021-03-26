@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "main": "./src/index.ts",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "dependencies": {
     "faker": "^5.1.0"

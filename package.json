@@ -23,7 +23,9 @@
     }
   },
   "dependencies": {
-    "husky": "^5.2.0",
     "pretty-quick": "^3.1.0"
+  },
+  "devDependencies": {
+    "husky": "^5.2.0"
   }
 }

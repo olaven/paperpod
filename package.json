@@ -18,16 +18,9 @@
     "ui": "yarn workspace @paperpod/ui",
     "prepare": "husky install"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
-  "dependencies": {
-    "pretty-quick": "^3.1.0"
-  },
   "devDependencies": {
     "husky": "^5.2.0",
+    "pretty-quick": "^3.1.0",
     "prettier": "^2.2.1"
   }
 }

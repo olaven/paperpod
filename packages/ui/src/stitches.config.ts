@@ -32,5 +32,5 @@ export const { styled, css, getCssString } = createCss({
       seventynine: "79px",
       onehunderedandfourteen: "114px",
     },
-  }
+  },
 });

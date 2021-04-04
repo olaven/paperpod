@@ -5,9 +5,9 @@ export const shorthands: ColumnDefinitions | undefined = undefined;
 
 export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.sql(`
-        CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; 
+        create extension IF NOT EXISTS "uuid-ossp" SCHEMA "public";
         CREATE TABLE IF NOT EXISTS articles (
-            id uuid DEFAULT uuid_generate_v4() PRIMARY KEY, 
+            id uuid DEFAULT public.uuid_generate_v4() PRIMARY KEY, 
             owner_id uuid, 
             original_url varchar(500), 
             title varchar(200), 

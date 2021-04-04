@@ -9,7 +9,7 @@
     "test:debug": "node --inspect-brk jest --detectOpenHandles --forceExit --runInBand",
     "start": "ts-node ./src/index.ts",
     "migration": "node-pg-migrate --tsconfig ./tsconfig.json",
-    "migration:up": "yarn migration up",
+    "migration:up": "yarn migration up --create-schema --schema api",
     "migration:create": "yarn migration create"
   },
   "dependencies": {

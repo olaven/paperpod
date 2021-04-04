@@ -8,7 +8,7 @@
     "test": "jest --detectOpenHandles",
     "start": "ts-node ./src/index.ts",
     "migration": "node-pg-migrate --tsconfig ./tsconfig.json",
-    "migration:up": "yarn migration up",
+    "migration:up": "yarn migration up --create-schema --schema authentication",
     "migration:create": "yarn migration create"
   },
   "dependencies": {

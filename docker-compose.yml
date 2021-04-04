@@ -26,14 +26,15 @@ services:
     volumes:
       - .:/paperpod
     environment:
-      - PORT=$API_PORT
-      - JWT_SECRET=$JWT_SECRET
-      - PGHOST=database_api
-      - PGDATABASE=$PGDATABASE_API
-      - PGUSER=$PGUSER_API
-      - PGPASSWORD=$PGPASSWORD_API
-      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+      PORT: $API_PORT
+      JWT_SECRET: $JWT_SECRET
+      PGHOST: database
+      PGDATABASE: $PGDATABASE
+      PGOPTIONS: "-c search_path='api'"
+      PGUSER: $PGUSER
+      PGPASSWORD: $PGPASSWORD
+      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
     working_dir: /paperpod
   authentication:
     build: .
@@ -43,12 +44,13 @@ services:
     volumes:
       - .:/paperpod
     environment:
-      - PORT=$AUTHENTICATION_PORT
-      - JWT_SECRET=$JWT_SECRET
-      - PGHOST=database_authentication
-      - PGDATABASE=$PGDATABASE_AUTHENTICATION
-      - PGUSER=$PGUSER_AUTHENTICATION
-      - PGPASSWORD=$PGPASSWORD_AUTHENTICATION
+      PORT: $AUTHENTICATION_PORT
+      JWT_SECRET: $JWT_SECRET
+      PGHOST: database
+      PGOPTIONS: "-c search_path='authentication'"
+      PGDATABASE: $PGDATABASE
+      PGUSER: $PGUSER
+      PGPASSWORD: $PGPASSWORD
     working_dir: /paperpod
   web:
     build: .
@@ -59,18 +61,12 @@ services:
       - .:/paperpod
     working_dir: /paperpod
 
-  ## DATABASES
-
-  database_authentication:
-    image: postgres:11
+  database:
+    image: postgres:13
+    ports: 
+      - 5433:5432
     environment:
-      - POSTGRES_DB=$PGDATABASE_AUTHENTICATION
-      - POSTGRES_USER=$PGUSER_AUTHENTICATION
-      - POSTGRES_PASSWORD=$PGPASSWORD_AUTHENTICATION
+      - POSTGRES_DB=$PGDATABASE
+      - POSTGRES_USER=$PGUSER
+      - POSTGRES_PASSWORD=$PGPASSWORD
 
-  database_api:
-    image: postgres:11
-    environment:
-      - POSTGRES_DB=$PGDATABASE_API
-      - POSTGRES_USER=$PGUSER_API
-      - POSTGRES_PASSWORD=$PGPASSWORD_API

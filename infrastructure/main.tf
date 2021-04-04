@@ -21,5 +21,10 @@ terraform {
       source  = "hashicorp/github"
       version = "~> 4.4.0"
     }
+
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "1.22.2"
+    }
   }
 }

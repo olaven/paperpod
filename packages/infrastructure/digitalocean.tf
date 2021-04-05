@@ -8,16 +8,18 @@ provider "digitalocean" {
   token = var.do_token
 }
 
-/* variable "pvt_key" {
+variable "pvt_key" {
   type        = string
   description = "Private key for Digitalocean, getting SSH to work"
   sensitive   = true
-} */
+}
 
-# Making SSH available for the rest of the script 
-/* data "digitalocean_ssh_key" "terraform" {
-  name = "terraform"
-} */
+
+# Create a new SSH key
+resource "digitalocean_ssh_key" "default" {
+  name       = "Terraform SSH Key"
+  public_key = file("~/.ssh/id_rsa.pub")
+}
 
 # See https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean for more details on ssh in the future
 
@@ -35,10 +37,27 @@ resource "digitalocean_project_resources" "project-to-resource-mapping" {
   ]
 }
 resource "digitalocean_droplet" "manager-droplet" {
-  name   = "paperpod-manager"
-  image  = "docker-20-04"
-  size   = "s-1vcpu-1gb"
-  region = "ams3"
+  name     = "paperpod-manager"
+  image    = "docker-20-04"
+  size     = "s-1vcpu-1gb"
+  region   = "ams3"
+  ssh_keys = [digitalocean_ssh_key.default.fingerprint]
+
+  connection {
+    host        = self.ipv4_address
+    user        = "root"
+    type        = "ssh"
+    private_key = file("~/.ssh/id_rsa")
+    timeout     = "2m"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "export PATH=$PATH:/usr/bin",
+      "sudo apt-get update",
+      "echo test in digitalocean droplet",
+      "touch ~/some-file-from-terraform"
+    ]
+  }
 }
 
 resource "digitalocean_database_cluster" "database-cluster" {

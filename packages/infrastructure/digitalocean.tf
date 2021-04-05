@@ -47,6 +47,8 @@ resource "digitalocean_droplet" "manager-droplet" {
   region   = "ams3"
   ssh_keys = [digitalocean_ssh_key.default.fingerprint]
 
+  /* 
+  FIXME: ssh key file does not work in github actions
   connection {
     host        = self.ipv4_address
     user        = "root"
@@ -62,7 +64,7 @@ resource "digitalocean_droplet" "manager-droplet" {
       "echo test in digitalocean droplet",
       "touch ~/some-file-from-terraform"
     ]
-  }
+  } */
 }
 
 resource "digitalocean_database_cluster" "database-cluster" {

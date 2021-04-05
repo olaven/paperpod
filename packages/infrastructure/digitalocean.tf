@@ -8,12 +8,6 @@ provider "digitalocean" {
   token = var.do_token
 }
 
-variable "pvt_key" {
-  type        = string
-  description = "Private key for Digitalocean, getting SSH to work"
-  sensitive   = true
-}
-
 
 # Create a new SSH key
 resource "digitalocean_ssh_key" "default" {
@@ -34,8 +28,15 @@ resource "digitalocean_project_resources" "project-to-resource-mapping" {
   resources = [
     digitalocean_droplet.manager-droplet.urn,
     digitalocean_database_cluster.database-cluster.urn,
+    digitalocean_domain.default.urn,
   ]
 }
+
+resource "digitalocean_domain" "default" {
+  name       = "application.paperpod.fm"
+  ip_address = digitalocean_droplet.manager-droplet.ipv4_address
+}
+
 resource "digitalocean_droplet" "manager-droplet" {
   name     = "paperpod-manager"
   image    = "docker-20-04"

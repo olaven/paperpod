@@ -4,7 +4,8 @@
     "version": "0.0.1",
     "main": "./src/index.ts",
     "scripts": {
-        "terraform": "dotenv -e ../../.env terraform"
+        "terraform": "dotenv -e ../../.env terraform",
+        "terraform:assumeenv": "terraform"
     },
     "devDependencies": {
         "dotenv-cli": "^4.0.0"

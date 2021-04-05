@@ -19,8 +19,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: initializing Terraform
-        run: yarn infrastructure terraform init -no-color
+        run: yarn infrastructure terraform:assumeenv init -no-color
       - name: validating syntax
-        run: yarn infrastructure terraform validate -no-color
+        run: yarn infrastructure terraform:assumeenv validate -no-color
       - name: plan infrastructure changes
-        run: yarn infrastructure terraform plan -no-color
+        run: yarn infrastructure terraform:assumeenv plan -no-color

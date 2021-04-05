@@ -1,0 +1,12 @@
+{
+    "name": "@paperpod/infrastructure",
+    "license": "UNLICENSED",
+    "version": "0.0.1",
+    "main": "./src/index.ts",
+    "scripts": {
+        "terraform": "dotenv -e ../../.env terraform"
+    },
+    "devDependencies": {
+        "dotenv-cli": "^4.0.0"
+    }
+}

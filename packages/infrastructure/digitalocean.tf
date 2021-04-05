@@ -38,6 +38,9 @@ resource "digitalocean_domain" "default" {
 }
 
 resource "digitalocean_droplet" "manager-droplet" {
+  depends_on = [
+    digitalocean_ssh_key.default
+  ]
   name     = "paperpod-manager"
   image    = "docker-20-04"
   size     = "s-1vcpu-1gb"
@@ -77,5 +80,5 @@ resource "digitalocean_database_db" "database" {
 
 # see if you can access this outside, in github actions
 output "testoutput" {
-  value = digitalocean_database_cluster.private_uri
+  value = digitalocean_database_cluster.database-cluster.private_uri
 }

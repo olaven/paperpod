@@ -52,6 +52,7 @@ resource "digitalocean_droplet" "manager-droplet" {
   }
   provisioner "remote-exec" {
     inline = [
+      # TODO: use this to install nececarry dependencies etc. 
       "export PATH=$PATH:/usr/bin",
       "sudo apt-get update",
       "echo test in digitalocean droplet",

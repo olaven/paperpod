@@ -75,4 +75,7 @@ resource "digitalocean_database_db" "database" {
   cluster_id = digitalocean_database_cluster.database-cluster.id
 }
 
-
+# see if you can access this outside, in github actions
+output "testoutput" {
+  value = digitalocean_database_cluster.private_uri
+}

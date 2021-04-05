@@ -26,5 +26,5 @@ jobs:
         run: yarn infrastructure terraform:assumeenv apply -auto-approve -no-color
       - name: Call terraform output
         run: |
-          output=$(terraform output testoutput)
+          output=$(yarn infrastructure terraform output testoutput)
           echo $output

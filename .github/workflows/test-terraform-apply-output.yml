@@ -40,7 +40,7 @@ jobs:
     needs: [apply-infrastructure]
     steps: 
       - run: | 
-        echo "Got output from previous step, again gotten from terraform"
-        echo ${{ needs.apply-infrastructure.outputs.first_output}}
-        echo "Got output from previous step, hardcoded"
-        echo ${{ needs.apply-infrastructure.outputs.second_output}}
+          echo "Got output from previous step, again gotten from terraform"
+          echo ${{ needs.apply-infrastructure.outputs.first_output}}
+          echo "Got output from previous step, hardcoded"
+          echo ${{ needs.apply-infrastructure.outputs.second_output}}

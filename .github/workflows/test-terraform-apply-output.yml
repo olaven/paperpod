@@ -25,6 +25,21 @@ jobs:
       - name: Applying infrastructure
         run: yarn infrastructure terraform:assumeenv apply -auto-approve -no-color
       - name: Call terraform output
+        id: infrastructure-output
         run: |
-          output=$(yarn infrastructure terraform:assumeenv output testoutput)
-          echo $output
+          output_from_terraform=$(yarn infrastructure terraform:assumeenv output testoutput)
+          some_hardcoded_output="this is some hardcoded output created for test"
+          echo $output_from_terraform
+          echo $some_hardcoded_output
+          echo "::set-output name=first_output::$output_from_terraform"
+          echo "::set-output name=second_output::$some_hardcoded_output"
+    outputs:
+      first_output: ${{ steps.infrastructure-output.outputs.first_output }}
+      second_output: ${{ steps.infrastructure-output.outputs.second_output }}
+  nextjob: 
+    needs: [apply-infrastructure]
+    run: | 
+      echo "Got output from previous step, again gotten from terraform"
+      echo ${{ needs.apply-infrastructure.outputs.first_output}}
+      echo "Got output from previous step, hardcoded"
+      echo ${{ needs.apply-infrastructure.outputs.second_output}}

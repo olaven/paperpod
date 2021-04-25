@@ -61,7 +61,7 @@ describe("The api for articles", () => {
       const token = jwt.sign(test.mocks.user());
       const { body } = await post(token);
 
-      expect(body._id).toBeDefined();
+      expect(body.id).toBeDefined();
       expect(body.original_url).toBeDefined();
       expect(body.text).toBeDefined();
       expect(body.owner_id).toBeDefined();
@@ -134,7 +134,7 @@ describe("The api for articles", () => {
       const article = await articles.persist(test.mocks.article());
       const token = jwt.sign(test.mocks.user());
 
-      const { status } = await del(token, article._id);
+      const { status } = await del(token, article.id);
       expect(status).toEqual(FORBIDDEN);
     });
 
@@ -142,12 +142,12 @@ describe("The api for articles", () => {
       const user = test.mocks.user();
       const article = await articles.persist({
         ...test.mocks.article(),
-        owner_id: user._id,
+        owner_id: user.id,
       });
 
       const token = jwt.sign(user);
 
-      const { status } = await del(token, article._id);
+      const { status } = await del(token, article.id);
       expect(status).toEqual(NO_CONTENT);
     });
 
@@ -155,14 +155,14 @@ describe("The api for articles", () => {
       const user = test.mocks.user();
       const article = await articles.persist({
         ...test.mocks.article(),
-        owner_id: user._id,
+        owner_id: user.id,
       });
 
       const token = jwt.sign(user);
 
-      await del(token, article._id);
+      await del(token, article.id);
 
-      const after = await articles.getById(article._id);
+      const after = await articles.getById(article.id);
       expect(after).toEqual(null);
     });
   });

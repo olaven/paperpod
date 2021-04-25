@@ -5,6 +5,22 @@ on: [push]
 jobs:
   test-api:
     runs-on: ubuntu-latest
+    container: node:14
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: ci_user
+          POSTGRES_PASSWORD: ci_password
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -15,11 +31,31 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run tests
-        run: yarn api test
+        run: yarn api test:ci
         env:
           JWT_SECRET: The JWT secret in CI test environment for api tests
+          PGHOST: postgres
+          PGUSER: ci_user
+          PGPASSWORD: ci_password
+
   test-authentication:
     runs-on: ubuntu-latest
+    container: node:14
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: ci_user
+          POSTGRES_PASSWORD: ci_password
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -30,9 +66,12 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run tests
-        run: yarn authentication test
+        run: yarn authentication test:ci
         env:
           JWT_SECRET: The JWT secret in CI test environment for authentication tests
+          PGHOST: postgres
+          PGUSER: ci_user
+          PGPASSWORD: ci_password
   test-converter:
     runs-on: ubuntu-latest
     steps:

@@ -22,12 +22,12 @@ This will allow me to give you perks in return for your gratitude!
   - AUTHENTICATION_PORT=8081
   - WEB_PORT=3000
   - JWT_SECRET=some-long-secret-hush-now-please
-  - MONGODB_NAME=mongoname
-  - MONGODB_USERNAME=olaven
-  - MONGODB_PASSWORD=mongopassword
-  - MONGODB_PORT_AUTHENTICATION=5434
-  - MONGODB_PORT_API=5433
-  - MONGODB_PROTOCOL=mongodb
+  - PGDATABASE_API=some-database-name
+  - PGUSER_API=some-different-database-name
+  - PGPASSWORD_API=some-secret-password
+  - PGDATABASE_AUTHENTICATION=name-of-database
+  - PGUSER_AUTHENTICATION=some-username
+  - PGPASSWORD_AUTHENTICATION=some-password
   - AWS_ACCESS_KEY_ID
   - AWS_SECRET_ACCESS_KEY
 - `docker-compose up -d`

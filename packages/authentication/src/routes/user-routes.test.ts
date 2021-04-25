@@ -342,7 +342,7 @@ describe("GET endpoint for retrieving information about the logged in user", () 
     const { body } = await getMe(token).expect(OK);
 
     expect(body.email).toBeDefined();
-    expect(body._id).toBeDefined();
+    expect(body.id).toBeDefined();
   });
 
   it("Does not return the password hash to client", async () => {

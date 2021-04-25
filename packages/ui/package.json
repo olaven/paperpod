@@ -5,6 +5,15 @@
   "version": "0.0.1",
   "main": "./src/index.tsx",
   "dependencies": {
-    "@stitches/react": "0.1.0-canary.4"
+    "@stitches/react": "^0.1.4",
+    "react": "^17.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }

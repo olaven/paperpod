@@ -13,4 +13,15 @@ describe("The function for booting apps at specific paths", () => {
       boot("/path", app).close();
     }).not.toThrow();
   });
+
+  it("Does run for a while", () => {
+
+    expect(new Promise((resolve, reject) => {
+
+      const server = boot("/path", appWithEnvironment());
+      setTimeout(() => {
+        resolve(server.close())
+      }, 5_000); 
+    })).resolves.not.toThrow();
+  });
 });

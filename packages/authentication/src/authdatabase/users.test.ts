@@ -41,7 +41,7 @@ describe("The database interface for users", () => {
       const user = await insert(test.mocks.user());
 
       const before = await getByEmail(user.email);
-      await deleteUser(user._id);
+      await deleteUser(user.id);
       const after = await getByEmail(user.email);
 
       expect(before).toEqual(user);

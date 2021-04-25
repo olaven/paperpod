@@ -4,25 +4,29 @@
   "version": "0.0.1",
   "main": "./src/index.ts",
   "scripts": {
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "build": "tsc"
   },
   "dependencies": {
-    "@aws-sdk/client-comprehend": "^3.3.0",
-    "@aws-sdk/client-polly": "^3.3.0",
-    "@aws-sdk/client-s3": "^3.3.0",
+    "@aws-sdk/client-comprehend": "^3.9.0",
+    "@aws-sdk/client-polly": "^3.9.0",
+    "@aws-sdk/client-s3": "^3.9.0",
     "@paperpod/common": "0.0.1",
-    "node-kall": "^1.0.81",
+    "node-kall": "^1.0.83",
     "pdf-parse": "^1.1.1",
     "puppeteer": "^5.4.1",
     "serialize-xml": "^0.3.2",
     "unfluff": "^3.2.0"
   },
   "devDependencies": {
+    "@types/faker": "^5.1.7",
+    "@types/jest": "^26.0.22",
     "@types/node": "^14.14.14",
     "@types/node-fetch": "^2.5.8",
     "@types/pdf-parse": "^1.1.0",
-    "node-fetch": "^2.6.1",
+    "faker": "^5.5.0",
     "jest": "^26.6.3",
+    "node-fetch": "^2.6.1",
     "ts-jest": "^26.4.4",
     "typescript": "^4.1.3"
   }

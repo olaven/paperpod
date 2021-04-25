@@ -12,7 +12,7 @@
     "@paperpod/ui": "0.0.1",
     "next": "^9.4.0",
     "next-transpile-modules": "^6.0.0",
-    "node-kall": "^1.0.81",
+    "node-kall": "^1.0.83",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },

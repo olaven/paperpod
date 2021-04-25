@@ -34,10 +34,10 @@ export const articleRoutes = express
       const article = await database.articles.persist(
         await withStorageUri(
           await withTextualData({
-            _id: nanoid(),
+            id: null,
             original_url: link,
-            owner_id: user._id,
-            added_timestamp: Date.now(),
+            owner_id: user.id,
+            added_time: new Date(),
             storage_uri: null,
           })
         )
@@ -49,7 +49,7 @@ export const articleRoutes = express
   .get(
     "/articles",
     middleware.withAuthentication(async (request, response, user) => {
-      const articles = await database.articles.getByOwner(user._id);
+      const articles = await database.articles.getByOwner(user.id);
       response.status(OK).json(articles);
     })
   )
@@ -64,8 +64,7 @@ export const articleRoutes = express
 
       if (!article) return response.status(NOT_FOUND).end();
 
-      if (article.owner_id !== user._id)
-        return response.status(FORBIDDEN).end();
+      if (article.owner_id !== user.id) return response.status(FORBIDDEN).end();
 
       await database.articles.deleteById(id);
       return response.status(NO_CONTENT).end();

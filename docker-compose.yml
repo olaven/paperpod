@@ -26,16 +26,15 @@ services:
     volumes:
       - .:/paperpod
     environment:
-      - PORT=$API_PORT
-      - JWT_SECRET=$JWT_SECRET
-      - MONGODB_NAME=$MONGODB_NAME_API
-      - MONGODB_USERNAME=$MONGODB_USERNAME
-      - MONGODB_PASSWORD=$MONGODB_PASSWORD
-      - MONGODB_HOST=database_api
-      - MONGODB_PORT=MONGODB_PORT_API
-      - MONGODB_PROTOCOL=$MONGODB_PROTOCOL
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
+      PORT: $API_PORT
+      JWT_SECRET: $JWT_SECRET
+      PGHOST: database
+      PGDATABASE: $PGDATABASE
+      PGOPTIONS: "-c search_path='api'"
+      PGUSER: $PGUSER
+      PGPASSWORD: $PGPASSWORD
+      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
     working_dir: /paperpod
   authentication:
     build: .
@@ -45,14 +44,13 @@ services:
     volumes:
       - .:/paperpod
     environment:
-      - PORT=$AUTHENTICATION_PORT
-      - JWT_SECRET=$JWT_SECRET
-      - MONGODB_NAME=$MONGODB_NAME_AUTHENTICATION
-      - MONGODB_USERNAME=$MONGODB_USERNAME
-      - MONGODB_PASSWORD=$MONGODB_PASSWORD
-      - MONGODB_HOST=database_authentication
-      - MONGODB_PORT=$MONGODB_PORT_AUTHENTICATION
-      - MONGODB_PROTOCOL=$MONGODB_PROTOCOL
+      PORT: $AUTHENTICATION_PORT
+      JWT_SECRET: $JWT_SECRET
+      PGHOST: database
+      PGOPTIONS: "-c search_path='authentication'"
+      PGDATABASE: $PGDATABASE
+      PGUSER: $PGUSER
+      PGPASSWORD: $PGPASSWORD
     working_dir: /paperpod
   web:
     build: .
@@ -63,22 +61,12 @@ services:
       - .:/paperpod
     working_dir: /paperpod
 
-  ## DATABASES
-
-  database_authentication:
-    image: mongo:latest
+  database:
+    image: postgres:13
+    ports: 
+      - 5433:5432
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME
-      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
-      - MONGO_INITDB_USERNAME=$MONGODB_USERNAME
-      - MONGO_INITDB_PASSWORD=$MONGODB_PASSWORD
-      - MONGO_INITDB_DATABASE=$MONGODB_NAME_AUTHENTICATION
+      - POSTGRES_DB=$PGDATABASE
+      - POSTGRES_USER=$PGUSER
+      - POSTGRES_PASSWORD=$PGPASSWORD
 
-  database_api:
-    image: mongo:latest
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME
-      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
-      - MONGO_INITDB_USERNAME=$MONGODB_USERNAME
-      - MONGO_INITDB_PASSWORD=$MONGODB_PASSWORD
-      - MONGO_INITDB_DATABASE=$MONGODB_NAME_API

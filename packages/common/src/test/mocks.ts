@@ -3,7 +3,7 @@ import { models } from "..";
 
 //FIXME: separate test utils to separate package. This makes it possible to not include it (and its dependencies like faker) in production.
 export const user = (template: Partial<models.User> = {}): models.User => ({
-  _id: faker.random.uuid(),
+  id: faker.random.uuid(),
   email: faker.internet.email().toLowerCase(),
   password_hash: faker.random.alpha(),
   ...template,
@@ -20,15 +20,15 @@ export const credentials = (
 export const article = (
   template: Partial<models.Article> = {}
 ): models.Article => ({
-  _id: faker.random.uuid(),
+  id: faker.random.uuid(),
   title: `Article about ${faker.commerce.product()}`,
   description: faker.lorem.paragraph(),
   owner_id: faker.random.uuid(),
   author: `${faker.name.firstName()} ${faker.name.lastName()}`,
   text: faker.lorem.paragraphs(15),
   original_url: faker.internet.url(),
-  publication_timestamp: faker.date.past(3).getTime(),
-  added_timestamp: faker.date.recent(2).getTime(),
+  publication_time: faker.date.past(3),
+  added_time: faker.date.recent(2),
   storage_uri: faker.internet.url(),
   ...template,
 });
@@ -36,14 +36,14 @@ export const article = (
 export const articleWithoutTextualData = (
   template: Partial<models.ArticleWithoutTextualData> = {}
 ) => ({
-  _id: faker.random.uuid(),
+  id: faker.random.uuid(),
   owner_id: faker.random.uuid(),
   text: faker.lorem.paragraphs(),
   title: faker.lorem.sentence(),
   author: `${faker.name.firstName()} ${faker.name.lastName()}`,
   description: faker.lorem.paragraph(),
-  publication_timestamp: faker.date.past().getTime(),
-  added_timestamp: faker.date.recent().getTime(),
+  publication_time: faker.date.past(),
+  added_time: faker.date.recent(),
   original_url: faker.internet.url(),
   storage_uri: faker.internet.url(),
 });

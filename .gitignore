@@ -1,3 +1,4 @@
+
 .DS_Store
 **.mp3
 service-account.json
@@ -118,7 +119,13 @@ dist
 .vscode-test
 
 # End of https://www.toptal.com/developers/gitignore/api/node
-
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/terraform

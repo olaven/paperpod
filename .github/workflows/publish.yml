@@ -112,9 +112,6 @@ jobs:
           file: ./dockerfiles/Dockerfile.web
           push: true
           tags: olaven/paperpod-web:latest
-          # build-args: |
-          #   arg1=value1
-          #   arg2=value2
       - name: Image digest
         run: echo ${{ steps.docker_build_web.outputs.digest }}
     outputs:

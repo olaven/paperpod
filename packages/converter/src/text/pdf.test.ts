@@ -53,24 +53,27 @@ describe("Functions for converting pdf data to articles", () => {
     expect(article.title).toBeTruthy();
   });
 
-  it("Does return a timestamp", async () => {
+  it("Does return a time", async () => {
     const article = await convertSimplePDF();
 
-    expect(typeof article.publication_timestamp).toEqual("number");
-    expect(article.publication_timestamp).toBeTruthy();
+    expect(typeof article.publication_time).toEqual("object");
+    const timestamp = article.publication_time.getTime(); 
+    expect(typeof timestamp).toEqual("number");
+
+    expect(article.publication_time).toBeTruthy();
   });
 
-  it("Does return a timestamp with the correct year", async () => {
+  it("Does return a time with the correct year", async () => {
     //NOTE: This test assumes a specific sample-pdf;
     const article = await convertSimplePDF();
-    const year = new Date(article.publication_timestamp).getFullYear();
+    const year = article.publication_time.getFullYear();
     expect(year).toEqual(2000);
   });
 
-  it("Does return a timestamp with the correct month", async () => {
+  it("Does return a time with the correct month", async () => {
     //NOTE: This test assumes a specific sample-pdf;
     const article = await convertSimplePDF();
-    const month = new Date(article.publication_timestamp).getMonth();
+    const month = article.publication_time.getMonth();
     expect(month).toEqual(5);
   });
 

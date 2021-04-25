@@ -10,7 +10,7 @@ export const Feed = () => {
       <br />
       <button
         onClick={async () => {
-          const response = await fetch(`/api/feeds/${user._id}`);
+          const response = await fetch(`/api/feeds/${user.id}`);
           console.log(response.status);
           console.log(await response.text());
         }}
@@ -19,7 +19,7 @@ export const Feed = () => {
       </button>
       Din feed:{" "}
       <a>
-        {constants.APPLICATION_URL}/api/feeds/{user._id}
+        {constants.APPLICATION_URL}/api/feeds/{user.id}
       </a>
     </>
   );

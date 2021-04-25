@@ -31,12 +31,12 @@ export const getTextFromPdfStream = async (
   const { text } = data;
   const { Title, CreationDate, Author } = data.info;
 
-  const publication_timestamp = parseDate(CreationDate);
+  const publication_time = parseDate(CreationDate);
 
   return {
     ...article,
     text,
-    publication_timestamp,
+    publication_time,
     title: Title,
     author: Author,
     description: "",
@@ -66,5 +66,5 @@ export const parseDate = (date: string) => {
   const offset = date.substring(offsetPos).replace(/'/g, "");
   return new Date(
     `${year}-${month}-${day}T${hour}:${minute}:${second}${offset}`
-  ).getTime();
+  );
 };

@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "test": "yarn workspaces run test",
+    "build": "yarn workspaces run build",
     "api": "yarn workspace @paperpod/api",
     "web": "yarn workspace @paperpod/web",
     "authentication": "yarn workspace @paperpod/authentication",
@@ -14,16 +15,13 @@
     "common": "yarn workspace @paperpod/common",
     "server": "yarn workspace @paperpod/server",
     "extension": "yarn workspace @paperpod/extension",
-    "ui": "yarn workspace @paperpod/ui"
+    "ui": "yarn workspace @paperpod/ui",
+    "infrastructure": "yarn workspace @paperpod/infrastructure",
+    "prepare": "husky install"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "prettier --write ."
-    }
-  },
-  "dependencies": {
-    "@babel/runtime": "^7.12.5",
-    "husky": "^v1.0.0-rc.13",
-    "prettier": "2.2.1"
+  "devDependencies": {
+    "husky": "^5.2.0",
+    "pretty-quick": "^3.1.0",
+    "prettier": "^2.2.1"
   }
 }

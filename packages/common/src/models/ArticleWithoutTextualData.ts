@@ -1,7 +1,7 @@
 export type ArticleWithoutTextualData = {
   original_url: string;
-  _id: string;
+  id: string;
   owner_id: string;
-  added_timestamp: number;
+  added_time: Date;
   storage_uri: string;
 };

@@ -14,8 +14,8 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
             description varchar(1500),
             author varchar(400),
             text varchar(50000), 
-            publication_timestamp timestamptz, 
-            added_timestamp timestamptz, 
+            publication_time timestamptz, 
+            added_time timestamptz, 
             storage_uri varchar(200)
         ); 
     `);

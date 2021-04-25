@@ -42,8 +42,8 @@ export const articleWithoutTextualData = (
   title: faker.lorem.sentence(),
   author: `${faker.name.firstName()} ${faker.name.lastName()}`,
   description: faker.lorem.paragraph(),
-  publication_timestamp: faker.date.past(),
-  added_timestamp: faker.date.recent(),
+  publication_time: faker.date.past(),
+  added_time: faker.date.recent(),
   original_url: faker.internet.url(),
   storage_uri: faker.internet.url(),
 });

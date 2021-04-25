@@ -34,7 +34,7 @@ export const persist = (article: models.Article) =>
   first<models.Article>(
     `
       INSERT INTO
-      api.articles (owner_id, original_url, title, description, author, text, publication_timestamp, added_timestamp, storage_uri) 
+      api.articles (owner_id, original_url, title, description, author, text, publication_time, added_time, storage_uri) 
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
       RETURNING *
     `,

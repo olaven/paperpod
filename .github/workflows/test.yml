@@ -35,6 +35,7 @@ jobs:
         run: yarn api test
         env:
           JWT_SECRET: The JWT secret in CI test environment for api tests
+          PGHOST: postgres
           PGDATABASE: ci_database
           PGUSER: ci_user
           PGPASSWORD: ci_password

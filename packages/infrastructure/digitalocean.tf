@@ -32,6 +32,15 @@ resource "digitalocean_project_resources" "project-to-resource-mapping" {
   ]
 }
 
+resource "digitalocean_database_firewall" "droplet-to-database-firewall" {
+  cluster_id = digitalocean_database_cluster.database-cluster.id
+
+  rule {
+    type  = "droplet"
+    value = digitalocean_droplet.manager-droplet.id
+  }
+}
+
 resource "digitalocean_domain" "default" {
   name       = "application.paperpod.fm"
   ip_address = digitalocean_droplet.manager-droplet.ipv4_address
@@ -47,11 +56,11 @@ resource "digitalocean_droplet" "manager-droplet" {
   region = "ams3"
   //ssh_keys = [digitalocean_ssh_key.default.fingerprint]
 
-  /* 
-  FIXME: ssh key file does not work in github actions
-  connection {
+  
+/*   connection {
     host        = self.ipv4_address
-    user        = "root"
+    password    = "password" #FIXME: REPLACE WITH SECRET ENV VARIABLE
+    user        = "root" #FIXME: REPLACE WITH SECRET ENV VARIABLE
     type        = "ssh"
     private_key = file("~/.ssh/id_rsa")
     timeout     = "2m"
@@ -64,7 +73,7 @@ resource "digitalocean_droplet" "manager-droplet" {
       "echo test in digitalocean droplet",
       "touch ~/some-file-from-terraform"
     ]
-  } */
+  }  */
 }
 
 resource "digitalocean_database_cluster" "database-cluster" {
@@ -81,7 +90,17 @@ resource "digitalocean_database_db" "database" {
 }
 
 # see if you can access this outside, in github actions
-output "testoutput" {
+output "database_uri" {
   sensitive = true
   value = digitalocean_database_cluster.database-cluster.private_uri
 }
+
+output "droplet_hostname" {
+  sensitive  = true
+  value = digitalocean_droplet.manager-droplet.ipv4_address
+}
+
+/* output "droplet_username" {
+  sensitive = true
+  value = digitalocean_droplet.user
+} */

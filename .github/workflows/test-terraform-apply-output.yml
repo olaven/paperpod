@@ -27,7 +27,7 @@ jobs:
       - name: Call terraform output
         id: infrastructure-output
         run: |
-          output_from_terraform=$(yarn infrastructure terraform:assumeenv output testoutput)
+          output_from_terraform=$(yarn infrastructure terraform:assumeenv output database_uri)
           some_hardcoded_output="this is some hardcoded output created for test"
           echo $output_from_terraform
           echo $some_hardcoded_output

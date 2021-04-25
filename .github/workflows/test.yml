@@ -13,7 +13,6 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
-          POSTGRES_DATABASE: ci_database
           POSTGRES_USER: ci_user
           POSTGRES_PASSWORD: ci_password
         # Set health checks to wait until postgres has started
@@ -36,7 +35,6 @@ jobs:
         env:
           JWT_SECRET: The JWT secret in CI test environment for api tests
           PGHOST: postgres
-          PGDATABASE: ci_database
           PGUSER: ci_user
           PGPASSWORD: ci_password
 

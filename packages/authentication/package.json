@@ -6,6 +6,7 @@
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
     "test": "jest --detectOpenHandles",
+    "test:ci": "yarn migration:up && yarn test",
     "start": "ts-node ./src/index.ts",
     "migration": "node-pg-migrate --tsconfig ./tsconfig.json",
     "migration:up": "yarn migration up --create-schema --schema authentication",

@@ -64,8 +64,8 @@ describe("The mocks used when testing", () => {
       expect(article.description).toBeDefined();
       expect(article.author).toBeDefined();
       expect(article.text).toBeDefined();
-      expect(article.publication_timestamp).toBeDefined();
-      expect(article.added_timestamp).toBeDefined();
+      expect(article.publication_time).toBeDefined();
+      expect(article.added_time).toBeDefined();
       expect(article.storage_uri).toBeDefined();
     });
 

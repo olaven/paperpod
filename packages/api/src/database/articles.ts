@@ -35,7 +35,7 @@ export const persist = (article: models.Article) =>
     `
       INSERT INTO
       api.articles (owner_id, original_url, title, description, author, text, publication_timestamp, added_timestamp, storage_uri) 
-      VALUES ($1,$2,$3,$4,$5,$6,($7)::timestamptz,($8)::timestamptz,$9)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
       RETURNING *
     `,
     [
@@ -45,8 +45,8 @@ export const persist = (article: models.Article) =>
       article.description,
       article.author,
       article.text,
-      new Date(article.publication_timestamp),
-      new Date(article.added_timestamp),
+      article.publication_time,
+      article.added_time,
       article.storage_uri,
     ]
   );

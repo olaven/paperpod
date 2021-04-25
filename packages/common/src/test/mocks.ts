@@ -27,8 +27,8 @@ export const article = (
   author: `${faker.name.firstName()} ${faker.name.lastName()}`,
   text: faker.lorem.paragraphs(15),
   original_url: faker.internet.url(),
-  publication_timestamp: faker.date.past(3).getTime(),
-  added_timestamp: faker.date.recent(2).getTime(),
+  publication_time: faker.date.past(3),
+  added_time: faker.date.recent(2),
   storage_uri: faker.internet.url(),
   ...template,
 });
@@ -42,8 +42,8 @@ export const articleWithoutTextualData = (
   title: faker.lorem.sentence(),
   author: `${faker.name.firstName()} ${faker.name.lastName()}`,
   description: faker.lorem.paragraph(),
-  publication_timestamp: faker.date.past().getTime(),
-  added_timestamp: faker.date.recent().getTime(),
+  publication_timestamp: faker.date.past(),
+  added_timestamp: faker.date.recent(),
   original_url: faker.internet.url(),
   storage_uri: faker.internet.url(),
 });

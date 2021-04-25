@@ -48,7 +48,7 @@ describe("Conversion from articles to RSS", () => {
       ],
       ["description", (article) => article.description],
       ["guid", (article) => article.id],
-      ["pubDate", (article) => new Date(article.added_timestamp).toUTCString()],
+      ["pubDate", (article) => new Date(article.added_time).toUTCString()],
       ["author", (article) => article.author],
     ]);
 

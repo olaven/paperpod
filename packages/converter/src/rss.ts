@@ -36,7 +36,7 @@ export const toItemTag = (article: models.Article) =>
     tag("link", `${constants.APPLICATION_URL}/api/files/${article.id}`),
     tag("description", article.description || "TODO: default description"),
     tag("guid", `${article.id}`),
-    tag("pubDate", new Date(article.added_timestamp).toUTCString()), //compatible with RFC822
+    tag("pubDate", new Date(article.added_time).toUTCString()), //compatible with RFC822
     tag("author", article.author || "Unspecified Author"),
     tag("enclosure", "", [
       ["url", `${constants.APPLICATION_URL}/api/files/${article.id}`],

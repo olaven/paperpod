@@ -6,7 +6,7 @@ export interface Article {
   description: string;
   author: string;
   text: string;
-  publication_timestamp: number;
-  added_timestamp: number;
+  publication_time: Date;
+  added_time: Date;
   storage_uri: string;
 }

@@ -7,7 +7,7 @@ import { models } from "@paperpod/common";
  * @param extracted the extracted data object fom `unfluff.lazy(html)`
  */
 const date = (extracted: any) =>
-  extracted.date() ? new Date(extracted.date()).getTime() : undefined;
+  extracted.date() ? extracted.date() : undefined;
 
 export const extractTextFromWeb = async (
   article: models.ArticleWithoutTextualData
@@ -21,7 +21,8 @@ export const extractTextFromWeb = async (
     title: extracted.title(),
     author: extracted.author().join(", "),
     description: extracted.description(),
-    publication_timestamp: date(extracted),
+    publication_time: date(extracted),
+    added_time: new Date()
   };
 };
 

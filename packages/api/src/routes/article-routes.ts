@@ -37,7 +37,7 @@ export const articleRoutes = express
             id: null,
             original_url: link,
             owner_id: user.id,
-            added_timestamp: Date.now(),
+            added_time: new Date(),
             storage_uri: null,
           })
         )

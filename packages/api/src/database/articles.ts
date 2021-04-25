@@ -9,7 +9,7 @@ export const getByOwner = (owner_id: string) =>
 export const deleteById = (id) =>
   first<models.Article>(
     `
-      SELECT * FROM api.articles WHERE id = $1
+      DELETE FROM api.articles WHERE id = $1
       RETURNING *
     `,
     [id]

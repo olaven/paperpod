@@ -10,12 +10,12 @@ describe("The api route for streaming files", () => {
     supertest(app).get(`/files/${article_id}`);
 
   it("Does not respond with NOT_IMPLEMNTED", async () => {
-    const { status } = await get(faker.random.uuid());
+    const { status } = await get(faker.datatype.uuid());
     expect(status).not.toEqual(NOT_IMPLEMENTED);
   });
 
   it("Does respond with 404 if the article does not exist", async () => {
-    const id = faker.random.uuid();
+    const id = faker.datatype.uuid();
 
     const article = await articles.getById(id);
     const { status } = await get(id);

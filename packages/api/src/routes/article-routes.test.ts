@@ -125,7 +125,7 @@ describe("The api for articles", () => {
 
     it("Responds with NOT_FOUND if the article does not exist", async () => {
       const token = jwt.sign(test.mocks.user());
-      const { status } = await del(token, faker.random.uuid());
+      const { status } = await del(token, faker.datatype.uuid());
 
       expect(status).toEqual(NOT_FOUND);
     });

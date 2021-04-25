@@ -4,6 +4,9 @@
   "license": "UNLICENSED",
   "version": "0.0.1",
   "main": "./src/index.tsx",
+  "scripts": {
+    "build": "echo 'no build script for ui :-)'"
+  },
   "dependencies": {
     "@stitches/react": "^0.1.4",
     "react": "^17.0.2"

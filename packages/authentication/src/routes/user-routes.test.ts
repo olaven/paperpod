@@ -44,7 +44,7 @@ describe("The authentication endpoint for users", () => {
       });
 
       it("Does returns the correct token", async () => {
-        const sentToken = faker.random.uuid();
+        const sentToken = faker.datatype.uuid();
         const app = express().get("/", (request, response) => {
           response.json({
             token: sentToken,

@@ -80,7 +80,7 @@ describe("Authentication verifying that caller is authenticated", () => {
 
     it("Extract the correct token value", () => {
 
-      const token = faker.random.uuid(); 
+      const token = faker.datatype.uuid(); 
       //@ts-expect-error
       const extracted = getBearerToken({
         headers: {

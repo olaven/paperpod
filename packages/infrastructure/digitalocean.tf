@@ -82,5 +82,6 @@ resource "digitalocean_database_db" "database" {
 
 # see if you can access this outside, in github actions
 output "testoutput" {
+  sensitive = true
   value = digitalocean_database_cluster.database-cluster.private_uri
 }

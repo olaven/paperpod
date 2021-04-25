@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - feature/move_to_postgres
+      - feature/ADD_THE_TEST_BRACH_THIS_WILL_PUBLIS_CHANGES_TO_CI
 
 jobs:
   apply-infrastructure:

@@ -6,7 +6,7 @@ export const getByOwner = (owner_id: string) =>
     owner_id,
   ]);
 
-export const deleteById = (id) =>
+export const deleteById = (id: string) =>
   first<models.Article>(
     `
       DELETE FROM api.articles WHERE id = $1

@@ -3,8 +3,14 @@ import { models } from "@paperpod/common";
 import { UNAUTHORIZED, FORBIDDEN } from "node-kall";
 import * as jwt from "../jwt/jwt";
 
-const getBearerToken = (request: express.Request) =>
-  request.headers.authorization?.replace("Bearer ", "");
+//NOTE: only exported for tests
+export const getBearerToken = (request: express.Request) =>{
+
+  const {authorization} = request.headers; 
+  return authorization? 
+    authorization.replace("Bearer ", ""): 
+    null; 
+}
 
 export const withAuthentication = (
   handler: (
@@ -20,9 +26,8 @@ export const withAuthentication = (
   try {
     const user = jwt.decode<models.User>(token);
 
-    if (!user) return response.status(FORBIDDEN).end();
-
-    //TODO: some user data validation. Does it look like a user?
+    //NOTE: basic user validation
+    if (!user || !user.id || !user.email || !user.password_hash) return response.status(FORBIDDEN).end();
 
     handler(request, response, user);
   } catch (error) {

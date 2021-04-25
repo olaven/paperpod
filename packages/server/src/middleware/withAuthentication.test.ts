@@ -1,15 +1,17 @@
-import { sign } from "../jwt/jwt";
+import { sign, decode } from "../jwt/jwt";
 import faker from "faker";
 import { models } from "@paperpod/common";
-import { withAuthentication } from "./withAuthentication";
+import { FORBIDDEN } from "kall";
+import express from "express";
+import { withAuthentication, getBearerToken } from "./withAuthentication";
 import { mocks } from "@paperpod/common/src/test/test";
 
-describe("Authetnication verifying that caller is authenticated", () => {
+describe("Authentication verifying that caller is authenticated", () => {
   const useWithToken = (
     token: string,
     handler: (
-      request: Express.Request,
-      response: Express.Response,
+      request: express.Request,
+      response: express.Response,
       user: models.User
     ) => void
   ) =>
@@ -62,5 +64,43 @@ describe("Authetnication verifying that caller is authenticated", () => {
     });
 
     expect(spy).not.toHaveBeenCalled();
+  });
+
+  it("returns FORBIDDEN if there's no user", () => {
+
+    const token = sign({})
+    
+    useWithToken(token, (request, response, user) => {
+      expect(user).toBeNull(); 
+      expect(response.statusCode).toEqual(FORBIDDEN); 
+    })
+  })
+
+  describe("Extraction of bearer token from a request", () => {
+
+    it("Extract the correct token value", () => {
+
+      const token = faker.random.uuid(); 
+      //@ts-expect-error
+      const extracted = getBearerToken({
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      }); 
+
+      expect(extracted).toEqual(token); 
+    });
+
+    it("Returns null if there's not auth header", () => {
+
+      //@ts-expect-error
+      const extracted = getBearerToken({
+        headers: {
+          authorization: undefined
+        }
+      }); 
+
+      expect(extracted).toBeNull(); 
+    });
   });
 });

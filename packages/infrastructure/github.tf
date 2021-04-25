@@ -8,5 +8,21 @@ provider "github" {
   token = var.github_api_token
 }
 
-#NOTE: Github config is removed while waiting for https://github.com/integrations/terraform-provider-github/issues/647 
-# Tracking in 
+resource "github_repository" "terraform" {
+  name = "paperpod"
+  visibility = "public"
+  description = "https://paperpod.fm"
+  homepage_url  = "https://paperpod.fm" 
+  has_downloads = true 
+  has_issues = true 
+  has_projects  = true 
+  has_wiki = true 
+  vulnerability_alerts  = true 
+  pages { 
+      cname      = "paperpod.fm" 
+      source {
+          branch = "main" 
+          path   = "/docs" 
+            }
+        }
+}

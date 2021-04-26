@@ -1,31 +1,48 @@
-import { useContext } from "react";
-import { Articles } from "../components/articles/Articles";
-import {
-  UserContext,
-  Signup,
-  Login,
-  Logout,
-} from "../components/authentication/authentication";
-import { Feed } from "../components/feed/Feed";
+import { Paragraph, Button, A, styled } from "@paperpod/ui";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../components/authentication/UserContext";
+
+const Container = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+});
 
 const Index = () => {
-
   const { user } = useContext(UserContext);
+  const router = useRouter();
+  useEffect(() => {
+    if (user) {
+      router.push("/home");
+    }
+  }, [user]);
 
   return (
-    <>
-      {!user && <Signup />
-      }
-      <br />
-      { !user && <Login />}
+    <Container>
+      <Paragraph size="larger">
+        - Turn any article or PDF file on the web into spoken audio. <br />
+        - Save from your web browser or phone. <br />
+        - Listen to them in the podcast player you already use. <br />
+      </Paragraph>
 
-      { user && <Logout />}
-      { user && <>logged in as {user.email}</>}
+      <Paragraph>Sounds nice? {`<(^_^)>`}</Paragraph>
 
-      { user && <Articles />}
+      <Button>
+        <Link href="/signup">
+          <A>Signup</A>
+        </Link>
+      </Button>
 
-      { user && <Feed />}
-    </>
+      <Paragraph>Already signed up?</Paragraph>
+      <Button>
+        <Link href="/login">
+          <A>Login</A>
+        </Link>
+      </Button>
+    </Container>
   );
 };
+
 export default Index;

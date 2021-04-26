@@ -1,44 +1,52 @@
+import { first, rows } from "klart";
 import { models } from "@paperpod/common";
-import { database } from "@paperpod/server";
-
-const withArticles = database.withCollection<models.Article>("articles");
 
 export const getByOwner = (owner_id: string) =>
-    withArticles<models.Article[]>(collection =>
-        collection.find(
-            { owner_id }
-        ).toArray()
-    )
+  rows<models.Article>("SELECT * FROM api.articles WHERE owner_id = $1", [
+    owner_id,
+  ]);
 
-export const deleteById = (_id: string) =>
-    withArticles<any>(collection =>
-        collection.deleteOne({
-            _id
-        })
-    );
+export const deleteById = (id: string) =>
+  first<models.Article>(
+    `
+      DELETE FROM api.articles WHERE id = $1
+      RETURNING *
+    `,
+    [id]
+  );
 
-/* export const getById = (_id: string) =>
-    withArticles(collection =>
-        collection.findOne({
-            _id
-        })
-    );
- */
-export const getById = (_id: string) =>
-    withArticles(
-        database.getByIdHandler(_id)
-    )
+export const getById = (id: string) =>
+  first<models.Article>(`SELECT * FROM api.articles where id = $1`, [id]);
 
-export const getByOriginalUrlAndOwner = (original_url: string, owner_id: string) =>
-    withArticles(collection =>
-        collection.findOne({
-            original_url,
-            owner_id
-        })
-    );
-
+export const getByOriginalUrlAndOwner = (
+  original_url: string,
+  owner_id: string
+) =>
+  rows(
+    `
+      SELECT * FROM api.articles 
+      WHERE original_url = $1 and owner_id = 2
+    `,
+    [original_url, owner_id]
+  );
 
 export const persist = (article: models.Article) =>
-    withArticles(
-        database.persistHandler(article)
-    );
+  first<models.Article>(
+    `
+      INSERT INTO
+      api.articles (owner_id, original_url, title, description, author, text, publication_time, added_time, storage_uri) 
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+      RETURNING *
+    `,
+    [
+      article.owner_id,
+      article.original_url,
+      article.title,
+      article.description,
+      article.author,
+      article.text,
+      article.publication_time,
+      article.added_time,
+      article.storage_uri,
+    ]
+  );

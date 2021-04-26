@@ -1,10 +1,22 @@
 {
-    "private": true,
-    "name": "@paperpod/ui",
-    "license": "UNLICENSED",
-    "version": "0.0.1",
-    "main": "./src/index.tsx",
-    "dependencies": {
-        "@stitches/react": "0.1.0-canary.4"
+  "private": true,
+  "name": "@paperpod/ui",
+  "license": "UNLICENSED",
+  "version": "0.0.1",
+  "main": "./src/index.tsx",
+  "scripts": {
+    "build": "echo 'no build script for ui :-)'"
+  },
+  "dependencies": {
+    "@stitches/react": "^0.1.4",
+    "react": "^17.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
 }

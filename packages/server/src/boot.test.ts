@@ -1,21 +1,27 @@
 import { appWithEnvironment } from "./app/app";
 import { boot } from "./boot";
 describe("The function for booting apps at specific paths", () => {
+  it("Does not crash", () => {
+    expect(() => {
+      boot("/path").close();
+    }).not.toThrow();
+  });
 
-    it("Does not crash", () => {
+  it("Does accept a preconfigured app", () => {
+    expect(() => {
+      const app = appWithEnvironment();
+      boot("/path", app).close();
+    }).not.toThrow();
+  });
 
-        expect(() => {
+  it("Does run for a while", () => {
 
-            boot("/path").close()
-        }).not.toThrow();
-    });
+    expect(new Promise((resolve, reject) => {
 
-    it("Does accept a preconfigured app", () => {
-
-        expect(() => {
-
-            const app = appWithEnvironment();
-            boot("/path", app).close();
-        }).not.toThrow();
-    });
+      const server = boot("/path", appWithEnvironment());
+      setTimeout(() => {
+        resolve(server.close())
+      }, 5_000); 
+    })).resolves.not.toThrow();
+  });
 });

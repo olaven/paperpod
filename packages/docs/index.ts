@@ -1,20 +1,16 @@
+import path from "path";
 import redoc from "redoc-express"; 
 import * as server from "@paperpod/server";
 
 const app = server.app
     .appWithEnvironment()
-    .use((request, response, next) => {
-        console.log("Geting here updated", request.url); 
-        next(); 
-    })
-    .get("api", (request ,response) => {
+    .get("/openapi.yml", (request ,response) => {
 
-        response.sendFile("openapi.yml", { root: "." })
+        response.sendFile(path.resolve("src", "openapi.yml"))
     })
     .get("/", redoc({
-        title: "something", 
-        specUrl: "api"
+        title: "Documentation - Paperpod", 
+        specUrl: "docs/openapi.yml" // as this gets called from outside the docker container, `/docs`-prefix is nececary 
     }));
 
-process.env.PORT = "8088";
 server.boot("/docs", app);

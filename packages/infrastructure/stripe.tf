@@ -41,7 +41,7 @@ resource "stripe_plan" "product_plan" {
  */
 resource "stripe_coupon" "test_user_coupon" {
   code               = var.test_user_coupon_code
-  name               = "King Sales Event"
+  name               = "Test User Access"
   duration           = "repeating"
   duration_in_months = 1
   amount_off         = 8

@@ -1,23 +1,19 @@
+import { first } from "klart";
 import { models } from "@paperpod/common";
-import { database } from "@paperpod/server";
-
-const withUsers = database.withCollection<models.User>("users");
 
 export const getByEmail = (email: string) =>
-    withUsers(collection =>
-        collection.findOne({
-            email
-        })
-    );
+  first<models.User>("SELECT * FROM authentication.users WHERE email = $1", [email]);
 
-export const deleteUser = (_id: string) =>
-    withUsers(collection =>
-        collection.deleteOne({
-            _id
-        })
-    );
+export const deleteUser = (id: string) =>
+  first<models.User>("DELETE FROM authentication.users WHERE id = $1", [id]);
 
 export const insert = (user: models.User) =>
-    withUsers(
-        database.persistHandler(user)
-    );
+  first<models.User>(
+    `
+      INSERT INTO 
+      authentication.users (email, password_hash)
+      VALUES ($1, $2)
+      RETURNING *; 
+    `,
+    [user.email, user.password_hash]
+  );

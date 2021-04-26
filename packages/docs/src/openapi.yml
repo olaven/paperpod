@@ -6,10 +6,69 @@ info:
 servers:
   - url: https://application.paperpod.fm
     description: Production server for Paperpod
+components:
+  securitySchemes:
+    JWT:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
 paths:
-  /api: 
-    $ref: "./api/api.yml"
+  /api/articles: 
+    post: 
+      security:
+        - JWT: [] 
+      summary: Store Article
+      description: Stores a new article to Paperpod
+      requestBody: 
+        description: Payload with article data
+        content: 
+          'application/json':
+              schema:
+                type: object
+                required:
+                - link
+                properties:
+                  link:
+                    type: string
+                    description: The URL of the article
+                    format: uri
+      responses: 
+        201: 
+          description: Article added successfully
+        400: 
+          description: the link was not a valid URL
+      
+    get: 
+      security:
+        - JWT: [] 
+      summary: List Articles
+      description: Get all articles added by the authenticated user
+      responses: 
+        200: 
+          description: A list of articles
+          content:
+            application/json:
+              schema:
+  /api/articles/{id}:
+    delete: 
+      security:
+        - JWT: [] 
+      summary: Delete Article
+      description: TODO
+  /api/feeds/{user_id}:
+    get: 
+      summary: RSS Feed 
+      description: Get the RSS Feed for a user
+      parameters:
+      - name: user_id
+        in: path
+        description: ID of user 
+        required: true
+        schema:
+          type: string
+        style: simple
+
   /authentication: 
-    $ref: "./authentication/authentication.yml"
+    $ref: "authentication.yml"
 
     

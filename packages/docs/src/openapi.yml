@@ -49,16 +49,82 @@ paths:
           content:
             application/json:
               schema:
+                type: array
+                items: 
+                  type: object 
+                  properties: 
+                    id: 
+                      type: string 
+                      format: uuid
+                    owner_id: 
+                      type: string 
+                      format: uuid 
+                    title: 
+                      type: string 
+                      maxLength: 200 
+                      description: the title/header of article
+                    author: 
+                      type: string 
+                      maxLength: 400
+                      description: display name of author 
+                    text: 
+                      type: string 
+                      maxLength: 5000
+                      description: textual content of article 
+                    publication_time: 
+                      type: string
+                      format: date
+                      description: when the article appears to have been published
+                    added_time: 
+                      type: string 
+                      format: date
+                      description: when the article was added to Paperpod
+                    storage_uri:
+                      type: string 
+                      format: uri
+                      maxLength: 500
+                      description: Where the article is stored
+
+
   /api/articles/{id}:
     delete: 
+      parameters:
+      - name: id
+        in: path
+        description: ID of article 
+        required: true
+        schema:
+          type: string
+        style: simple
       security:
         - JWT: [] 
       summary: Delete Article
-      description: TODO
+      description: Permanently deletes the specified article 
+      responses: 
+        204: 
+          description: Successful delete operation 
+        400: 
+          description: Malformed request. The id was probably not defined.
+        403: 
+          description: Authenticated user is not the owner of the article.
+        404: 
+          description: Article does not exist in Paperpod
   /api/feeds/{user_id}:
     get: 
       summary: RSS Feed 
       description: Get the RSS Feed for a user
+      responses: 
+        403:
+          description: user_id not specified 
+        200: 
+          description: successfull request
+          content: 
+            application/rss+xml: 
+              schema: 
+                type: string
+                format: xml 
+                description: Content of the RSS feed
+
       parameters:
       - name: user_id
         in: path

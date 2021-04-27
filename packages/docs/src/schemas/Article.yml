@@ -1,0 +1,33 @@
+type: object 
+properties: 
+  id: 
+    type: string 
+    format: uuid
+  owner_id: 
+    type: string 
+    format: uuid 
+  title: 
+    type: string 
+    maxLength: 200 
+    description: the title/header of article
+  author: 
+    type: string 
+    maxLength: 400
+    description: display name of author 
+  text: 
+    type: string 
+    maxLength: 5000
+    description: textual content of article 
+  publication_time: 
+    type: string
+    format: date
+    description: when the article appears to have been published
+  added_time: 
+    type: string 
+    format: date
+    description: when the article was added to Paperpod
+  storage_uri:
+    type: string 
+    format: uri
+    maxLength: 500
+    description: Where the article is stored

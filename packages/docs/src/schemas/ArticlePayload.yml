@@ -1,0 +1,7 @@
+type: object 
+required:
+  - link
+properties:
+  link: 
+    type: string 
+    format: uri 

@@ -20,50 +20,6 @@ components:
       schema:
         type: string
       style: simple
-  schemas:
-    ArticlePayload: 
-      type: object 
-      required:
-        - link
-      properties:
-        link: 
-          type: string 
-          format: uri 
-
-    Article: 
-      type: object 
-      properties: 
-        id: 
-          type: string 
-          format: uuid
-        owner_id: 
-          type: string 
-          format: uuid 
-        title: 
-          type: string 
-          maxLength: 200 
-          description: the title/header of article
-        author: 
-          type: string 
-          maxLength: 400
-          description: display name of author 
-        text: 
-          type: string 
-          maxLength: 5000
-          description: textual content of article 
-        publication_time: 
-          type: string
-          format: date
-          description: when the article appears to have been published
-        added_time: 
-          type: string 
-          format: date
-          description: when the article was added to Paperpod
-        storage_uri:
-          type: string 
-          format: uri
-          maxLength: 500
-          description: Where the article is stored
 
 paths:
   /api/articles: 
@@ -77,7 +33,7 @@ paths:
         content: 
           'application/json':
               schema:
-                $ref: '#/components/schemas/ArticlePayload'
+                $ref: './schemas/ArticlePayload.yml'
       responses: 
         201: 
           description: Article added successfully
@@ -97,7 +53,7 @@ paths:
               schema:
                 type: array
                 items: 
-                  $ref: '#/components/schemas/Article'
+                  $ref: 'schemas/Article.yml'
 
 
   /api/articles/{id}:

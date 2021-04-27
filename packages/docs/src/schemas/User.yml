@@ -1,0 +1,14 @@
+type: object 
+required:
+  - id
+  - email 
+properties:
+  id: 
+    type: string 
+    format: uuid 
+  email: 
+    type: string 
+    format: uuid 
+  password_hash: 
+    type: string 
+    description: always undefined.

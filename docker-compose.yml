@@ -13,6 +13,7 @@ services:
       - PORT=$GATEWAY_PORT
       - GATEWAY_HTTP_PORT=$GATEWAY_HTTP_PORT
       - WEB_PORT=$WEB_PORT
+      - DOCS_PORT=$DOCS_PORT
       - API_PORT=$API_PORT
       - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
     working_dir: /paperpod
@@ -59,6 +60,17 @@ services:
     command: yarn web dev
     volumes:
       - .:/paperpod
+    working_dir: /paperpod
+
+  docs: 
+    build: . 
+    env_file: 
+      - .env 
+    command: yarn docs dev 
+    volumes:
+      - .:/paperpod
+    environment: 
+      - PORT=$DOCS_PORT
     working_dir: /paperpod
 
   database:

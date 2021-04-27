@@ -1,0 +1,192 @@
+openapi: 3.0.0
+info:
+  title: Paperpod API
+  description: API for interacting with Paperpod 
+  version: 0.0.1
+servers:
+  - url: https://application.paperpod.fm
+    description: Production server for Paperpod
+components:
+  securitySchemes:
+    JWT:             # TODO: Associate standard 401/403
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+  parameters:
+    uuid: 
+      name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+      style: simple
+
+paths:
+  /api/articles: 
+    post: 
+      security:
+        - JWT: [] 
+      summary: Store Article
+      description: Stores a new article to Paperpod
+      requestBody: 
+        description: Payload with article data
+        content: 
+          'application/json':
+              schema:
+                $ref: './schemas/ArticlePayload.yml'
+      responses: 
+        201: 
+          description: Article added successfully
+        400: 
+          description: the link was not a valid URL
+      
+    get: 
+      security:
+        - JWT: [] 
+      summary: List Articles
+      description: Get all articles added by the authenticated user
+      responses: 
+        200: 
+          description: A list of articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: 'schemas/Article.yml'
+
+
+  /api/articles/{id}:
+    delete: 
+      parameters:
+        - name: id
+          $ref: '#/components/parameters/uuid'
+          description: ID of article
+      security:
+        - JWT: [] 
+      summary: Delete Article
+      description: Permanently deletes the specified article 
+      responses: 
+        204: 
+          description: Successful delete operation 
+        400: 
+          description: Malformed request. The id was probably not defined.
+        403: 
+          description: Authenticated user is not the owner of the article.
+        404: 
+          description: Article does not exist in Paperpod
+  /api/feeds/{user_id}:
+    get: 
+      security:
+          - JWT: [] 
+      summary: RSS Feed 
+      description: Get the RSS Feed for a user
+      responses: 
+        403:
+          description: user_id not specified 
+        200: 
+          description: successfull request
+          content: 
+            application/rss+xml: 
+              schema: 
+                type: string
+                format: xml 
+                description: Content of the RSS feed
+      parameters:
+        - name: user_id
+          $ref: '#/components/parameters/uuid'
+          description: ID of user
+          
+  /api/files/{article_id}:  
+    get:
+      security:
+        - JWT: [] 
+      summary: Get audio file  
+      parameters:
+        - name: id
+          $ref: '#/components/parameters/uuid'
+          description: ID of article
+      responses:
+        200: 
+          description: Data stream with audio data
+        404: 
+          description: The article could not be found 
+
+
+  /authentication/users/sessions: 
+    post: 
+      security:
+          - JWT: [] 
+      summary: Login
+      requestBody: 
+        content: 
+            'application/json':
+                schema:
+                  $ref: './schemas/UserCredentials.yml'
+      responses:
+        201: 
+          description: Created a new user session 
+          content:
+            application/json:
+              schema: 
+                schema: 
+                $ref: './schemas/Token.yml'
+        403: 
+          description: Credentials are invalid.
+    delete: 
+      security:
+        - JWT: [] 
+      description: Logout 
+      responses: 
+        201: 
+          description: Session destroyed 
+
+
+    put: 
+      security:
+        - JWT: [] 
+      description: Refresh token
+      responses:
+        200: 
+          description: Successful refresh of token 
+          content: 
+            application/json: 
+              schema: 
+                $ref: './schemas/Token.yml'
+                
+
+  /authentication/users:
+    post: 
+      security:
+        - JWT: [] 
+      description: Signup
+      requestBody: 
+        content:
+          application/json: 
+            schema: 
+              $ref: './schemas/UserCredentials.yml'
+      responses:
+        201: 
+          description: successfully created new user 
+          $ref: './schemas/Token.yml'
+        400: 
+          description: Invalid credentials
+        409: 
+          description: User with this email already exists. 
+  /authentication/users/me: 
+    get: 
+      security:
+        - JWT: [] 
+      description: Get user info
+      responses:
+        200: 
+          description: Successfully retrieved user information
+          content:
+            application/json: 
+              schema: 
+                $ref: './schemas/User.yml'
+
+
+
+
+    

@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState, ReactChild } from "react";
 import { models } from "@paperpod/common";
 import { get, OK } from "node-kall";
-import { asyncEffect } from "@paperpod/ui";
 import { refreshToken } from "./authFetchers";
 import { useRouter } from "next/router";
 
@@ -16,6 +15,7 @@ export const UserContext = createContext<{
 });
 
 const useUser = (token: string): models.User => {
+
   const [user, setUser] = useState<models.User>(null);
   const router = useRouter();
 

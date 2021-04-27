@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "main": "./src/index.ts",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --testTimeout 45000",
     "build": "tsc"
   },
   "dependencies": {

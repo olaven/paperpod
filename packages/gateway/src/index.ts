@@ -12,6 +12,7 @@ export const app = withProxies(
       "authentication",
       process.env.AUTHENTICATION_PORT
     ),
+    mapping("/docs", "docs", process.env.DOCS_PORT),
     mapping("/", "web", process.env.WEB_PORT),
   ],
   server.app.appWithEnvironment()

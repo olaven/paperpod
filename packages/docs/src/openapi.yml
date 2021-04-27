@@ -12,6 +12,14 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT 
+  parameters:
+    uuid: 
+      name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+      style: simple
   schemas:
     ArticlePayload: 
       type: object 
@@ -95,13 +103,9 @@ paths:
   /api/articles/{id}:
     delete: 
       parameters:
-      - name: id
-        in: path
-        description: ID of article 
-        required: true
-        schema:
-          type: string
-        style: simple
+        - name: id
+          $ref: '#/components/parameters/uuid'
+          description: ID of article
       security:
         - JWT: [] 
       summary: Delete Article
@@ -130,15 +134,24 @@ paths:
                 type: string
                 format: xml 
                 description: Content of the RSS feed
-
       parameters:
-      - name: user_id
-        in: path
-        description: ID of user 
-        required: true
-        schema:
-          type: string
-        style: simple
+        - name: user_id
+          $ref: '#/components/parameters/uuid'
+          description: ID of user
+          
+  /api/files/{article_id}:  
+    get:
+      summary: Get audio file  
+      parameters:
+        - name: id
+          $ref: '#/components/parameters/uuid'
+          description: ID of article
+      responses:
+        200: 
+          description: Data stream with audio data
+        404: 
+          description: The article could not be found 
+
 
   /authentication: 
     $ref: "authentication.yml"

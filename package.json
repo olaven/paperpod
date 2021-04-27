@@ -17,8 +17,7 @@
     "extension": "yarn workspace @paperpod/extension",
     "ui": "yarn workspace @paperpod/ui",
     "infrastructure": "yarn workspace @paperpod/infrastructure",
-    "docs": "yarn workspace @paperpod/docs",
-    "prepare": "husky install"
+    "docs": "yarn workspace @paperpod/docs"
   },
   "devDependencies": {
     "husky": "^5.2.0",

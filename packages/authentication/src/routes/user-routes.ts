@@ -89,7 +89,6 @@ export const userRoutes = express
   .get(
     "/users/me",
     middleware.withAuthentication((request, response, user) => {
-      //THINKABOUT: /users/:id
       response.json({
         ...user,
         password_hash: undefined,

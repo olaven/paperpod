@@ -1,4 +1,13 @@
 type: object 
+required: 
+  - id 
+  - owner_id
+  - title
+  - author 
+  - text 
+  - publication_time 
+  - added_time
+  - storage_uri
 properties: 
   id: 
     type: string 

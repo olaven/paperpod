@@ -1,0 +1,8 @@
+type: object 
+required:
+  - token
+properties:
+  token:
+    description: Bearer token valid for 15 minutes
+    type: string 
+    format: uuid

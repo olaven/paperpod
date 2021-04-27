@@ -8,7 +8,7 @@ servers:
     description: Production server for Paperpod
 components:
   securitySchemes:
-    JWT:            # arbitrary name for the security scheme
+    JWT:             # TODO: Associate standard 401/403
       type: http
       scheme: bearer
       bearerFormat: JWT 
@@ -77,6 +77,8 @@ paths:
           description: Article does not exist in Paperpod
   /api/feeds/{user_id}:
     get: 
+      security:
+          - JWT: [] 
       summary: RSS Feed 
       description: Get the RSS Feed for a user
       responses: 
@@ -97,6 +99,8 @@ paths:
           
   /api/files/{article_id}:  
     get:
+      security:
+        - JWT: [] 
       summary: Get audio file  
       parameters:
         - name: id
@@ -109,7 +113,80 @@ paths:
           description: The article could not be found 
 
 
-  /authentication: 
-    $ref: "authentication.yml"
+  /authentication/users/sessions: 
+    post: 
+      security:
+          - JWT: [] 
+      summary: Login
+      requestBody: 
+        content: 
+            'application/json':
+                schema:
+                  $ref: './schemas/UserCredentials.yml'
+      responses:
+        201: 
+          description: Created a new user session 
+          content:
+            application/json:
+              schema: 
+                schema: 
+                $ref: './schemas/Token.yml'
+        403: 
+          description: Credentials are invalid.
+    delete: 
+      security:
+        - JWT: [] 
+      description: Logout 
+      responses: 
+        201: 
+          description: Session destroyed 
+
+
+    put: 
+      security:
+        - JWT: [] 
+      description: Refresh token
+      responses:
+        200: 
+          description: Successful refresh of token 
+          content: 
+            application/json: 
+              schema: 
+                $ref: './schemas/Token.yml'
+                
+
+  /authentication/users:
+    post: 
+      security:
+        - JWT: [] 
+      description: Signup
+      requestBody: 
+        content:
+          application/json: 
+            schema: 
+              $ref: './schemas/UserCredentials.yml'
+      responses:
+        201: 
+          description: successfully created new user 
+          $ref: './schemas/Token.yml'
+        400: 
+          description: Invalid credentials
+        409: 
+          description: User with this email already exists. 
+  /authentication/users/me: 
+    get: 
+      security:
+        - JWT: [] 
+      description: Get user info
+      responses:
+        200: 
+          description: Successfully retrieved user information
+          content:
+            application/json: 
+              schema: 
+                $ref: './schemas/User.yml'
+
+
+
 
     

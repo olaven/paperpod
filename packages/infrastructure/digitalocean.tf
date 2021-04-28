@@ -97,7 +97,7 @@ output "database_uri" {
 
 output "droplet_id" {
   sensitive  = true
-  value = digitalocean_droplet.manager-droplet.output.id
+  value = digitalocean_droplet.manager-droplet.id
 }
 
 /* output "droplet_username" {

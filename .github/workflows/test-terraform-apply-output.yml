@@ -27,12 +27,10 @@ jobs:
       - name: Call terraform output
         id: infrastructure-output
         run: |
-          output_from_terraform=$(yarn infrastructure terraform:assumeenv output database_uri)
-          some_hardcoded_output="this is some hardcoded output created for test"
-          echo $output_from_terraform
-          echo $some_hardcoded_output
-          echo "::set-output name=database_uri::$output_from_terraform"
-          echo "::set-output name=droplet_id::$some_hardcoded_output"
+          database_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output database_uri)
+          droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id)
+          echo "::set-output name=database_uri::$database_uri_from_terraform"
+          echo "::set-output name=droplet_id::$droplet_id_from_terraform"
     outputs:
       database_uri: ${{ steps.infrastructure-output.outputs.database_uri }}
       droplet_id: ${{ steps.infrastructure-output.outputs.droplet_id }}

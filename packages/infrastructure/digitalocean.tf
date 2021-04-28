@@ -95,9 +95,9 @@ output "database_uri" {
   value = digitalocean_database_cluster.database-cluster.private_uri
 }
 
-output "droplet_hostname" {
+output "droplet_id" {
   sensitive  = true
-  value = digitalocean_droplet.manager-droplet.ipv4_address
+  value = digitalocean_droplet.manager-droplet.output.id
 }
 
 /* output "droplet_username" {

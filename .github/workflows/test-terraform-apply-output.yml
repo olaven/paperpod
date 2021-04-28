@@ -42,8 +42,7 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.TF_VAR_do_token }}
-      - run: | 
-          echo: 
+      - run: |  
           echo "Got database_uri / droplet_id"
           echo ${{ needs.update-infrastructure.outputs.database_uri}}
           echo ${{ needs.update-infrastructure.outputs.droplet_id}}

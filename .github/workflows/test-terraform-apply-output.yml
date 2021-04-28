@@ -26,9 +26,11 @@ jobs:
         run: yarn infrastructure terraform:assumeenv apply -auto-approve -no-color
       - name: Call terraform output
         id: infrastructure-output
+        # the below 1. gets output 2. takes the like with output value 3. removes the "yarn done"-ending
+        # echo $(yarn infrastructure terraform output database_uri --raw  | tail -2) | sed "s/Done.*//g"
         run: |
-          database_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output database_uri)
-          droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id)
+          database_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output database_uri --raw  | tail -2) | sed "s/Done.*//g"
+          droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id --raw  | tail -2) | sed "s/Done.*//g"
           echo "::set-output name=database_uri::$database_uri_from_terraform"
           echo "::set-output name=droplet_id::$droplet_id_from_terraform"
     outputs:
@@ -47,3 +49,8 @@ jobs:
           echo ${{ needs.update-infrastructure.outputs.database_uri}}
           echo ${{ needs.update-infrastructure.outputs.droplet_id}}
           doctl compute ssh ${{ needs.update-infrastructure.outputs.droplet_id}} --ssh-command ls 
+
+
+
+      # something=$(yarn infrastructure terraform output database_uri --raw  | tail -2)
+      # echo $(yarn infrastructure terraform output database_uri --raw  | tail -2) | sed "s/Done.*//g"

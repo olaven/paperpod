@@ -4,7 +4,7 @@ on:
       - feature/ci_deployment_to_digitalocean
 
 jobs:
-  apply-infrastructure:
+  update-infrastructure:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_TERRAFORM_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_TERRAFORM_SECRET_ACCESS_KEY }}
@@ -36,7 +36,7 @@ jobs:
     outputs:
       database_uri: ${{ steps.infrastructure-output.outputs.database_uri }}
       droplet_id: ${{ steps.infrastructure-output.outputs.droplet_id }}
-  nextjob: 
+  upload-new-version: # NOTE: this is not implemented, just testing for now  
     runs-on: ubuntu-latest
     needs: [apply-infrastructure]
     steps: 
@@ -49,4 +49,4 @@ jobs:
           echo "Got database_uri / droplet_id"
           echo ${{ needs.apply-infrastructure.outputs.database_uri}}
           echo ${{ needs.apply-infrastructure.outputs.droplet_id}}
-          doctl compute ssh ${{${{ needs.apply-infrastructure.outputs.droplet_id}}}} --ssh-command ls 
+          doctl compute ssh ${{ needs.apply-infrastructure.outputs.droplet_id}} --ssh-command ls 

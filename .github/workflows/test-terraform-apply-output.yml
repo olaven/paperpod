@@ -29,8 +29,8 @@ jobs:
         # the below 1. gets output 2. takes the like with output value 3. removes the "yarn done"-ending
         # echo $(yarn infrastructure terraform output database_uri --raw  | tail -2 | sed "s/Done.*//g")
         run: |
-          database_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output database_uri --raw  | tail -2 | sed "s/Done.*//g")
-          droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id --raw  | tail -2 | sed "s/Done.*//g")
+          database_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output database_uri | tail -2 | sed "s/Done.*//g")
+          droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id | tail -2 | sed "s/Done.*//g")
           echo "::set-output name=database_uri::$database_uri_from_terraform"
           echo "::set-output name=droplet_id::$droplet_id_from_terraform"
     outputs:

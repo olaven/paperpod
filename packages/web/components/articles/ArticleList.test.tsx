@@ -1,7 +1,14 @@
-import { models, test } from "@paperpod/common";
-import { render, waitFor } from "@testing-library/react";
+/**
+ * @jest-environment jsdom
+ */
 
-import { ArticleContext, ArticleContextProvider } from "./ArticleContext";
+
+import React from "react";
+import { models, test } from "@paperpod/common";
+import { render } from "@testing-library/react";
+
+
+import { ArticleContext } from "./ArticleContext";
 import { ArticleList } from "./ArticleList";
 
 const renderArticles = (articles: models.Article[]) =>

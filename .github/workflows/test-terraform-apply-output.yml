@@ -41,4 +41,4 @@ jobs:
           echo "Got database_uri / droplet_id"
           echo ${{ steps.infrastructure-output.outputs.database_uri }}
           echo ${{ steps.infrastructure-output.outputs.droplet_id }}
-          doctl compute ssh ${{ needs.update-infrastructure.outputs.droplet_id}} --access-token ${{ secrets.TF_VAR_do_token }} --ssh-command ls 
+          doctl compute ssh ${{ steps.infrastructure-output.outputs.droplet_id }} --ssh-command ls

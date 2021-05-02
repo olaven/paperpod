@@ -4,16 +4,28 @@ variable "do_token" {
   sensitive   = true
 }
 
+variable "droplet_username" {
+  type = string 
+  description = "the username of Digitalocean droplet"
+  sensitive = true 
+}
+
+variable "droplet_password" {
+  type = string 
+  description = "the password of Digitalocean droplet"
+  sensitive = true
+}
+
 provider "digitalocean" {
   token = var.do_token
 }
 
 
 # Create a new SSH key
-/* resource "digitalocean_ssh_key" "default" {
+resource "digitalocean_ssh_key" "default" {
   name       = "Terraform SSH Key"
   public_key = file("~/.ssh/id_rsa.pub")
-} */
+} 
 
 # See https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean for more details on ssh in the future
 
@@ -57,10 +69,10 @@ resource "digitalocean_droplet" "manager-droplet" {
   //ssh_keys = [digitalocean_ssh_key.default.fingerprint]
 
   
-/*   connection {
+  connection {
     host        = self.ipv4_address
-    password    = "password" #FIXME: REPLACE WITH SECRET ENV VARIABLE
-    user        = "root" #FIXME: REPLACE WITH SECRET ENV VARIABLE
+    password    = var.droplet_password
+    user        = var.droplet_username
     type        = "ssh"
     private_key = file("~/.ssh/id_rsa")
     timeout     = "2m"
@@ -71,9 +83,9 @@ resource "digitalocean_droplet" "manager-droplet" {
       "export PATH=$PATH:/usr/bin",
       "sudo apt-get update",
       "echo test in digitalocean droplet",
-      "touch ~/some-file-from-terraform"
+      "touch ~/file-from-action-hello"
     ]
-  }  */
+  }   
 }
 
 resource "digitalocean_database_cluster" "database-cluster" {

@@ -22,10 +22,10 @@ provider "digitalocean" {
 
 
 # Create a new SSH key
-resource "digitalocean_ssh_key" "default" {
+/* resource "digitalocean_ssh_key" "default" {
   name       = "Terraform SSH Key"
   public_key = file("~/.ssh/id_rsa.pub")
-} 
+}  */
 
 # See https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean for more details on ssh in the future
 
@@ -74,7 +74,7 @@ resource "digitalocean_droplet" "manager-droplet" {
     password    = var.droplet_password
     user        = var.droplet_username
     type        = "ssh"
-    private_key = file("~/.ssh/id_rsa")
+    //private_key = file("~/.ssh/id_rsa")
     timeout     = "2m"
   }
   provisioner "remote-exec" {

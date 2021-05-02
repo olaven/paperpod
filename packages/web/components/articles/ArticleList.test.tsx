@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-
 import React from "react";
 import { models, test } from "@paperpod/common";
 import { render } from "@testing-library/react";

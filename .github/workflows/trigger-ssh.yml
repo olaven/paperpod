@@ -33,12 +33,14 @@ jobs:
         run: |
           database_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output database_uri | tail -2 | sed "s/Done.*//g")
           droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id | tail -2 | sed "s/Done.*//g")
+          droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_uri | tail -2 | sed "s/Done.*//g")
           echo "::set-output name=database_uri::$database_uri_from_terraform"
           echo "::set-output name=droplet_id::$droplet_id_from_terraform"
+          echo "::set-output name=droplet_uri::$droplet_uri_from_terraform"
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
+          host: ${{ steps.infrastructure-output.outputs.droplet_uri }}
           username: ${{ secrets.TF_VAR_droplet_username }}
           password: ${{ secrets.TF_VAR_droplet_password }}
           port: 22

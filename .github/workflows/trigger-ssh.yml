@@ -35,12 +35,22 @@ jobs:
           droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id | tail -2 | sed "s/Done.*//g")
           echo "::set-output name=database_uri::$database_uri_from_terraform"
           echo "::set-output name=droplet_id::$droplet_id_from_terraform"
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
         with:
-          token: ${{ secrets.TF_VAR_do_token }}
-      - run: |  
-          echo "Got database_uri / droplet_id"
-          echo ${{ steps.infrastructure-output.outputs.database_uri }}
-          echo ${{ steps.infrastructure-output.outputs.droplet_id }}
-          doctl compute ssh ${{ steps.infrastructure-output.outputs.droplet_id }} --ssh-command ls
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.TF_VAR_droplet_username }}
+          password: ${{ secrets.TF_VAR_droplet_password }}
+          port: 22
+          script: whoami
+
+      # NOTE: TESTING WIHT DOCTL
+      # - name: Install doctl
+      #   uses: digitalocean/action-doctl@v2
+      #   with:
+      #     token: ${{ secrets.TF_VAR_do_token }}
+      # - run: |  
+      #     echo "Got database_uri / droplet_id"
+      #     echo ${{ steps.infrastructure-output.outputs.database_uri }}
+      #     echo ${{ steps.infrastructure-output.outputs.droplet_id }}
+      #     doctl compute ssh ${{ steps.infrastructure-output.outputs.droplet_id }} --ssh-command ls

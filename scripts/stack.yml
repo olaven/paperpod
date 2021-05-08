@@ -22,6 +22,7 @@ services:
       - PGHOST=$PGHOST
       - PGDATABASE=$PGDATABASE
       - PGUSER=$PGUSER
+      - PGPASSWORD=$PGPASSWORD
       - PGOPTIONS="-c search_path='api'"
       - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
@@ -33,6 +34,7 @@ services:
       - PGHOST=$PGHOST
       - PGDATABASE=$PGDATABASE
       - PGUSER=$PGUSER
+      - PGPASSWORD=$PGPASSWORD
       - PGOPTIONS="-c search_path='authentication'"
   web:
     image: olaven/paperpod-web@$WEB_DIGEST

@@ -37,12 +37,12 @@ jobs:
           echo "::set-output name=database_uri::$database_uri_from_terraform"
           echo "::set-output name=droplet_id::$droplet_id_from_terraform"
           echo "::set-output name=droplet_uri::$droplet_uri_from_terraform"
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.TF_VAR_do_token }}
-      - run: |  
-          doctl compute ssh ${{ steps.infrastructure-output.outputs.droplet_id }} --ssh-command ls
+      # - name: Install doctl
+      #   uses: digitalocean/action-doctl@v2
+      #   with:
+      #     token: ${{ secrets.TF_VAR_do_token }}
+      # - run: |  
+      #     doctl compute ssh ${{ steps.infrastructure-output.outputs.droplet_id }} --ssh-command ls
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:

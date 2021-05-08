@@ -72,23 +72,6 @@ resource "digitalocean_droplet" "manager-droplet" {
   region = "ams3"
   private_networking = true
   vpc_uuid = digitalocean_vpc.network.id
-  
-  # connection {
-  #   host        = self.ipv4_address
-  #   password    = var.droplet_password
-  #   user        = var.droplet_username
-  #   type        = "ssh"
-  #   timeout     = "2m"
-  # }
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     # TODO: use this to install nececarry dependencies etc. 
-  #     "export PATH=$PATH:/usr/bin",
-  #     "sudo apt-get update",
-  #     "echo test in digitalocean droplet",
-  #     "touch ~/file-from-action-hello"
-  #   ]
-  # }   
 }
 
 resource "digitalocean_database_cluster" "database-cluster" {
@@ -100,6 +83,16 @@ resource "digitalocean_database_cluster" "database-cluster" {
   node_count = 1
   private_network_uuid = digitalocean_vpc.network.id
 }
+
+resource "digitalocean_database_firewall" "db_firewall" {
+  cluster_id = digitalocean_database_cluster.database-cluster.id 
+
+  rule {
+    type = "droplet"
+    value = digitalocean_droplet.manager-droplet.id
+  }
+}
+
 resource "digitalocean_database_db" "database" {
   name       = "paperpod"
   cluster_id = digitalocean_database_cluster.database-cluster.id

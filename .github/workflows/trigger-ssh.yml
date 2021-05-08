@@ -145,9 +145,11 @@ jobs:
           database_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output database_uri | tail -2 | sed "s/Done.*//g")
           droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id | tail -2 | sed "s/Done.*//g")
           droplet_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_uri | tail -2 | sed "s/Done.*//g" | sed 's/"//' | sed 's/"//')
+          private_droplet_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_uri_private | tail -2 | sed "s/Done.*//g" | sed 's/"//' | sed 's/"//')
           echo "::set-output name=database_uri::$database_uri_from_terraform"
           echo "::set-output name=droplet_id::$droplet_id_from_terraform"
           echo "::set-output name=droplet_uri::$droplet_uri_from_terraform"
+          echo "::set-output name=droplet_uri_private::$private_droplet_uri_from_terraform"
       - name: Initializing a swarm
         uses: appleboy/ssh-action@master
         with:
@@ -158,7 +160,7 @@ jobs:
           script_stop: true
           script: |
             if [ $(docker info --format '{{.Swarm.LocalNodeState}}') == "inactive" ]; then 
-              docker swarm init;
+              docker swarm init --advertise-addr ${{ steps.infrastructure-output.outputs.droplet_uri_private }};
             fi
       - name: Updating on server
         uses: appleboy/ssh-action@master

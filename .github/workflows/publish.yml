@@ -175,10 +175,11 @@ jobs:
           password: ${{ secrets.TF_VAR_droplet_password }}
           port: 22
           script_stop: true
-          script: |
+          script: | # FIXME; remove checkout to this branch
             rm -rf ./paperpod
             git clone https://github.com/olaven/paperpod
             cd paperpod 
+            git checkout feature/ci_deployment_to_digitalocean 
             git pull 
             export \
               PGDATABASE=${{ steps.infrastructure-output.outputs.database_database }}

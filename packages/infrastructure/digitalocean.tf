@@ -135,3 +135,8 @@ output "database_password" {
   sensitive = true
   value = digitalocean_database_cluster.database-cluster.password
 }
+
+output "database_port" {
+  sensitive = true 
+  value = digitalocean_database_cluster.database-cluster.port
+}

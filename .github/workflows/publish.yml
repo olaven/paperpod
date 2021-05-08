@@ -148,6 +148,7 @@ jobs:
           database_database_from_terraform=$(yarn infrastructure terraform:assumeenv output database_database | tail -2 | sed "s/Done.*//g")
           database_user_from_terraform=$(yarn infrastructure terraform:assumeenv output database_user | tail -2 | sed "s/Done.*//g")
           database_password_from_terraform=$(yarn infrastructure terraform:assumeenv output database_password | tail -2 | sed "s/Done.*//g")
+          database_port_from_terraform=$(yarn infrastructure terraform:assumeenv output database_port | tail -2 | sed "s/Done.*//g")
           droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id | tail -2 | sed "s/Done.*//g")
           droplet_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_uri | tail -2 | sed "s/Done.*//g" | sed 's/"//' | sed 's/"//')
           private_droplet_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_uri_private | tail -2 | sed "s/Done.*//g" | sed 's/"//' | sed 's/"//')
@@ -155,6 +156,7 @@ jobs:
           echo "::set-output name=database_database::$database_database_from_terraform"
           echo "::set-output name=database_user::$database_user_from_terraform"
           echo "::set-output name=database_password::$database_password_from_terraform"
+          echo "::set-output name=database_port::$database_port_from_terraform"
           echo "::set-output name=droplet_id::$droplet_id_from_terraform"
           echo "::set-output name=droplet_uri::$droplet_uri_from_terraform"
           echo "::set-output name=droplet_uri_private::$private_droplet_uri_from_terraform"
@@ -189,6 +191,7 @@ jobs:
               PGDATABASE=${{ steps.infrastructure-output.outputs.database_database }}
               PGUSER=${{ steps.infrastructure-output.outputs.database_user }}
               PGPASSWORD=${{ steps.infrastructure-output.outputs.database_password }}
+              PGPORT=${{ steps.infrastructure-output.outputs.database_port }}
               GATEWAY_PORT=${{ secrets.GATEWAY_PORT }} \
               GATEWAY_HTTP_PORT=${{ secrets.GATEWAY_HTTP_PORT }} \
               WEB_PORT=${{ secrets.WEB_PORT }} \

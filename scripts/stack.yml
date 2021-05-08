@@ -23,6 +23,7 @@ services:
       - PGDATABASE=$PGDATABASE
       - PGUSER=$PGUSER
       - PGPASSWORD=$PGPASSWORD
+      - PGPORT=$PGPORT
       - PGSSLMODE=require
       - PGOPTIONS="-c search_path='api'"
       - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
@@ -36,6 +37,7 @@ services:
       - PGDATABASE=$PGDATABASE
       - PGUSER=$PGUSER
       - PGPASSWORD=$PGPASSWORD
+      - PGPORT=$PGPORT
       - PGSSLMODE=require
       - PGOPTIONS="-c search_path='authentication'"
   web:

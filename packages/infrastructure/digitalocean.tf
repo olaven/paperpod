@@ -117,7 +117,8 @@ output "droplet_uri" {
   value = digitalocean_droplet.manager-droplet.ipv4_address
 }
 
-/* output "droplet_username" {
+output "droplet_username" {
   sensitive = true
-  value = digitalocean_droplet.user
-} */
+  value = digitalocean_droplet.manager-droplet.user
+} 
+

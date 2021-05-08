@@ -148,6 +148,18 @@ jobs:
           echo "::set-output name=database_uri::$database_uri_from_terraform"
           echo "::set-output name=droplet_id::$droplet_id_from_terraform"
           echo "::set-output name=droplet_uri::$droplet_uri_from_terraform"
+      - name: Initializing a swarm
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ steps.infrastructure-output.outputs.droplet_uri }}
+          username: root
+          password: ${{ secrets.TF_VAR_droplet_password }}
+          port: 22
+          script_stop: true
+          script: |
+            if [ $(docker info --format '{{.Swarm.LocalNodeState}}') == "inactive" ]; then 
+              docker swarm init;
+            fi
       - name: Updating on server
         uses: appleboy/ssh-action@master
         with:

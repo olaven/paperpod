@@ -26,7 +26,7 @@ services:
       - PGPORT=$PGPORT
       - PGSSLMODE=require
       - PGOPTIONS="-c search_path='api'"
-      - DATABASE_CA="$DATABASE_CA"
+      - DATABASE_CA=$DATABASE_CA
       - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
   authentication:
@@ -41,6 +41,7 @@ services:
       - PGPORT=$PGPORT
       - PGSSLMODE=require
       - PGOPTIONS="-c search_path='authentication'"
-      - DATABASE_CA="$DATABASE_CA"
+      DATABASE_CA: >
+        $DATABASE_CA
   web:
     image: olaven/paperpod-web@$WEB_DIGEST

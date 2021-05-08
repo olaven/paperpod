@@ -178,6 +178,7 @@ jobs:
             rm -rf ./paperpod
             git clone https://github.com/olaven/paperpod
             cd paperpod 
+            git pull 
             export \
               PGDATABASE=${{ steps.infrastructure-output.outputs.database_database }}
               PGUSER=${{ steps.infrastructure-output.outputs.database_user }}

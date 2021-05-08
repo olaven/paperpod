@@ -62,7 +62,7 @@ resource "digitalocean_droplet" "manager-droplet" {
   
   name   = "paperpod-manager"
   image  = "docker-20-04"
-  size   = "s-1vcpu-1gb"
+  size   = "s-1vcpu-2gb"
   region = "ams3"
   
   connection {

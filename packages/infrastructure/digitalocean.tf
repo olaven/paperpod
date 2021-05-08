@@ -59,33 +59,28 @@ resource "digitalocean_domain" "default" {
 }
 
 resource "digitalocean_droplet" "manager-droplet" {
-  /* depends_on = [
-    digitalocean_ssh_key.default
-  ] */
+  
   name   = "paperpod-manager"
   image  = "docker-20-04"
   size   = "s-1vcpu-1gb"
   region = "ams3"
-  #ssh_keys = [digitalocean_ssh_key.default.fingerprint]
-
   
   connection {
     host        = self.ipv4_address
     password    = var.droplet_password
     user        = var.droplet_username
     type        = "ssh"
-    //private_key = file("~/.ssh/id_rsa")
     timeout     = "2m"
   }
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     # TODO: use this to install nececarry dependencies etc. 
-  #     "export PATH=$PATH:/usr/bin",
-  #     "sudo apt-get update",
-  #     "echo test in digitalocean droplet",
-  #     "touch ~/file-from-action-hello"
-  #   ]
-  # }   
+  provisioner "remote-exec" {
+    inline = [
+      # TODO: use this to install nececarry dependencies etc. 
+      "export PATH=$PATH:/usr/bin",
+      "sudo apt-get update",
+      "echo test in digitalocean droplet",
+      "touch ~/file-from-action-hello"
+    ]
+  }   
 }
 
 resource "digitalocean_database_cluster" "database-cluster" {

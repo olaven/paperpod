@@ -3,7 +3,7 @@ name: Publish to Docker
 on:
   push:
     branches:
-      - main
+      - main # TODO: Replace this with triger-ssh
 
 jobs:
   publish-gateway:

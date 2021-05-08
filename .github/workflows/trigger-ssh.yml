@@ -4,7 +4,118 @@ on:
       - feature/ci_deployment_to_digitalocean
 
 jobs:
-  update-infrastructure-and-deploy:
+  publish-gateway:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Build and push
+        id: docker_build_gateway
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./dockerfiles/Dockerfile.gateway
+          push: true
+          tags: olaven/paperpod-gateway:latest
+      - name: Image digest
+        run: echo ${{ steps.docker_build_gateway.outputs.digest }}
+    outputs:
+      digest: ${{ steps.docker_build_gateway.outputs.digest }}
+  publish-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Build and push
+        id: docker_build_api
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./dockerfiles/Dockerfile.api
+          push: true
+          tags: olaven/paperpod-api:latest
+          # build-args: |
+          #   arg1=value1
+          #   arg2=value2
+      - name: Image digest
+        run: echo ${{ steps.docker_build_api.outputs.digest }}
+    outputs:
+      digest: ${{ steps.docker_build_api.outputs.digest }}
+  publish-authentication:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Build and push
+        id: docker_build_authentication
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./dockerfiles/Dockerfile.authentication
+          push: true
+          tags: olaven/paperpod-authentication:latest
+          # build-args: |
+          #   arg1=value1
+          #   arg2=value2
+      - name: Image digest
+        run: echo ${{ steps.docker_build_authentication.outputs.digest }}
+    outputs:
+      digest: ${{ steps.docker_build_authentication.outputs.digest }}
+  publish-web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Build and push
+        id: docker_build_web
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./dockerfiles/Dockerfile.web
+          push: true
+          tags: olaven/paperpod-web:latest
+      - name: Image digest
+        run: echo ${{ steps.docker_build_web.outputs.digest }}
+    outputs:
+      digest: ${{ steps.docker_build_web.outputs.digest }}
+  deploy:
+    needs: [publish-gateway, publish-api, publish-authentication, publish-web]
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_TERRAFORM_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_TERRAFORM_SECRET_ACCESS_KEY }}
@@ -18,7 +129,7 @@ jobs:
     steps:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
-        with: 
+        with:
           terraform_wrapper: false
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -26,7 +137,7 @@ jobs:
         run: yarn infrastructure terraform:assumeenv init -no-color
       - name: Applying infrastructure
         run: yarn infrastructure terraform:assumeenv apply -auto-approve -no-color
-      - name: Call terraform output
+      - name: Getting output from Terraform
         id: infrastructure-output
         # the below 1. gets output 2. takes the like with output value 3. removes the "yarn done"-ending
         # echo $(yarn infrastructure terraform output database_uri --raw  | tail -2 | sed "s/Done.*//g")
@@ -37,17 +148,58 @@ jobs:
           echo "::set-output name=database_uri::$database_uri_from_terraform"
           echo "::set-output name=droplet_id::$droplet_id_from_terraform"
           echo "::set-output name=droplet_uri::$droplet_uri_from_terraform"
-      # - name: Install doctl
-      #   uses: digitalocean/action-doctl@v2
-      #   with:
-      #     token: ${{ secrets.TF_VAR_do_token }}
-      # - run: |  
-      #     doctl compute ssh ${{ steps.infrastructure-output.outputs.droplet_id }} --ssh-command ls
-      - name: executing remote ssh commands using password
+      - name: Updating on server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ steps.infrastructure-output.outputs.droplet_uri }}
           username: root
           password: ${{ secrets.TF_VAR_droplet_password }}
           port: 22
-          script: ls
+          script_stop: true
+          script: |
+            rm -rf ./paperpod
+            git clone https://github.com/olaven/paperpod
+            cd paperpod 
+            export \
+              GATEWAY_PORT=${{ secrets.GATEWAY_PORT }} \
+              GATEWAY_HTTP_PORT=${{ secrets.GATEWAY_HTTP_PORT }} \
+              WEB_PORT=${{ secrets.WEB_PORT }} \
+              API_PORT=${{ secrets.API_PORT }} \
+              AUTHENTICATION_PORT=${{ secrets.AUTHENTICATION_PORT }} \
+              JWT_SECRET=${{ secrets.JWT_SECRET }} \
+              MONGODB_NAME_API=${{ secrets.MONGODB_NAME_API }} \
+              MONGODB_NAME_AUTHENTICATION=${{ secrets.MONGODB_NAME_AUTHENTICATION }} \
+              MONGODB_USERNAME=${{ secrets.MONGODB_USERNAME }} \
+              MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} \
+              MONGODB_HOST=${{ secrets.MONGODB_HOST }} \
+              MONGODB_PORT_AUTHENTICATION=${{ secrets.MONGODB_PORT_AUTHENTICATION }} \
+              MONGODB_PORT_API=${{ secrets.MONGODB_PORT_API }} \
+              MONGODB_PROTOCOL=${{ secrets.MONGODB_PROTOCOL }} \
+              AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+              AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \ 
+              GATEWAY_DIGEST=${{ needs.publish-gateway.outputs.digest }} \
+              API_DIGEST=${{ needs.publish-api.outputs.digest }} \
+              AUTHENTICATION_DIGEST=${{ needs.publish-authentication.outputs.digest }} \
+              WEB_DIGEST=${{ needs.publish-web.outputs.digest }} 
+            env \
+              GATEWAY_PORT=$GATEWAY_PORT \
+              GATEWAY_HTTP_PORT=$GATEWAY_HTTP_PORT \
+              WEB_PORT=$WEB_PORT \
+              API_PORT=$API_PORT \
+              AUTHENTICATION_PORT=$AUTHENTICATION_PORT \
+              JWT_SECRET=$JWT_SECRET \
+              MONGODB_NAME_API=$MONGODB_NAME_API \
+              MONGODB_NAME_AUTHENTICATION=$MONGODB_NAME_AUTHENTICATION \
+              MONGODB_USERNAME=$MONGODB_USERNAME \
+              MONGODB_PASSWORD=$MONGODB_PASSWORD \
+              MONGODB_HOST=$MONGODB_HOST \
+              MONGODB_PORT_AUTHENTICATION=$MONGODB_PORT_AUTHENTICATION \
+              MONGODB_PORT_API=$MONGODB_PORT_API \
+              MONGODB_PROTOCOL=$MONGODB_PROTOCOL \
+              AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+              AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+              GATEWAY_DIGEST=$GATEWAY_DIGEST \
+              API_DIGEST=$API_DIGEST \
+              AUTHENTICATION_DIGEST=$AUTHENTICATION_DIGEST \
+              WEB_DIGEST=$WEB_DIGEST \
+              docker stack deploy -c $HOME/paperpod/scripts/stack.yml paperpod;

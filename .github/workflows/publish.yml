@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - feature/ci_deployment_to_digitalocean
+      - main
 
 jobs:
   publish-gateway:

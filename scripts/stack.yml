@@ -10,10 +10,10 @@ services:
       - WEB_PORT=$WEB_PORT
       - API_PORT=$API_PORT
       - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
-    volumes:
-      - /etc/letsencrypt/live/application.paperpod.fm/privkey.pem:/etc/letsencrypt/live/application.paperpod.fm/privkey.pem
-      - /etc/letsencrypt/live/application.paperpod.fm/cert.pem:/etc/letsencrypt/live/application.paperpod.fm/cert.pem
-      - /etc/letsencrypt/live/application.paperpod.fm/chain.pem:/etc/letsencrypt/live/application.paperpod.fm/chain.pem
+    #volumes: # FIXME: add once certbot has run
+    #  - /etc/letsencrypt/live/application.paperpod.fm/privkey.pem:/etc/letsencrypt/live/application.paperpod.fm/privkey.pem
+    #  - /etc/letsencrypt/live/application.paperpod.fm/cert.pem:/etc/letsencrypt/live/application.paperpod.fm/cert.pem
+    #  - /etc/letsencrypt/live/application.paperpod.fm/chain.pem:/etc/letsencrypt/live/application.paperpod.fm/chain.pem
   api:
     image: olaven/paperpod-api@$API_DIGEST
     environment:

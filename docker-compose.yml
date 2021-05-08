@@ -31,8 +31,8 @@ services:
       JWT_SECRET: $JWT_SECRET
       PGHOST: database
       PGDATABASE: $PGDATABASE
-      PGOPTIONS: "-c search_path='api'"
       PGUSER: $PGUSER
+      PGOPTIONS: "-c search_path='api'"
       PGPASSWORD: $PGPASSWORD
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY

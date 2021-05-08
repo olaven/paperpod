@@ -1,3 +1,4 @@
+name: Publish
 on:
   push:
     branches:
@@ -169,12 +170,6 @@ jobs:
             if [ $(docker info --format '{{.Swarm.LocalNodeState}}') == "inactive" ]; then 
               docker swarm init --advertise-addr ${{ steps.infrastructure-output.outputs.droplet_uri_private }};
             fi
-      - name: Log postgres data
-        run: |
-          echo ${{ steps.infrastructure-output.outputs.database_host }}
-          echo ${{ steps.infrastructure-output.outputs.database_database }}
-          echo ${{ steps.infrastructure-output.outputs.database_user }}
-          echo ${{ steps.infrastructure-output.outputs.database_password }}
       - name: Updating on server
         uses: appleboy/ssh-action@master
         with:

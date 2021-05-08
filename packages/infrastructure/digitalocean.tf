@@ -96,11 +96,6 @@ resource "digitalocean_database_db" "database" {
   cluster_id = digitalocean_database_cluster.database-cluster.id
 }
 
-# see if you can access this outside, in github actions
-output "database_uri" {
-  sensitive = true
-  value = digitalocean_database_cluster.database-cluster.private_uri
-}
 
 output "droplet_id" {
   sensitive  = true
@@ -122,3 +117,15 @@ output "droplet_uri_private" {
 #   value = digitalocean_droplet.manager-droplet.user
 # } 
 
+output "database_database" {
+  sensitive = true
+  value = digitalocean_database_cluster.database-cluster.database
+}
+output "database_user" {
+  sensitive = true
+  value = digitalocean_database_cluster.database-cluster.user
+}
+output "database_password" {
+  sensitive = true
+  value = digitalocean_database_cluster.database-cluster.password
+}

@@ -142,11 +142,15 @@ jobs:
         # the below 1. gets output 2. takes the like with output value 3. removes the "yarn done"-ending
         # echo $(yarn infrastructure terraform output database_uri --raw  | tail -2 | sed "s/Done.*//g")
         run: |
-          database_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output database_uri | tail -2 | sed "s/Done.*//g")
+          database_database_from_terraform=$(yarn infrastructure terraform:assumeenv output database_database | tail -2 | sed "s/Done.*//g")
+          database_user_from_terraform=$(yarn infrastructure terraform:assumeenv output database_user | tail -2 | sed "s/Done.*//g")
+          database_password_from_terraform=$(yarn infrastructure terraform:assumeenv output database_password | tail -2 | sed "s/Done.*//g")
           droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id | tail -2 | sed "s/Done.*//g")
           droplet_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_uri | tail -2 | sed "s/Done.*//g" | sed 's/"//' | sed 's/"//')
           private_droplet_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_uri_private | tail -2 | sed "s/Done.*//g" | sed 's/"//' | sed 's/"//')
-          echo "::set-output name=database_uri::$database_uri_from_terraform"
+          echo "::set-output name=database_database::$database_database_from_terraform"
+          echo "::set-output name=database_user::$database_user_from_terraform"
+          echo "::set-output name=database_password::$database_password_from_terraform"
           echo "::set-output name=droplet_id::$droplet_id_from_terraform"
           echo "::set-output name=droplet_uri::$droplet_uri_from_terraform"
           echo "::set-output name=droplet_uri_private::$private_droplet_uri_from_terraform"
@@ -175,20 +179,15 @@ jobs:
             git clone https://github.com/olaven/paperpod
             cd paperpod 
             export \
+              PGDATABASE=${{ steps.infrastructure-output.outputs.database_database }}
+              PGUSER=${{ steps.infrastructure-output.outputs.database_user }}
+              PGPASSWORD=${{ steps.infrastructure-output.outputs.database_password }}
               GATEWAY_PORT=${{ secrets.GATEWAY_PORT }} \
               GATEWAY_HTTP_PORT=${{ secrets.GATEWAY_HTTP_PORT }} \
               WEB_PORT=${{ secrets.WEB_PORT }} \
               API_PORT=${{ secrets.API_PORT }} \
               AUTHENTICATION_PORT=${{ secrets.AUTHENTICATION_PORT }} \
               JWT_SECRET=${{ secrets.JWT_SECRET }} \
-              MONGODB_NAME_API=${{ secrets.MONGODB_NAME_API }} \
-              MONGODB_NAME_AUTHENTICATION=${{ secrets.MONGODB_NAME_AUTHENTICATION }} \
-              MONGODB_USERNAME=${{ secrets.MONGODB_USERNAME }} \
-              MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} \
-              MONGODB_HOST=${{ secrets.MONGODB_HOST }} \
-              MONGODB_PORT_AUTHENTICATION=${{ secrets.MONGODB_PORT_AUTHENTICATION }} \
-              MONGODB_PORT_API=${{ secrets.MONGODB_PORT_API }} \
-              MONGODB_PROTOCOL=${{ secrets.MONGODB_PROTOCOL }} \
               AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
               AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \ 
               GATEWAY_DIGEST=${{ needs.publish-gateway.outputs.digest }} \
@@ -202,14 +201,9 @@ jobs:
               API_PORT=$API_PORT \
               AUTHENTICATION_PORT=$AUTHENTICATION_PORT \
               JWT_SECRET=$JWT_SECRET \
-              MONGODB_NAME_API=$MONGODB_NAME_API \
-              MONGODB_NAME_AUTHENTICATION=$MONGODB_NAME_AUTHENTICATION \
-              MONGODB_USERNAME=$MONGODB_USERNAME \
-              MONGODB_PASSWORD=$MONGODB_PASSWORD \
-              MONGODB_HOST=$MONGODB_HOST \
-              MONGODB_PORT_AUTHENTICATION=$MONGODB_PORT_AUTHENTICATION \
-              MONGODB_PORT_API=$MONGODB_PORT_API \
-              MONGODB_PROTOCOL=$MONGODB_PROTOCOL \
+              PGDATABASE=$PGDATABASE \
+              PGUSER=$PGUSER \
+              PGPASSWORD=$PGPASSWORD \
               AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
               AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
               GATEWAY_DIGEST=$GATEWAY_DIGEST \

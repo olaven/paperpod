@@ -169,6 +169,12 @@ jobs:
             if [ $(docker info --format '{{.Swarm.LocalNodeState}}') == "inactive" ]; then 
               docker swarm init --advertise-addr ${{ steps.infrastructure-output.outputs.droplet_uri_private }};
             fi
+      - name: Log postgres data
+        run: |
+          echo ${{ steps.infrastructure-output.outputs.database_host }}
+          echo ${{ steps.infrastructure-output.outputs.database_database }}
+          echo ${{ steps.infrastructure-output.outputs.database_user }}
+          echo ${{ steps.infrastructure-output.outputs.database_password }}
       - name: Updating on server
         uses: appleboy/ssh-action@master
         with:
@@ -201,15 +207,15 @@ jobs:
               AUTHENTICATION_DIGEST=${{ needs.publish-authentication.outputs.digest }} \
               WEB_DIGEST=${{ needs.publish-web.outputs.digest }} 
             env \
+              PGHOST=$PGHOST \
+              PGDATABASE=$PGDATABASE \
+              PGUSER=$PGUSER \
               GATEWAY_PORT=$GATEWAY_PORT \
               GATEWAY_HTTP_PORT=$GATEWAY_HTTP_PORT \
               WEB_PORT=$WEB_PORT \
               API_PORT=$API_PORT \
               AUTHENTICATION_PORT=$AUTHENTICATION_PORT \
               JWT_SECRET=$JWT_SECRET \
-              PGHOST=$PGHOST \
-              PGDATABASE=$PGDATABASE \
-              PGUSER=$PGUSER \
               PGPASSWORD=$PGPASSWORD \
               AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
               AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \

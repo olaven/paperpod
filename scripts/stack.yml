@@ -41,6 +41,6 @@ services:
       - PGPORT=$PGPORT
       - PGSSLMODE=require
       - PGOPTIONS="-c search_path='authentication'"
-      DATABASE_CA: $DATABASE_CA
+      - DATABASE_CA=$DATABASE_CA
   web:
     image: olaven/paperpod-web@$WEB_DIGEST

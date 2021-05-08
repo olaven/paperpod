@@ -93,6 +93,7 @@ resource "digitalocean_database_firewall" "db_firewall" {
   }
 }
 
+# FIXME: make sure this is used instead of default database / db user / db password
 resource "digitalocean_database_db" "database" {
   name       = "paperpod"
   cluster_id = digitalocean_database_cluster.database-cluster.id
@@ -103,21 +104,14 @@ output "droplet_id" {
   sensitive  = true
   value = digitalocean_droplet.manager-droplet.id
 }
-
 output "droplet_uri" {
   sensitive  = true
   value = digitalocean_droplet.manager-droplet.ipv4_address
 }
-
 output "droplet_uri_private" {
   sensitive  = true
   value = digitalocean_droplet.manager-droplet.ipv4_address_private
 }
-
-# output "droplet_username" {
-#   sensitive = true
-#   value = digitalocean_droplet.manager-droplet.user
-# } 
 
 output "database_host"  {
   sensitive = true

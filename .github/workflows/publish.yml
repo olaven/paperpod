@@ -211,7 +211,7 @@ jobs:
               PGUSER=$PGUSER \
               PGPASSWORD=$PGPASSWORD \ 
               PGPORT=$PGPORT \ 
-              DATABASE_CA=$DATABASE_CA \
+              DATABASE_CA='$DATABASE_CA' \
               GATEWAY_PORT=$GATEWAY_PORT \
               GATEWAY_HTTP_PORT=$GATEWAY_HTTP_PORT \
               WEB_PORT=$WEB_PORT \

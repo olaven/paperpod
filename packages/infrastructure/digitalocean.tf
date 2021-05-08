@@ -22,10 +22,10 @@ provider "digitalocean" {
 
 
 # Create a new SSH key
-/* resource "digitalocean_ssh_key" "default" {
+resource "digitalocean_ssh_key" "default" {
   name       = "Terraform SSH Key"
   public_key = file("~/.ssh/id_rsa.pub")
-}  */
+}  
 
 # See https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean for more details on ssh in the future
 
@@ -66,7 +66,7 @@ resource "digitalocean_droplet" "manager-droplet" {
   image  = "docker-20-04"
   size   = "s-1vcpu-1gb"
   region = "ams3"
-  //ssh_keys = [digitalocean_ssh_key.default.fingerprint]
+  ssh_keys = [digitalocean_ssh_key.default.fingerprint]
 
   
   connection {

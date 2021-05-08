@@ -70,6 +70,7 @@ resource "digitalocean_droplet" "manager-droplet" {
   image  = "docker-20-04"
   size   = "s-1vcpu-2gb"
   region = "ams3"
+  private_networking = true
   vpc_uuid = digitalocean_vpc.network.id
   
   # connection {

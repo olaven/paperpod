@@ -192,7 +192,7 @@ jobs:
               PGUSER=${{ steps.infrastructure-output.outputs.database_user }}
               PGPASSWORD=${{ steps.infrastructure-output.outputs.database_password }}
               PGPORT=${{ steps.infrastructure-output.outputs.database_port }}
-              DATABASE_CA"=${{ secrets.DATABASE_CA }}" \ 
+              DATABASE_CA="${{ secrets.DATABASE_CA }}" \ 
               GATEWAY_PORT=${{ secrets.GATEWAY_PORT }} \
               GATEWAY_HTTP_PORT=${{ secrets.GATEWAY_HTTP_PORT }} \
               WEB_PORT=${{ secrets.WEB_PORT }} \

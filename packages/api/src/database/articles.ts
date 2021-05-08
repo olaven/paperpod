@@ -1,13 +1,14 @@
-import { first, rows } from "klart";
+import { database } from "@paperpod/server";
 import { models } from "@paperpod/common";
 
 export const getByOwner = (owner_id: string) =>
-  rows<models.Article>("SELECT * FROM api.articles WHERE owner_id = $1", [
-    owner_id,
-  ]);
+  database.rows<models.Article>(
+    "SELECT * FROM api.articles WHERE owner_id = $1",
+    [owner_id]
+  );
 
 export const deleteById = (id: string) =>
-  first<models.Article>(
+  database.first<models.Article>(
     `
       DELETE FROM api.articles WHERE id = $1
       RETURNING *
@@ -16,13 +17,15 @@ export const deleteById = (id: string) =>
   );
 
 export const getById = (id: string) =>
-  first<models.Article>(`SELECT * FROM api.articles where id = $1`, [id]);
+  database.first<models.Article>(`SELECT * FROM api.articles where id = $1`, [
+    id,
+  ]);
 
 export const getByOriginalUrlAndOwner = (
   original_url: string,
   owner_id: string
 ) =>
-  rows(
+  database.rows(
     `
       SELECT * FROM api.articles 
       WHERE original_url = $1 and owner_id = 2
@@ -31,7 +34,7 @@ export const getByOriginalUrlAndOwner = (
   );
 
 export const persist = (article: models.Article) =>
-  first<models.Article>(
+  database.first<models.Article>(
     `
       INSERT INTO
       api.articles (owner_id, original_url, title, description, author, text, publication_time, added_time, storage_uri) 

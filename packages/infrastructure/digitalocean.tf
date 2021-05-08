@@ -117,6 +117,10 @@ output "droplet_uri_private" {
 #   value = digitalocean_droplet.manager-droplet.user
 # } 
 
+output "database_host"  {
+  sensitive = true
+  value = digitalocean_database_cluster.database-cluster.private_host
+}
 output "database_database" {
   sensitive = true
   value = digitalocean_database_cluster.database-cluster.database

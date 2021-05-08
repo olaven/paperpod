@@ -143,12 +143,14 @@ jobs:
         # the below 1. gets output 2. takes the like with output value 3. removes the "yarn done"-ending
         # echo $(yarn infrastructure terraform output database_uri --raw  | tail -2 | sed "s/Done.*//g")
         run: |
+          database_host_from_terraform=$(yarn infrastructure terraform:assumeenv output database_host | tail -2 | sed "s/Done.*//g")
           database_database_from_terraform=$(yarn infrastructure terraform:assumeenv output database_database | tail -2 | sed "s/Done.*//g")
           database_user_from_terraform=$(yarn infrastructure terraform:assumeenv output database_user | tail -2 | sed "s/Done.*//g")
           database_password_from_terraform=$(yarn infrastructure terraform:assumeenv output database_password | tail -2 | sed "s/Done.*//g")
           droplet_id_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_id | tail -2 | sed "s/Done.*//g")
           droplet_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_uri | tail -2 | sed "s/Done.*//g" | sed 's/"//' | sed 's/"//')
           private_droplet_uri_from_terraform=$(yarn infrastructure terraform:assumeenv output droplet_uri_private | tail -2 | sed "s/Done.*//g" | sed 's/"//' | sed 's/"//')
+          echo "::set-output name=database_host::$database_host_from_terraform"
           echo "::set-output name=database_database::$database_database_from_terraform"
           echo "::set-output name=database_user::$database_user_from_terraform"
           echo "::set-output name=database_password::$database_password_from_terraform"
@@ -182,6 +184,7 @@ jobs:
             git checkout feature/ci_deployment_to_digitalocean 
             git pull 
             export \
+              PGHOST=${{ steps.infrastructure-output.outputs.database_host }}
               PGDATABASE=${{ steps.infrastructure-output.outputs.database_database }}
               PGUSER=${{ steps.infrastructure-output.outputs.database_user }}
               PGPASSWORD=${{ steps.infrastructure-output.outputs.database_password }}
@@ -204,6 +207,7 @@ jobs:
               API_PORT=$API_PORT \
               AUTHENTICATION_PORT=$AUTHENTICATION_PORT \
               JWT_SECRET=$JWT_SECRET \
+              PGHOST=$PGHOST \
               PGDATABASE=$PGDATABASE \
               PGUSER=$PGUSER \
               PGPASSWORD=$PGPASSWORD \

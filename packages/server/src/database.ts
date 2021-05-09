@@ -11,6 +11,10 @@ const configuration =
       }
     : {};
 
+console.log(
+  `using configuration: ${JSON.stringify(configuration)} with env ${NODE_ENV}`
+);
+
 const setSchema = (schema: string) =>
   run(`SET search_path TO ${schema}`).then(() => {
     console.log(`set search path to ${schema}`);

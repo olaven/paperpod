@@ -62,7 +62,7 @@ export const userRoutes = express
   )
   .post("/users", async (request, response) => {
     const credentials = request.body as models.UserCredentials;
-
+    console.log(`Going to create a new user`);
     if (
       !credentials ||
       !credentials.email ||

@@ -7,9 +7,9 @@ import { withConfiguration, run } from "klart";
  * @returns decoded certificate
  */
 export const getCertificate = () => {
-  const certificate = Buffer.from(process.env.DATABASE_CA, "base64").toString(
-    "utf-8"
-  );
+  const certificate = Buffer.from(process.env.DATABASE_CA, "base64")
+    .toString("utf-8")
+    .trim();
   console.log("returning certificate", certificate);
   return certificate;
 };

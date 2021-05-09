@@ -16,6 +16,7 @@ services:
       - DOCS_PORT=$DOCS_PORT
       - API_PORT=$API_PORT
       - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
+      - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod
   api:
     build:
@@ -32,11 +33,12 @@ services:
       PGHOST: database
       PGDATABASE: $PGDATABASE
       PGUSER: $PGUSER
-      #PGOPTIONS: "-c search_path='api'"
+      
       PAPERPOD_SCHEMA: api
       PGPASSWORD: $PGPASSWORD
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+      LOG_LEVEL: $LOG_LEVEL
     working_dir: /paperpod
   authentication:
     build: .
@@ -49,11 +51,11 @@ services:
       PORT: $AUTHENTICATION_PORT
       JWT_SECRET: $JWT_SECRET
       PGHOST: database
-      #PGOPTIONS: "-c search_path='authentication'"
       PAPERPOD_SCHEMA: authentication
       PGDATABASE: $PGDATABASE
       PGUSER: $PGUSER
       PGPASSWORD: $PGPASSWORD
+      LOG_LEVEL: $LOG_LEVEL
     working_dir: /paperpod
   web:
     build: .

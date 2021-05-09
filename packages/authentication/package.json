@@ -3,9 +3,9 @@
   "license": "UNLICENSED",
   "version": "0.0.1",
   "scripts": {
-    "dev": "ts-node-dev src/index.ts",
+    "dev": "yarn migration:up && ts-node-dev src/index.ts",
     "build": "tsc",
-    "test": "jest --detectOpenHandles",
+    "test": "yarn migration:up && jest --detectOpenHandles",
     "test:ci": "yarn migration:up && yarn test",
     "start": "ts-node ./src/index.ts",
     "migration": "node-pg-migrate --tsconfig ./tsconfig.json",

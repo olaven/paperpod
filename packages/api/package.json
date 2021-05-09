@@ -3,12 +3,12 @@
   "license": "UNLICENSED",
   "version": "0.0.1",
   "scripts": {
-    "dev": "ts-node-dev src/index.ts",
-    "build": "tsc",
-    "test": "jest --detectOpenHandles --forceExit",
-    "test:debug": "node --inspect-brk jest --detectOpenHandles --forceExit --runInBand",
-    "test:ci": "yarn migration:up && yarn test",
     "start": "ts-node ./src/index.ts",
+    "dev": "yarn migration:up && ts-node-dev src/index.ts",
+    "test": "yarn migration:up && jest --detectOpenHandles --forceExit",
+    "test:ci": "yarn migration:up && yarn test",
+    "test:debug": "node --inspect-brk jest --detectOpenHandles --forceExit --runInBand",
+    "build": "tsc",
     "migration": "node-pg-migrate --tsconfig ./tsconfig.json",
     "migration:up": "yarn migration up --create-schema --schema api",
     "migration:create": "yarn migration create"

@@ -3,6 +3,7 @@ import http from "http";
 import https from "https";
 import * as server from "@paperpod/server";
 import { withProxies, mapping } from "./proxy";
+import { logger } from "@paperpod/common";
 
 export const app = withProxies(
   [
@@ -47,11 +48,11 @@ const redirectServer = http.createServer(
 );
 
 redirectServer.listen(process.env.GATEWAY_HTTP_PORT, () => {
-  console.log(
+  logger.info(
     `Redirecting to HTTPS from port ${process.env.GATEWAY_HTTP_PORT}`
   );
 });
 
 actualServer.listen(process.env.PORT, () => {
-  console.log(`Listening on ${process.env.PORT}`);
+  logger.info(`Listening on ${process.env.PORT}`);
 });

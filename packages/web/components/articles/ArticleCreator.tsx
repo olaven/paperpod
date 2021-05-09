@@ -1,3 +1,4 @@
+import { logger } from "@paperpod/common";
 import { CREATED } from "node-kall";
 import { useContext, useState } from "react";
 import { UserContext } from "../authentication/UserContext";
@@ -13,7 +14,7 @@ export const ArticleCreator = () => {
     if (status === CREATED) {
       resfreshArticles();
     } else {
-      console.log(status, "when posting article");
+      logger.warn(status, "when posting article");
     }
   };
 

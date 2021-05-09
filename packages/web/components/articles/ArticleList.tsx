@@ -1,4 +1,4 @@
-import { models } from "@paperpod/common";
+import { logger, models } from "@paperpod/common";
 import { NO_CONTENT } from "node-kall";
 import { useContext } from "react";
 import { refreshToken } from "../authentication/authFetchers";
@@ -17,7 +17,7 @@ const DeleteButton = ({ article }: { article: models.Article }) => {
     if (status === NO_CONTENT) {
       resfreshArticles();
     } else {
-      console.log(`An error occured when deleting article: ${status}`);
+      logger.error(`An error occured when deleting article: ${status}`);
     }
   };
 

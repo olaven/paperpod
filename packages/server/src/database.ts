@@ -2,13 +2,19 @@ import { withConfiguration, run } from "klart";
 
 const { NODE_ENV, DATABASE_CA, PAPERPOD_SCHEMA } = process.env;
 
+/**
+ * The database CA is assumed to be stored encoded
+ * as base64. This gets `DATABASE_CA` from env and
+ * decodes it.
+ * @returns decoded certificate
+ */
 const getCertificate = () => {
   const certificate = Buffer.from(DATABASE_CA).toString("base64");
   console.log("returning certificate", certificate);
   return certificate;
 };
 
-const configuration =
+const getConfiguration = () =>
   NODE_ENV === "production"
     ? {
         ssl: {
@@ -19,7 +25,9 @@ const configuration =
     : {};
 
 console.log(
-  `using configuration: ${JSON.stringify(configuration)} with env ${NODE_ENV}`
+  `using configuration: ${JSON.stringify(
+    getConfiguration
+  )} with env ${NODE_ENV}`
 );
 
 const setSchema = (schema: string) =>
@@ -31,5 +39,5 @@ export const database = async () => {
   if (!PAPERPOD_SCHEMA) throw `Schema not set: ${PAPERPOD_SCHEMA}`;
 
   await setSchema(PAPERPOD_SCHEMA);
-  return withConfiguration(configuration);
+  return withConfiguration(getConfiguration());
 };

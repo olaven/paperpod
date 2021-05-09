@@ -12,11 +12,9 @@ describe("Database module", () => {
       -----END CERTIFICATE-----`;
 
       const encoded = Buffer.from(certificate).toString("base64");
-      const previous = process.env.DATABASE_CA;
 
       process.env.DATABASE_CA = encoded;
       action(certificate, encoded);
-      process.env.DATABASE_CA = previous;
     };
 
     it(
@@ -32,6 +30,14 @@ describe("Database module", () => {
       withMockedCertificate((certificate, encoded) => {
         expect(certificate).not.toEqual(encoded);
         expect(getCertificate()).not.toEqual(encoded);
+      })
+    );
+
+    it(
+      "gives a certificate based on the encoded value",
+      withMockedCertificate((certificate, encoded) => {
+        const decoded = Buffer.from(encoded, "base64").toString();
+        expect(certificate).toEqual(decoded);
       })
     );
   });

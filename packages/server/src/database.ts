@@ -9,7 +9,9 @@ const { NODE_ENV, PAPERPOD_SCHEMA } = process.env;
  * @returns decoded certificate
  */
 export const getCertificate = () => {
-  const certificate = Buffer.from(process.env.DATABASE_CA, "base64").toString();
+  const certificate = Buffer.from(process.env.DATABASE_CA, "base64").toString(
+    "utf-8"
+  );
   console.log("returning certificate", certificate);
   return certificate;
 };

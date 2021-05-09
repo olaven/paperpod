@@ -4,16 +4,30 @@ variable "do_token" {
   sensitive   = true
 }
 
+#FIXME: Remove this? 
+variable "droplet_username" {
+  type = string 
+  description = "the username of Digitalocean droplet"
+  sensitive = true 
+}
+
+#FIXME: Remove this? 
+variable "droplet_password" {
+  type = string 
+  description = "the password of Digitalocean droplet"
+  sensitive = true
+}
+
 provider "digitalocean" {
   token = var.do_token
 }
 
 
 # Create a new SSH key
-/* resource "digitalocean_ssh_key" "default" {
-  name       = "Terraform SSH Key"
-  public_key = file("~/.ssh/id_rsa.pub")
-} */
+# resource "digitalocean_ssh_key" "default" {
+#   name       = "Terraform SSH Key"
+#   public_key = file("~/.ssh/id_rsa.pub")
+# }  
 
 # See https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean for more details on ssh in the future
 
@@ -46,34 +60,20 @@ resource "digitalocean_domain" "default" {
   ip_address = digitalocean_droplet.manager-droplet.ipv4_address
 }
 
+resource "digitalocean_vpc" "network" {
+  name = "paperpod-network"
+  description = "Private network for Paperpod services"
+  region = "ams3"
+}
+
 resource "digitalocean_droplet" "manager-droplet" {
-  /* depends_on = [
-    digitalocean_ssh_key.default
-  ] */
+  
   name   = "paperpod-manager"
   image  = "docker-20-04"
-  size   = "s-1vcpu-1gb"
+  size   = "s-1vcpu-2gb"
   region = "ams3"
-  //ssh_keys = [digitalocean_ssh_key.default.fingerprint]
-
-  
-/*   connection {
-    host        = self.ipv4_address
-    password    = "password" #FIXME: REPLACE WITH SECRET ENV VARIABLE
-    user        = "root" #FIXME: REPLACE WITH SECRET ENV VARIABLE
-    type        = "ssh"
-    private_key = file("~/.ssh/id_rsa")
-    timeout     = "2m"
-  }
-  provisioner "remote-exec" {
-    inline = [
-      # TODO: use this to install nececarry dependencies etc. 
-      "export PATH=$PATH:/usr/bin",
-      "sudo apt-get update",
-      "echo test in digitalocean droplet",
-      "touch ~/some-file-from-terraform"
-    ]
-  }  */
+  private_networking = true
+  vpc_uuid = digitalocean_vpc.network.id
 }
 
 resource "digitalocean_database_cluster" "database-cluster" {
@@ -83,24 +83,56 @@ resource "digitalocean_database_cluster" "database-cluster" {
   size       = "db-s-1vcpu-1gb"
   region     = "ams3"
   node_count = 1
+  private_network_uuid = digitalocean_vpc.network.id
 }
+
+resource "digitalocean_database_firewall" "db_firewall" {
+  cluster_id = digitalocean_database_cluster.database-cluster.id 
+
+  rule {
+    type = "droplet"
+    value = digitalocean_droplet.manager-droplet.id
+  }
+}
+
+# FIXME: make sure this is used instead of default database / db user / db password
 resource "digitalocean_database_db" "database" {
   name       = "paperpod"
   cluster_id = digitalocean_database_cluster.database-cluster.id
 }
 
-# see if you can access this outside, in github actions
-output "database_uri" {
-  sensitive = true
-  value = digitalocean_database_cluster.database-cluster.private_uri
-}
 
-output "droplet_hostname" {
+output "droplet_id" {
+  sensitive  = true
+  value = digitalocean_droplet.manager-droplet.id
+}
+output "droplet_uri" {
   sensitive  = true
   value = digitalocean_droplet.manager-droplet.ipv4_address
 }
+output "droplet_uri_private" {
+  sensitive  = true
+  value = digitalocean_droplet.manager-droplet.ipv4_address_private
+}
 
-/* output "droplet_username" {
+output "database_host"  {
   sensitive = true
-  value = digitalocean_droplet.user
-} */
+  value = digitalocean_database_cluster.database-cluster.private_host
+}
+output "database_database" {
+  sensitive = true
+  value = digitalocean_database_cluster.database-cluster.database
+}
+output "database_user" {
+  sensitive = true
+  value = digitalocean_database_cluster.database-cluster.user
+}
+output "database_password" {
+  sensitive = true
+  value = digitalocean_database_cluster.database-cluster.password
+}
+
+output "database_port" {
+  sensitive = true 
+  value = digitalocean_database_cluster.database-cluster.port
+}

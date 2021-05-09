@@ -5,7 +5,8 @@
     "private": "true",
     "scripts": {
         "dev": "ts-node-dev index.ts",
-        "start": "ts-node index.ts"
+        "start": "ts-node index.ts",
+        "build": "echo 'no build script for docs :)'"
     },
     "dependencies": {
         "@paperpod/server": "0.0.1",

@@ -31,8 +31,9 @@ services:
       JWT_SECRET: $JWT_SECRET
       PGHOST: database
       PGDATABASE: $PGDATABASE
-      PGOPTIONS: "-c search_path='api'"
       PGUSER: $PGUSER
+      #PGOPTIONS: "-c search_path='api'"
+      PAPERPOD_SCHEMA: api
       PGPASSWORD: $PGPASSWORD
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
@@ -48,7 +49,8 @@ services:
       PORT: $AUTHENTICATION_PORT
       JWT_SECRET: $JWT_SECRET
       PGHOST: database
-      PGOPTIONS: "-c search_path='authentication'"
+      #PGOPTIONS: "-c search_path='authentication'"
+      PAPERPOD_SCHEMA: authentication
       PGDATABASE: $PGDATABASE
       PGUSER: $PGUSER
       PGPASSWORD: $PGPASSWORD

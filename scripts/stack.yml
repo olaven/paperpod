@@ -10,33 +10,41 @@ services:
       - WEB_PORT=$WEB_PORT
       - API_PORT=$API_PORT
       - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
-    volumes:
-      - /etc/letsencrypt/live/application.paperpod.fm/privkey.pem:/etc/letsencrypt/live/application.paperpod.fm/privkey.pem
-      - /etc/letsencrypt/live/application.paperpod.fm/cert.pem:/etc/letsencrypt/live/application.paperpod.fm/cert.pem
-      - /etc/letsencrypt/live/application.paperpod.fm/chain.pem:/etc/letsencrypt/live/application.paperpod.fm/chain.pem
+    #volumes: # FIXME: add once certbot has run
+    #  - /etc/letsencrypt/live/application.paperpod.fm/privkey.pem:/etc/letsencrypt/live/application.paperpod.fm/privkey.pem
+    #  - /etc/letsencrypt/live/application.paperpod.fm/cert.pem:/etc/letsencrypt/live/application.paperpod.fm/cert.pem
+    #  - /etc/letsencrypt/live/application.paperpod.fm/chain.pem:/etc/letsencrypt/live/application.paperpod.fm/chain.pem
   api:
     image: olaven/paperpod-api@$API_DIGEST
     environment:
       - PORT=$API_PORT
+      - NODE_ENV=production
       - JWT_SECRET=$JWT_SECRET
-      - MONGODB_NAME=$MONGODB_NAME_API
-      - MONGODB_USERNAME=$MONGODB_USERNAME
-      - MONGODB_PASSWORD=$MONGODB_PASSWORD
-      - MONGODB_HOST=$MONGODB_HOST
-      - MONGODB_PORT=$MONGODB_PORT_API # 27017
-      - MONGODB_PROTOCOL=$MONGODB_PROTOCOL
+      - PGHOST=$PGHOST
+      - PGDATABASE=$PGDATABASE
+      - PGUSER=$PGUSER
+      - PGPASSWORD=$PGPASSWORD
+      - PGPORT=$PGPORT
+      - PGSSLMODE=require
+      - PAPERPOD_SCHEMA=api
+      #- PGOPTIONS="-c search_path=api'
+      - DATABASE_CA=$DATABASE_CA
       - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
   authentication:
     image: olaven/paperpod-authentication@$AUTHENTICATION_DIGEST
     environment:
       - PORT=$AUTHENTICATION_PORT
+      - NODE_ENV=production
       - JWT_SECRET=$JWT_SECRET
-      - MONGODB_NAME=$MONGODB_NAME_AUTHENTICATION
-      - MONGODB_USERNAME=$MONGODB_USERNAME
-      - MONGODB_PASSWORD=$MONGODB_PASSWORD
-      - MONGODB_HOST=$MONGODB_HOST
-      - MONGODB_PORT=$MONGODB_PORT_AUTHENTICATION # 27017
-      - MONGODB_PROTOCOL=$MONGODB_PROTOCOL
+      - PGHOST=$PGHOST
+      - PGDATABASE=$PGDATABASE
+      - PGUSER=$PGUSER
+      - PGPASSWORD=$PGPASSWORD
+      - PGPORT=$PGPORT
+      - PGSSLMODE=require
+      - PAPERPOD_SCHEMA=authentication
+      #- PGOPTIONS="-c search_path=authentication"
+      - DATABASE_CA=$DATABASE_CA
   web:
     image: olaven/paperpod-web@$WEB_DIGEST

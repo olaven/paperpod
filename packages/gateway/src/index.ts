@@ -19,7 +19,8 @@ export const app = withProxies(
 );
 
 const actualServer =
-  process.env.NODE_ENV === "production"
+  // process.env.NODE_ENV === "production"
+  false //FIXME: add back production check when certs are fixed
     ? https.createServer(
         {
           key: fs.readFileSync(

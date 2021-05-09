@@ -12,21 +12,24 @@ const withMockedCertificate = (
 
   const encoded = Buffer.from(certificate).toString("base64");
 
+  //TODO: figure out some neat abstraction on this -> reuse in this and `withMockedNodeEnv`
+  const previous = process.env.DATABASE_CA;
   process.env.DATABASE_CA = encoded;
   action(certificate, encoded);
+  process.env.DATABASE_CA = previous;
+};
+
+const withMockedNodeEnv = (
+  value: "production" | "development" | "test",
+  action: () => void
+) => () => {
+  const previous = process.env.NODE_ENV;
+  process.env.NODE_ENV = value;
+  action();
+  process.env.NODE_ENV = previous;
 };
 
 describe("Database module", () => {
-  const withMockedNodeEnv = (
-    value: "production" | "development" | "test",
-    action: () => void
-  ) => () => {
-    const previous = process.env.NODE_ENV;
-    process.env.NODE_ENV = value;
-    action();
-    process.env.NODE_ENV = previous;
-  };
-
   describe("Getting database configuration", () => {
     it(
       "Does not throw an error",

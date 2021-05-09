@@ -71,6 +71,9 @@ export const userRoutes = express
     )
       return response.status(BAD_REQUEST).send();
 
+    console.log(
+      `going to search for existing user with email ${credentials.email}`
+    );
     const existing = await database.users.getByEmail(credentials.email);
 
     if (existing) return response.status(CONFLICT).send();

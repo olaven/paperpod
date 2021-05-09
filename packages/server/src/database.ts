@@ -33,12 +33,19 @@ const setSchema = (schema: string) =>
   });
 
 export const database = async () => {
+  console.log(`Inside database function`);
   const { PAPERPOD_SCHEMA } = process.env;
+  console.log(`got schema from env: ${PAPERPOD_SCHEMA}`);
   if (!PAPERPOD_SCHEMA)
     throw `Schema needs to be defined in env: ${PAPERPOD_SCHEMA}`;
 
+  console.log(`Going to set that schema`);
   await setSchema(PAPERPOD_SCHEMA);
+  console.log(`Succeeded at setting schema ${PAPERPOD_SCHEMA}`);
+  console.log(`Going to get configuration for env ${process.env.NODE_ENV}`);
   const configuration = getConfiguration();
-  console.log(`using database with configuration ${configuration}`);
+  console.log(
+    `Returning database with configuration ${JSON.stringify(configuration)}`
+  );
   return withConfiguration(configuration);
 };

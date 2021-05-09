@@ -4,13 +4,8 @@
  * decodes it.
  * @returns decoded certificate
  */
-export const getCertificate = () => {
-  const certificate = Buffer.from(process.env.DATABASE_CA, "base64")
-    .toString("utf-8")
-    .trim();
-  console.log("returning certificate", certificate);
-  return certificate;
-};
+export const getCertificate = () =>
+  Buffer.from(process.env.DATABASE_CA, "base64").toString("utf-8").trim();
 
 export type Configuration = {
   ssl?: {

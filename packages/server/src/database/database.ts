@@ -2,20 +2,12 @@ import { withConfiguration } from "klart";
 import { getConfiguration } from "./configuration";
 import { ensureMigrated, SchemaName } from "./migrate";
 
-/* const setSchema = (schema: SchemaName) =>
-  withConfiguration(getConfiguration())
-    .run(`SET search_path TO ${schema}`)
-    .then(() => {
-      console.log(`set search path to ${schema}`);
-    }); */
-
 export const database = async () => {
-  const PAPERPOD_SCHEMA = process.env.PAPERPOD_SCHEMA as SchemaName;
-  if (!PAPERPOD_SCHEMA)
-    throw `Schema needs to be defined in env: ${PAPERPOD_SCHEMA}`;
+  const schema = process.env.PAPERPOD_SCHEMA as SchemaName;
+  if (!schema) throw `Schema needs to be defined in env: ${schema}`;
 
   const configuration = getConfiguration();
-  await ensureMigrated({ configuration, schema: PAPERPOD_SCHEMA });
+  await ensureMigrated({ configuration, schema });
 
   return withConfiguration(configuration);
 };

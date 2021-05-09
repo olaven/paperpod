@@ -6,7 +6,7 @@ describe("Database migrations", () => {
     it("Does return a function that can be called", () => {
       const action = jest.fn();
       const customSingleton = singleton(action);
-      customSingleton(null, null);
+      customSingleton(null);
       expect(action).toHaveBeenCalled();
     });
 
@@ -15,7 +15,7 @@ describe("Database migrations", () => {
       const customSingleton = singleton(action);
       const callCount = faker.datatype.number({ min: 2, max: 20 });
       new Array(callCount).fill(null).forEach(() => {
-        customSingleton(null, null);
+        customSingleton(null);
       });
 
       expect(action).toHaveBeenCalledTimes(1);

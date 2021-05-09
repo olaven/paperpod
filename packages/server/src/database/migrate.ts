@@ -13,7 +13,7 @@ export const singleton = <T, G>(action: (input?: G) => T) => {
   };
 };
 
-const readMigrationFile = async (schema: SchemaName) => {
+export const readMigrationFile = async (schema: SchemaName) => {
   const filepath = path.resolve(__dirname, `${schema}.sql`);
   const buffer = fs.readFileSync(filepath);
   return Buffer.from(buffer).toString("utf-8");

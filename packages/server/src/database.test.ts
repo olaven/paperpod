@@ -1,22 +1,90 @@
 import faker from "faker";
-import { getCertificate } from "./database";
+import { getCertificate, getConfiguration } from "./database";
 
-describe("Database module", () => {
-  describe("Decoding of certificate", () => {
-    const withMockedCertificate = (
-      action: (certificate: string, encoded: string) => void
-    ) => () => {
-      const certificate = `
+const withMockedCertificate = (
+  action: (certificate: string, encoded: string) => void
+) => () => {
+  const certificate = `
       -----BEGIN CERTIFICATE-----
       ${faker.random.alpha({ count: 200 })}
-      -----END CERTIFICATE-----`;
+      -----END CERTIFICATE-----
+    `.trim();
 
-      const encoded = Buffer.from(certificate).toString("base64");
+  const encoded = Buffer.from(certificate).toString("base64");
 
-      process.env.DATABASE_CA = encoded;
-      action(certificate, encoded);
-    };
+  process.env.DATABASE_CA = encoded;
+  action(certificate, encoded);
+};
 
+describe("Database module", () => {
+  const withMockedNodeEnv = (
+    value: "production" | "development" | "test",
+    action: () => void
+  ) => () => {
+    const previous = process.env.NODE_ENV;
+    process.env.NODE_ENV = value;
+    action();
+    process.env.NODE_ENV = previous;
+  };
+
+  describe("Getting database configuration", () => {
+    it(
+      "Does not throw an error",
+      withMockedNodeEnv("test", () => {
+        expect(() => getConfiguration()).not.toThrow();
+      })
+    );
+
+    it(
+      "Returns an empty object if in test",
+      withMockedNodeEnv("test", () => {
+        expect(getConfiguration()).toEqual({});
+      })
+    );
+
+    it(
+      "Returns an empty object if in development",
+      withMockedNodeEnv("development", () => {
+        expect(getConfiguration()).toEqual({});
+      })
+    );
+
+    describe("Getting configuration in production", () => {
+      it(
+        "Returns an object with .ssl key",
+        withMockedNodeEnv(
+          "production",
+          withMockedCertificate((_, __) => {
+            expect(getConfiguration().ssl).toBeDefined();
+          })
+        )
+      );
+
+      it(
+        "Returns SSL with certificate",
+        withMockedNodeEnv(
+          "production",
+          withMockedCertificate((certificate, encoded) => {
+            const { ca: retrieved } = getConfiguration().ssl;
+            expect(retrieved).toEqual(certificate);
+          })
+        )
+      );
+
+      it(
+        "Returns SSL with rejectUnauthorized: false",
+        withMockedNodeEnv(
+          "production",
+          withMockedCertificate((_, __) => {
+            const { rejectUnauthorized } = getConfiguration().ssl;
+            expect(rejectUnauthorized).toBe(false);
+          })
+        )
+      );
+    });
+  });
+
+  describe("Decoding of certificate", () => {
     it(
       "does retrieve the certificate",
       withMockedCertificate((certificate, encoded) => {

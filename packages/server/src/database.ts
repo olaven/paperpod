@@ -17,7 +17,7 @@ export const getCertificate = () => {
 /**
  * @returns env-dependent db configuration
  */
-const getConfiguration = () =>
+export const getConfiguration = () =>
   process.env.NODE_ENV === "production"
     ? {
         ssl: {

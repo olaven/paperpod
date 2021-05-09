@@ -27,7 +27,7 @@ jobs:
       - name: Use node:14
         uses: actions/setup-node@v1
         with:
-          node-version: "14.x"
+          node-version: "15.x"
       - name: Install dependencies
         run: yarn
       - name: Run tests
@@ -37,6 +37,7 @@ jobs:
           PGHOST: postgres
           PGUSER: ci_user
           PGPASSWORD: ci_password
+          PAPERPOD_SCHEMA: api
 
   test-authentication:
     runs-on: ubuntu-latest
@@ -62,7 +63,7 @@ jobs:
       - name: Use node:14
         uses: actions/setup-node@v1
         with:
-          node-version: "14.x"
+          node-version: "15.x"
       - name: Install dependencies
         run: yarn
       - name: Run tests
@@ -72,6 +73,7 @@ jobs:
           PGHOST: postgres
           PGUSER: ci_user
           PGPASSWORD: ci_password
+          PAPERPOD_SCHEMA: authentication
   test-converter:
     runs-on: ubuntu-latest
     steps:

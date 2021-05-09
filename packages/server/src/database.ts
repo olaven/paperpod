@@ -1,11 +1,18 @@
 import { withConfiguration, run } from "klart";
 
 const { NODE_ENV, DATABASE_CA, PAPERPOD_SCHEMA } = process.env;
+
+const getCertificate = () => {
+  const certificate = Buffer.from(DATABASE_CA).toString("base64");
+  console.log("returning certificate", certificate);
+  return certificate;
+};
+
 const configuration =
   NODE_ENV === "production"
     ? {
         ssl: {
-          ca: DATABASE_CA,
+          ca: getCertificate(),
           rejectUnauthorized: false,
         },
       }

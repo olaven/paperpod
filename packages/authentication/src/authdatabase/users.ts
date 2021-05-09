@@ -1,13 +1,11 @@
 import { models } from "@paperpod/common";
 import { database } from "@paperpod/server";
 
-export const getByEmail = async (email: string) => {
-  console.log(`Getting by email: ${email}`);
-  return (await database()).first<models.User>(
+export const getByEmail = async (email: string) =>
+  (await database()).first<models.User>(
     "SELECT * FROM authentication.users WHERE email = $1",
     [email]
   );
-};
 
 export const deleteUser = async (id: string) =>
   (await database()).first<models.User>(

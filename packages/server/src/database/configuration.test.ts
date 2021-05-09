@@ -1,5 +1,5 @@
 import faker from "faker";
-import { getCertificate, getConfiguration } from "./database";
+import { getCertificate, getConfiguration } from "./configuration";
 
 const withMockedCertificate = (
   action: (certificate: string, encoded: string) => void
@@ -29,7 +29,7 @@ const withMockedNodeEnv = (
   process.env.NODE_ENV = previous;
 };
 
-describe("Database module", () => {
+describe("Database configuration module", () => {
   describe("Getting database configuration", () => {
     it(
       "Does not throw an error",

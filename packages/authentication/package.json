@@ -3,14 +3,11 @@
   "license": "UNLICENSED",
   "version": "0.0.1",
   "scripts": {
-    "dev": "yarn migration:up && ts-node-dev src/index.ts",
+    "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
-    "test": "yarn migration:up && jest --detectOpenHandles",
-    "test:ci": "yarn migration:up && yarn test",
-    "start": "ts-node ./src/index.ts",
-    "migration": "node-pg-migrate --tsconfig ./tsconfig.json",
-    "migration:up": "yarn migration up --create-schema --schema authentication",
-    "migration:create": "yarn migration create"
+    "test": "jest --detectOpenHandles",
+    "test:ci": "yarn test",
+    "start": "ts-node ./src/index.ts"
   },
   "dependencies": {
     "@paperpod/common": "0.0.1",
@@ -20,7 +17,6 @@
     "express-session": "^1.17.1",
     "nanoid": "^3.1.20",
     "node-kall": "^1.0.83",
-    "node-pg-migrate": "^5.9.0",
     "ts-node": "^9.1.1"
   },
   "devDependencies": {

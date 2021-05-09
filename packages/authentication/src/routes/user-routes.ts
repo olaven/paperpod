@@ -61,7 +61,6 @@ export const userRoutes = express
   )
   .post("/users", async (request, response) => {
     const credentials = request.body as models.UserCredentials;
-    console.log(`Going to create a new user`);
     if (
       !credentials ||
       !credentials.email ||
@@ -71,9 +70,6 @@ export const userRoutes = express
     )
       return response.status(BAD_REQUEST).send();
 
-    console.log(
-      `going to search for existing user with email ${credentials.email}`
-    );
     const existing = await database.users.getByEmail(credentials.email);
 
     if (existing) return response.status(CONFLICT).send();

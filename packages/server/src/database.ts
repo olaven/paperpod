@@ -1,4 +1,4 @@
-import { withConfiguration, run } from "klart";
+import { withConfiguration } from "klart";
 
 /**
  * The database CA is assumed to be stored encoded
@@ -28,9 +28,11 @@ export const getConfiguration = () =>
     : {};
 
 const setSchema = (schema: string) =>
-  run(`SET search_path TO ${schema}`).then(() => {
-    console.log(`set search path to ${schema}`);
-  });
+  withConfiguration(getConfiguration())
+    .run(`SET search_path TO ${schema}`)
+    .then(() => {
+      console.log(`set search path to ${schema}`);
+    });
 
 export const database = async () => {
   console.log(`Inside database function`);

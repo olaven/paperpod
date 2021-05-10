@@ -14,7 +14,6 @@ export const Player = ({ article_id }: { article_id: string }) => {
     } else {
       const response = await fetchFile(article_id, token);
       var blob = await response.blob();
-      console.log(blob);
       var url = window.URL.createObjectURL(blob);
       const newAudio = new Audio(url);
       setAudio(newAudio);

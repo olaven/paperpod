@@ -1,8 +1,9 @@
+import { logger } from "@paperpod/common";
 import faker from "faker";
 
 export const PollyClient = () => ({
   send: () => {
-    console.log("inside client-polly mock");
+    logger.trace("inside client-polly mock");
     return {
       SynthesisTask: {
         OutputUri: faker.internet.url(),

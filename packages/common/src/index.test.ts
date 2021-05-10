@@ -19,6 +19,9 @@ describe("The exported modules from index", () => {
   it("does export constants", () => {
     expect(index.constants).toBeDefined();
   });
+  it("does export logger", () => {
+    expect(index.logger).toBeDefined();
+  });
   it("does export test", () => {
     expect(index.test).toBeDefined();
   });

@@ -1,3 +1,4 @@
+import { logger } from "@paperpod/common";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../authentication/UserContext";
@@ -8,7 +9,7 @@ export const Layout = (props) => {
   const { user } = useContext(UserContext);
   const router = useRouter();
   useEffect(() => {
-    console.log("user here", user);
+    logger.debug("user here", user);
     if (user) {
       router.push("/home");
     }

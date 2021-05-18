@@ -95,7 +95,11 @@ resource "digitalocean_database_firewall" "db_firewall" {
   }
 }
 
-# FIXME: make sure this is used instead of default database / db user / db password
+resource "digitalocean_database_user" "user" {
+  cluster_id = digitalocean_database_cluster.database-cluster.id
+  name = "paperpod_user"
+}
+
 resource "digitalocean_database_db" "database" {
   name       = "paperpod"
   cluster_id = digitalocean_database_cluster.database-cluster.id
@@ -124,11 +128,11 @@ output "database_database" {
 }
 output "database_user" {
   sensitive = true
-  value = digitalocean_database_cluster.database-cluster.user
+  value = digitalocean_database_user.user.name 
 }
 output "database_password" {
   sensitive = true
-  value = digitalocean_database_cluster.database-cluster.password
+  value = digitalocean_database_user.user.password
 }
 
 output "database_port" {

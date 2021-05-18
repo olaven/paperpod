@@ -5,9 +5,10 @@ dotenv.config({
   path: path.resolve(process.cwd(), "..", "..", ".env"),
 });
 
-export default {
+module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
+  transform: {},
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*"],
   coverageThreshold: {

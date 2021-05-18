@@ -21,7 +21,7 @@ export const article = (
   template: Partial<models.Article> = {}
 ): models.Article => ({
   id: faker.datatype.uuid(),
-  title: `Article about ${faker.commerce.product()}`,
+  title: `Article about ${faker.commerce.product()}-${faker.datatype.uuid()}`,
   description: faker.lorem.paragraph(),
   owner_id: faker.datatype.uuid(),
   author: `${faker.name.firstName()} ${faker.name.lastName()}`,

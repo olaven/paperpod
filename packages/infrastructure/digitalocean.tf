@@ -101,7 +101,6 @@ resource "digitalocean_database_db" "database" {
   cluster_id = digitalocean_database_cluster.database-cluster.id
 }
 
-
 output "droplet_id" {
   sensitive  = true
   value = digitalocean_droplet.manager-droplet.id
@@ -121,7 +120,7 @@ output "database_host"  {
 }
 output "database_database" {
   sensitive = true
-  value = digitalocean_database_cluster.database-cluster.database
+  value = digitalocean_database_db.database.name
 }
 output "database_user" {
   sensitive = true

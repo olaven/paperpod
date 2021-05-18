@@ -23,14 +23,6 @@ provider "digitalocean" {
 }
 
 
-# Create a new SSH key
-# resource "digitalocean_ssh_key" "default" {
-#   name       = "Terraform SSH Key"
-#   public_key = file("~/.ssh/id_rsa.pub")
-# }  
-
-# See https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean for more details on ssh in the future
-
 resource "digitalocean_project" "paperpod-project" {
   name        = "paperpod"
   purpose     = "running Paperpod"
@@ -43,6 +35,7 @@ resource "digitalocean_project_resources" "project-to-resource-mapping" {
     digitalocean_droplet.manager-droplet.urn,
     digitalocean_database_cluster.database-cluster.urn,
     digitalocean_domain.default.urn,
+    digitalocean_record.www.id
   ]
 }
 
@@ -58,6 +51,13 @@ resource "digitalocean_database_firewall" "droplet-to-database-firewall" {
 resource "digitalocean_domain" "default" {
   name       = "application.paperpod.fm"
   ip_address = digitalocean_droplet.manager-droplet.ipv4_address
+}
+
+resource "digitalocean_record" "www" {
+  domain = digitalocean_domain.default.name
+  type = "A"
+  name = "www"
+  value = digitalocean_droplet.manager-droplet.ipv4_address
 }
 
 resource "digitalocean_vpc" "network" {

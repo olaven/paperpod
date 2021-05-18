@@ -1,6 +1,8 @@
+import { logger } from "@paperpod/common";
+
 export const ComprehendClient = () => ({
   send: () => {
-    console.log("inside client-comprehend mock");
+    logger.trace("inside client-comprehend mock");
     return {
       Languages: ["en"],
     };

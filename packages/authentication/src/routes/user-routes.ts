@@ -1,7 +1,6 @@
 import { models, validators } from "@paperpod/common";
 import { jwt, middleware } from "@paperpod/server";
 import { hash } from "../cryptography/cryptography";
-import { nanoid } from "nanoid";
 import express from "express";
 import * as database from "../authdatabase/authdatabase";
 import {
@@ -62,7 +61,6 @@ export const userRoutes = express
   )
   .post("/users", async (request, response) => {
     const credentials = request.body as models.UserCredentials;
-
     if (
       !credentials ||
       !credentials.email ||

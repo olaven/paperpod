@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../authentication/UserContext";
-import { constants } from "@paperpod/common";
+import { constants, logger } from "@paperpod/common";
 
 export const Feed = () => {
   const { user } = useContext(UserContext);
@@ -11,8 +11,7 @@ export const Feed = () => {
       <button
         onClick={async () => {
           const response = await fetch(`/api/feeds/${user.id}`);
-          console.log(response.status);
-          console.log(await response.text());
+          logger.debug(await response.text(), response.status);
         }}
       >
         getFeed

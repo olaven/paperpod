@@ -1,5 +1,5 @@
 import faker from "faker";
-import { models, test } from "@paperpod/common";
+import { logger, models, test } from "@paperpod/common";
 import { jwt } from "@paperpod/server";
 import {
   OK,
@@ -36,7 +36,7 @@ describe("The api for articles", () => {
   describe("the POST-endpoint for articles", () => {
     jest.mock("@paperpod/converter", () => ({
       convertToText: (article: models.Article) => {
-        console.log("INSIDE AUDIO TEXT MOCK");
+        logger.trace("INSIDE AUDIO TEXT MOCK");
         return article;
       },
     }));

@@ -6,6 +6,7 @@ import {
   ComprehendClient,
   DetectDominantLanguageCommand,
 } from "@aws-sdk/client-comprehend";
+import { logger } from "@paperpod/common";
 
 /**
  * Google Translate has an upper character limit of
@@ -65,7 +66,7 @@ export const voiceFromLanguage = (code: string) =>
 export const textToAudio = async (text: string) => {
   const language = await getLanguage(text);
 
-  console.log(`Detected language: ${language}`);
+  logger.debug(`Detected language: ${language}`);
 
   const command = new StartSpeechSynthesisTaskCommand({
     Text: text,

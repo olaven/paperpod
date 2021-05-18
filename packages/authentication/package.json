@@ -6,11 +6,8 @@
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
     "test": "jest --detectOpenHandles",
-    "test:ci": "yarn migration:up && yarn test",
-    "start": "ts-node ./src/index.ts",
-    "migration": "node-pg-migrate --tsconfig ./tsconfig.json",
-    "migration:up": "yarn migration up --create-schema --schema authentication",
-    "migration:create": "yarn migration create"
+    "test:ci": "yarn test",
+    "start": "ts-node ./src/index.ts"
   },
   "dependencies": {
     "@paperpod/common": "0.0.1",
@@ -18,10 +15,8 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "klart": "^0.1.4",
     "nanoid": "^3.1.20",
     "node-kall": "^1.0.83",
-    "node-pg-migrate": "^5.9.0",
     "ts-node": "^9.1.1"
   },
   "devDependencies": {

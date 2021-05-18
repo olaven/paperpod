@@ -22,4 +22,7 @@ describe("The exported modules from index", () => {
   it("does export middlware", () => {
     expect(index.middleware).toBeDefined();
   });
+  it("does export database", () => {
+    expect(index.database).toBeDefined();
+  });
 });

@@ -1,12 +1,19 @@
-import config from "../../jest.config";
-
 export default {
-  ...config,
-  /* transform: {
-    "/\.[jt]sx?$/": "babel-jest"
+  collectCoverageFrom: [
+    "**/*.{js,jsx,ts,tsx}",
+    "!**/*.d.ts",
+    "!**/node_modules/**",
+  ],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  testPathIgnorePatterns: ["/node_modules/", "/.next/"],
+  transform: {
+    "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>../../node_modules/babel-jest",
   },
   transformIgnorePatterns: [
-    "node_modules", 
-  ], */
-  setupFilesAfterEnv: ["./jest.setup.ts"]
+    "/node_modules/",
+    "^.+\\.module\\.(css|sass|scss)$",
+  ],
+  moduleNameMapper: {
+    "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+  },
 };

@@ -1,29 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useImperativeHandle, useState } from "react";
 import { get, OK } from "node-kall";
-import { Input, asyncEffect } from "@paperpod/ui";
+import { Input } from "@paperpod/ui";
 
 const useTodos = () => {
   const [todos, setTodos] = useState([]);
 
-  asyncEffect(async () => {
-    const [status, todos] = await get(
-      "https://jsonplaceholder.typicode.com/todos"
-    );
-    setTodos(status === OK ? todos : []);
-  }, []);
+  useEffect(() => {
+
+    const getTodods = async () => {
+
+
+      const [status, todos] = await get(
+        "https://jsonplaceholder.typicode.com/todos"
+      );
+      setTodos(status === OK ? todos : []);
+    }
+
+    getTodods()
+  })
+   
 
   return todos;
 };
 
-export const Popup = () => {
-  const todos = useTodos();
+const useName = () => {
 
+  const [ name ,setName] = useState("Guro"); 
+  return name;
+}
+
+const Child = () => {
+
+  const name = useName(); 
+  return <div>{name}</div>
+}
+
+export const Popup = () => {
+  
   return (
     <div>
-      <Input placeholder="Fra popup.tsx" />
-      {todos.map((todo) => (
-        <div>got {todo.title}</div>
-      ))}
+      <Input></Input>
+      <Child />
     </div>
   );
 };

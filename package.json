@@ -16,6 +16,7 @@
     "server": "yarn workspace @paperpod/server",
     "extension": "yarn workspace @paperpod/extension",
     "ui": "yarn workspace @paperpod/ui",
+    "frontend": "yarn workspace @paperpod/frontend",
     "infrastructure": "yarn workspace @paperpod/infrastructure",
     "docs": "yarn workspace @paperpod/docs"
   },

@@ -6,6 +6,7 @@ COPY ./package.json .
 COPY ./yarn.lock .
 COPY ./tsconfig.json .
 COPY ./packages/ui /app/packages/ui
+COPY ./packages/frontend /app/packages/frontend
 COPY ./packages/common /app/packages/common
 COPY ./packages/web /app/packages/web
 

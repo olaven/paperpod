@@ -1,0 +1,17 @@
+{
+    "name": "@paperpod/frontend",
+    "license": "UNLICENSED",
+    "description": "Common non-ui frontend functions for Paperpod packages",
+    "version": "0.0.1",
+    "main": "./src/index.ts",
+    "scripts": {
+        "build": "tsc"
+    },
+    "dependencies": {
+        "node-kall": "^1.0.81",
+        "typescript": "^4.2.4"
+    },
+    "devDependencies": {
+        "@types/jsonwebtoken": "^8.5.0"
+    }
+}

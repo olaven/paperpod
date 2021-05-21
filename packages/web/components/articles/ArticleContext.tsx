@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext } from "react";
 import { models } from "@paperpod/common";
 import { OK } from "node-kall";
 import { asyncEffect } from "@paperpod/ui";
-import { getArticles } from "./articleFetchers";
+import { fetchers } from "@paperpod/frontend";
 import { UserContext } from "../authentication/UserContext";
 
 export const ArticleContext = createContext<{
@@ -17,7 +17,7 @@ export const ArticleContextProvider = ({ children }: any) => {
   const { token } = useContext(UserContext);
   const [articles, setArticles] = useState<models.Article[]>([]);
   const resfreshArticles = async () => {
-    const [status, articles] = await getArticles(token);
+    const [status, articles] = await fetchers.article.getArticles(token);
     if (status === OK) {
       setArticles(articles);
     }

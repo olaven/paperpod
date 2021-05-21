@@ -1,6 +1,6 @@
 import { models } from "@paperpod/common";
 import { del, get, post } from "node-kall";
-import { bearer } from "../../helpers/bearer";
+import { bearer } from "./bearer";
 
 export const postArticle = (article: models.ArticlePayload, token: string) =>
   post<models.ArticlePayload, models.Article>(

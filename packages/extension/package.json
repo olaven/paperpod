@@ -11,6 +11,7 @@
   "dependencies": {
     "@paperpod/common": "0.0.1",
     "@paperpod/ui": "0.0.1",
+    "@paperpod/frontend": "0.0.1",
     "node-kall": "^1.0.81"
   },
   "resolutions": {

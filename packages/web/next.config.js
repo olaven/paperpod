@@ -1,4 +1,4 @@
-const withTM = require("next-transpile-modules")(["@paperpod/common", "@paperpod/ui"]);
+const withTM = require("next-transpile-modules")(["@paperpod/common", "@paperpod/ui", "@paperpod/frontend"]);
 
 module.exports = withTM({
   webpack: (config) => {

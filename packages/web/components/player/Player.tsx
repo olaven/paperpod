@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { useContext, useState } from "react";
-import { asyncEffect } from "@paperpod/ui";
-import { logger } from "@paperpod/common"; 
+import { logger } from "@paperpod/common";
 import { UserContext } from "../authentication/UserContext";
-import { fetchFile } from "./playerFetchers";
+import { fetchers } from "@paperpod/frontend";
 
 export const Player = ({ article_id }: { article_id: string }) => {
   const { token } = useContext(UserContext);
@@ -15,7 +14,7 @@ export const Player = ({ article_id }: { article_id: string }) => {
       if (!playing) {
         audio.pause();
       } else {
-        const response = await fetchFile(article_id, token);
+        const response = await fetchers.player.fetchFile(article_id, token);
         var blob = await response.blob();
         logger.debug(blob);
         var url = window.URL.createObjectURL(blob);
@@ -24,7 +23,6 @@ export const Player = ({ article_id }: { article_id: string }) => {
         newAudio.play();
       }
     })();
-
   }, [playing]);
 
   return (

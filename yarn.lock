@@ -2535,14 +2535,6 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/chrome@^0.0.114":
-  version "0.0.114"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.114.tgz#8ceb33fa261f4b9e307fa7344ba8182d8d410d4e"
-  integrity sha512-i7qRr74IrxHtbnrZSKUuP5Uvd5EOKwlwJq/yp7+yTPihOXnPhNQO4Z5bqb1XTnrjdbUKEJicaVVbhcgtRijmLA==
-  dependencies:
-    "@types/filesystem" "*"
-    "@types/har-format" "*"
-
 "@types/chrome@^0.0.141":
   version "0.0.141"
   resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.141.tgz#337648651a2b75a74bf3038680dc0e47ddd75d07"
@@ -2688,7 +2680,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node-fetch@^2.5.8":
+"@types/node-fetch@^2.5.10", "@types/node-fetch@^2.5.8":
   version "2.5.10"
   resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.5.10.tgz#9b4d4a0425562f9fcea70b12cb3fcdd946ca8132"
   integrity sha512-IpkX0AasN44hgEad0gEF/V6EgR5n69VEqPEgnmoM8GsIGro3PowbWs4tR6IhxUTyPLpOn+fiGG6nrQhcmoCuIQ==
@@ -6999,13 +6991,6 @@ jest-changed-files@^26.6.2:
     "@jest/types" "^26.6.2"
     execa "^4.0.0"
     throat "^5.0.0"
-
-jest-chrome@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/jest-chrome/-/jest-chrome-0.7.1.tgz#72dd7cc0367e6b24f17974fb78f59665dafd0a10"
-  integrity sha512-rUsDoOIxvZr4JpzyYWepE5/l0xM5VO6010g93jhbaeYwJaJGpazYIClbLtbeWg+zUxMJvLdN3iDMvT6m8wNMwA==
-  dependencies:
-    "@types/chrome" "^0.0.114"
 
 jest-cli@^26.6.3:
   version "26.6.3"

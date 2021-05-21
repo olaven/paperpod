@@ -1,6 +1,6 @@
 import { models } from "@paperpod/common";
 import { del, get, post, put } from "node-kall";
-import { bearer } from "../../helpers/bearer";
+import { bearer } from "./bearer";
 
 export const signup = (credentials: models.UserCredentials) =>
   post<models.UserCredentials, models.TokenResponse>(

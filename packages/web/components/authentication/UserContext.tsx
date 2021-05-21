@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState, ReactChild } from "react";
 import { models } from "@paperpod/common";
+import { fetchers } from "@paperpod/frontend";
 import { get, OK } from "node-kall";
-import { refreshToken } from "./authFetchers";
 import { useRouter } from "next/router";
 
 export const UserContext = createContext<{
@@ -15,7 +15,6 @@ export const UserContext = createContext<{
 });
 
 const useUser = (token: string): models.User => {
-
   const [user, setUser] = useState<models.User>(null);
   const router = useRouter();
 
@@ -46,7 +45,7 @@ export const UserContextProvider = ({ children }: any) => {
   useEffect(() => {
     if (!token) return null;
     const id = setInterval(async () => {
-      const [status, response] = await refreshToken(token);
+      const [status, response] = await fetchers.auth.refreshToken(token);
 
       if (status === OK) {
         setToken(response.token);

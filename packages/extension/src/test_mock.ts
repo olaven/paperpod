@@ -1,10 +1,8 @@
 //TODO: type
 export const withMockedChrome = (chrome: {}, action: () => void) => () => {
-  const before = global.chrome;
   //@ts-expect-error NOTE: we are not adhering to the chrome namespace atm
   global.chrome = chrome;
   action();
-  global.chrome = before;
 };
 
 export const chromeWithTabs = (...urls: string[]) => ({
@@ -14,3 +12,16 @@ export const chromeWithTabs = (...urls: string[]) => ({
     },
   },
 });
+
+export const withMockedFetch =
+  (
+    response: Partial<Response>,
+    action: (response: Partial<Response>) => void
+  ) =>
+  () => {
+    const before = global.fetch;
+    //@ts-expect-error NOTE: we're only accepting a partial response, causing the below assignment to be invalid
+    global.fetch = async () => response;
+    action(response);
+    global.fetch = before;
+  };

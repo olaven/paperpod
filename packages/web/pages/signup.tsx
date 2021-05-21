@@ -1,6 +1,6 @@
 import { CREATED } from "node-kall";
 import { useContext, useEffect, useState } from "react";
-import { signup } from "../components/authentication/authFetchers";
+import { fetchers } from "@paperpod/frontend";
 import { Input, Button, Paragraph, styled } from "@paperpod/ui";
 import { UserContext } from "../components/authentication/UserContext";
 import { validators } from "@paperpod/common";
@@ -32,7 +32,7 @@ const Signup = () => {
   }, [email, password, repeatedPassword]);
 
   const onSignup = async () => {
-    const [status, response] = await signup({ email, password });
+    const [status, response] = await fetchers.auth.signup({ email, password });
 
     if (status === CREATED) {
       setToken(response.token);

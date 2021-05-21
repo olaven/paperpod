@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { CREATED } from "node-kall";
 import { useRouter } from "next/router";
 import { Button, Input, Paragraph, styled } from "@paperpod/ui";
-import { login } from "../components/authentication/authFetchers";
+import { fetchers } from "@paperpod/frontend";
 import { UserContext } from "../components/authentication/UserContext";
 
 const Wrapper = styled("div", {
@@ -34,7 +34,7 @@ const Login = () => {
   const [showError, setShowError] = useState(false);
 
   const onLogin = async () => {
-    const [status, response] = await login({
+    const [status, response] = await fetchers.auth.login({
       email,
       password,
     });

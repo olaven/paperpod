@@ -1,9 +1,9 @@
 import { CREATED } from "node-kall";
 import { validators } from "@paperpod/common";
 import { Button, Input } from "@paperpod/ui";
+import { fetchers } from "@paperpod/frontend";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
-import { signup } from "./authFetchers";
 
 export const Signup = () => {
   const [email, setEmail] = useState<string>();
@@ -13,7 +13,7 @@ export const Signup = () => {
   const { setToken } = useContext(UserContext);
 
   const onClick = async () => {
-    const [status, response] = await signup({ email, password });
+    const [status, response] = await fetchers.auth.signup({ email, password });
 
     if (status === CREATED) {
       setToken(response.token);

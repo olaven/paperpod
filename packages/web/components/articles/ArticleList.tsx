@@ -1,19 +1,18 @@
-import React from "react"
+import React from "react";
 import { logger, models } from "@paperpod/common";
+import { fetchers } from "@paperpod/frontend";
 import { NO_CONTENT } from "node-kall";
 import { useContext } from "react";
-import { refreshToken } from "../authentication/authFetchers";
 import { UserContext } from "../authentication/UserContext";
 import { Player } from "../player/Player";
 import { ArticleContext } from "./ArticleContext";
-import { deleteArticle } from "./articleFetchers";
 
 const DeleteButton = ({ article }: { article: models.Article }) => {
   const { resfreshArticles } = useContext(ArticleContext);
   const { token } = useContext(UserContext);
 
   const onDelete = async () => {
-    const [status] = await deleteArticle(article, token);
+    const [status] = await fetchers.article.deleteArticle(article, token);
 
     if (status === NO_CONTENT) {
       resfreshArticles();

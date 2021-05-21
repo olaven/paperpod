@@ -1,13 +1,14 @@
-import React from "react";
-import { Paragraph } from "@paperpod/ui"
-import { useUrl } from "./effects"; 
+import React, { useEffect, useState } from "react";
+import { Paragraph } from "@paperpod/ui";
+import { usePosting } from "./effects";
 
 export const Popup = () => {
+  const status = usePosting("SOME_TEST_TOKEN_REPLACE_ME");
 
-  const url = useUrl()
-  return <>
-    <h1>Paperpod</h1>
-  <Paragraph>
-    current url {url}
-    </Paragraph></>
+  return (
+    <>
+      <h1>Paperpod</h1>
+      <Paragraph>Post status: {status}</Paragraph>
+    </>
+  );
 };

@@ -7,6 +7,6 @@ import { useEffect } from "react";
  * @param on
  */
 export const asyncEffect = (action: () => Promise<any>, on: any[]) =>
-    useEffect(() => {
-        action()
-    }, on);
+  useEffect(() => {
+    action();
+  }, on);

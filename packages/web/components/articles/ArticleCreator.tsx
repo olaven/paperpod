@@ -1,16 +1,16 @@
 import { logger } from "@paperpod/common";
+import { fetchers } from "@paperpod/frontend";
 import { CREATED } from "node-kall";
 import { useContext, useState } from "react";
 import { UserContext } from "../authentication/UserContext";
 import { ArticleContext } from "./ArticleContext";
-import { postArticle } from "./articleFetchers";
 
 export const ArticleCreator = () => {
   const { token } = useContext(UserContext);
   const { resfreshArticles } = useContext(ArticleContext);
   const [link, setLink] = useState<string>(null);
   const onCreate = async () => {
-    const [status] = await postArticle({ link }, token);
+    const [status] = await fetchers.article.postArticle({ link }, token);
     if (status === CREATED) {
       resfreshArticles();
     } else {

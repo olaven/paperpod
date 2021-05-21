@@ -40,7 +40,6 @@ export const Popup = () => {
   return (
     <div>
       <Input></Input>
-      <Child />
     </div>
   );
 };

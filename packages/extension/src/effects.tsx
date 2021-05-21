@@ -1,3 +1,4 @@
+import { logger } from "@paperpod/common";
 import React , { useState, useEffect } from "react";
 
 export const useUrl = () => {
@@ -9,7 +10,10 @@ export const useUrl = () => {
       chrome.tabs.query({
         active: true
       }, ([tab]) => {
-        setUrl(tab.url)
+          if (tab)
+            setUrl(tab.url)
+          else 
+            logger.debug(`No active chrome tab`)
       }); 
     } , [])
   

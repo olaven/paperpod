@@ -7,6 +7,7 @@ import { models, test } from "@paperpod/common";
 import { render, waitFor } from "@testing-library/react";
 
 import { useUrl } from "./effects";
+import { withMockedChrome, chromeWithTabs } from "./chrome_mock";
 
 const TestComponent = () => {
   const url = useUrl(); 
@@ -20,23 +21,8 @@ const renderTestComponent = () => {
 
 describe("Browser extension effects", () => {
 
-  //TODO: type
-  const withMockedChrome = (chrome: any, action: () => void) =>() =>  {
-    const before = global.chrome; 
-    global.chrome = chrome; 
-    action();
-    global.chrome = before; 
-  }
-
+  
   describe("useURL", () => {
-
-    const chromeWithTabs = (url: string) => ({
-      tabs: {
-        query: (options: any, callback: ([{url: string}]) => void) => {
-          callback([{url}])
-        }
-      }
-    })
 
     it("does render without throwing", withMockedChrome({
       tabs: {

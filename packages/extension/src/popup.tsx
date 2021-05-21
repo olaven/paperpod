@@ -36,9 +36,13 @@ const Child = () => {
 }
 
 export const Popup = () => {
-  
+
+  const name = useName(); 
+  const todos = useTodos();
   return (
     <div>
+      {name}
+      {todos.join(",")}
       <Input></Input>
     </div>
   );

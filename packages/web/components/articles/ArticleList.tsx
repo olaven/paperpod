@@ -1,3 +1,4 @@
+import React from "react"
 import { logger, models } from "@paperpod/common";
 import { NO_CONTENT } from "node-kall";
 import { useContext } from "react";
@@ -31,7 +32,7 @@ export const ArticleList = () => {
     <>
       {articles.map((article) => (
         <div id={article.id}>
-          {article.original_url} - "{article.id}"
+          <p>{article.title}</p>
           <Player article_id={article.id} />
           <DeleteButton article={article} />
         </div>

@@ -2,9 +2,13 @@ import { models } from "@paperpod/common";
 import { del, get, post } from "node-kall";
 import { bearer } from "./bearer";
 
-export const postArticle = (article: models.ArticlePayload, token: string) =>
+export const postArticle = (
+  article: models.ArticlePayload,
+  token: string,
+  baseUrl = ``
+) =>
   post<models.ArticlePayload, models.Article>(
-    "/api/articles",
+    `${baseUrl}/api/articles`,
     article,
     bearer(token)
   );

@@ -5,6 +5,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "dev": "parcel watch src/index.html --public-url=./",
+    "dev:server": "parcel src/index.html",
     "build": "parcel build src/index.html --public-url=./",
     "test": "jest"
   },
@@ -15,8 +16,8 @@
     "node-kall": "^1.0.81"
   },
   "resolutions": {
-    "**/react": "./node_modules/react",
-    "**/react-dom": "./node_modules/react-dom"
+    "**/react": "../node_modules/react",
+    "**/react-dom": "../node_modules/react-dom"
   },
   "devDependencies": {
     "@testing-library/react": "^11.2.7",

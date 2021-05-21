@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Convert any article on the web to podcasts!",
   "manifest_version": 2,
+  "permissions": [
+    "tabs"
+  ],
   "browser_action": {
     "default_popup": "dist/index.html"
   },

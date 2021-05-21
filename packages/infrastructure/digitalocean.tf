@@ -35,7 +35,6 @@ resource "digitalocean_project_resources" "project-to-resource-mapping" {
     digitalocean_droplet.manager-droplet.urn,
     digitalocean_database_cluster.database-cluster.urn,
     digitalocean_domain.default.urn,
-    digitalocean_record.www.id
   ]
 }
 

@@ -1,29 +1,13 @@
-import React, { useState } from "react";
-import { get, OK } from "node-kall";
-import { Input, asyncEffect } from "@paperpod/ui";
-
-const useTodos = () => {
-  const [todos, setTodos] = useState([]);
-
-  asyncEffect(async () => {
-    const [status, todos] = await get(
-      "https://jsonplaceholder.typicode.com/todos"
-    );
-    setTodos(status === OK ? todos : []);
-  }, []);
-
-  return todos;
-};
+import React from "react";
+import { Paragraph } from "@paperpod/ui"
+import { useUrl } from "./effects"; 
 
 export const Popup = () => {
-  const todos = useTodos();
 
-  return (
-    <div>
-      <Input placeholder="Fra popup.tsx" />
-      {todos.map((todo) => (
-        <div>got {todo.title}</div>
-      ))}
-    </div>
-  );
+  const url = useUrl()
+  return <>
+    <h1>Paperpod</h1>
+  <Paragraph>
+    current url {url}
+    </Paragraph></>
 };

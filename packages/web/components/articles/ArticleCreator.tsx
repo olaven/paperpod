@@ -2,11 +2,11 @@ import { logger } from "@paperpod/common";
 import { fetchers } from "@paperpod/frontend";
 import { CREATED } from "node-kall";
 import { useContext, useState } from "react";
-import { UserContext } from "../authentication/UserContext";
+import { authentication } from "@paperpod/frontend";
 import { ArticleContext } from "./ArticleContext";
 
 export const ArticleCreator = () => {
-  const { token } = useContext(UserContext);
+  const { token } = useContext(authentication.UserContext);
   const { resfreshArticles } = useContext(ArticleContext);
   const [link, setLink] = useState<string>(null);
   const onCreate = async () => {

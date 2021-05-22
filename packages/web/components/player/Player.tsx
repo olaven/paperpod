@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useContext, useState } from "react";
 import { logger } from "@paperpod/common";
-import { UserContext } from "../authentication/UserContext";
+import { authentication } from "@paperpod/frontend";
 import { fetchers } from "@paperpod/frontend";
 
 export const Player = ({ article_id }: { article_id: string }) => {
-  const { token } = useContext(UserContext);
+  const { token } = useContext(authentication.UserContext);
   const [playing, setPlaying] = useState(false);
   const [audio, setAudio] = useState(new Audio());
 

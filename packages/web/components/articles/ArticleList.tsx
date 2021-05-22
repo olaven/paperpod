@@ -3,13 +3,13 @@ import { logger, models } from "@paperpod/common";
 import { fetchers } from "@paperpod/frontend";
 import { NO_CONTENT } from "node-kall";
 import { useContext } from "react";
-import { UserContext } from "../authentication/UserContext";
+import { authentication } from "@paperpod/frontend";
 import { Player } from "../player/Player";
 import { ArticleContext } from "./ArticleContext";
 
 const DeleteButton = ({ article }: { article: models.Article }) => {
   const { resfreshArticles } = useContext(ArticleContext);
-  const { token } = useContext(UserContext);
+  const { token } = useContext(authentication.UserContext);
 
   const onDelete = async () => {
     const [status] = await fetchers.article.deleteArticle(article, token);

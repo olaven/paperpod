@@ -1,11 +1,11 @@
-import { Input, Button } from "@paperpod/ui";
 import { models } from "@paperpod/common";
+import { Input, Button } from "@paperpod/ui";
+import { authentication } from "@paperpod/frontend";
 import { CREATED, post } from "node-kall";
 import { useContext, useState } from "react";
-import { UserContext } from "./UserContext";
 
 export const Login = () => {
-  const { setToken, user } = useContext(UserContext);
+  const { setToken, user } = useContext(authentication.UserContext);
   const [email, setEmail] = useState<string>(null);
   const [password, setPassword] = useState<string>(null);
 

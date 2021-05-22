@@ -2,7 +2,7 @@ import { Paragraph, Button, A, styled } from "@paperpod/ui";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
-import { UserContext } from "../components/authentication/UserContext";
+import { authentication } from "@paperpod/frontend";
 
 const Container = styled("div", {
   display: "flex",
@@ -11,7 +11,7 @@ const Container = styled("div", {
 });
 
 const Index = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useContext(authentication.UserContext);
   const router = useRouter();
   useEffect(() => {
     if (user) {

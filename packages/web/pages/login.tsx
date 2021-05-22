@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { CREATED } from "node-kall";
-import { useRouter } from "next/router";
 import { Button, Input, Paragraph, styled } from "@paperpod/ui";
 import { fetchers } from "@paperpod/frontend";
-import { UserContext } from "../components/authentication/UserContext";
+import { authentication } from "@paperpod/frontend";
 
 const Wrapper = styled("div", {
   width: "100vw",
@@ -27,7 +26,7 @@ const Container = styled("div", {
 });
 
 const Login = () => {
-  const { setToken } = useContext(UserContext);
+  const { setToken } = useContext(authentication.UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

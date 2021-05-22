@@ -1,3 +1,8 @@
 {
-    "extends": "../../tsconfig.json"
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "jsx": "preserve",
+        // needed for error in stitches: https://github.com/modulz/stitches/issues/494
+        "skipLibCheck": true //TODO: remove when fixed 
+    }
 }

@@ -35,7 +35,39 @@ resource "digitalocean_project_resources" "project-to-resource-mapping" {
     digitalocean_droplet.manager-droplet.urn,
     digitalocean_database_cluster.database-cluster.urn,
     digitalocean_domain.default.urn,
+    digitalocean_loadbalancer.public.urn
   ]
+}
+
+resource "digitalocean_certificate" "cert" {
+  name    = "paperpod-certificate"
+  type    = "lets_encrypt"
+  domains = ["application.paperpod.fm"]
+}
+
+# Create a new Load Balancer with TLS termination
+resource "digitalocean_loadbalancer" "public" {
+  name        = "paperpod-loadbalancer"
+  region      = "ams3"
+  droplet_ids = [
+    digitalocean_droplet.manager-droplet.id
+  ]
+
+  forwarding_rule {
+    entry_port     = 443
+    entry_protocol = "https"
+
+    target_port     = 80
+    target_protocol = "http"
+
+    certificate_id = digitalocean_certificate.cert.id
+  }
+
+  healthcheck { 
+    protocol = "https"
+    port = 443
+    path = "/"
+  }
 }
 
 resource "digitalocean_database_firewall" "droplet-to-database-firewall" {

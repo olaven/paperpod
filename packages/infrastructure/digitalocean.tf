@@ -42,7 +42,7 @@ resource "digitalocean_project_resources" "project-to-resource-mapping" {
 resource "digitalocean_certificate" "cert" {
   name    = "paperpod-certificate"
   type    = "lets_encrypt"
-  domains = ["application.paperpod.fm"]
+  domains = [digitalocean_domain.default.name]
 }
 
 # Create a new Load Balancer with TLS termination

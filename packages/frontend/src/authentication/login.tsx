@@ -4,7 +4,6 @@ import { models } from "@paperpod/common";
 import { CREATED, post } from "node-kall";
 import { authentication } from "@paperpod/frontend";
 
-console.log("React", React);
 export const Login = () => {
   const { setToken, user } = React.useContext(authentication.UserContext);
   const [email, setEmail] = React.useState<string>(null);

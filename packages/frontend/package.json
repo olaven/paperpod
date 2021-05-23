@@ -9,8 +9,8 @@
         "build": "tsc"
     },
     "resolutions": {
-        "**/react": "./node_modules/react",
-        "**/react-dom": "./node_modules/react-dom"
+        "**/react": "../../node_modules/react",
+        "**/react-dom": "../../node_modules/react-dom"
     },
     "dependencies": {
         "node-kall": "^1.0.81",

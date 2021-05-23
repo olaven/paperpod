@@ -1,8 +1,8 @@
-import { useContext } from "react";
+import * as React from "react";
 import { authentication } from "@paperpod/frontend";
 
 const Home = () => {
-  const { user } = useContext(authentication.UserContext);
+  const { user } = React.useContext(authentication.UserContext);
   return user ? (
     <div>you are logged in as {user.email}</div>
   ) : (

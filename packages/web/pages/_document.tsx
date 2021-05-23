@@ -1,6 +1,6 @@
 //Copied from: https://stitches.dev/blog/using-nextjs-with-stitches
 
-import React from "react";
+import * as React from "react";
 import NextDocument, { DocumentContext } from "next/document";
 import { getCssString } from "@paperpod/ui";
 

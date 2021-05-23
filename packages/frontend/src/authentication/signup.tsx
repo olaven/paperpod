@@ -1,16 +1,16 @@
+import * as React from "react";
 import { CREATED } from "node-kall";
 import { validators } from "@paperpod/common";
 import { Button, Input } from "@paperpod/ui";
 import { fetchers } from "@paperpod/frontend";
-import React, { useContext, useEffect, useState } from "react";
 import { authentication } from "@paperpod/frontend";
 
 export const Signup = () => {
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
-  const [validPassword, setValidPassword] = useState(false);
+  const [email, setEmail] = React.useState<string>();
+  const [password, setPassword] = React.useState<string>();
+  const [validPassword, setValidPassword] = React.useState(false);
 
-  const { setToken } = useContext(authentication.UserContext);
+  const { setToken } = React.useContext(authentication.UserContext);
 
   const onClick = async () => {
     const [status, response] = await fetchers.auth.signup({ email, password });
@@ -20,7 +20,7 @@ export const Signup = () => {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!password) return;
     setValidPassword(validators.validatePassword(password));
   }, [password]);

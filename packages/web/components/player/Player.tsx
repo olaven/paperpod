@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
-import { useContext, useState } from "react";
+import * as React from "react";
 import { logger } from "@paperpod/common";
 import { authentication } from "@paperpod/frontend";
 import { fetchers } from "@paperpod/frontend";
 
 export const Player = ({ article_id }: { article_id: string }) => {
-  const { token } = useContext(authentication.UserContext);
-  const [playing, setPlaying] = useState(false);
-  const [audio, setAudio] = useState(new Audio());
+  const { token } = React.useContext(authentication.UserContext);
+  const [playing, setPlaying] = React.useState(false);
+  const [audio, setAudio] = React.useState(new Audio());
 
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => {
       if (!playing) {
         audio.pause();

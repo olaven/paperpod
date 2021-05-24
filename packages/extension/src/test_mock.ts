@@ -13,6 +13,15 @@ export const chromeWithTabs = (...urls: string[]) => ({
   },
 });
 
+export const chromeStorage = () => ({
+  storage: {
+    sync: {
+      set: jest.fn(),
+      get: jest.fn(),
+    },
+  },
+});
+
 export const withMockedFetch =
   (
     response: Partial<Response>,

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import * as React from "react";
 import { Paragraph } from "@paperpod/ui";
-import { usePosting } from "./effects";
+import { usePosting } from "../../effects";
 
 export const Popup = () => {
   const status = usePosting("SOME_TEST_TOKEN_REPLACE_ME");

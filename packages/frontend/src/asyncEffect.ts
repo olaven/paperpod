@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import * as React from "react";
 
 /**
  * Wraps `React.useEffect`, accepting an
@@ -7,6 +7,6 @@ import { useEffect } from "react";
  * @param on
  */
 export const asyncEffect = (action: () => Promise<any>, on: any[]) =>
-  useEffect(() => {
+  React.useEffect(() => {
     action();
   }, on);

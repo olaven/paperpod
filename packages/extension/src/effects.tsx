@@ -1,11 +1,11 @@
 import { logger } from "@paperpod/common";
-import React, { useState, useEffect } from "react";
+import * as React from "react";
 import { fetchers, asyncEffect } from "@paperpod/frontend";
 
 export const usePosting = (token: string) => {
   const url = useUrl();
   const [status, setStatus] =
-    useState<"pending" | "posted" | "error">("pending");
+    React.useState<"pending" | "posted" | "error">("pending");
   asyncEffect(async () => {
     if (!url) return;
 
@@ -29,9 +29,9 @@ export const usePosting = (token: string) => {
 };
 
 export const useUrl = () => {
-  const [url, setUrl] = useState<string>(null);
+  const [url, setUrl] = React.useState<string>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     chrome.tabs.query(
       {
         active: true,

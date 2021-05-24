@@ -1,4 +1,9 @@
 export default {
+  globals: {
+    "ts-jest": {
+      tsconfig: "tsconfig.test.json",
+    },
+  },
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
     "!**/*.d.ts",
@@ -7,10 +12,10 @@ export default {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testPathIgnorePatterns: ["/node_modules/", "/.next/"],
   transform: {
-    "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>../../node_modules/babel-jest",
+    "\\.(ts|tsx)$": ["ts-jest"],
   },
   transformIgnorePatterns: [
-    "/node_modules/",
+    "node_modules/(?!(@paperpod))",
     "^.+\\.module\\.(css|sass|scss)$",
   ],
   moduleNameMapper: {

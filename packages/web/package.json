@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@paperpod/common": "0.0.1",
-    "@paperpod/ui": "0.0.1",
     "@paperpod/frontend": "0.0.1",
+    "@paperpod/ui": "0.0.1",
     "@testing-library/jest-dom": "^5.12.0",
     "next": "^9.4.0",
     "next-transpile-modules": "^6.0.0",
@@ -20,13 +20,15 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@types/react": "^17.0.2",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-typescript": "^7.13.0",
     "@testing-library/dom": "^7.30.4",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^13.1.8",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.3.0",
+    "@types/react": "^17.0.2",
     "babel-jest": "^26.6.3",
     "jest": "^26.6.3",
     "node-fetch": "^2.6.1",

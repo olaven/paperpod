@@ -1,6 +1,5 @@
-import React from "react";
+import * as React from "react";
 import ReactDOM from "react-dom";
-import { Popup } from "./popup";
+import { AuthenticationPopup } from "./components/authentication/AuthenticationPopup";
 
-
-ReactDOM.render(<Popup />, document.getElementById("root"));
+ReactDOM.render(<AuthenticationPopup />, document.getElementById("root"));

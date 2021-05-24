@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { ArticleContextProvider } from "./ArticleContext";
 import { ArticleCreator } from "./ArticleCreator";
 import { ArticleList } from "./ArticleList";

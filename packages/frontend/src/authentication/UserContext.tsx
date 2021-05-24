@@ -1,10 +1,10 @@
-import React, { createContext, useEffect, useState, ReactChild } from "react";
+import * as React from "react";
 import { models } from "@paperpod/common";
 import { fetchers } from "@paperpod/frontend";
 import { get, OK } from "node-kall";
 import { useRouter } from "next/router";
 
-export const UserContext = createContext<{
+export const UserContext = React.createContext<{
   user: models.User;
   token: string;
   setToken: (token: string) => any;
@@ -15,10 +15,10 @@ export const UserContext = createContext<{
 });
 
 const useUser = (token: string): models.User => {
-  const [user, setUser] = useState<models.User>(null);
+  const [user, setUser] = React.useState<models.User>(null);
   const router = useRouter();
 
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => {
       if (!token) return setUser(null);
       const [status, user] = await get<models.User>(
@@ -39,10 +39,10 @@ const useUser = (token: string): models.User => {
 };
 
 export const UserContextProvider = ({ children }: any) => {
-  const [token, setToken] = useState<string>(null);
+  const [token, setToken] = React.useState<string>(null);
   const user = useUser(token);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!token) return null;
     const id = setInterval(async () => {
       const [status, response] = await fetchers.auth.refreshToken(token);

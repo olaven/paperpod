@@ -1,9 +1,9 @@
-import { useContext } from "react";
-import { UserContext } from "../authentication/UserContext";
+import * as React from "react";
+import { authentication } from "@paperpod/frontend";
 import { constants, logger } from "@paperpod/common";
 
 export const Feed = () => {
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(authentication.UserContext);
 
   return (
     <>

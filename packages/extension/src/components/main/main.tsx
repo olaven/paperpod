@@ -5,6 +5,5 @@ import { PostingPopup } from "../posting/PostingPopup";
 
 export const Main = () => {
   const { user } = React.useContext(authentication.UserContext);
-
   return user ? <PostingPopup /> : <AuthenticationPopup />;
 };

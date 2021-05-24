@@ -5,8 +5,12 @@
 import * as React from "react";
 import { render, waitFor } from "@testing-library/react";
 
-import { usePosting, useUrl } from "./effects";
-import { withMockedChrome, chromeWithTabs, withMockedFetch } from "./test_mock";
+import { usePosting, useUrl } from "./usePosting";
+import {
+  withMockedChrome,
+  chromeWithTabs,
+  withMockedFetch,
+} from "../../test_mock";
 
 describe("Browser extension effects", () => {
   const TestComponent = () => {

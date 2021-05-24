@@ -25,5 +25,5 @@ const retrieve =
     });
 
 const usePermanentStorage = <T>(key: Key) => {
-  return [save<T>(key), retrieve<T>(key)];
+  return { save: save<T>(key), retrieve: retrieve<T>(key) };
 };

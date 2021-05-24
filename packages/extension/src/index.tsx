@@ -1,5 +1,11 @@
+import { authentication } from "@paperpod/frontend";
 import * as React from "react";
 import ReactDOM from "react-dom";
-import { AuthenticationPopup } from "./components/authentication/authenticationpopup";
+import { Main } from "./components/main/Main";
 
-ReactDOM.render(<AuthenticationPopup />, document.getElementById("root"));
+ReactDOM.render(
+  <authentication.UserContextProvider>
+    <Main />
+  </authentication.UserContextProvider>,
+  document.getElementById("root")
+);

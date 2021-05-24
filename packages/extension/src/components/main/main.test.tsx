@@ -4,10 +4,10 @@
 
 import * as React from "react";
 import { render, waitFor } from "@testing-library/react";
-import { Popup } from "./popup";
+import { Main } from "./main";
 import { chromeWithTabs, withMockedChrome } from "../../test_mock";
 
-const renderPopup = () => render(<Popup />);
+const renderPopup = () => render(<Main />);
 
 describe("The popup component", () => {
   it(

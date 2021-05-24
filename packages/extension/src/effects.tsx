@@ -14,7 +14,7 @@ export const usePosting = (token: string) => {
         link: url,
       },
       token,
-      "https://application.paperpod.fm"
+      "https://paperpod.fm"
     );
 
     if (status === 201) {

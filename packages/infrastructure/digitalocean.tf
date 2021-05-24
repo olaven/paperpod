@@ -80,7 +80,7 @@ resource "digitalocean_database_firewall" "droplet-to-database-firewall" {
 }
 
 resource "digitalocean_domain" "default" {
-  name       = "application.paperpod.fm"
+  name       = "paperpod.fm"
   ip_address = digitalocean_droplet.manager-droplet.ipv4_address
 }
 

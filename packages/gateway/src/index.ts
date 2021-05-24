@@ -25,15 +25,15 @@ const actualServer =
     ? https.createServer(
         {
           key: fs.readFileSync(
-            "/etc/letsencrypt/live/application.paperpod.fm/privkey.pem",
+            "/etc/letsencrypt/live/paperpod.fm/privkey.pem",
             "utf8"
           ),
           cert: fs.readFileSync(
-            "/etc/letsencrypt/live/application.paperpod.fm/cert.pem",
+            "/etc/letsencrypt/live/paperpod.fm/cert.pem",
             "utf8"
           ),
           ca: fs.readFileSync(
-            "/etc/letsencrypt/live/application.paperpod.fm/chain.pem",
+            "/etc/letsencrypt/live/paperpod.fm/chain.pem",
             "utf8"
           ),
         },

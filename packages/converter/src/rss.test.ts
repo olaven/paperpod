@@ -73,7 +73,7 @@ describe("Conversion from articles to RSS", () => {
       const serialized = serializeItem(article);
 
       expect(serialized).toContain(
-        `<enclosure url="https://application.paperpod.fm/api/files/${article.id}" length="10" type="audio/mpeg"`
+        `<enclosure url="https://paperpod.fm/api/files/${article.id}" length="10" type="audio/mpeg"`
       );
     });
   });

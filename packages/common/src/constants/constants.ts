@@ -1,1 +1,1 @@
-export const APPLICATION_URL = `https://application.paperpod.fm`; //TODO: vary on env?
+export const APPLICATION_URL = `https://paperpod.fm`; //TODO: vary on env?

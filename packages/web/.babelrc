@@ -3,6 +3,11 @@
         "next/babel"
     ],
     "env": {
-        "test": {}
+        "test": {
+            "presets": [
+                "next/babel",
+                //                "@babel/preset-typescript"
+            ]
+        }
     }
 }

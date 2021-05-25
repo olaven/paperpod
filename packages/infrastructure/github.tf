@@ -11,15 +11,15 @@ provider "github" {
 resource "github_repository" "terraform" {
   name = "paperpod"
   visibility = "public"
-  description = "https://paperpod.fm"
-  homepage_url  = "https://paperpod.fm" 
+  description = "https://landingpage.paperpod.fm"
+  homepage_url  = "https://landingpage.paperpod.fm" 
   has_downloads = true 
   has_issues = true 
   has_projects  = true 
   has_wiki = true 
   vulnerability_alerts  = true 
   pages { 
-      cname      = "paperpod.fm" 
+      cname      = "landingpage.paperpod.fm" 
       source {
           branch = "main" 
           path   = "/docs" 

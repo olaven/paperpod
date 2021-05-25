@@ -4,9 +4,9 @@
   "version": "0.0.1",
   "main": "./src/index.ts",
   "scripts": {
-    "dev": "parcel watch src/index.html --public-url=./",
+    "dev": "parcel watch src/index.html src/background/*.ts --public-url=./",
     "dev:server": "parcel src/index.html",
-    "build": "parcel build src/index.html --public-url=./",
+    "build": "parcel build src/index.html src/background/*.ts --public-url=./",
     "test": "jest"
   },
   "dependencies": {

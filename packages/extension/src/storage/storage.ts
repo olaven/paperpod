@@ -1,3 +1,5 @@
+import { logger } from "@paperpod/common";
+
 type Key = "paperpod.session_token" | "paperpod.logged_in"; // add more when needed
 
 export const useLoggedInStorage = () =>
@@ -20,6 +22,8 @@ const retrieve =
   () =>
     new Promise<T>((resolve, reject) => {
       chrome.storage.sync.get([key], (result) => {
+        logger.debug(`getting result ${result}`);
+        if (!result) resolve(null);
         resolve(result[key]);
       });
     });

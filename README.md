@@ -17,7 +17,6 @@ This will allow me to give you perks in return for your gratitude!
 
 - `.env` containing:
   - GATEWAY_PORT=8080
-  - GATEWAY_HTTP_PORT=8088
   - API_PORT=8082
   - AUTHENTICATION_PORT=8081
   - WEB_PORT=3000

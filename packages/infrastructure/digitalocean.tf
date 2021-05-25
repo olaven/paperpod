@@ -89,7 +89,7 @@ resource "digitalocean_record" "www" {
   domain = digitalocean_domain.default.name
   type = "A"
   name = "www"
-  value = digitalocean_droplet.manager-droplet.ipv4_address
+  value = digitalocean_loadbalancer.public.ip
 }
 
 resource "digitalocean_vpc" "network" {

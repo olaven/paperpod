@@ -65,8 +65,8 @@ resource "digitalocean_loadbalancer" "public" {
   }
 
   healthcheck { 
-    protocol = "https"
-    port = 443
+    protocol = "http"
+    port = 80
     path = "/"
   }
 }

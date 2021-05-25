@@ -49,6 +49,7 @@ resource "digitalocean_certificate" "cert" {
 resource "digitalocean_loadbalancer" "public" {
   name        = "paperpod-loadbalancer"
   region      = "ams3"
+  vpc_uuid = digitalocean_vpc.network.id
   droplet_ids = [
     digitalocean_droplet.manager-droplet.id
   ]

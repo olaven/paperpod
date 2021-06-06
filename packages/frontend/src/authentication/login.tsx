@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Input, Button } from "@paperpod/ui";
 import { models } from "@paperpod/common";
+
 import { CREATED, post } from "node-kall";
-import { authentication } from "@paperpod/frontend";
+import { authentication, fetchers } from "@paperpod/frontend";
 
 export const Login = () => {
   const { setToken, user } = React.useContext(authentication.UserContext);
@@ -12,10 +13,7 @@ export const Login = () => {
   console.log("user", user);
 
   const onLogin = async () => {
-    const [status, response] = await post<
-      models.UserCredentials,
-      models.TokenResponse
-    >("/authentication/users/sessions", {
+    const [status, response] = await fetchers.auth.login({
       email,
       password,
     });

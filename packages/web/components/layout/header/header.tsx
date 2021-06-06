@@ -11,7 +11,7 @@ const Container = styled("div", {
 export const Header = () => (
   <Container>
     <Link href="/">
-      <Image src="https://paperpod.fm/logo.svg" />
+      <Image src="logo.svg" />
     </Link>
     {/* <Navbutton selected>Navbutton 1</Navbutton>
     <Navbutton>Navbutton 2</Navbutton>

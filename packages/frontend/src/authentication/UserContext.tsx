@@ -20,7 +20,10 @@ const useUser = (token: string): models.User => {
 
   React.useEffect(() => {
     (async () => {
-      if (!token) return setUser(null);
+      if (!token) {
+        setUser(null);
+        return null;
+      }
       const [status, user] = await get<models.User>(
         "/authentication/users/me/",
         {
@@ -33,7 +36,7 @@ const useUser = (token: string): models.User => {
       setUser(status === OK ? user : null);
       if (user) router.push("/home");
     })();
-  }, []);
+  }, [token]);
 
   return user;
 };

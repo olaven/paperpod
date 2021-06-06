@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Input, Button } from "@paperpod/ui";
-import { models } from "@paperpod/common";
+import { logger, models } from "@paperpod/common";
 
 import { CREATED, post } from "node-kall";
 import { authentication, fetchers } from "@paperpod/frontend";
@@ -20,6 +20,7 @@ export const Login = () => {
 
     if (status === CREATED) {
       setToken(response.token);
+      logger.debug(`token after login is ${response.token}`);
     } else {
       throw status + " when creating session";
     }

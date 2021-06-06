@@ -24,6 +24,8 @@ services:
       dockerfile: ./packages/api/Dockerfile
     env_file:
       - .env
+    ports:
+      - $API_PORT:$API_PORT
     command: yarn api dev
     volumes:
       - .:/paperpod
@@ -44,6 +46,8 @@ services:
     build: .
     env_file:
       - .env
+    ports:
+      - $AUTHENTICATION_PORT:$AUTHENTICATION_PORT
     command: yarn authentication dev
     volumes:
       - .:/paperpod
@@ -61,6 +65,8 @@ services:
     build: .
     env_file:
       - .env
+    ports:
+      - $WEB_PORT:$WEB_PORT
     command: yarn web dev
     volumes:
       - .:/paperpod
@@ -70,6 +76,8 @@ services:
     build: . 
     env_file: 
       - .env 
+    ports: 
+      - $DOCS_PORT:$DOCS_PORT
     command: yarn docs dev 
     volumes:
       - .:/paperpod
@@ -80,7 +88,7 @@ services:
   database:
     image: postgres:13
     ports: 
-      - 5433:5432
+      - $PGPORT:$PGPORT
     environment:
       - POSTGRES_DB=$PGDATABASE
       - POSTGRES_USER=$PGUSER

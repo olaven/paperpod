@@ -9,6 +9,8 @@ export const Login = () => {
   const [email, setEmail] = React.useState<string>(null);
   const [password, setPassword] = React.useState<string>(null);
 
+  console.log("user", user);
+
   const onLogin = async () => {
     const [status, response] = await post<
       models.UserCredentials,

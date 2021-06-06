@@ -3,6 +3,7 @@ import { models } from "@paperpod/common";
 import { fetchers } from "@paperpod/frontend";
 import { get, OK } from "node-kall";
 import { useRouter } from "next/router";
+import { FrontendContext } from "../FrontendContext";
 
 export const UserContext = React.createContext<{
   user: models.User;
@@ -15,6 +16,8 @@ export const UserContext = React.createContext<{
 });
 
 const useUser = (token: string): models.User => {
+  const { serverHostname } = React.useContext(FrontendContext);
+
   const [user, setUser] = React.useState<models.User>(null);
   const router = useRouter();
 
@@ -24,14 +27,9 @@ const useUser = (token: string): models.User => {
         setUser(null);
         return null;
       }
-      const [status, user] = await get<models.User>(
-        "/authentication/users/me/",
-        {
-          headers: {
-            authorization: "Bearer " + token,
-          },
-        }
-      );
+      const [status, user] = await fetchers.auth.getMe(token, {
+        serverHostname,
+      });
 
       setUser(status === OK ? user : null);
       if (user) router.push("/home");
@@ -41,14 +39,21 @@ const useUser = (token: string): models.User => {
   return user;
 };
 
-export const UserContextProvider = ({ children }: any) => {
+type UserContextArguments = {
+  children: any;
+};
+export const UserContextProvider = ({ children }: UserContextArguments) => {
+  const { serverHostname } = React.useContext(FrontendContext);
   const [token, setToken] = React.useState<string>(null);
+
   const user = useUser(token);
 
   React.useEffect(() => {
     if (!token) return null;
     const id = setInterval(async () => {
-      const [status, response] = await fetchers.auth.refreshToken(token);
+      const [status, response] = await fetchers.auth.refreshToken(token, {
+        serverHostname,
+      });
 
       if (status === OK) {
         setToken(response.token);

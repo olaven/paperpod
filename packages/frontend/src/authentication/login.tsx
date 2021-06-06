@@ -1,22 +1,26 @@
 import * as React from "react";
 import { Input, Button } from "@paperpod/ui";
-import { logger, models } from "@paperpod/common";
+import { logger } from "@paperpod/common";
 
-import { CREATED, post } from "node-kall";
+import { CREATED } from "node-kall";
 import { authentication, fetchers } from "@paperpod/frontend";
+import { FrontendContext } from "../FrontendContext";
 
 export const Login = () => {
   const { setToken, user } = React.useContext(authentication.UserContext);
   const [email, setEmail] = React.useState<string>(null);
   const [password, setPassword] = React.useState<string>(null);
 
-  console.log("user", user);
+  const { serverHostname } = React.useContext(FrontendContext);
 
   const onLogin = async () => {
-    const [status, response] = await fetchers.auth.login({
-      email,
-      password,
-    });
+    const [status, response] = await fetchers.auth.login(
+      {
+        email,
+        password,
+      },
+      { serverHostname }
+    );
 
     if (status === CREATED) {
       setToken(response.token);

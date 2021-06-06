@@ -5,7 +5,10 @@
   "manifest_version": 2,
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "management",
+    "https://paperpod.fm/*",
+    "webRequest"
   ],
   "background": {
     "scripts": [

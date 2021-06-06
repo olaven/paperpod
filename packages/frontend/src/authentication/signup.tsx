@@ -4,6 +4,7 @@ import { validators } from "@paperpod/common";
 import { Button, Input } from "@paperpod/ui";
 import { fetchers } from "@paperpod/frontend";
 import { authentication } from "@paperpod/frontend";
+import { FrontendContext } from "../FrontendContext";
 
 export const Signup = () => {
   const [email, setEmail] = React.useState<string>();
@@ -11,9 +12,13 @@ export const Signup = () => {
   const [validPassword, setValidPassword] = React.useState(false);
 
   const { setToken } = React.useContext(authentication.UserContext);
+  const { serverHostname } = React.useContext(FrontendContext);
 
   const onClick = async () => {
-    const [status, response] = await fetchers.auth.signup({ email, password });
+    const [status, response] = await fetchers.auth.signup(
+      { email, password },
+      { serverHostname }
+    );
 
     if (status === CREATED) {
       setToken(response.token);

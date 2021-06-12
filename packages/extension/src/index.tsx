@@ -5,7 +5,7 @@ import * as React from "react";
 import ReactDOM from "react-dom";
 import { Main } from "./components/main/Main";
 
-const render = (host: "" | "https://paperpod.fm") => {
+const render = (host: `http://localhost:${number}` | "https://paperpod.fm") => {
   const Root = (
     <FrontendContextProvider serverHostname={host}>
       <authentication.UserContextProvider>
@@ -20,9 +20,13 @@ const render = (host: "" | "https://paperpod.fm") => {
 if (global.chrome !== undefined) {
   logger.debug("looks to be running as extension");
   chrome.management.get(chrome.runtime.id, (info) => {
-    render(info.installType === "development" ? "" : "https://paperpod.fm");
+    render(
+      info.installType === "development"
+        ? (`http://localhost:${parseInt(process.env.GATEWAY_PORT)}` as const)
+        : "https://paperpod.fm"
+    );
   });
 } else {
   logger.debug("looks to be running outside of extension");
-  render("");
+  render(`http://localhost:${parseInt(process.env.GATEWAY_PORT)}` as const);
 }

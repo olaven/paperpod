@@ -1,13 +1,12 @@
 import * as React from "react";
 import { Input, Button } from "@paperpod/ui";
-import { logger } from "@paperpod/common";
 
 import { CREATED } from "node-kall";
 import { authentication, fetchers } from "@paperpod/frontend";
 import { FrontendContext } from "../FrontendContext";
 
-export const Login = () => {
-  const { setToken, user } = React.useContext(authentication.UserContext);
+export const Login: React.FunctionComponent = () => {
+  const { setToken } = React.useContext(authentication.UserContext);
   const [email, setEmail] = React.useState<string>(null);
   const [password, setPassword] = React.useState<string>(null);
 
@@ -24,7 +23,6 @@ export const Login = () => {
 
     if (status === CREATED) {
       setToken(response.token);
-      logger.debug(`token after login is ${response.token}`);
     } else {
       throw status + " when creating session";
     }

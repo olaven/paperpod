@@ -16,6 +16,7 @@ services:
       - DOCS_PORT=$DOCS_PORT
       - API_PORT=$API_PORT
       - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
+      - NODE_ENV=dev
       - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod
   api:

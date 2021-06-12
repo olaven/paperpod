@@ -28,10 +28,6 @@ const run = async () => {
   if (loggedIn) {
     setInterval(fetchToken, 1000 * 600); //i.e. ten minutes)
   }
-
-  setInterval(async () => {
-    logger.debug("Current stored token", await retrieveSessionToken());
-  }, 4_000);
 };
 
 logger.debug("AM her at all");

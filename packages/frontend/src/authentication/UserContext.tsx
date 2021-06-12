@@ -15,28 +15,6 @@ export const UserContext = React.createContext<{
   setToken: (t: string) => null,
 });
 
-const useUser = (token: Promise<string>): models.User => {
-  const { serverHostname } = React.useContext(FrontendContext);
-
-  const [user, setUser] = React.useState<models.User>(null);
-
-  React.useEffect(() => {
-    (async () => {
-      if (!token) {
-        setUser(null);
-        return null;
-      }
-      const [status, user] = await fetchers.auth.getMe(await token, {
-        serverHostname,
-      });
-
-      setUser(status === OK ? user : null);
-    })();
-  }, [token]);
-
-  return user;
-};
-
 type UserContextArguments = {
   children: any;
   /**
@@ -58,6 +36,7 @@ export const UserContextProvider = ({
 }: UserContextArguments) => {
   const { serverHostname } = React.useContext(FrontendContext);
   const [_token, setStateToken] = React.useState<string>(null);
+  const [user, setUser] = React.useState<models.User>(null);
 
   /**
    * Wrapper around token with storage support
@@ -92,8 +71,6 @@ export const UserContextProvider = ({
       }
     : setStateToken;
 
-  const user = useUser(token());
-
   asyncEffect(async () => {
     const updatedToken = storage ? await storage.retrieve() : token;
     if (!updatedToken) return null;
@@ -116,6 +93,18 @@ export const UserContextProvider = ({
       clearInterval(id);
     };
   }, []);
+
+  asyncEffect(async () => {
+    if (!token) {
+      setUser(null);
+      return null;
+    }
+    const [status, user] = await fetchers.auth.getMe(await token(), {
+      serverHostname,
+    });
+
+    setUser(status === OK ? user : null);
+  }, [_token]);
 
   return (
     <UserContext.Provider value={{ user, setToken, token }}>

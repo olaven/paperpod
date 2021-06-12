@@ -71,6 +71,8 @@ services:
     command: yarn web dev
     volumes:
       - .:/paperpod
+    environment: 
+      - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod
 
   docs:
@@ -84,6 +86,7 @@ services:
       - .:/paperpod
     environment:
       - PORT=$DOCS_PORT
+      - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod
 
   extension:
@@ -97,6 +100,7 @@ services:
       - .:/paperpod
     environment:
       - PORT=$EXTENSION_PORT
+      - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod
 
   database:

@@ -9,7 +9,7 @@ const Home = () => {
   const { serverHostname } = React.useContext(FrontendContext);
 
   const onLogOut = async () => {
-    await fetchers.auth.logout(token, { serverHostname });
+    await fetchers.auth.logout(await token(), { serverHostname });
     setToken(null);
   };
   return user ? (

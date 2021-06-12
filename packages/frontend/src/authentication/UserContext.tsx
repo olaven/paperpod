@@ -1,13 +1,13 @@
 import * as React from "react";
-import { models } from "@paperpod/common";
+import { logger, models } from "@paperpod/common";
 import { fetchers } from "@paperpod/frontend";
-import { get, OK } from "node-kall";
-import { useRouter } from "next/router";
+import { OK } from "node-kall";
 import { FrontendContext } from "../FrontendContext";
+import { asyncEffect } from "../asyncEffect";
 
 export const UserContext = React.createContext<{
   user: models.User;
-  token: string;
+  token: () => Promise<string>;
   setToken: (token: string) => any;
 }>({
   user: null,
@@ -15,11 +15,10 @@ export const UserContext = React.createContext<{
   setToken: (t: string) => null,
 });
 
-const useUser = (token: string): models.User => {
+const useUser = (token: Promise<string>): models.User => {
   const { serverHostname } = React.useContext(FrontendContext);
 
   const [user, setUser] = React.useState<models.User>(null);
-  const router = useRouter();
 
   React.useEffect(() => {
     (async () => {
@@ -27,12 +26,11 @@ const useUser = (token: string): models.User => {
         setUser(null);
         return null;
       }
-      const [status, user] = await fetchers.auth.getMe(token, {
+      const [status, user] = await fetchers.auth.getMe(await token, {
         serverHostname,
       });
 
       setUser(status === OK ? user : null);
-      if (user) router.push("/home");
     })();
   }, [token]);
 
@@ -41,19 +39,71 @@ const useUser = (token: string): models.User => {
 
 type UserContextArguments = {
   children: any;
+  /**
+   * Use this callback to provide a method
+   * of storing the token permanently and
+   * retrieving the stored token.
+   *
+   * WARNING:
+   * Be careful about how you store tokens.
+   */
+  storage?: {
+    retrieve: () => string | null | Promise<string | null>;
+    store: (token: string) => void | Promise<void>;
+  };
 };
-export const UserContextProvider = ({ children }: UserContextArguments) => {
+export const UserContextProvider = ({
+  children,
+  storage,
+}: UserContextArguments) => {
   const { serverHostname } = React.useContext(FrontendContext);
-  const [token, setToken] = React.useState<string>(null);
+  const [_token, setStateToken] = React.useState<string>(null);
 
-  const user = useUser(token);
+  /**
+   * Wrapper around token with storage support
+   *
+   * State token is returned when present.
+   * If storage is enabled and state token is
+   * falsy, storage is checked.
+   */
+  const token = async () => {
+    if (_token) return _token;
+    if (storage) {
+      const tokenFromStorage = await storage.retrieve();
+      return tokenFromStorage;
+    }
 
-  React.useEffect(() => {
-    if (!token) return null;
+    // null at this point
+    return _token;
+  };
+
+  /**
+   * If permanent storage is enabled,
+   * we want to store the token in
+   * the storage as well as in state.
+   *
+   * If not, only state should be used.
+   */
+  const setToken = storage
+    ? async (token: string) => {
+        logger.debug(`Storing token ${token} in both state and storage`);
+        setStateToken(token);
+        await storage.store(token);
+      }
+    : setStateToken;
+
+  const user = useUser(token());
+
+  asyncEffect(async () => {
+    const updatedToken = storage ? await storage.retrieve() : token;
+    if (!updatedToken) return null;
     const id = setInterval(async () => {
-      const [status, response] = await fetchers.auth.refreshToken(token, {
-        serverHostname,
-      });
+      const [status, response] = await fetchers.auth.refreshToken(
+        await token(),
+        {
+          serverHostname,
+        }
+      );
 
       if (status === OK) {
         setToken(response.token);
@@ -65,7 +115,7 @@ export const UserContextProvider = ({ children }: UserContextArguments) => {
     return () => {
       clearInterval(id);
     };
-  });
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setToken, token }}>

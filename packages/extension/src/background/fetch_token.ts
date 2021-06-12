@@ -1,15 +1,19 @@
 import { logger } from "@paperpod/common";
 import { fetchers } from "@paperpod/frontend";
+import { getHost } from "../getServerHostName";
 import { useLoggedInStorage, useSessionStorage } from "../storage/storage";
 
-const { retrieve: retrieveLoggedIn, save: updateLoggedIn } =
+const { retrieve: retrieveLoggedIn, store: updateLoggedIn } =
   useLoggedInStorage();
-const { retrieve: retrieveSessionToken, save: updateSessionToken } =
+const { retrieve: retrieveSessionToken, store: updateSessionToken } =
   useSessionStorage();
 
 const fetchToken = async () => {
+  const hostname = await getHost();
   const existingToken = await retrieveSessionToken();
-  const [status, newToken] = await fetchers.auth.refreshToken(existingToken);
+  const [status, newToken] = await fetchers.auth.refreshToken(existingToken, {
+    serverHostname: hostname,
+  });
 
   if (status === 200) {
     await updateLoggedIn(true);
@@ -24,8 +28,13 @@ const run = async () => {
   if (loggedIn) {
     setInterval(fetchToken, 1000 * 600); //i.e. ten minutes)
   }
+
+  setInterval(async () => {
+    logger.debug("Current stored token", await retrieveSessionToken());
+  }, 4_000);
 };
 
+logger.debug("AM her at all");
 run().then(() => {
   logger.debug(`Running token background script`);
 });

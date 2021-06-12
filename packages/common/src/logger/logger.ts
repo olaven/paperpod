@@ -10,6 +10,6 @@ const prettyConfiguration =
 
 export const logger = pino({
   useLevelLabels: true,
-  level: process.env.LOG_LEVEL || "info",
+  level: process.env.LOG_LEVEL || "debug",
   prettyPrint: prettyConfiguration,
 });

@@ -1,14 +1,22 @@
-import { logger } from "@paperpod/common";
 import { authentication, FrontendContextProvider } from "@paperpod/frontend";
 
 import * as React from "react";
 import ReactDOM from "react-dom";
 import { Main } from "./components/main/Main";
+import { Host, getHost } from "./getServerHostName";
+import { useSessionStorage } from "./storage/storage";
 
-const render = (host: `http://localhost:${number}` | "https://paperpod.fm") => {
+const { store: storeSession, retrieve: retrieveSession } = useSessionStorage();
+
+const render = (hostname: Host) => {
   const Root = (
-    <FrontendContextProvider serverHostname={host}>
-      <authentication.UserContextProvider>
+    <FrontendContextProvider serverHostname={hostname}>
+      <authentication.UserContextProvider
+        storage={{
+          retrieve: retrieveSession,
+          store: storeSession,
+        }}
+      >
         <Main />
       </authentication.UserContextProvider>
     </FrontendContextProvider>
@@ -17,16 +25,7 @@ const render = (host: `http://localhost:${number}` | "https://paperpod.fm") => {
   ReactDOM.render(Root, document.getElementById("root"));
 };
 
-if (global.chrome !== undefined) {
-  logger.debug("looks to be running as extension");
-  chrome.management.get(chrome.runtime.id, (info) => {
-    render(
-      info.installType === "development"
-        ? (`http://localhost:${parseInt(process.env.GATEWAY_PORT)}` as const)
-        : "https://paperpod.fm"
-    );
-  });
-} else {
-  logger.debug("looks to be running outside of extension");
-  render(`http://localhost:${parseInt(process.env.GATEWAY_PORT)}` as const);
-}
+(async () => {
+  const hostname = await getHost();
+  render(hostname);
+})();

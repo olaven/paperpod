@@ -1,9 +1,16 @@
+import { UserContext } from "@paperpod/frontend/src/authentication/UserContext";
+import { Paragraph } from "@paperpod/ui";
 import * as React from "react";
 import { usePosting } from "./usePosting";
 
 export const PostingPopup = () => {
-  const status = usePosting("SOME_TEST_TOKEN_REPLACE_ME");
+  const { token, user } = React.useContext(UserContext);
+  const status = usePosting(token);
+
   return (
-    <div>Posting popup {"->"} load and stuff whiel posting and do things</div>
+    <>
+      <Paragraph>Posting to {user.email}</Paragraph>
+      <Paragraph>status: {status}</Paragraph>
+    </>
   );
 };

@@ -10,7 +10,10 @@ export const ArticleCreator = () => {
   const { resfreshArticles } = React.useContext(ArticleContext);
   const [link, setLink] = React.useState<string>(null);
   const onCreate = async () => {
-    const [status] = await fetchers.article.postArticle({ link }, token);
+    const [status] = await fetchers.article.postArticle(
+      { link },
+      await token()
+    );
     if (status === CREATED) {
       resfreshArticles();
     } else {

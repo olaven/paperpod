@@ -50,7 +50,7 @@ describe("Browser extension effects", () => {
   });
 
   describe("usePosting", () => {
-    const PostinTestComponent = ({ token = "FAKE_TOKEN" }) => {
+    const PostinTestComponent = ({ token = async () => "FAKE_TOKEN" }) => {
       const status = usePosting(token);
       return <div>status is {status}</div>;
     };

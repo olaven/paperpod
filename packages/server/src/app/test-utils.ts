@@ -16,9 +16,9 @@ export const runCommonAppTests = (app: (app?: Express) => Express) => {
   });
 
   it("Does accept an existing app", () => {
-    const _app = express();
+    const otherApp = express();
     expect(() => {
-      app(_app);
+      app(otherApp);
     }).not.toThrow();
   });
 

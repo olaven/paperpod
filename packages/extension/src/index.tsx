@@ -17,9 +17,7 @@ const render = (host: "" | "https://paperpod.fm") => {
   ReactDOM.render(Root, document.getElementById("root"));
 };
 
-logger.debug(`chrome ${chrome}`);
-
-if (chrome !== undefined) {
+if (global.chrome !== undefined) {
   logger.debug("looks to be running as extension");
   chrome.management.get(chrome.runtime.id, (info) => {
     render(info.installType === "development" ? "" : "https://paperpod.fm");

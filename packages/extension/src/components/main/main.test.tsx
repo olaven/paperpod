@@ -15,7 +15,7 @@ does not work in CI.
 
 Can reproduce with `act -j test-extension`
 */
-describe.skip("The popup component", () => {
+describe("The popup component", () => {
   it(
     "does render without throwing",
     withMockedChrome(chromeWithTabs(), () => {

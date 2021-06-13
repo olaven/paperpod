@@ -1,6 +1,5 @@
 import express, { Express } from "express";
 
-import { appWithDevCors } from "./appWithDevCors";
 /*
 TODO: move to common test util if useful outside of @paperpod/server
 For now, it's just exported here and used in sibling tests. 

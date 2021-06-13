@@ -13,7 +13,7 @@ export const Button = styled("button", {
   border: "solid 1px",
   borderRadius: "15px",
   transition: "all 0s ease 1s",
-  "&:hover": {
+  "&:hover, &:focus": {
     textDecoration: "underline",
     cursor: "pointer",
   },

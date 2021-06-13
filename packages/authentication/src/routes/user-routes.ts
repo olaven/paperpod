@@ -1,4 +1,4 @@
-import { models, validators } from "@paperpod/common";
+import { logger, models, validators } from "@paperpod/common";
 import { jwt, middleware } from "@paperpod/server";
 import { hash } from "../cryptography/cryptography";
 import express from "express";
@@ -28,16 +28,25 @@ export const userRoutes = express
   .Router()
   .post("/users/sessions", async (request, response) => {
     const credentials = request.body as models.UserCredentials;
+    logger.debug("Going to create session for ", credentials);
     if (await credentialsAreValid(credentials)) {
       const user = await database.users.getByEmail(
         credentials.email.toLowerCase()
       );
       const token = jwt.sign(user);
 
+      logger.debug({
+        message: "Created session for user",
+        user,
+      });
       return response.status(CREATED).send({
         token,
       });
     } else {
+      logger.debug({
+        message: "Credentials were invalid",
+        credentials,
+      });
       return response.status(UNAUTHORIZED).send();
     }
   })

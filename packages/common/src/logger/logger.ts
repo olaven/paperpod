@@ -8,8 +8,11 @@ const prettyConfiguration =
         colorize: true,
       };
 
+const level = process.env.LOG_LEVEL || "debug";
+console.log("INITIALIZING LOGGER WITH LEVEL", level);
+
 export const logger = pino({
   useLevelLabels: true,
-  level: process.env.LOG_LEVEL || "debug",
+  level,
   prettyPrint: prettyConfiguration,
 });

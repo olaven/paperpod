@@ -4,6 +4,7 @@ import { Input, Button } from "@paperpod/ui";
 import { CREATED } from "node-kall";
 import { authentication, fetchers } from "@paperpod/frontend";
 import { FrontendContext } from "../FrontendContext";
+import { logger } from "@paperpod/common";
 
 export const Login: React.FunctionComponent = () => {
   const { setToken } = React.useContext(authentication.UserContext);
@@ -24,7 +25,10 @@ export const Login: React.FunctionComponent = () => {
     if (status === CREATED) {
       setToken(response.token);
     } else {
-      throw status + " when creating session";
+      logger.error(
+        `Expected ${CREATED} when creating session, but got ${status}`
+      );
+      throw `${status} when creating session. Expected ${CREATED}`;
     }
   };
 

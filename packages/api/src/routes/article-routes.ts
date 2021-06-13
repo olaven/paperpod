@@ -1,6 +1,6 @@
 import express from "express";
 import { nanoid } from "nanoid";
-import { models } from "@paperpod/common";
+import { logger, models } from "@paperpod/common";
 import { middleware } from "@paperpod/server";
 import { withTextualData, withStorageUri } from "@paperpod/converter";
 import {
@@ -26,6 +26,8 @@ export const articleRoutes = express
     "/articles",
     middleware.withAuthentication(async (request, response, user) => {
       const { link } = request.body as models.ArticlePayload;
+
+      logger.debug(`provided link ${link} is valid: ${isValidURL(link)}`);
       if (!isValidURL(link))
         return response
           .status(BAD_REQUEST)

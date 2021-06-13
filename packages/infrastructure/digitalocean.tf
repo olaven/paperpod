@@ -91,35 +91,12 @@ resource "digitalocean_record" "www" {
   name = "www"
   value = digitalocean_loadbalancer.public.ip
 }
-
-resource "digitalocean_record" "github_pages_1" {
+resource "digitalocean_record" "landing_page_cname" {
   domain = digitalocean_domain.default.name
-  type = "A"
-  name = "landingpage.${digitalocean_domain.default.name}"
-  value = "185.199.111.153"
+  type = "CNAME"
+  name = "landingpage"
+  value = "olaven.org."
 }
-
-resource "digitalocean_record" "github_pages_2" {
-  domain = digitalocean_domain.default.name
-  type = "A"
-  name = "landingpage.${digitalocean_domain.default.name}"
-  value = "185.199.110.153"
-}
-
-resource "digitalocean_record" "github_pages_3" {
-  domain = digitalocean_domain.default.name
-  type = "A"
-  name = "landingpage.${digitalocean_domain.default.name}"
-  value = "185.199.109.153"
-}
-
-resource "digitalocean_record" "github_pages_4" {
-  domain = digitalocean_domain.default.name
-  type = "A"
-  name = "landingpage.${digitalocean_domain.default.name}"
-  value = "185.199.108.153"
-}
-
 resource "digitalocean_vpc" "network" {
   name = "paperpod-network"
   description = "Private network for Paperpod services"

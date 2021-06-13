@@ -5,10 +5,10 @@ WORKDIR /app
 COPY ./package.json .
 COPY ./yarn.lock .
 COPY ./tsconfig.json .
-COPY ./packages/ui /app/packages/ui
-COPY ./packages/frontend /app/packages/frontend
-COPY ./packages/common /app/packages/common
-COPY ./packages/web /app/packages/web
+COPY ./packages/ui ./packages/ui
+COPY ./packages/frontend ./packages/frontend
+COPY ./packages/common ./packages/common
+COPY ./packages/web ./packages/web
 
 RUN yarn install  
 RUN yarn web build 

@@ -16,7 +16,9 @@ export const ArticleContextProvider = ({ children }: any) => {
   const { token } = React.useContext(authentication.UserContext);
   const [articles, setArticles] = React.useState<models.Article[]>([]);
   const resfreshArticles = async () => {
-    const [status, articles] = await fetchers.article.getArticles(token);
+    const [status, articles] = await fetchers.article.getArticles(
+      await token()
+    );
     if (status === OK) {
       setArticles(articles);
     }

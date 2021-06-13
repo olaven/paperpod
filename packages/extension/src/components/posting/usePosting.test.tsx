@@ -5,8 +5,12 @@
 import * as React from "react";
 import { render, waitFor } from "@testing-library/react";
 
-import { usePosting, useUrl } from "./effects";
-import { withMockedChrome, chromeWithTabs, withMockedFetch } from "./test_mock";
+import { usePosting, useUrl } from "./usePosting";
+import {
+  withMockedChrome,
+  chromeWithTabs,
+  withMockedFetch,
+} from "../../test_mock";
 
 describe("Browser extension effects", () => {
   const TestComponent = () => {
@@ -46,7 +50,7 @@ describe("Browser extension effects", () => {
   });
 
   describe("usePosting", () => {
-    const PostinTestComponent = ({ token = "FAKE_TOKEN" }) => {
+    const PostinTestComponent = ({ token = async () => "FAKE_TOKEN" }) => {
       const status = usePosting(token);
       return <div>status is {status}</div>;
     };

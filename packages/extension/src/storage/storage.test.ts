@@ -6,7 +6,7 @@ describe("APIs for permanent storage", () => {
     it(
       "Does return functions",
       withMockedChrome(chromeStorage(), () => {
-        const [save, retrieve] = useLoggedInStorage();
+        const { store: save, retrieve } = useLoggedInStorage();
 
         expect(typeof save).toEqual("function");
         expect(typeof retrieve).toEqual("function");
@@ -18,7 +18,7 @@ describe("APIs for permanent storage", () => {
     it(
       "Does return functions",
       withMockedChrome(chromeStorage(), () => {
-        const [save, retrieve] = useLoggedInStorage();
+        const { store: save, retrieve } = useLoggedInStorage();
 
         expect(typeof save).toEqual("function");
         expect(typeof retrieve).toEqual("function");

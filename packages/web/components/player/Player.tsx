@@ -13,7 +13,10 @@ export const Player = ({ article_id }: { article_id: string }) => {
       if (!playing) {
         audio.pause();
       } else {
-        const response = await fetchers.player.fetchFile(article_id, token);
+        const response = await fetchers.player.fetchFile(
+          article_id,
+          await token()
+        );
         var blob = await response.blob();
         logger.debug(blob);
         var url = window.URL.createObjectURL(blob);

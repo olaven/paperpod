@@ -14,7 +14,7 @@ export const app = withProxies(
     mapping("/docs", "docs", process.env.DOCS_PORT),
     mapping("/", "web", process.env.WEB_PORT),
   ],
-  server.app.appWithEnvironment()
+  server.app.appWithEnvironment(server.app.appWithDevCors())
 );
 
 http.createServer(app).listen(process.env.PORT, () => {

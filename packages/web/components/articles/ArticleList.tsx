@@ -11,7 +11,10 @@ const DeleteButton = ({ article }: { article: models.Article }) => {
   const { token } = React.useContext(authentication.UserContext);
 
   const onDelete = async () => {
-    const [status] = await fetchers.article.deleteArticle(article, token);
+    const [status] = await fetchers.article.deleteArticle(
+      article,
+      await token()
+    );
 
     if (status === NO_CONTENT) {
       resfreshArticles();

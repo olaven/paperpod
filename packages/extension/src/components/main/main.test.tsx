@@ -4,11 +4,17 @@
 
 import * as React from "react";
 import { render, waitFor } from "@testing-library/react";
-import { Popup } from "./popup";
+import { Main } from "./main";
 import { chromeWithTabs, withMockedChrome } from "../../test_mock";
 
-const renderPopup = () => render(<Popup />);
+const renderPopup = () => render(<Main />);
 
+/*
+FIXME: figure out why the main-import 
+does not work in CI. 
+
+Can reproduce with `act -j test-extension`
+*/
 describe("The popup component", () => {
   it(
     "does render without throwing",

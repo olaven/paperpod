@@ -15,6 +15,7 @@ services:
       - DOCS_PORT=$DOCS_PORT
       - API_PORT=$API_PORT
       - AUTHENTICATION_PORT=$AUTHENTICATION_PORT
+      - NODE_ENV=dev
       - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod
   api:
@@ -23,6 +24,8 @@ services:
       dockerfile: ./packages/api/Dockerfile
     env_file:
       - .env
+    ports:
+      - $API_PORT:$API_PORT
     command: yarn api dev
     volumes:
       - .:/paperpod
@@ -32,7 +35,7 @@ services:
       PGHOST: database
       PGDATABASE: $PGDATABASE
       PGUSER: $PGUSER
-      
+
       PAPERPOD_SCHEMA: api
       PGPASSWORD: $PGPASSWORD
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
@@ -43,6 +46,8 @@ services:
     build: .
     env_file:
       - .env
+    ports:
+      - $AUTHENTICATION_PORT:$AUTHENTICATION_PORT
     command: yarn authentication dev
     volumes:
       - .:/paperpod
@@ -60,28 +65,48 @@ services:
     build: .
     env_file:
       - .env
+    ports:
+      - $WEB_PORT:$WEB_PORT
     command: yarn web dev
     volumes:
       - .:/paperpod
+    environment: 
+      - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod
 
-  docs: 
-    build: . 
-    env_file: 
-      - .env 
-    command: yarn docs dev 
+  docs:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - $DOCS_PORT:$DOCS_PORT
+    command: yarn docs dev
     volumes:
       - .:/paperpod
-    environment: 
+    environment:
       - PORT=$DOCS_PORT
+      - LOG_LEVEL=$LOG_LEVEL
+    working_dir: /paperpod
+
+  extension:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - $EXTENSION_PORT:$EXTENSION_PORT
+    command: yarn extension dev:server
+    volumes:
+      - .:/paperpod
+    environment:
+      - PORT=$EXTENSION_PORT
+      - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod
 
   database:
     image: postgres:13
-    ports: 
-      - 5433:5432
+    ports:
+      - $PGPORT:$PGPORT
     environment:
       - POSTGRES_DB=$PGDATABASE
       - POSTGRES_USER=$PGUSER
       - POSTGRES_PASSWORD=$PGPASSWORD
-

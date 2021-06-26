@@ -8,6 +8,10 @@
     "test": "jest",
     "dev": "next"
   },
+  "resolutions": {
+    "**/react": "./node_modules/react",
+    "**/react-dom": "./node_modules/react-dom"
+  },
   "dependencies": {
     "@paperpod/common": "0.0.1",
     "@paperpod/frontend": "0.0.1",

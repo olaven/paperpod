@@ -1,5 +1,5 @@
 import { Stripe } from "stripe";
-import { constants, logger } from "../../../common/src";
+import { constants, logger, models } from "../../../common/src";
 
 /**
  * This function filters out any Stripe resource
@@ -39,7 +39,7 @@ const _getPrices = (stripe: Stripe) => async (product: Stripe.Product) => {
   return prices; // return filterPaperpodResources(prices);
 };
 
-const _createPaymentSession = (stripe: Stripe) => async () => {
+const _createPaymentSession = (stripe: Stripe) => async (user: models.User) => {
   /*
     NOTE: 
     if ever having multiple products and/or prices, this breaks. 
@@ -50,6 +50,9 @@ const _createPaymentSession = (stripe: Stripe) => async () => {
   const [price] = await _getPrices(stripe)(product);
 
   const session = stripe.checkout.sessions.create({
+    /*NOTE: this is used to get the correct user 
+    when redirected back from Stripe*/
+    client_reference_id: user.id,
     mode: "subscription",
     payment_method_types: ["card"],
     line_items: [
@@ -65,8 +68,14 @@ const _createPaymentSession = (stripe: Stripe) => async () => {
   return session;
 };
 
+const _getSession = (stripe: Stripe) => async (id: string) => {
+  const session = await stripe.checkout.sessions.retrieve(id);
+  return session;
+};
+
 export const makeCheckoutFunctions = (stripe: Stripe) => ({
   createPaymentSession: _createPaymentSession(stripe),
   getProducts: _getProducts(stripe),
   getPrices: _getPrices(stripe),
+  getSession: _getSession(stripe),
 });

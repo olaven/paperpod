@@ -1,5 +1,5 @@
 import { app } from "../app";
-import { NOT_IMPLEMENTED, UNAUTHORIZED, OK } from "node-kall";
+import { NOT_IMPLEMENTED, UNAUTHORIZED, CREATED } from "node-kall";
 import supertest from "supertest";
 import { test } from "@paperpod/common";
 import { jwt } from "../../../server/src";
@@ -46,9 +46,9 @@ describe("Payment endpoints", () => {
       expect(status).toEqual(UNAUTHORIZED);
     });
 
-    it("returns with OK on successful, authenticated request", async () => {
+    it("returns with CREATED on successful, authenticated request", async () => {
       const { status } = await postCheckoutSession();
-      expect(status).toEqual(OK);
+      expect(status).toEqual(CREATED);
     });
 
     it("Returns a session id on successful request", async () => {

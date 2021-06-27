@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid";
 import { Stripe } from "stripe";
+import { test } from "@paperpod/common";
 import { stripeResource } from "../testUtils";
 import { makeCheckoutFunctions } from "./checkout";
 
@@ -77,7 +78,7 @@ describe("Functions for creating a checkout session", () => {
       listPrices,
     });
 
-    await createPaymentSession();
+    await createPaymentSession(test.mocks.user());
 
     expect(listPrices).toHaveBeenCalledWith({
       product: product.id,
@@ -97,7 +98,7 @@ describe("Functions for creating a checkout session", () => {
       createSession,
     });
 
-    await createPaymentSession();
+    await createPaymentSession(test.mocks.user());
 
     /*NOTE: check is inside this mock. 
     If the mock does not run, the assertion does not run*/

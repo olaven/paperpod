@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { withConfiguration } from "klart";
 import { Configuration } from "./configuration";
+import { logger } from "../../../common/src";
 
 //TODO: move to general util?
 export const singleton = <T, G>(action: (input?: G) => T) => {
@@ -35,7 +36,7 @@ export const ensureMigrated = singleton(
     try {
       await withConfiguration(options.configuration).run(sql);
     } catch (error) {
-      console.error(`Erorr when running migration`, error);
+      logger.error({ message: `Error when running migration`, error });
     }
   }
 );

@@ -40,10 +40,13 @@ export const paymentRoutes = express
     if (!userId)
       return response.status(BAD_REQUEST).send("Missing client reference");
 
-    const user = users.getById(userId);
+    const user = await users.getById(userId);
     if (!user) return response.status(FORBIDDEN).send();
 
-    //TODO: update the user status
+    await users.setSubscriptionStatus({
+      ...user,
+      subscription: "active",
+    });
     response.send("This should redirect to home page");
   })
   .get("/payment/cancelled", async (request, response) => {});

@@ -39,8 +39,8 @@ resource "stripe_plan" "product_plan" {
   }
 }
 
-/* resource "stripe_webhook_endpoint" "my_endpoint" { TODO: setup something like this 
-  url = "https://mydomain.example.com/webhook"
+resource "stripe_webhook_endpoint" "my_endpoint" { 
+  url = "https://paperpod.fm/authentication/payment/webhook"
 
   enabled_events = [
     "charge.succeeded",
@@ -48,7 +48,7 @@ resource "stripe_plan" "product_plan" {
     "source.chargeable",
   ]
 }
- */
+
 
 resource "stripe_coupon" "test_user_coupon" {
   code               = var.test_user_coupon_code

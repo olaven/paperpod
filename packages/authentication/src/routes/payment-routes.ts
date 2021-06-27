@@ -1,6 +1,8 @@
 import express from "express";
 import { Stripe } from "stripe";
+import { CREATED } from "node-kall";
 import { withAuthentication } from "../../../server/src/middleware/withAuthentication";
+import { models } from "@paperpod/common";
 import { makeCheckoutFunctions } from "../payment/checkout";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
@@ -19,7 +21,7 @@ export const paymentRoutes = express
     withAuthentication(async (request, response) => {
       const session = await createPaymentSession();
 
-      return response.send({
+      return response.status(CREATED).send(<models.CheckoutSessionResponse>{
         sessionId: session.id,
       });
     })

@@ -32,6 +32,10 @@ export const withAuthentication =
       handler(request, response, user);
     } catch (error) {
       //i.e. malformed token
+      logger.error({
+        error,
+        message: `error in withAuthentication`,
+      });
       return response.status(FORBIDDEN).end();
     }
   };

@@ -1,5 +1,5 @@
 import { Stripe } from "stripe";
-import { constants } from "../../../common/src";
+import { constants, logger } from "../../../common/src";
 
 /**
  * This function filters out any Stripe resource
@@ -26,6 +26,7 @@ const _getProducts = (stripe: Stripe) => async () => {
   const { data: products } = await stripe.products.list({
     type: "service",
   });
+
   return filterPaperpodResources(products);
 };
 
@@ -35,7 +36,7 @@ const _getPrices = (stripe: Stripe) => async (product: Stripe.Product) => {
     product: product.id,
   });
 
-  return filterPaperpodResources(prices);
+  return prices; // return filterPaperpodResources(prices);
 };
 
 const _createPaymentSession = (stripe: Stripe) => async () => {
@@ -51,9 +52,14 @@ const _createPaymentSession = (stripe: Stripe) => async () => {
   const session = stripe.checkout.sessions.create({
     mode: "subscription",
     payment_method_types: ["card"],
-    line_items: [price],
-    success_url: `${constants.APPLICATION_URL}/payment/success`,
-    cancel_url: `${constants.APPLICATION_URL}/payment/failure`,
+    line_items: [
+      {
+        price: price.id,
+        quantity: 1,
+      },
+    ],
+    success_url: `${constants.APPLICATION_URL}/authentication/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${constants.APPLICATION_URL}/authentication/payment/cancelled`,
   });
 
   return session;

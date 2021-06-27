@@ -73,6 +73,7 @@ services:
       - .:/paperpod
     environment: 
       - LOG_LEVEL=$LOG_LEVEL
+      - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY
     working_dir: /paperpod
 
   docs:

@@ -5,7 +5,7 @@ import { bearer } from "./bearer";
 export const postArticle = (
   article: models.ArticlePayload,
   token: string,
-  baseUrl = ``
+  baseUrl: string
 ) => {
   logger.debug(
     "Going to post article",

@@ -1,8 +1,10 @@
-import * as article from "./articleFetchers";
 import * as auth from "./authFetchers";
+import * as payment from "./paymentFetchers";
+import * as article from "./articleFetchers";
 import * as player from "./playerFetchers";
 export const fetchers = {
-  article,
   auth,
+  payment,
+  article,
   player,
 };

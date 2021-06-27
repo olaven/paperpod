@@ -82,12 +82,13 @@ export const UserContextProvider = ({
         }
       );
 
+      console.log("Going to refetching token");
       if (status === OK) {
         setToken(response.token);
       } else {
         console.error(`error refreshing token ${status} with token ${token}`);
       }
-    }, 1000 * 600); //i.e. ten minutes
+    }, 1000 * 60 * 5); //i.e. five minutes
 
     return () => {
       clearInterval(id);
@@ -99,6 +100,7 @@ export const UserContextProvider = ({
       setUser(null);
       return null;
     }
+
     const [status, user] = await fetchers.auth.getMe(await token(), {
       serverHostname,
     });

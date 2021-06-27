@@ -2,7 +2,7 @@ import express from "express";
 import { Stripe } from "stripe";
 import { CREATED, FORBIDDEN, NOT_FOUND, BAD_REQUEST } from "node-kall";
 import { withAuthentication } from "../../../server/src/middleware/withAuthentication";
-import { logger, models } from "@paperpod/common";
+import { constants, logger, models } from "@paperpod/common";
 import { makeCheckoutFunctions } from "../payment/checkout";
 import { users } from "../authdatabase/authdatabase";
 
@@ -47,6 +47,7 @@ export const paymentRoutes = express
       ...user,
       subscription: "active",
     });
-    response.send("This should redirect to home page");
+
+    response.redirect(constants.APPLICATION_URL);
   })
   .get("/payment/cancelled", async (request, response) => {});

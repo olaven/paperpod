@@ -1,6 +1,6 @@
 import { app } from "../app";
 import {
-  OK,
+  FOUND,
   NOT_IMPLEMENTED,
   UNAUTHORIZED,
   CREATED,
@@ -9,7 +9,7 @@ import {
   FORBIDDEN,
 } from "node-kall";
 import supertest from "supertest";
-import { test } from "@paperpod/common";
+import { constants, test } from "@paperpod/common";
 import faker from "faker";
 import { jwt } from "../../../server/src";
 import { nanoid } from "nanoid";
@@ -134,7 +134,7 @@ describe("Payment endpoints", () => {
       expect(status).toEqual(FORBIDDEN);
     });
 
-    it("Returns OK if the user does exist", async () => {
+    it("Returns FOUND if the user does exist", async () => {
       const id = faker.datatype.uuid();
       const user = await users.insert(test.mocks.user());
 
@@ -144,7 +144,20 @@ describe("Payment endpoints", () => {
         sessionId: id,
       });
 
-      expect(status).toEqual(OK);
+      expect(status).toEqual(FOUND);
+    });
+
+    it("Redirects to the application URL on successful request", async () => {
+      const id = faker.datatype.uuid();
+      const user = await users.insert(test.mocks.user());
+
+      sessionStore[id] = randomSession({ client_reference_id: user.id });
+
+      const { headers } = await getSuccessEndpoint({
+        sessionId: id,
+      });
+
+      expect(headers["Location"]).toEqual(constants.APPLICATION_URL);
     });
 
     it("Updates the user subscription status", async () => {

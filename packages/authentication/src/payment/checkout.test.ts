@@ -90,7 +90,7 @@ describe("Functions for creating a checkout session", () => {
 
     const listPrices = jest.fn((options) => stripeResource([price]));
     const createSession = jest.fn((options) => {
-      expect(options.line_items[0].id).toEqual(price.id);
+      expect(options.line_items[0].price).toEqual(price.id);
       return { id: nanoid() };
     });
     const { createPaymentSession: createPaymentSession } = mockStripe({

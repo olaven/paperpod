@@ -59,6 +59,7 @@ services:
       PGDATABASE: $PGDATABASE
       PGUSER: $PGUSER
       PGPASSWORD: $PGPASSWORD
+      STRIPE_API_KEY: $STRIPE_API_KEY
       LOG_LEVEL: $LOG_LEVEL
     working_dir: /paperpod
   web:

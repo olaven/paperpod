@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --setupFiles dotenv/config",
     "test:ci": "yarn test",
     "start": "ts-node ./src/index.ts"
   },

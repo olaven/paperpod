@@ -1,9 +1,5 @@
 import { Stripe } from "stripe";
 import { constants } from "../../../common/src";
-const stripe = new Stripe("TODO_SOME_KEY", {
-  //null, i.e. account default version
-  apiVersion: null,
-});
 
 /**
  * This function filters out any Stripe resource
@@ -25,14 +21,16 @@ const filterPaperpodResources = <
 ) =>
   resources.filter((resource) => resource.metadata.collection === "paperpod");
 
-const getProducts = async () => {
+//NOTE: exported only for tests
+const _getProducts = (stripe: Stripe) => async () => {
   const { data: products } = await stripe.products.list({
     type: "service",
   });
   return filterPaperpodResources(products);
 };
 
-const getPrices = async (product: Stripe.Product) => {
+//NOTE: exported only for tests
+const _getPrices = (stripe: Stripe) => async (product: Stripe.Product) => {
   const { data: prices } = await stripe.prices.list({
     product: product.id,
   });
@@ -40,15 +38,15 @@ const getPrices = async (product: Stripe.Product) => {
   return filterPaperpodResources(prices);
 };
 
-export const createPaymentSessions = async () => {
+const _createPaymentSession = (stripe: Stripe) => async () => {
   /*
-  NOTE: 
-  if ever having multiple products and/or prices, this breaks. 
-  It always takes the first one
-  */
+    NOTE: 
+    if ever having multiple products and/or prices, this breaks. 
+    It always takes the first one
+    */
 
-  const [product] = await getProducts();
-  const [price] = await getPrices(product);
+  const [product] = await _getProducts(stripe)();
+  const [price] = await _getPrices(stripe)(product);
 
   const session = stripe.checkout.sessions.create({
     mode: "subscription",
@@ -60,3 +58,9 @@ export const createPaymentSessions = async () => {
 
   return session;
 };
+
+export const makeCheckoutFunctions = (stripe: Stripe) => ({
+  createPaymentSession: _createPaymentSession(stripe),
+  getProducts: _getProducts(stripe),
+  getPrices: _getPrices(stripe),
+});

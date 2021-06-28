@@ -1,17 +1,28 @@
 import express from "express";
 import { Stripe } from "stripe";
-import { CREATED, FORBIDDEN, NOT_FOUND, BAD_REQUEST } from "node-kall";
+import {
+  CREATED,
+  NO_CONTENT,
+  FORBIDDEN,
+  NOT_FOUND,
+  BAD_REQUEST,
+} from "node-kall";
 import { withAuthentication } from "../../../server/src/middleware/withAuthentication";
 import { constants, logger, models } from "@paperpod/common";
 import { makeCheckoutFunctions } from "../payment/checkout";
 import { users } from "../authdatabase/authdatabase";
+import {
+  getWebhookHandler,
+  StripeEventType,
+} from "../payment/webhooks/webhooks";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   //null, i.e. account default version
   apiVersion: null,
 });
 
-const { createPaymentSession, getSession } = makeCheckoutFunctions(stripe);
+const { createPaymentSession, getSession, assignUserToSubscriptionMetadata } =
+  makeCheckoutFunctions(stripe);
 
 export const paymentRoutes = express
   .Router()
@@ -43,6 +54,16 @@ export const paymentRoutes = express
     const user = await users.getById(userId);
     if (!user) return response.status(FORBIDDEN).send();
 
+    /**
+     * Ties the user id to the Stripe subscription.
+     * This allows us to retrieve the user
+     * in webhook events, where the Stripe subscription
+     * objects are available
+     */
+    await assignUserToSubscriptionMetadata(
+      user,
+      session.subscription as string
+    );
     await users.setSubscriptionStatus({
       ...user,
       subscription: "active",
@@ -50,4 +71,25 @@ export const paymentRoutes = express
 
     response.redirect(constants.APPLICATION_URL);
   })
-  .get("/payment/cancelled", async (request, response) => {});
+  .get("/payment/cancelled", async (request, response) => {})
+  //FIXME: Figure out how to get stripe CLI to work with webhooks locally. Can perhaps use stripe CLI in docker?
+  .post("/payment/webhook", async (request, response) => {
+    logger.debug("hit webhook endpoint");
+
+    const event = request.body as Stripe.Event;
+    logger.trace({
+      message: "Got Webhook event",
+      event,
+    });
+
+    const handler = getWebhookHandler(event.type as StripeEventType);
+
+    if (!handler)
+      return response
+        .status(BAD_REQUEST)
+        .send(`Webhook event ${event.type} not handled.`);
+
+    await handler(event);
+
+    return response.status(NO_CONTENT);
+  });

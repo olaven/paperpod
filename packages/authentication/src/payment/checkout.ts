@@ -1,4 +1,5 @@
 import { Stripe } from "stripe";
+import { getTsBuildInfoEmitOutputFilePath } from "typescript";
 import { constants, logger, models } from "../../../common/src";
 
 /**
@@ -73,9 +74,19 @@ const _getSession = (stripe: Stripe) => async (id: string) => {
   return session;
 };
 
+const _assignUserToSubscriptionMetadata =
+  (stripe: Stripe) => async (user: models.User, subscriptionId: string) => {
+    stripe.subscriptionItems.update(subscriptionId, {
+      metadata: {
+        userId: user.id,
+      },
+    });
+  };
+
 export const makeCheckoutFunctions = (stripe: Stripe) => ({
   createPaymentSession: _createPaymentSession(stripe),
   getProducts: _getProducts(stripe),
   getPrices: _getPrices(stripe),
   getSession: _getSession(stripe),
+  assignUserToSubscriptionMetadata: _assignUserToSubscriptionMetadata(stripe),
 });

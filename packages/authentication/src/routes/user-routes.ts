@@ -87,6 +87,7 @@ export const userRoutes = express
       id: null,
       email: credentials.email.toLowerCase(),
       password_hash: await hash.hash(credentials.password),
+      subscription: "inactive",
     });
 
     const token = jwt.sign(user);

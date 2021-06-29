@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { Stripe } from "stripe";
 import { test } from "@paperpod/common";
 import { stripeResource } from "../testUtils";
-import { makeCheckoutFunctions } from "./checkout";
+import { makeStripeFunctions } from "./stripe";
 
 const mockStripe = ({
   createSession = jest.fn((options: Stripe.Checkout.SessionCreateParams) => ({
@@ -15,7 +15,7 @@ const mockStripe = ({
     stripeResource([{ id: nanoid() }])
   ),
 } = {}) => {
-  return makeCheckoutFunctions({
+  return makeStripeFunctions({
     checkout: {
       sessions: {
         //@ts-expect-error
@@ -33,7 +33,7 @@ const mockStripe = ({
   });
 };
 
-describe("Functions for creating a checkout session", () => {
+describe("Functions for interacting with Stripe", () => {
   it("Does not throw", () => {
     const { getProducts } = mockStripe();
     expect(getProducts()).resolves.not.toThrow();

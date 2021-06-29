@@ -9,20 +9,15 @@ import {
 } from "node-kall";
 import { withAuthentication } from "../../../server/src/middleware/withAuthentication";
 import { constants, logger, models } from "@paperpod/common";
-import { makeCheckoutFunctions } from "../payment/checkout";
+import { makeStripeFunctions, stripe } from "../payment/stripe";
 import { users } from "../authdatabase/authdatabase";
 import {
   getWebhookHandler,
   StripeEventType,
 } from "../payment/webhooks/webhooks";
 
-const stripe = new Stripe(process.env.STRIPE_API_KEY, {
-  //null, i.e. account default version
-  apiVersion: null,
-});
-
 const { createPaymentSession, getSession, assignUserToSubscriptionMetadata } =
-  makeCheckoutFunctions(stripe);
+  makeStripeFunctions(stripe);
 
 export const paymentRoutes = express
   .Router()

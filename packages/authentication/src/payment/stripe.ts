@@ -1,6 +1,18 @@
 import { Stripe } from "stripe";
-import { getTsBuildInfoEmitOutputFilePath } from "typescript";
+
 import { constants, logger, models } from "../../../common/src";
+
+/**
+ * Default stripe configuration.
+ * Not applied directly, but passed
+ * back from importing files.
+ *
+ * This makes mocking Stripe easier.
+ */
+export const stripe = new Stripe(process.env.STRIPE_API_KEY, {
+  //null, i.e. account default version
+  apiVersion: null,
+});
 
 /**
  * This function filters out any Stripe resource
@@ -22,7 +34,6 @@ const filterPaperpodResources = <
 ) =>
   resources.filter((resource) => resource.metadata.collection === "paperpod");
 
-//NOTE: exported only for tests
 const _getProducts = (stripe: Stripe) => async () => {
   const { data: products } = await stripe.products.list({
     type: "service",
@@ -31,7 +42,6 @@ const _getProducts = (stripe: Stripe) => async () => {
   return filterPaperpodResources(products);
 };
 
-//NOTE: exported only for tests
 const _getPrices = (stripe: Stripe) => async (product: Stripe.Product) => {
   const { data: prices } = await stripe.prices.list({
     product: product.id,
@@ -76,17 +86,29 @@ const _getSession = (stripe: Stripe) => async (id: string) => {
 
 const _assignUserToSubscriptionMetadata =
   (stripe: Stripe) => async (user: models.User, subscriptionId: string) => {
-    stripe.subscriptionItems.update(subscriptionId, {
-      metadata: {
-        userId: user.id,
-      },
+    const metadata = {
+      userId: user.id,
+    };
+    await stripe.subscriptions.update(subscriptionId, {
+      metadata,
+    });
+    logger.debug({
+      message: "Assigning metadata to subscription",
+      metadata,
+      user,
     });
   };
 
-export const makeCheckoutFunctions = (stripe: Stripe) => ({
+const _getCustomer = (stripe: Stripe) => async (id: string) => {
+  const customer = await stripe.customers.retrieve(id);
+  return customer as Stripe.Customer;
+};
+
+export const makeStripeFunctions = (stripe: Stripe) => ({
   createPaymentSession: _createPaymentSession(stripe),
   getProducts: _getProducts(stripe),
   getPrices: _getPrices(stripe),
   getSession: _getSession(stripe),
   assignUserToSubscriptionMetadata: _assignUserToSubscriptionMetadata(stripe),
+  getCustomer: _getCustomer(stripe),
 });

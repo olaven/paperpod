@@ -33,6 +33,10 @@ export type SchemaName = "api" | "authentication";
 export const ensureMigrated = singleton(
   async (options: { configuration: Configuration; schema: SchemaName }) => {
     const sql = await readMigrationFile(options.schema);
+    logger.trace({
+      message: "Going to run migration with",
+      sql,
+    });
     try {
       await withConfiguration(options.configuration).run(sql);
     } catch (error) {

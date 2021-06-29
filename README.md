@@ -32,3 +32,19 @@ This will allow me to give you perks in return for your gratitude!
   - STRIPE_PUBLISHABLE_KEY
   - STRIPE_SECRET_KEY
 - `docker compose up -d`
+
+### Recommendations
+
+The project structure is built with [docker compose](https://docs.docker.com/compose/) in mind.
+Docker Compose is great, but the commands can get long and tedious.
+My recommendation is to add these aliases to your environment, for an easier time:
+
+```bash
+alias du="docker compose up -d";
+alias dp="docker compose ps";
+alias dr="docker compose restart";
+alias dd="docker compose down";
+alias db="docker compose build";
+alias de="docker compose exec";
+alias dl="docker compose logs -f";
+```

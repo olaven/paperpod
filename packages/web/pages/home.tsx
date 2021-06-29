@@ -1,7 +1,7 @@
 import * as React from "react";
 import { authentication, fetchers, FrontendContext } from "@paperpod/frontend";
 import { Button } from "@paperpod/ui";
-import { SubscribeButton } from "../components/subscribeButton";
+import { SubscribeButton } from "../components/SubscribeButton";
 import { Articles } from "../components/articles/Articles";
 import { Feed } from "../components/feed/Feed";
 

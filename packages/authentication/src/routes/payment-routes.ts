@@ -66,8 +66,9 @@ export const paymentRoutes = express
 
     response.redirect(constants.APPLICATION_URL);
   })
-  .get("/payment/cancelled", async (request, response) => {})
-  //FIXME: Figure out how to get stripe CLI to work with webhooks locally. Can perhaps use stripe CLI in docker?
+  .get("/payment/cancelled", async (request, response) => {
+    response.redirect(constants.APPLICATION_URL);
+  })
   .post("/payment/webhook", async (request, response) => {
     logger.debug("hit webhook endpoint");
 

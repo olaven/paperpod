@@ -71,7 +71,7 @@ services:
     command: yarn web dev
     volumes:
       - .:/paperpod
-    environment: 
+    environment:
       - LOG_LEVEL=$LOG_LEVEL
       - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY
     working_dir: /paperpod
@@ -100,6 +100,19 @@ services:
     environment:
       - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod
+
+  # ultrahook.com receives webhook events from Stripe and
+  # forwards them to my local dev server.
+  # Stripe does not support localhost as an endpoint, so this is needed.
+  ultrahook:
+    build:
+      dockerfile: ./Dockerfile.ultrahook
+      context: .
+    env_file:
+      - .env
+    command: ultrahook stripe http://gateway:${GATEWAY_PORT}/authentication/payment/webhook
+    environment:
+      - ULTRAHOOK_API_KEY=$ULTRAHOOK_API_KEY
 
   database:
     image: postgres:13

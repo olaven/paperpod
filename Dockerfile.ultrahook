@@ -1,0 +1,7 @@
+FROM ruby:3.0.1-alpine3.12
+
+ENV ULTRAHOOK_API_KEY=$ULTRAHOOK_API_KEY
+
+RUN gem install ultrahook 
+
+CMD ultrahook 

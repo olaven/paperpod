@@ -43,9 +43,8 @@ resource "stripe_webhook_endpoint" "my_endpoint" {
   url = "https://paperpod.fm/authentication/payment/webhook"
 
   enabled_events = [
-    "charge.succeeded",
-    "charge.failed",
-    "source.chargeable",
+    "customer.subscription.deleted", 
+    "customer.subscription.created"
   ]
 }
 

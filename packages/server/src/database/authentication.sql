@@ -8,7 +8,13 @@ CREATE TABLE IF NOT EXISTS authentication.users(
 );
 
 -- adding user subscribing true or false 
-CREATE TYPE IF NOT EXISTS Subscription AS ENUM ('active', 'inactive'); 
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_type WHERE typname = 'subscription') THEN
+        CREATE TYPE Subscription AS ENUM ('active', 'inactive'); 
+    END IF;
+END
+$$;
+
 ALTER TABLE authentication.users
 ADD COLUMN IF NOT EXISTS subscription Subscription NOT NULL DEFAULT 'inactive'; 
-

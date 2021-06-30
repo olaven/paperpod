@@ -1,4 +1,4 @@
-import { logger, models, validators } from "@paperpod/common";
+import { constants, logger, models, validators } from "@paperpod/common";
 import { jwt, middleware } from "@paperpod/server";
 import { hash } from "../cryptography/cryptography";
 import express from "express";
@@ -11,6 +11,15 @@ import {
   OK,
   UNAUTHORIZED,
 } from "node-kall";
+
+const tokenOptions = {
+  // cannot be accessed with JS
+  httpOnly: true,
+  // must be sent over http
+  secure: true,
+  // only available for 10 minutes (token invalid after 15 anyways)
+  maxAge: 600_000, //i.e. 10 minutes
+};
 
 export const credentialsAreValid = async ({
   email,
@@ -28,7 +37,6 @@ export const userRoutes = express
   .Router()
   .post("/users/sessions", async (request, response) => {
     const credentials = request.body as models.UserCredentials;
-    logger.debug("Going to create session for ", credentials);
     if (await credentialsAreValid(credentials)) {
       const user = await database.users.getByEmail(
         credentials.email.toLowerCase()
@@ -39,9 +47,12 @@ export const userRoutes = express
         message: "Created session for user",
         user,
       });
-      return response.status(CREATED).send({
-        token,
-      });
+      return response
+        .status(CREATED)
+        .cookie(constants.TOKEN_COOKIE_HEADER, token, tokenOptions)
+        .send({
+          token,
+        });
     } else {
       logger.debug({
         message: "Credentials were invalid",
@@ -63,9 +74,12 @@ export const userRoutes = express
     "/users/sessions",
     middleware.withAuthentication(async (request, response, user) => {
       const token = jwt.sign(user);
-      response.status(OK).send({
-        token,
-      });
+      response
+        .status(OK)
+        .cookie(constants.TOKEN_COOKIE_HEADER, token, tokenOptions)
+        .send({
+          token,
+        });
     })
   )
   .post("/users", async (request, response) => {

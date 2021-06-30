@@ -17,10 +17,11 @@ const tokenOptions = {
   httpOnly: true,
   // must be sent over http
   secure: true,
-  // only available for 10 minutes (token invalid after 15 anyways)
+  // only available for 10 minutes (token invalid after 15 minutes anyways)
   maxAge: 600_000, //i.e. 10 minutes
 };
 
+// NOTE: only exported for tests
 export const credentialsAreValid = async ({
   email,
   password,

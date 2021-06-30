@@ -1,5 +1,5 @@
 import express from "express";
-import { Cookie, CookieAccessInfo } from "cookiejar";
+import { CookieAccessInfo } from "cookiejar";
 import faker from "faker";
 import { constants, models, test } from "@paperpod/common";
 import { jwt } from "@paperpod/server";
@@ -16,9 +16,7 @@ import supertest from "supertest";
 import { app } from "../app";
 import { hash } from "../cryptography/cryptography";
 import { credentialsAreValid } from "./user-routes";
-import { user } from "../../../common/src/test/mocks";
 import { decode } from "../../../server/src/jwt/jwt";
-import { doesNotMatch } from "assert";
 
 const signUp = (
   credentials = test.mocks.credentials(),
@@ -287,7 +285,7 @@ describe("The authentication endpoint for users", () => {
   });
 
   describe("POST endpoint for creating new sessions", () => {
-    it("Does respond with 201 on succesful request", async () => {
+    it("Does respond with 201 on successful request", async () => {
       const credentials = test.mocks.credentials();
       await signUp(credentials);
 
@@ -490,18 +488,6 @@ describe("PUT endpont for token refresh", () => {
     it("Cookie has secure", async () => {
       const { cookie } = await setupCookieTest();
       expect(cookie.secure).toEqual(true);
-    });
-    it("Sets a valid token as a cookie", async () => {
-      const credentials = test.mocks.credentials();
-      const oldToken = await extractBearerToken(signUp(credentials));
-
-      const { headers } = await refreshToken(oldToken);
-      const token = headers[constants.TOKEN_COOKIE_HEADER];
-
-      const persistedUser = await database.users.getByEmail(credentials.email);
-      const decodedUser = decode(token);
-
-      expect(persistedUser).toEqual(decodedUser);
     });
   });
 });

@@ -7,7 +7,6 @@ describe("Function adding bodyparser middleware to express app", () => {
   it("Does have middleware applied", () => {
     const find = findInStackOf(appWithCookieParser());
 
-    expect(find("jsonParser")).toBeDefined();
-    expect(find("urlencodedParser")).toBeDefined();
+    expect(find("cookieParser")).toBeDefined();
   });
 });

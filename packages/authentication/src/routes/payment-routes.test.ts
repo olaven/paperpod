@@ -13,7 +13,7 @@ import { constants, test } from "@paperpod/common";
 import faker from "faker";
 import { jwt } from "../../../server/src";
 import { nanoid } from "nanoid";
-import { stripeResource } from "../testUtils";
+import { stripeResource } from "../test-utils/test-utils";
 import { users } from "../authdatabase/authdatabase";
 
 const postCheckoutSession = ({
@@ -39,15 +39,16 @@ const randomSession = ({
   client_reference_id,
 });
 
-jest.mock("../payment/checkout", () => {
+jest.mock("../payment/stripe", () => {
   return {
-    makeCheckoutFunctions: () => ({
+    makeStripeFunctions: () => ({
       getProducts: () => stripeResource([{ id: nanoid() }]),
       getPrices: () => stripeResource([{ id: nanoid() }]),
       createPaymentSession: () => ({
         id: nanoid(),
       }),
       getSession: (id: string) => sessionStore[id],
+      assignUserToSubscriptionMetadata: () => {},
     }),
   };
 });
@@ -85,7 +86,7 @@ describe("Payment endpoints", () => {
     });
   });
 
-  describe("Handing a successful subscription", () => {
+  describe("Handling a successful subscription", () => {
     it("Does respond", async () => {
       const { status } = await getSuccessEndpoint();
       expect(status).not.toBe(NOT_IMPLEMENTED);
@@ -153,11 +154,12 @@ describe("Payment endpoints", () => {
 
       sessionStore[id] = randomSession({ client_reference_id: user.id });
 
-      const { headers } = await getSuccessEndpoint({
+      const { headers, status } = await getSuccessEndpoint({
         sessionId: id,
       });
 
-      expect(headers["Location"]).toEqual(constants.APPLICATION_URL);
+      expect(status).toEqual(FOUND);
+      expect(headers["location"]).toEqual(constants.APPLICATION_URL);
     });
 
     it("Updates the user subscription status", async () => {

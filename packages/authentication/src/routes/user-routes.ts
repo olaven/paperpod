@@ -12,14 +12,16 @@ import {
   UNAUTHORIZED,
 } from "node-kall";
 
-const tokenOptions = {
-  // cannot be accessed with JS
-  httpOnly: true,
-  // must be sent over http
-  secure: true,
-  // only available for 10 minutes (token invalid after 15 minutes anyways)
-  maxAge: 600_000, //i.e. 10 minutes
-};
+const withTokenCookie = (token: string, response: express.Response) =>
+  response.cookie(constants.TOKEN_COOKIE_HEADER, token, {
+    // cannot be accessed with JS
+    httpOnly: true,
+    sameSite: true,
+    // must be sent over https
+    secure: true,
+    // only available for 10 minutes (token invalid after 15 minutes anyways)
+    maxAge: 600_000, //i.e. 10 minutes
+  });
 
 // NOTE: only exported for tests
 export const credentialsAreValid = async ({
@@ -48,12 +50,7 @@ export const userRoutes = express
         message: "Created session for user",
         user,
       });
-      return response
-        .status(CREATED)
-        .cookie(constants.TOKEN_COOKIE_HEADER, token, tokenOptions)
-        .send({
-          token,
-        });
+      return withTokenCookie(token, response).status(CREATED).send({ token });
     } else {
       logger.debug({
         message: "Credentials were invalid",
@@ -75,12 +72,7 @@ export const userRoutes = express
     "/users/sessions",
     middleware.withAuthentication(async (request, response, user) => {
       const token = jwt.sign(user);
-      response
-        .status(OK)
-        .cookie(constants.TOKEN_COOKIE_HEADER, token, tokenOptions)
-        .send({
-          token,
-        });
+      return withTokenCookie(token, response).status(OK).send({ token });
     })
   )
   .post("/users", async (request, response) => {
@@ -107,7 +99,7 @@ export const userRoutes = express
 
     const token = jwt.sign(user);
 
-    return response.status(CREATED).send({ token });
+    return withTokenCookie(token, response).status(CREATED).send({ token });
   })
   .get(
     "/users/me",

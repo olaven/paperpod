@@ -1,7 +1,6 @@
 import express from "express";
-import { CookieAccessInfo } from "cookiejar";
 import faker from "faker";
-import { constants, models, test } from "@paperpod/common";
+import { constants, logger, models, test } from "@paperpod/common";
 import { jwt } from "@paperpod/server";
 import * as database from "../authdatabase/authdatabase";
 import {
@@ -17,11 +16,16 @@ import { app } from "../app";
 import { hash } from "../cryptography/cryptography";
 import { credentialsAreValid } from "./user-routes";
 import { decode } from "../../../server/src/jwt/jwt";
+import { extractCookieByName } from "../test-utils/test-utils";
 
 const signUp = (
   credentials = test.mocks.credentials(),
   agent = supertest.agent(app)
-) => agent.post("/users").send(credentials as any);
+) =>
+  agent
+    .post("/users")
+    .send(credentials as any)
+    .withCredentials();
 
 const extractBearerToken = async (test: supertest.Test) => {
   const {
@@ -133,6 +137,7 @@ describe("The authentication endpoint for users", () => {
   describe("POST request for creating new users", () => {
     it("Does respond with BAD_REQUEST if no user is sent", async () => {
       const { status } = await signUp(null);
+
       expect(status).toEqual(BAD_REQUEST);
     });
 
@@ -169,15 +174,20 @@ describe("The authentication endpoint for users", () => {
     });
 
     describe("Cookie behavior after signing up", () => {
-      const setupCookieTest = async () => {
+      const setupCookieTestForSignup = async () => {
         const credentials = test.mocks.credentials();
-        const agent = supertest.agent(app);
-        await signUp(credentials, agent);
 
-        const cookie = agent.jar.getCookie(
+        const { headers, status } = await signUp(credentials);
+
+        const cookie = extractCookieByName(
           constants.TOKEN_COOKIE_HEADER,
-          new CookieAccessInfo("gateway", undefined, true)
+          headers
         );
+
+        logger.debug({
+          message: "getting cookie with header" + constants.TOKEN_COOKIE_HEADER,
+          cookie,
+        });
 
         return {
           cookie,
@@ -186,7 +196,7 @@ describe("The authentication endpoint for users", () => {
       };
 
       it("Sets a valid token as a cookie", async () => {
-        const { cookie, credentials } = await setupCookieTest();
+        const { cookie, credentials } = await setupCookieTestForSignup();
 
         const persistedUser = await database.users.getByEmail(
           credentials.email
@@ -197,14 +207,18 @@ describe("The authentication endpoint for users", () => {
       });
 
       it("Cookie has httponly", async () => {
-        const { cookie } = await setupCookieTest();
-
-        expect(cookie.noscript).toEqual(true);
+        const { cookie } = await setupCookieTestForSignup();
+        expect(cookie.properties).toContain("HttpOnly");
       });
 
       it("Cookie has secure", async () => {
-        const { cookie } = await setupCookieTest();
-        expect(cookie.secure).toEqual(true);
+        const { cookie } = await setupCookieTestForSignup();
+        expect(cookie.properties).toContain("Secure");
+      });
+
+      it("Cookie has SameSite", async () => {
+        const { cookie } = await setupCookieTestForSignup();
+        expect(cookie.properties).toContain("SameSite=Strict");
       });
     });
 
@@ -299,6 +313,56 @@ describe("The authentication endpoint for users", () => {
 
       const { status } = await login(credentials);
       expect(status).toBe(UNAUTHORIZED);
+    });
+
+    describe("Cookie behavior after creating new session", () => {
+      const setupCookieTestForLogin = async () => {
+        const credentials = test.mocks.credentials();
+
+        await signUp(credentials);
+        const { headers } = await login(credentials);
+
+        const cookie = extractCookieByName(
+          constants.TOKEN_COOKIE_HEADER,
+          headers
+        );
+
+        logger.debug({
+          message: "getting cookie with header" + constants.TOKEN_COOKIE_HEADER,
+          cookie,
+        });
+
+        return {
+          cookie,
+          credentials,
+        };
+      };
+
+      it("Sets a valid token as a cookie", async () => {
+        const { cookie, credentials } = await setupCookieTestForLogin();
+
+        const persistedUser = await database.users.getByEmail(
+          credentials.email
+        );
+        const decodedUser = decode(cookie.value);
+
+        expect(persistedUser).toEqual(decodedUser);
+      });
+
+      it("Cookie has httponly", async () => {
+        const { cookie } = await setupCookieTestForLogin();
+        expect(cookie.properties).toContain("HttpOnly");
+      });
+
+      it("Cookie has secure", async () => {
+        const { cookie } = await setupCookieTestForLogin();
+        expect(cookie.properties).toContain("Secure");
+      });
+
+      it("Cookie has SameSite", async () => {
+        const { cookie } = await setupCookieTestForLogin();
+        expect(cookie.properties).toContain("SameSite=Strict");
+      });
     });
   });
 
@@ -431,7 +495,10 @@ describe("GET endpoint for retrieving information about the logged in user", () 
 
 describe("PUT endpont for token refresh", () => {
   const refreshToken = (oldToken: string, agent = supertest(app)) =>
-    agent.put("/users/sessions").set("Authorization", "Bearer " + oldToken);
+    agent
+      .put("/users/sessions")
+      .set("Authorization", "Bearer " + oldToken)
+      .withCredentials();
 
   it("Responds with OK on valid request", async () => {
     const token = await extractBearerToken(signUp());
@@ -453,15 +520,15 @@ describe("PUT endpont for token refresh", () => {
   });
 
   describe("Cookie behavior after refreshing session", () => {
-    const setupCookieTest = async () => {
+    const setupCookieTestForRefreshing = async () => {
       const credentials = test.mocks.credentials();
       const agent = supertest.agent(app);
       const oldToken = await extractBearerToken(signUp(credentials));
-      await refreshToken(oldToken, agent);
+      const { headers } = await refreshToken(oldToken, agent);
 
-      const cookie = agent.jar.getCookie(
+      const cookie = extractCookieByName(
         constants.TOKEN_COOKIE_HEADER,
-        new CookieAccessInfo("gateway", undefined, true)
+        headers
       );
 
       return {
@@ -471,7 +538,7 @@ describe("PUT endpont for token refresh", () => {
     };
 
     it("Sets a valid token as a cookie", async () => {
-      const { cookie, credentials } = await setupCookieTest();
+      const { cookie, credentials } = await setupCookieTestForRefreshing();
 
       const persistedUser = await database.users.getByEmail(credentials.email);
       const decodedUser = decode(cookie.value);
@@ -480,14 +547,18 @@ describe("PUT endpont for token refresh", () => {
     });
 
     it("Cookie has httponly", async () => {
-      const { cookie } = await setupCookieTest();
-
-      expect(cookie.noscript).toEqual(true);
+      const { cookie } = await setupCookieTestForRefreshing();
+      expect(cookie.properties).toContain("HttpOnly");
     });
 
     it("Cookie has secure", async () => {
-      const { cookie } = await setupCookieTest();
-      expect(cookie.secure).toEqual(true);
+      const { cookie } = await setupCookieTestForRefreshing();
+      expect(cookie.properties).toContain("Secure");
+    });
+
+    it("Cookie has SameSite", async () => {
+      const { cookie } = await setupCookieTestForRefreshing();
+      expect(cookie.properties).toContain("SameSite=Strict");
     });
   });
 });

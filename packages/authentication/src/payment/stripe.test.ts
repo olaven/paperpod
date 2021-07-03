@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import { Stripe } from "stripe";
 import { test } from "@paperpod/common";
-import { stripeResource } from "../testUtils";
+import { stripeResource } from "../test-utils/test-utils";
 import { makeStripeFunctions } from "./stripe";
 
 const mockStripe = ({

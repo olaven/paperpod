@@ -3,5 +3,10 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": ["Signup", "kall", "paperpod", "pino"]
+  "cSpell.words": [
+    "Signup",
+    "kall",
+    "paperpod",
+    "pino"
+  ]
 }

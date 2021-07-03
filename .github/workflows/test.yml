@@ -69,7 +69,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run tests
-        run: yarn authentication test:sequentially
+        run: yarn authentication test
         env:
           JWT_SECRET: The JWT secret in CI test environment for authentication tests
           PGHOST: postgres

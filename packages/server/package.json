@@ -16,7 +16,7 @@
     "express": "^4.17.1",
     "faker": "^5.5.3",
     "jsonwebtoken": "^8.5.1",
-    "klart": "^0.1.4",
+    "klart": "^0.2.0",
     "mongodb": "^3.6.3",
     "node-kall": "^1.0.81"
   },

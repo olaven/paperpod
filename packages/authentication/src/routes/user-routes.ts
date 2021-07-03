@@ -103,9 +103,17 @@ export const userRoutes = express
   })
   .get(
     "/users/me",
-    middleware.withAuthentication((request, response, user) => {
+    middleware.withAuthentication(async (request, response, user) => {
+      /**
+       * User data may have been
+       * updated since the token was
+       * created.
+       *
+       * This currently applies to subscription.
+       */
+      const updatedUser = await database.users.getById(user.id);
       response.json({
-        ...user,
+        ...updatedUser,
         password_hash: undefined,
       });
     })

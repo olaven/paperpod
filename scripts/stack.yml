@@ -31,6 +31,7 @@ services:
       - PORT=$AUTHENTICATION_PORT
       - NODE_ENV=production
       - JWT_SECRET=$JWT_SECRET
+      - STRIPE_API_KEY=$STRIPE_API_KEY
       - PGHOST=$PGHOST
       - PGDATABASE=$PGDATABASE
       - PGUSER=$PGUSER
@@ -41,3 +42,5 @@ services:
       - DATABASE_CA=$DATABASE_CA
   web:
     image: olaven/paperpod-web@$WEB_DIGEST
+    environment:
+      - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY

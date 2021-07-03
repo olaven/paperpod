@@ -1,37 +1,6 @@
 import { nanoid } from "nanoid";
-import { Stripe } from "stripe";
 import { test } from "@paperpod/common";
-import { stripeResource } from "../test-utils/test-utils";
-import { makeStripeFunctions } from "./stripe";
-
-const mockStripe = ({
-  createSession = jest.fn((options: Stripe.Checkout.SessionCreateParams) => ({
-    id: nanoid(),
-  })),
-  listPrices = jest.fn((options: Stripe.PriceListParams) =>
-    stripeResource([{ id: nanoid() }])
-  ),
-  listProducts = jest.fn((options: Stripe.ProductListParams) =>
-    stripeResource([{ id: nanoid() }])
-  ),
-} = {}) => {
-  return makeStripeFunctions({
-    checkout: {
-      sessions: {
-        //@ts-expect-error
-        create: createSession,
-      },
-    },
-    prices: {
-      //@ts-expect-error
-      list: listPrices,
-    },
-    products: {
-      //@ts-expect-error
-      list: listProducts,
-    },
-  });
-};
+import { mockStripe, stripeResource } from "../test-utils/test-utils";
 
 describe("Functions for interacting with Stripe", () => {
   it("Does not throw", () => {

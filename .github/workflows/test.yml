@@ -46,9 +46,6 @@ jobs:
       # Label used to access the service container
       postgres:
         image: postgres
-        # when/if command is supported, use that to increase max connections.
-        # Then, start running api tests in parallel again
-        #command: postgres -N 500
         env:
           POSTGRES_USER: ci_user
           POSTGRES_PASSWORD: ci_password

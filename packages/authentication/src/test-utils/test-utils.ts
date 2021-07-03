@@ -1,3 +1,8 @@
+import { nanoid } from "nanoid";
+import faker from "faker";
+import Stripe from "stripe";
+import { makeStripeFunctions } from "../payment/stripe";
+
 export const stripeResource = <T>(resources: T[]) => ({
   data: resources.map((resource) => ({
     ...resource,
@@ -6,6 +11,40 @@ export const stripeResource = <T>(resources: T[]) => ({
     },
   })),
 });
+
+export const mockStripe = ({
+  createSession = jest.fn((options: Stripe.Checkout.SessionCreateParams) => ({
+    id: nanoid(),
+  })),
+  listPrices = jest.fn((options: Stripe.PriceListParams) =>
+    stripeResource([{ id: nanoid() }])
+  ),
+  listProducts = jest.fn((options: Stripe.ProductListParams) =>
+    stripeResource([{ id: nanoid() }])
+  ),
+  getCustomer = jest.fn((id: string) => ({ email: faker.internet.email() })),
+} = {}) => {
+  return makeStripeFunctions({
+    checkout: {
+      sessions: {
+        //@ts-expect-error
+        create: createSession,
+      },
+    },
+    prices: {
+      //@ts-expect-error
+      list: listPrices,
+    },
+    products: {
+      //@ts-expect-error
+      list: listProducts,
+    },
+    customers: {
+      //@ts-expect-error
+      retrieve: getCustomer,
+    },
+  });
+};
 
 /**
  * NOTE:
@@ -19,7 +58,6 @@ const extractCookies = (
   value: string;
   properties: string[];
 }[] => {
-  console.log("getting set-cookie", headers["set-cookie"]);
   const cookies = headers["set-cookie"] as string[];
   if (!cookies) throw "no cookies defined";
 

@@ -180,12 +180,13 @@ describe("The authentication endpoint for users", () => {
         const { headers, status } = await signUp(credentials);
 
         const cookie = extractCookieByName(
-          constants.TOKEN_COOKIE_HEADER,
+          constants.TOKEN_COOKIE_HEADER(),
           headers
         );
 
         logger.debug({
-          message: "getting cookie with header" + constants.TOKEN_COOKIE_HEADER,
+          message:
+            "getting cookie with header" + constants.TOKEN_COOKIE_HEADER(),
           cookie,
         });
 
@@ -323,12 +324,13 @@ describe("The authentication endpoint for users", () => {
         const { headers } = await login(credentials);
 
         const cookie = extractCookieByName(
-          constants.TOKEN_COOKIE_HEADER,
+          constants.TOKEN_COOKIE_HEADER(),
           headers
         );
 
         logger.debug({
-          message: "getting cookie with header" + constants.TOKEN_COOKIE_HEADER,
+          message:
+            "getting cookie with header" + constants.TOKEN_COOKIE_HEADER(),
           cookie,
         });
 
@@ -527,7 +529,7 @@ describe("PUT endpont for token refresh", () => {
       const { headers } = await refreshToken(oldToken, agent);
 
       const cookie = extractCookieByName(
-        constants.TOKEN_COOKIE_HEADER,
+        constants.TOKEN_COOKIE_HEADER(),
         headers
       );
 

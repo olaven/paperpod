@@ -27,7 +27,6 @@ const extractCookies = (
     const [name, ...rest] = cookie.split("=");
     const parts = rest.join("=").split("; ");
 
-    console.log("THE PARTS", parts, "FROM REST", rest);
     const [value, ...properties] = parts;
 
     return { name, value, properties };

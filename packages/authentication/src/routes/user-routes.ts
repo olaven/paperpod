@@ -13,7 +13,7 @@ import {
 } from "node-kall";
 
 const withTokenCookie = (token: string, response: express.Response) =>
-  response.cookie(constants.TOKEN_COOKIE_HEADER, token, {
+  response.cookie(constants.TOKEN_COOKIE_HEADER(), token, {
     // cannot be accessed with JS
     httpOnly: true,
     sameSite: true,

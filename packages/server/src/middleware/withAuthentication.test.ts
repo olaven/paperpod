@@ -28,7 +28,7 @@ describe("Authentication verifying that caller is authenticated", () => {
           authorization: `Bearer ${token.bearer}`,
         },
         cookies: {
-          [constants.TOKEN_COOKIE_HEADER]: token.cookie,
+          [constants.TOKEN_COOKIE_HEADER()]: token.cookie,
         },
       } as any,
       {

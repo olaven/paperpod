@@ -159,7 +159,7 @@ describe("Payment endpoints", () => {
       });
 
       expect(status).toEqual(FOUND);
-      expect(headers["location"]).toEqual(constants.APPLICATION_URL);
+      expect(headers["location"]).toEqual(constants.APPLICATION_URL());
     });
 
     it("Updates the user subscription status", async () => {

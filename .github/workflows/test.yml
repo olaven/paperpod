@@ -45,9 +45,8 @@ jobs:
     services:
       # Label used to access the service container
       postgres:
-        # Docker Hub image
         image: postgres
-        # Provide the password for postgres
+        command: postgres -N 500
         env:
           POSTGRES_USER: ci_user
           POSTGRES_PASSWORD: ci_password

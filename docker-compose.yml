@@ -116,6 +116,7 @@ services:
 
   database:
     image: postgres:13
+    command: postgres -N 500
     ports:
       - $PGPORT:$PGPORT
     environment:

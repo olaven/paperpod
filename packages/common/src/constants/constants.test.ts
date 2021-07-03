@@ -7,8 +7,19 @@
  * changes harder.
  */
 
-import { withMockedNodeEnv } from "../test/test";
 import { APPLICATION_URL, TOKEN_COOKIE_HEADER } from "./constants";
+
+//TODO: share in a way with configuration.test.ts
+//cannot be used in common export because it breaks in
+// frontend modules
+// `Cannot assign to 'NODE_ENV' because it is a read-only property.`
+export const withMockedNodeEnv =
+  (value: "production" | "development" | "test", action: () => void) => () => {
+    const previous = process.env.NODE_ENV;
+    process.env.NODE_ENV = value;
+    action();
+    process.env.NODE_ENV = previous;
+  };
 
 describe("Paperpod constants", () => {
   describe("the application URL", () => {

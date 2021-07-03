@@ -1,6 +1,17 @@
 import faker from "faker";
-import { test } from "@paperpod/common";
 import { getCertificate, getConfiguration } from "./configuration";
+
+//TODO: share in a way with configuration.ts
+//cannot be used in common export because it breaks in
+// frontend modules
+// `Cannot assign to 'NODE_ENV' because it is a read-only property.`
+export const withMockedNodeEnv =
+  (value: "production" | "development" | "test", action: () => void) => () => {
+    const previous = process.env.NODE_ENV;
+    process.env.NODE_ENV = value;
+    action();
+    process.env.NODE_ENV = previous;
+  };
 
 const withMockedCertificate =
   (action: (certificate: string, encoded: string) => void) => () => {
@@ -23,21 +34,21 @@ describe("Database configuration module", () => {
   describe("Getting database configuration", () => {
     it(
       "Does not throw an error",
-      test.withMockedNodeEnv("test", () => {
+      withMockedNodeEnv("test", () => {
         expect(() => getConfiguration()).not.toThrow();
       })
     );
 
     it(
       "Returns an empty object if in test",
-      test.withMockedNodeEnv("test", () => {
+      withMockedNodeEnv("test", () => {
         expect(getConfiguration()).toEqual({});
       })
     );
 
     it(
       "Returns an empty object if in development",
-      test.withMockedNodeEnv("development", () => {
+      withMockedNodeEnv("development", () => {
         expect(getConfiguration()).toEqual({});
       })
     );
@@ -45,7 +56,7 @@ describe("Database configuration module", () => {
     describe("Getting configuration in production", () => {
       it(
         "Returns an object with .ssl key",
-        test.withMockedNodeEnv(
+        withMockedNodeEnv(
           "production",
           withMockedCertificate((_, __) => {
             expect(getConfiguration().ssl).toBeDefined();
@@ -55,7 +66,7 @@ describe("Database configuration module", () => {
 
       it(
         "Returns SSL with certificate",
-        test.withMockedNodeEnv(
+        withMockedNodeEnv(
           "production",
           withMockedCertificate((certificate, encoded) => {
             const { ca: retrieved } = getConfiguration().ssl;
@@ -66,7 +77,7 @@ describe("Database configuration module", () => {
 
       it(
         "Returns SSL with rejectUnauthorized: false",
-        test.withMockedNodeEnv(
+        withMockedNodeEnv(
           "production",
           withMockedCertificate((_, __) => {
             const { rejectUnauthorized } = getConfiguration().ssl;

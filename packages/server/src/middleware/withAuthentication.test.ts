@@ -142,7 +142,7 @@ describe("Helper function for getting the token", () => {
         authorization: `Bearer ${bearerToken}`,
       },
       cookies: {
-        [constants.TOKEN_COOKIE_HEADER]: cookieToken,
+        [constants.TOKEN_COOKIE_HEADER()]: cookieToken,
       },
     } as any as express.Request);
 

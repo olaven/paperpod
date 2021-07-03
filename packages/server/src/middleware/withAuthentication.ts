@@ -15,7 +15,9 @@ export const getToken = (request: express.Request): string | null => {
     token && token !== "null" && token !== "undefined";
 
   const bearerToken = getBearerToken(request);
-  const cookieToken = request.cookies[constants.TOKEN_COOKIE_HEADER] as string;
+  const cookieToken =
+    request.cookies &&
+    (request.cookies[constants.TOKEN_COOKIE_HEADER()] as string);
 
   logger.debug({
     message: "got tokens",

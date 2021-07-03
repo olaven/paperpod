@@ -10,7 +10,7 @@ jobs:
       # Label used to access the service container
       postgres:
         # Docker Hub image
-        image: postgres
+        image: postgres:13
         # Provide the password for postgres
         env:
           POSTGRES_USER: ci_user
@@ -46,7 +46,9 @@ jobs:
       # Label used to access the service container
       postgres:
         image: postgres
-        command: postgres -N 500
+        # when/if command is supported, use that to increase max connections.
+        # Then, start running api tests in parallel again
+        #command: postgres -N 500
         env:
           POSTGRES_USER: ci_user
           POSTGRES_PASSWORD: ci_password
@@ -67,7 +69,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run tests
-        run: yarn authentication test:ci
+        run: yarn authentication test:sequentially
         env:
           JWT_SECRET: The JWT secret in CI test environment for authentication tests
           PGHOST: postgres

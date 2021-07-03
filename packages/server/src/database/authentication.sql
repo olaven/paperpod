@@ -6,3 +6,15 @@ CREATE TABLE IF NOT EXISTS authentication.users(
     email varchar(300), 
     password_hash varchar(1000)
 );
+
+-- adding user subscribing true or false 
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_type WHERE typname = 'subscription') THEN
+        CREATE TYPE Subscription AS ENUM ('active', 'inactive'); 
+    END IF;
+END
+$$;
+
+ALTER TABLE authentication.users
+ADD COLUMN IF NOT EXISTS subscription Subscription NOT NULL DEFAULT 'inactive'; 

@@ -1,33 +1,34 @@
 import faker from "faker";
 import { getCertificate, getConfiguration } from "./configuration";
 
-const withMockedCertificate = (
-  action: (certificate: string, encoded: string) => void
-) => () => {
-  const certificate = `
+//TODO: share in a way with configuration.ts
+//cannot be used in common export because it breaks in
+// frontend modules
+// `Cannot assign to 'NODE_ENV' because it is a read-only property.`
+export const withMockedNodeEnv =
+  (value: "production" | "development" | "test", action: () => void) => () => {
+    const previous = process.env.NODE_ENV;
+    process.env.NODE_ENV = value;
+    action();
+    process.env.NODE_ENV = previous;
+  };
+
+const withMockedCertificate =
+  (action: (certificate: string, encoded: string) => void) => () => {
+    const certificate = `
       -----BEGIN CERTIFICATE-----
       ${faker.random.alpha({ count: 200 })}
       -----END CERTIFICATE-----
     `.trim();
 
-  const encoded = Buffer.from(certificate).toString("base64");
+    const encoded = Buffer.from(certificate).toString("base64");
 
-  //TODO: figure out some neat abstraction on this -> reuse in this and `withMockedNodeEnv`
-  const previous = process.env.DATABASE_CA;
-  process.env.DATABASE_CA = encoded;
-  action(certificate, encoded);
-  process.env.DATABASE_CA = previous;
-};
-
-const withMockedNodeEnv = (
-  value: "production" | "development" | "test",
-  action: () => void
-) => () => {
-  const previous = process.env.NODE_ENV;
-  process.env.NODE_ENV = value;
-  action();
-  process.env.NODE_ENV = previous;
-};
+    //TODO: figure out some neat abstraction on this -> reuse in this and `withMockedNodeEnv`
+    const previous = process.env.DATABASE_CA;
+    process.env.DATABASE_CA = encoded;
+    action(certificate, encoded);
+    process.env.DATABASE_CA = previous;
+  };
 
 describe("Database configuration module", () => {
   describe("Getting database configuration", () => {

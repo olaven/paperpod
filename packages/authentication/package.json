@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
-    "test": "jest --detectOpenHandles",
-    "test:ci": "yarn test",
+    "test": "jest --detectOpenHandles --forceExit --setupFiles dotenv/config",
     "start": "ts-node ./src/index.ts"
   },
   "dependencies": {
@@ -17,6 +16,7 @@
     "express-session": "^1.17.1",
     "nanoid": "^3.1.20",
     "node-kall": "^1.0.83",
+    "stripe": "^8.154.0",
     "ts-node": "^9.1.1"
   },
   "devDependencies": {
@@ -26,10 +26,12 @@
     "@types/jest": "^26.0.20",
     "@types/nanoid": "^2.1.0",
     "@types/node": "^14.14.36",
+    "@types/stripe": "^8.0.417",
     "@types/superagent": "^4.1.10",
     "@types/supertest": "^2.0.10",
     "faker": "^5.5.3",
     "jest": "^26.6.3",
+    "js-cookie": "^2.2.1",
     "nanoid": "^3.1.20",
     "superagent": "^6.1.0",
     "supertest": "^6.0.1",

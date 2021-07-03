@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { withConfiguration } from "klart";
 import { Configuration } from "./configuration";
+import { logger } from "../../../common/src";
 
 //TODO: move to general util?
 export const singleton = <T, G>(action: (input?: G) => T) => {
@@ -32,10 +33,14 @@ export type SchemaName = "api" | "authentication";
 export const ensureMigrated = singleton(
   async (options: { configuration: Configuration; schema: SchemaName }) => {
     const sql = await readMigrationFile(options.schema);
+    logger.trace({
+      message: "Going to run migration with",
+      sql,
+    });
     try {
       await withConfiguration(options.configuration).run(sql);
     } catch (error) {
-      console.error(`Erorr when running migration`, error);
+      logger.error({ message: `Error when running migration`, error });
     }
   }
 );

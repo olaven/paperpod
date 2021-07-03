@@ -20,6 +20,11 @@ provider "stripe" {
 resource "stripe_product" "product" {
   name = "Paperpod Full Access"
   type = "service"
+
+  metadata = {
+    # "collection" is a grouping defined by me, not stripe.
+    collection: "paperpod"
+  }
 }
 
 resource "stripe_plan" "product_plan" {
@@ -27,18 +32,23 @@ resource "stripe_plan" "product_plan" {
   amount   = 800 #resolves to 8$
   currency = "usd"
   interval = "month"
+
+  metadata = {
+    # "collection" is a grouping defined by me, not stripe.
+    collection: "paperpod"
+  }
 }
 
-/* resource "stripe_webhook_endpoint" "my_endpoint" { TODO: setup something like this 
-  url = "https://mydomain.example.com/webhook"
+resource "stripe_webhook_endpoint" "my_endpoint" { 
+  url = "https://paperpod.fm/authentication/payment/webhook"
 
   enabled_events = [
-    "charge.succeeded",
-    "charge.failed",
-    "source.chargeable",
+    "customer.subscription.deleted", 
+    "customer.subscription.created"
   ]
 }
- */
+
+
 resource "stripe_coupon" "test_user_coupon" {
   code               = var.test_user_coupon_code
   name               = "Test User Access"
@@ -49,4 +59,8 @@ resource "stripe_coupon" "test_user_coupon" {
 
   #max_redemptions = 1024
   #redeem_by       = "2022-09-02T12:34:56-08:00" # RFC3339, in the future
+  metadata = {
+    # "collection" is a grouping defined by me, not stripe.
+    collection: "paperpod"
+  }
 }

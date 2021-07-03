@@ -1,5 +1,5 @@
 import { logger } from "@paperpod/common";
-import { fetchers } from "@paperpod/frontend";
+import { fetchers, FrontendContext } from "@paperpod/frontend";
 import { CREATED } from "node-kall";
 import * as React from "react";
 import { authentication } from "@paperpod/frontend";
@@ -8,11 +8,13 @@ import { ArticleContext } from "./ArticleContext";
 export const ArticleCreator = () => {
   const { token } = React.useContext(authentication.UserContext);
   const { resfreshArticles } = React.useContext(ArticleContext);
+  const { serverHostname } = React.useContext(FrontendContext);
   const [link, setLink] = React.useState<string>(null);
   const onCreate = async () => {
     const [status] = await fetchers.article.postArticle(
       { link },
-      await token()
+      await token(),
+      serverHostname
     );
     if (status === CREATED) {
       resfreshArticles();

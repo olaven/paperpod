@@ -1,5 +1,6 @@
 import { test, models, constants } from "@paperpod/common";
 import { serialize } from "serialize-xml";
+import { APPLICATION_URL } from "../../common/src/constants/constants";
 import { convertToRSSFeed, toItemTag } from "./rss";
 
 describe("Conversion from articles to RSS", () => {
@@ -44,7 +45,7 @@ describe("Conversion from articles to RSS", () => {
       ["title", (article) => article.title],
       [
         "link",
-        (article) => `${constants.APPLICATION_URL}/api/files/${article.id}`,
+        (article) => `${constants.APPLICATION_URL()}/api/files/${article.id}`,
       ],
       ["description", (article) => article.description],
       ["guid", (article) => article.id],
@@ -73,7 +74,9 @@ describe("Conversion from articles to RSS", () => {
       const serialized = serializeItem(article);
 
       expect(serialized).toContain(
-        `<enclosure url="https://paperpod.fm/api/files/${article.id}" length="10" type="audio/mpeg"`
+        `<enclosure url="${APPLICATION_URL()}/api/files/${
+          article.id
+        }" length="10" type="audio/mpeg"`
       );
     });
   });

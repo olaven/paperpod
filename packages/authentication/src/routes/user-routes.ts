@@ -1,4 +1,4 @@
-import { logger, models, validators } from "@paperpod/common";
+import { constants, logger, models, validators } from "@paperpod/common";
 import { jwt, middleware } from "@paperpod/server";
 import { hash } from "../cryptography/cryptography";
 import express from "express";
@@ -12,6 +12,18 @@ import {
   UNAUTHORIZED,
 } from "node-kall";
 
+const withTokenCookie = (token: string, response: express.Response) =>
+  response.cookie(constants.TOKEN_COOKIE_HEADER(), token, {
+    // cannot be accessed with JS
+    httpOnly: true,
+    sameSite: true,
+    // must be sent over https
+    secure: true,
+    // only available for 10 minutes (token invalid after 15 minutes anyways)
+    maxAge: 600_000, //i.e. 10 minutes
+  });
+
+// NOTE: only exported for tests
 export const credentialsAreValid = async ({
   email,
   password,
@@ -28,7 +40,6 @@ export const userRoutes = express
   .Router()
   .post("/users/sessions", async (request, response) => {
     const credentials = request.body as models.UserCredentials;
-    logger.debug("Going to create session for ", credentials);
     if (await credentialsAreValid(credentials)) {
       const user = await database.users.getByEmail(
         credentials.email.toLowerCase()
@@ -39,9 +50,7 @@ export const userRoutes = express
         message: "Created session for user",
         user,
       });
-      return response.status(CREATED).send({
-        token,
-      });
+      return withTokenCookie(token, response).status(CREATED).send({ token });
     } else {
       logger.debug({
         message: "Credentials were invalid",
@@ -63,9 +72,7 @@ export const userRoutes = express
     "/users/sessions",
     middleware.withAuthentication(async (request, response, user) => {
       const token = jwt.sign(user);
-      response.status(OK).send({
-        token,
-      });
+      return withTokenCookie(token, response).status(OK).send({ token });
     })
   )
   .post("/users", async (request, response) => {
@@ -87,17 +94,26 @@ export const userRoutes = express
       id: null,
       email: credentials.email.toLowerCase(),
       password_hash: await hash.hash(credentials.password),
+      subscription: "inactive",
     });
 
     const token = jwt.sign(user);
 
-    return response.status(CREATED).send({ token });
+    return withTokenCookie(token, response).status(CREATED).send({ token });
   })
   .get(
     "/users/me",
-    middleware.withAuthentication((request, response, user) => {
+    middleware.withAuthentication(async (request, response, user) => {
+      /**
+       * User data may have been
+       * updated since the token was
+       * created.
+       *
+       * This currently applies to subscription.
+       */
+      const updatedUser = await database.users.getById(user.id);
       response.json({
-        ...user,
+        ...updatedUser,
         password_hash: undefined,
       });
     })

@@ -8,10 +8,15 @@
     "test": "jest",
     "dev": "next"
   },
+  "resolutions": {
+    "**/react": "./node_modules/react",
+    "**/react-dom": "./node_modules/react-dom"
+  },
   "dependencies": {
     "@paperpod/common": "0.0.1",
     "@paperpod/frontend": "0.0.1",
     "@paperpod/ui": "0.0.1",
+    "@stripe/stripe-js": "^1.15.1",
     "@testing-library/jest-dom": "^5.12.0",
     "next": "^9.4.0",
     "next-transpile-modules": "^6.0.0",

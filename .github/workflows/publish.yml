@@ -196,6 +196,8 @@ jobs:
               API_PORT=${{ secrets.API_PORT }} \
               AUTHENTICATION_PORT=${{ secrets.AUTHENTICATION_PORT }} \
               JWT_SECRET=${{ secrets.JWT_SECRET }} \
+              STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }} \
+              STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }} \
               AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
               AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \ 
               GATEWAY_DIGEST=${{ needs.publish-gateway.outputs.digest }} \
@@ -214,10 +216,13 @@ jobs:
               API_PORT=$API_PORT \
               AUTHENTICATION_PORT=$AUTHENTICATION_PORT \
               JWT_SECRET=$JWT_SECRET \
+              STRIPE_API_KEY=$STRIPE_API_KEY \
+              STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY \
               AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
               AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
               GATEWAY_DIGEST=$GATEWAY_DIGEST \
               API_DIGEST=$API_DIGEST \
               AUTHENTICATION_DIGEST=$AUTHENTICATION_DIGEST \
               WEB_DIGEST=$WEB_DIGEST \
+              docker system prune --force --filter "until=24h" \ 
               docker stack deploy -c $HOME/paperpod/scripts/stack.yml paperpod;

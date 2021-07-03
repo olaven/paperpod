@@ -6,20 +6,17 @@ import { getCssString } from "@paperpod/ui";
 
 export default class Document extends NextDocument {
   static async getInitialProps(ctx: DocumentContext) {
-    try {
-      const extractedStyles = getCssString();
-      const initialProps = await NextDocument.getInitialProps(ctx);
+    const extractedStyles = getCssString();
+    const initialProps = await NextDocument.getInitialProps(ctx);
 
-      return {
-        ...initialProps,
-        styles: (
-          <>
-            {initialProps.styles}
-            <style dangerouslySetInnerHTML={{ __html: extractedStyles }} />
-          </>
-        ),
-      };
-    } finally {
-    }
+    return {
+      ...initialProps,
+      styles: (
+        <>
+          {initialProps.styles}
+          <style dangerouslySetInnerHTML={{ __html: extractedStyles }} />
+        </>
+      ),
+    };
   }
 }

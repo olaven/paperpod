@@ -8,6 +8,7 @@ export const getCertificate = () =>
   Buffer.from(process.env.DATABASE_CA, "base64").toString("utf-8").trim();
 
 export type Configuration = {
+  max: number;
   ssl?: {
     ca: string;
     rejectUnauthorized: false;
@@ -20,9 +21,12 @@ export type Configuration = {
 export const getConfiguration = (): Configuration =>
   process.env.NODE_ENV === "production"
     ? {
+        max: 20,
         ssl: {
           ca: getCertificate(),
           rejectUnauthorized: false,
         },
       }
-    : {};
+    : {
+        max: 20,
+      };

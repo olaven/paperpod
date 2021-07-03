@@ -18,7 +18,7 @@ export const Feed = () => {
       </button>
       Din feed:{" "}
       <a>
-        {constants.APPLICATION_URL}/api/feeds/{user.id}
+        {constants.APPLICATION_URL()}/api/feeds/{user.id}
       </a>
     </>
   );

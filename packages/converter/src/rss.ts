@@ -8,7 +8,7 @@ export const convertToRSSFeed = (articles: models.Article[]) =>
       [
         tag("channel", [
           tag("title", "Paperpod Feed"),
-          tag("link", constants.APPLICATION_URL),
+          tag("link", constants.APPLICATION_URL()),
           tag("author", "Paperpod by Krets AS"),
           tag(
             "description",
@@ -25,21 +25,21 @@ export const convertToRSSFeed = (articles: models.Article[]) =>
 
 export const toImageTag = () =>
   tag("image", [
-    tag("url", `${constants.APPLICATION_URL}/logo.svg`), //TODO: image that's friendly for podcast players
-    tag("link", constants.APPLICATION_URL),
+    tag("url", `${constants.APPLICATION_URL()}/logo.svg`), //TODO: image that's friendly for podcast players
+    tag("link", constants.APPLICATION_URL()),
     tag("title", "Paperpod Feed"),
   ]);
 
 export const toItemTag = (article: models.Article) =>
   tag("item", [
     tag("title", `${article.title}`),
-    tag("link", `${constants.APPLICATION_URL}/api/files/${article.id}`),
+    tag("link", `${constants.APPLICATION_URL()}/api/files/${article.id}`),
     tag("description", article.description || "TODO: default description"),
     tag("guid", `${article.id}`),
     tag("pubDate", new Date(article.added_time).toUTCString()), //compatible with RFC822
     tag("author", article.author || "Unspecified Author"),
     tag("enclosure", "", [
-      ["url", `${constants.APPLICATION_URL}/api/files/${article.id}`],
+      ["url", `${constants.APPLICATION_URL()}/api/files/${article.id}`],
       ["length", "10"], //FIXME: actual length
       ["type", "audio/mpeg"],
     ]),

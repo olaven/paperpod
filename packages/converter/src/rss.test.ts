@@ -44,7 +44,7 @@ describe("Conversion from articles to RSS", () => {
       ["title", (article) => article.title],
       [
         "link",
-        (article) => `${constants.APPLICATION_URL}/api/files/${article.id}`,
+        (article) => `${constants.APPLICATION_URL()}/api/files/${article.id}`,
       ],
       ["description", (article) => article.description],
       ["guid", (article) => article.id],

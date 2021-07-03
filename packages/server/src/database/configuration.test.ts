@@ -1,53 +1,43 @@
 import faker from "faker";
+import { test } from "@paperpod/common";
 import { getCertificate, getConfiguration } from "./configuration";
 
-const withMockedCertificate = (
-  action: (certificate: string, encoded: string) => void
-) => () => {
-  const certificate = `
+const withMockedCertificate =
+  (action: (certificate: string, encoded: string) => void) => () => {
+    const certificate = `
       -----BEGIN CERTIFICATE-----
       ${faker.random.alpha({ count: 200 })}
       -----END CERTIFICATE-----
     `.trim();
 
-  const encoded = Buffer.from(certificate).toString("base64");
+    const encoded = Buffer.from(certificate).toString("base64");
 
-  //TODO: figure out some neat abstraction on this -> reuse in this and `withMockedNodeEnv`
-  const previous = process.env.DATABASE_CA;
-  process.env.DATABASE_CA = encoded;
-  action(certificate, encoded);
-  process.env.DATABASE_CA = previous;
-};
-
-const withMockedNodeEnv = (
-  value: "production" | "development" | "test",
-  action: () => void
-) => () => {
-  const previous = process.env.NODE_ENV;
-  process.env.NODE_ENV = value;
-  action();
-  process.env.NODE_ENV = previous;
-};
+    //TODO: figure out some neat abstraction on this -> reuse in this and `withMockedNodeEnv`
+    const previous = process.env.DATABASE_CA;
+    process.env.DATABASE_CA = encoded;
+    action(certificate, encoded);
+    process.env.DATABASE_CA = previous;
+  };
 
 describe("Database configuration module", () => {
   describe("Getting database configuration", () => {
     it(
       "Does not throw an error",
-      withMockedNodeEnv("test", () => {
+      test.withMockedNodeEnv("test", () => {
         expect(() => getConfiguration()).not.toThrow();
       })
     );
 
     it(
       "Returns an empty object if in test",
-      withMockedNodeEnv("test", () => {
+      test.withMockedNodeEnv("test", () => {
         expect(getConfiguration()).toEqual({});
       })
     );
 
     it(
       "Returns an empty object if in development",
-      withMockedNodeEnv("development", () => {
+      test.withMockedNodeEnv("development", () => {
         expect(getConfiguration()).toEqual({});
       })
     );
@@ -55,7 +45,7 @@ describe("Database configuration module", () => {
     describe("Getting configuration in production", () => {
       it(
         "Returns an object with .ssl key",
-        withMockedNodeEnv(
+        test.withMockedNodeEnv(
           "production",
           withMockedCertificate((_, __) => {
             expect(getConfiguration().ssl).toBeDefined();
@@ -65,7 +55,7 @@ describe("Database configuration module", () => {
 
       it(
         "Returns SSL with certificate",
-        withMockedNodeEnv(
+        test.withMockedNodeEnv(
           "production",
           withMockedCertificate((certificate, encoded) => {
             const { ca: retrieved } = getConfiguration().ssl;
@@ -76,7 +66,7 @@ describe("Database configuration module", () => {
 
       it(
         "Returns SSL with rejectUnauthorized: false",
-        withMockedNodeEnv(
+        test.withMockedNodeEnv(
           "production",
           withMockedCertificate((_, __) => {
             const { rejectUnauthorized } = getConfiguration().ssl;

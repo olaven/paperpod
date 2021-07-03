@@ -64,10 +64,10 @@ export const paymentRoutes = express
       subscription: "active",
     });
 
-    response.redirect(constants.APPLICATION_URL);
+    response.redirect(constants.APPLICATION_URL());
   })
   .get("/payment/cancelled", async (request, response) => {
-    response.redirect(constants.APPLICATION_URL);
+    response.redirect(constants.APPLICATION_URL());
   })
   .post("/payment/webhook", async (request, response) => {
     logger.debug("hit webhook endpoint");

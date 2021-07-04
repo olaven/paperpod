@@ -49,12 +49,12 @@ resource "stripe_webhook_endpoint" "my_endpoint" {
 }
 
 
-resource "stripe_coupon" "test_user_coupon" {
+resource "stripe_coupon" "paperpod_test_user_coupon" {
   code               = var.test_user_coupon_code
   name               = "Test User Access"
   duration           = "repeating"
   duration_in_months = 1
-  amount_off         = 8
+  amount_off         = 800 # resolves to 8$
   currency           = "usd" # lowercase
 
   #max_redemptions = 1024

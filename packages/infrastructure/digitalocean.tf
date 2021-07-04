@@ -40,7 +40,7 @@ resource "digitalocean_project_resources" "project-to-resource-mapping" {
 }
 
 resource "digitalocean_certificate" "cert" {
-  name    = "paperpod-certificate"
+  name    = "paperpod-certificate-app"
   type    = "lets_encrypt"
   domains = [digitalocean_domain.default.name]
 

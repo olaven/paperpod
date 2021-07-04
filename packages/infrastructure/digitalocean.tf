@@ -40,6 +40,8 @@ resource "digitalocean_project_resources" "project-to-resource-mapping" {
 }
 
 resource "digitalocean_certificate" "cert" {
+  // may needt to change `.name` on update..
+  // https://github.com/digitalocean/terraform-provider-digitalocean/issues/98#issuecomment-417315778
   name    = "paperpod-certificate-app"
   type    = "lets_encrypt"
   domains = [digitalocean_domain.default.name]

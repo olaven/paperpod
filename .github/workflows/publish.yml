@@ -225,4 +225,4 @@ jobs:
               AUTHENTICATION_DIGEST=$AUTHENTICATION_DIGEST \
               WEB_DIGEST=$WEB_DIGEST \
               docker system prune --force --filter "until=24h" \ 
-              docker stack deploy -c $HOME/paperpod/scripts/stack.yml paperpod;
+              docker stack deploy --compose-file $HOME/paperpod/scripts/stack.yml paperpod;

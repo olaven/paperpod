@@ -72,6 +72,7 @@ const _createPaymentSession = (stripe: Stripe) => async (user: models.User) => {
         quantity: 1,
       },
     ],
+    allow_promotion_codes: true,
     success_url: `${constants.APPLICATION_URL()}/authentication/payment/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${constants.APPLICATION_URL()}/authentication/payment/cancelled`,
   });

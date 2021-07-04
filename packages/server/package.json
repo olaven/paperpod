@@ -18,7 +18,8 @@
     "jsonwebtoken": "^8.5.1",
     "klart": "^0.2.0",
     "mongodb": "^3.6.3",
-    "node-kall": "^1.0.81"
+    "node-kall": "^1.0.81",
+    "read-pkg-up": "^7.0.1"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

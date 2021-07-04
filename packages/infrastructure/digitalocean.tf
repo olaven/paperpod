@@ -138,10 +138,17 @@ resource "digitalocean_database_firewall" "db_firewall" {
   }
 }
 
-resource "digitalocean_database_user" "user" {
-  cluster_id = digitalocean_database_cluster.database-cluster.id
-  name = "paperpod_user"
-}
+/*
+Useless because of: 
+> Any new users created will always have normal role, 
+> only the default user that comes with database cluster 
+> creation has primary role. Additional permissions must be managed manually.
+- https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/database_user
+*/
+#resource "digitalocean_database_user" "user" {
+#  cluster_id = digitalocean_database_cluster.database-cluster.id
+#  name = "paperpod_user"
+#}
 
 resource "digitalocean_database_db" "database" {
   name       = "paperpod"
@@ -171,11 +178,11 @@ output "database_database" {
 }
 output "database_user" {
   sensitive = true
-  value = digitalocean_database_user.user.name 
+  value = digitalocean_database_cluster.database-cluster.user 
 }
 output "database_password" {
   sensitive = true
-  value = digitalocean_database_user.user.password
+  value = digitalocean_database_cluster.database-cluster.password
 }
 
 output "database_port" {

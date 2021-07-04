@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development parcel watch src/index.html src/background/*.ts --public-url=./",
     "build": "parcel build src/index.html src/background/*.ts --public-url=./",
+    "compress": "./compress.sh",
     "test": "jest"
   },
   "dependencies": {

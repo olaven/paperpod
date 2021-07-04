@@ -12,7 +12,7 @@ import {
   UNAUTHORIZED,
 } from "node-kall";
 
-const withTokenCookie = (token: string, response: express.Response) =>
+const withTokenCookie = (token: string | null, response: express.Response) =>
   response.cookie(constants.TOKEN_COOKIE_HEADER(), token, {
     // cannot be accessed with JS
     httpOnly: true,
@@ -62,10 +62,10 @@ export const userRoutes = express
   .delete(
     "/users/sessions",
     middleware.withAuthentication((request, response, user) => {
-      //FIXME: somehow invalidate old token
-      response.status(NO_CONTENT).send({
-        token: null,
-      });
+      //FIXME: somehow permanently invalidate old token
+      return withTokenCookie(null, response)
+        .status(NO_CONTENT)
+        .send({ token: null });
     })
   )
   .put(

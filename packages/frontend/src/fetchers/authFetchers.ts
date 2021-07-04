@@ -1,44 +1,34 @@
-import { models } from "@paperpod/common";
+import { models, constants } from "@paperpod/common";
 import { del, get, post, put } from "node-kall";
 import { bearer } from "./bearer";
 
-type FetcherOptions = {
-  serverHostname: string;
-};
-
-export const signup = (
-  credentials: models.UserCredentials,
-  options: FetcherOptions
-) =>
+export const signup = (credentials: models.UserCredentials) =>
   post<models.UserCredentials, models.TokenResponse>(
-    `${options.serverHostname}/authentication/users`,
+    `${constants.APPLICATION_URL()}/authentication/users`,
     credentials
   );
 
-export const login = (
-  credentials: models.UserCredentials,
-  options: FetcherOptions
-) =>
+export const login = (credentials: models.UserCredentials) =>
   post<models.UserCredentials, models.TokenResponse>(
-    `${options.serverHostname}/authentication/users/sessions`,
+    `${constants.APPLICATION_URL()}/authentication/users/sessions`,
     credentials
   );
 
-export const logout = (token: string, options: FetcherOptions) =>
+export const logout = (token: string) =>
   del<models.TokenResponse>(
-    `${options.serverHostname}/authentication/users/sessions`,
+    `${constants.APPLICATION_URL()}/authentication/users/sessions`,
     bearer(token)
   );
 
-export const getMe = (token: string, options: FetcherOptions) =>
+export const getMe = (token: string) =>
   get<models.User>(
-    `${options.serverHostname}/authentication/users/me/`,
+    `${constants.APPLICATION_URL()}/authentication/users/me/`,
     bearer(token)
   );
 
-export const refreshToken = (token: string, options: FetcherOptions) =>
+export const refreshToken = (token: string) =>
   put<models.TokenResponse>(
-    `${options.serverHostname}/authentication/users/sessions`,
+    `${constants.APPLICATION_URL()}/authentication/users/sessions`,
     null,
     bearer(token)
   );

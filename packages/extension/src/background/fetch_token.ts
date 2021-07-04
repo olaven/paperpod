@@ -1,6 +1,5 @@
 import { logger } from "@paperpod/common";
 import { fetchers } from "@paperpod/frontend";
-import { getHost } from "../getServerHostName";
 import { useLoggedInStorage, useSessionStorage } from "../storage/storage";
 
 const { retrieve: retrieveLoggedIn, store: updateLoggedIn } =
@@ -9,11 +8,8 @@ const { retrieve: retrieveSessionToken, store: updateSessionToken } =
   useSessionStorage();
 
 const fetchToken = async () => {
-  const hostname = await getHost();
   const existingToken = await retrieveSessionToken();
-  const [status, newToken] = await fetchers.auth.refreshToken(existingToken, {
-    serverHostname: hostname,
-  });
+  const [status, newToken] = await fetchers.auth.refreshToken(existingToken);
 
   if (status === 200) {
     await updateLoggedIn(true);

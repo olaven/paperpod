@@ -27,8 +27,9 @@ describe("The function for booting apps at specific paths", () => {
     ).resolves.not.toThrow();
   });
 
-  it("Does register an app with a health endpoint", () => {
+  it("Does register an app with a health endpoint", async () => {
     const app = boot("/path");
-    supertest(app).get("/path/health").expect(OK);
+    const { status } = await supertest(app).get("/path/health");
+    expect(status).toEqual(OK);
   });
 });

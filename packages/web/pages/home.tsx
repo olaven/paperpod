@@ -1,6 +1,7 @@
 import * as React from "react";
+import Link from "next/link";
 import { authentication, fetchers, FrontendContext } from "@paperpod/frontend";
-import { Button } from "@paperpod/ui";
+import { Button, A } from "@paperpod/ui";
 import { SubscribeButton } from "../components/SubscribeButton";
 import { Articles } from "../components/articles/Articles";
 import { Feed } from "../components/feed/Feed";
@@ -43,7 +44,14 @@ const Home = () => {
       <NonSubscriber />
     )
   ) : (
-    <div>loading.</div>
+    <div>
+      You are not logged in.
+      <Button>
+        <Link href="/login">
+          <A>Log Back in</A>
+        </Link>
+      </Button>
+    </div>
   );
 };
 

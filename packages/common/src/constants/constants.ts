@@ -1,3 +1,10 @@
+import { logger } from "../logger/logger";
+
+logger.debug({
+  message: "setting up constants",
+  env: process.env.NODE_ENV,
+});
+
 export const APPLICATION_URL = () =>
   process.env.NODE_ENV !== "production"
     ? "http://localhost:8080"

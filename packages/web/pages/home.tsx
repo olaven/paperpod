@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { authentication, fetchers, FrontendContext } from "@paperpod/frontend";
+import { authentication, fetchers } from "@paperpod/frontend";
 import { Button, A } from "@paperpod/ui";
 import { SubscribeButton } from "../components/SubscribeButton";
 import { Articles } from "../components/articles/Articles";
@@ -10,10 +10,9 @@ const SubscribedUser = () => {
   const { user, token, setToken } = React.useContext(
     authentication.UserContext
   );
-  const { serverHostname } = React.useContext(FrontendContext);
 
   const onLogOut = async () => {
-    await fetchers.auth.logout(await token(), { serverHostname });
+    await fetchers.auth.logout(await token());
     setToken(null);
   };
 

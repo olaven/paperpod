@@ -3,7 +3,6 @@ import { Input, Button } from "@paperpod/ui";
 
 import { CREATED } from "node-kall";
 import { authentication, fetchers } from "@paperpod/frontend";
-import { FrontendContext } from "../FrontendContext";
 import { logger } from "@paperpod/common";
 
 export const Login: React.FunctionComponent = () => {
@@ -11,16 +10,11 @@ export const Login: React.FunctionComponent = () => {
   const [email, setEmail] = React.useState<string>(null);
   const [password, setPassword] = React.useState<string>(null);
 
-  const { serverHostname } = React.useContext(FrontendContext);
-
   const onLogin = async () => {
-    const [status, response] = await fetchers.auth.login(
-      {
-        email,
-        password,
-      },
-      { serverHostname }
-    );
+    const [status, response] = await fetchers.auth.login({
+      email,
+      password,
+    });
 
     if (status === CREATED) {
       setToken(response.token);

@@ -171,6 +171,16 @@ jobs:
             if [ $(docker info --format '{{.Swarm.LocalNodeState}}') == "inactive" ]; then 
               docker swarm init --advertise-addr ${{ steps.infrastructure-output.outputs.droplet_uri_private }};
             fi
+      - name: Clear Docker Storage
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ steps.infrastructure-output.outputs.droplet_uri }}
+          username: root
+          password: ${{ secrets.TF_VAR_droplet_password }}
+          port: 22
+          script_stop: true
+          script: |
+            docker system prune --force --filter "until=24h"
       - name: Updating on server
         uses: appleboy/ssh-action@master
         with:
@@ -224,4 +234,4 @@ jobs:
               API_DIGEST=$API_DIGEST \
               AUTHENTICATION_DIGEST=$AUTHENTICATION_DIGEST \
               WEB_DIGEST=$WEB_DIGEST \
-              docker system prune --force --filter "until=24h" && docker stack deploy --compose-file $HOME/paperpod/scripts/stack.yml paperpod;
+              docker stack deploy --compose-file $HOME/paperpod/scripts/stack.yml paperpod;

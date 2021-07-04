@@ -91,6 +91,8 @@ jobs:
       digest: ${{ steps.docker_build_authentication.outputs.digest }}
   publish-web:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -111,8 +113,6 @@ jobs:
           file: ./dockerfiles/Dockerfile.web
           push: true
           tags: olaven/paperpod-web:latest
-        environment:
-          - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
       - name: Image digest
         run: echo ${{ steps.docker_build_web.outputs.digest }}
     outputs:

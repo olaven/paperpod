@@ -3,6 +3,7 @@ extension-build.zip
 extension.crx
 extension.pem
 
+
 .DS_Store
 **.mp3
 service-account.json

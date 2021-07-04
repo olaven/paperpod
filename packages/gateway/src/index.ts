@@ -1,7 +1,6 @@
-import http from "http";
 import * as server from "@paperpod/server";
 import { withProxies, mapping } from "./proxy";
-import { logger } from "@paperpod/common";
+import { healthAll } from "./health-all";
 
 export const app = withProxies(
   [
@@ -14,9 +13,9 @@ export const app = withProxies(
     mapping("/docs", "docs", process.env.DOCS_PORT),
     mapping("/", "web", process.env.WEB_PORT),
   ],
-  server.app.appWithEnvironment(server.app.appWithDevCors())
+  server.app
+    .appWithDevCors(server.app.appWithEnvironment())
+    .get("/health/all", healthAll)
 );
 
-http.createServer(app).listen(process.env.PORT, () => {
-  logger.info(`Listening on ${process.env.PORT}`);
-});
+server.boot("", app, "gateway");

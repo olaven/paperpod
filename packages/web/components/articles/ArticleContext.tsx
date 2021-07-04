@@ -23,7 +23,7 @@ export const ArticleContextProvider = ({ children }: any) => {
       setArticles(articles);
     }
   };
-  asyncEffect(resfreshArticles, []);
+  asyncEffect(resfreshArticles, [token]);
   return (
     <ArticleContext.Provider value={{ articles, resfreshArticles }}>
       {children}

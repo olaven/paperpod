@@ -71,18 +71,33 @@ export const UserContextProvider = ({
       }
     : setStateToken;
 
+  /**
+   * Prefer token stored in memory.
+   * Then, check if `storage` is available.
+   *
+   * If not, try without (i.e. nul).
+   * The token may be in short lived http cookie
+   */
+  const getToken = async () => {
+    const memory = await token();
+    if (memory) return memory;
+
+    const inStorage = storage && (await storage.retrieve());
+    if (inStorage) return inStorage;
+
+    return null;
+  };
+
   asyncEffect(async () => {
-    const updatedToken = storage ? await storage.retrieve() : token;
-    if (!updatedToken) return null;
     const id = setInterval(async () => {
       const [status, response] = await fetchers.auth.refreshToken(
-        await token(),
+        await getToken(),
         {
           serverHostname,
         }
       );
 
-      console.log("Going to refetching token");
+      console.log("Going to refresh token");
       if (status === OK) {
         setToken(response.token);
       } else {
@@ -101,6 +116,7 @@ export const UserContextProvider = ({
       return null;
     }
 
+    console.log("GOING TO GET ME");
     const [status, user] = await fetchers.auth.getMe(await token(), {
       serverHostname,
     });

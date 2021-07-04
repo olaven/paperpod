@@ -1,9 +1,8 @@
 import { logger } from "@paperpod/common";
 import * as React from "react";
-import { fetchers, asyncEffect, FrontendContext } from "@paperpod/frontend";
+import { fetchers, asyncEffect } from "@paperpod/frontend";
 
 export const usePosting = (token: () => Promise<string>) => {
-  const { serverHostname } = React.useContext(FrontendContext);
   const url = useUrl();
   const [status, setStatus] =
     React.useState<"pending" | "posted" | "error">("pending");
@@ -14,8 +13,7 @@ export const usePosting = (token: () => Promise<string>) => {
       {
         link: url,
       },
-      await token(),
-      serverHostname
+      await token()
     );
 
     if (status === 201) {

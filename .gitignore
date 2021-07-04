@@ -1,4 +1,8 @@
-extension-build.zip
+#build files for extension 
+extension-build.zip 
+extension.crx
+extension.pem
+
 
 .DS_Store
 **.mp3

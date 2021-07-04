@@ -1,35 +1,52 @@
-# Paperpod Extension 
-This module provides a browser extension for saving articles. 
-The extension should be compatible with Firefox and Chromium browsers. 
+# Paperpod Extension
 
-## Develop 
-From paperpod root, run `yarn extension dev`. This listens for file changes in `packages/extension` (this directory) and rebuilds autoamtically. 
-To run tests, use `yarn extension test`. 
+This module provides a browser extension for saving articles.
+The extension should be compatible with Firefox and Chromium browsers.
 
-See sections below for how to install the extension in your browser while developing. 
+## Develop
 
-### Firefox 
-Although the source code targets the `chrome`-API, it is [compatible with Firefox](https://www.extensiontest.com/test/3670bc40-bcc1-11eb-a578-6d5c3791ea3a). 
+From paperpod root, run `yarn extension dev`. This listens for file changes in `packages/extension` (this directory) and rebuilds autoamtically.
+To run tests, use `yarn extension test`.
 
-#### Installing the extension 
+See sections below for how to install the extension in your browser while developing.
+
+### Firefox
+
+Although the source code targets the `chrome`-API, it is [compatible with Firefox](https://www.extensiontest.com/test/3670bc40-bcc1-11eb-a578-6d5c3791ea3a).
+
+#### Installing the extension
+
 1. navigate to `about:debugging` in your browser
 2. click _This Firefox_
 3. click _Add temporary extension_
-4. select the `manifest.json` file in this folder 
+4. select the `manifest.json` file in this folder
 
-#### Enabling developer console 
+#### Enabling developer console
+
 1. navigate to `about:config` and add `"extensions.sdk.console.logLevel"` with a string value of `"all"`
-2. restart Firefox 
-3. Open to _Tools_ -> _Web developer_ -> _Browser console_  (alternatively use `cmd+shift+j`)
+2. restart Firefox
+3. Open to _Tools_ -> _Web developer_ -> _Browser console_ (alternatively use `cmd+shift+j`)
 4. Click the settings icon and enable _Show Content Messages_
 
+### Chrome
 
-### Chrome 
-#### Installing 
+#### Installing
+
 1. navigate to `chrome://extensions`
 2. click _Load Unpacked_
 3. select the `packages/extension`-folder (this directory)
 
-#### Enabling developer console 
-1. right click on the extension 
+#### Enabling developer console
+
+1. right click on the extension
 2. click _Inspect Pop-Up_
+
+## Publishing
+
+1. Increment version number according to [semver](https://semver.org/).
+2. From paperpod root, run `yarn extension compress`.
+3. Check that `./packages/extensions/extension-build.zip` was created
+4. Depending on vendor
+
+- Firefox - upload zip to [Firefox Developer Portal](https://addons.mozilla.org/en-US/developers/addon/submit/upload-listed)
+- Chrome - upload zip to [Chrome Portal](https://chrome.google.com/webstore/devconsole/56df2214-f8ae-40a8-aa6d-026aeb86fd59)

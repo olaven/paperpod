@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button } from "@paperpod/ui";
-import { fetchers, FrontendContext } from "@paperpod/frontend";
+import { fetchers } from "@paperpod/frontend";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { CREATED } from "node-kall";
@@ -8,12 +8,10 @@ import { CREATED } from "node-kall";
 import { logger, models } from "@paperpod/common";
 import { UserContext } from "@paperpod/frontend/src/authentication/UserContext";
 export const SubscribeButton = () => {
-  const { serverHostname } = React.useContext(FrontendContext);
   const { token } = React.useContext(UserContext);
   const subscribe = async () => {
     const [status, body] = await fetchers.payment.postPaymentSession(
-      await token(),
-      serverHostname
+      await token()
     );
 
     if (status !== CREATED) {

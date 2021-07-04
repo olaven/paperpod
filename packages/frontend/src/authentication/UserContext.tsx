@@ -2,7 +2,6 @@ import * as React from "react";
 import { logger, models } from "@paperpod/common";
 import { fetchers } from "@paperpod/frontend";
 import { OK } from "node-kall";
-import { FrontendContext } from "../FrontendContext";
 import { asyncEffect } from "../asyncEffect";
 
 export const UserContext = React.createContext<{
@@ -34,7 +33,6 @@ export const UserContextProvider = ({
   children,
   storage,
 }: UserContextArguments) => {
-  const { serverHostname } = React.useContext(FrontendContext);
   const [_token, setStateToken] = React.useState<string>(null);
   const [user, setUser] = React.useState<models.User>(null);
 
@@ -91,10 +89,7 @@ export const UserContextProvider = ({
   asyncEffect(async () => {
     const id = setInterval(async () => {
       const [status, response] = await fetchers.auth.refreshToken(
-        await getToken(),
-        {
-          serverHostname,
-        }
+        await getToken()
       );
 
       console.log("Going to refresh token");
@@ -116,9 +111,7 @@ export const UserContextProvider = ({
       return null;
     }
 
-    const [status, user] = await fetchers.auth.getMe(await token(), {
-      serverHostname,
-    });
+    const [status, user] = await fetchers.auth.getMe(await token());
 
     setUser(status === OK ? user : null);
   }, [_token]);

@@ -49,6 +49,10 @@ resource "stripe_webhook_endpoint" "my_endpoint" {
 }
 
 
+# FIXME: 
+# This is not customer facing.
+# Promo codes are, and those cannot be managed with this terraform module. 
+# I've created a promo code in Stripe Dashboard, pointing to this coupon 
 resource "stripe_coupon" "paperpod_test_user_coupon" {
   code               = var.test_user_coupon_code
   name               = "Test User Access"

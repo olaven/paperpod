@@ -9,14 +9,6 @@ export const Feed = () => {
   return (
     <>
       <br />
-      <button
-        onClick={async () => {
-          const response = await fetch(`/api/feeds/${user.id}`);
-          logger.debug(await response.text(), response.status);
-        }}
-      >
-        getFeed
-      </button>
       Din feed: <a href={feed}>{feed}</a>
     </>
   );

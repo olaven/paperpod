@@ -43,6 +43,10 @@ resource "digitalocean_certificate" "cert" {
   name    = "paperpod-certificate"
   type    = "lets_encrypt"
   domains = [digitalocean_domain.default.name]
+
+  lifecycle {
+    create_before_destroy = true 
+  }
 }
 
 # Create a new Load Balancer with TLS termination

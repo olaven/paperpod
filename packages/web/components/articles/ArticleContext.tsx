@@ -13,7 +13,7 @@ export const ArticleContext = React.createContext<{
 });
 
 export const ArticleContextProvider = ({ children }: any) => {
-  const { token } = React.useContext(authentication.UserContext);
+  const { token, user } = React.useContext(authentication.UserContext);
   const [articles, setArticles] = React.useState<models.Article[]>([]);
   const resfreshArticles = async () => {
     const [status, articles] = await fetchers.article.getArticles(
@@ -23,7 +23,7 @@ export const ArticleContextProvider = ({ children }: any) => {
       setArticles(articles);
     }
   };
-  asyncEffect(resfreshArticles, [token]);
+  asyncEffect(resfreshArticles, [user]);
   return (
     <ArticleContext.Provider value={{ articles, resfreshArticles }}>
       {children}

@@ -116,7 +116,6 @@ export const UserContextProvider = ({
       return null;
     }
 
-    console.log("GOING TO GET ME");
     const [status, user] = await fetchers.auth.getMe(await token(), {
       serverHostname,
     });

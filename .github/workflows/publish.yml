@@ -92,6 +92,7 @@ jobs:
   publish-web:
     runs-on: ubuntu-latest
     env:
+      # FIXME: this is not picked up by -> see comment in `Dockerfile.web`
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
     steps:
       - name: Checkout

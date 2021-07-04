@@ -10,6 +10,12 @@ COPY ./packages/frontend ./packages/frontend
 COPY ./packages/common ./packages/common
 COPY ./packages/web ./packages/web
 
+# FIXMME 
+# Assigning key is OK because this is the publishable stripe key. 
+# However, it would be better if I could pick it up from 
+# Publish.yml (see attempt in `publish-web`-job in `publish.yml`)
+ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY pk_live_51HD79dIDSMRX0WhP0X3DL55fi9JvXkzktkFixJeNHXskEUo0P0CKoBf4A2zftrTpadVS5ndyKyjcEZSv2MzVwI2r00Hru5qfbR
+RUN echo $NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 RUN yarn install  
 RUN yarn web build 
 ENV NODE_ENV production

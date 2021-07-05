@@ -1,0 +1,14 @@
+FROM node:10-alpine
+
+WORKDIR /app
+
+COPY ./package.json .
+COPY ./yarn.lock .
+COPY ./tsconfig.json .
+COPY ./packages/server /app/packages/server
+COPY ./packages/docs /app/packages/docs
+
+RUN yarn install
+
+ENV NODE_ENV production
+CMD ["yarn", "docs", "start"]

@@ -1,10 +1,11 @@
-FROM node:10-alpine
+FROM node:12-alpine
 
 WORKDIR /app
 
 COPY ./package.json .
 COPY ./yarn.lock .
 COPY ./tsconfig.json .
+COPY ./packages/common /app/packages/common
 COPY ./packages/server /app/packages/server
 COPY ./packages/docs /app/packages/docs
 

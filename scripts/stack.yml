@@ -47,7 +47,5 @@ services:
       - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY
   docs:
     image: olaven/paperpod-docs@$DOCS_DIGEST
-    ports:
-      - $DOCS:$DOCS
     environment:
-      - PORT=$DOCS
+      - PORT=$DOCS_PORT

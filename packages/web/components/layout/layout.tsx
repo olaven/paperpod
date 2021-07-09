@@ -2,7 +2,7 @@ import { logger } from "@paperpod/common";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { authentication } from "@paperpod/frontend";
-import { Footer } from "./footer";
+import { Footer } from "./footer/footer";
 import { Header } from "./header/header";
 
 export const Layout = (props) => {

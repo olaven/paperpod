@@ -1,4 +1,5 @@
 import { styled, Paragraph } from "@paperpod/ui";
+import { Version } from "./version";
 
 const Container = styled("footer", {
   height: "20vh",
@@ -17,6 +18,7 @@ export const Footer = () => (
     <Paragraph>
       <a href="mailto:post@krets.app">Get in touch</a>
     </Paragraph>
+    <Version></Version>
     <Paragraph>Paperpod is made by Krets AS</Paragraph>
     <Paragraph>
       You are using an unfinished version of Paperpod. Visit{" "}

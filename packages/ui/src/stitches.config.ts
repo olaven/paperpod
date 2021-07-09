@@ -7,7 +7,7 @@ export const { styled, css, getCssString } = createCss({
       primary: "white",
       secondary: "black",
       grey: "hsl(0, 0%, 36%)",
-      error: 'red',
+      error: "red",
     },
     space: {
       one: "1px",

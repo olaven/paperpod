@@ -3,13 +3,17 @@ import { Input, Button } from "@paperpod/ui";
 
 import { CREATED } from "node-kall";
 import { authentication, fetchers } from "@paperpod/frontend";
-import { logger } from "@paperpod/common";
+import { constants, logger } from "@paperpod/common";
 
 export const Login: React.FunctionComponent = () => {
   const { setToken } = React.useContext(authentication.UserContext);
   const [email, setEmail] = React.useState<string>(null);
   const [password, setPassword] = React.useState<string>(null);
 
+  console.log(
+    "LOADING LOGIN WIHT APPLICATION URL",
+    constants.APPLICATION_URL()
+  );
   const onLogin = async () => {
     const [status, response] = await fetchers.auth.login({
       email,

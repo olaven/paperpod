@@ -13,8 +13,5 @@ export const Header = () => (
     <Link href="/">
       <Image src="logo.svg" />
     </Link>
-    {/* <Navbutton selected>Navbutton 1</Navbutton>
-    <Navbutton>Navbutton 2</Navbutton>
-    <Navbutton>Navbutton 3</Navbutton> */}
   </Container>
 );

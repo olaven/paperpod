@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+/*
+ 1. Log in
+ 2. If not signed up, navigation to paperpod.fm
+ 3. Share functionality from anywhere
+ 4. Copy your feed 
+ */
+
 struct ContentView: View {
     var body: some View {
         Text("Hello, world!")

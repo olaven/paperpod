@@ -18,7 +18,8 @@
     "ui": "yarn workspace @paperpod/ui",
     "frontend": "yarn workspace @paperpod/frontend",
     "infrastructure": "yarn workspace @paperpod/infrastructure",
-    "docs": "yarn workspace @paperpod/docs"
+    "docs": "yarn workspace @paperpod/docs",
+    "mobile": "yarn workspace @paperpod/mobile"
   },
   "resolutions": {
     "**/react": "^17.0.2",

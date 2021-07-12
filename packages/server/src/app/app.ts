@@ -1,4 +1,4 @@
 export { appWithBodyParser } from "./appWithBodyParser";
 export { appWithEnvironment } from "./appWithEnvironment";
-export { appWithDevCors } from "./appWithDevCors";
+export { appWithCORS as appWithDevCors } from "./appWithCORS";
 export { appWithCookieParser } from "./appWithCokieParser";

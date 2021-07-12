@@ -30,7 +30,9 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "get-yarn-workspaces": "^1.0.2",
     "husky": "^5.2.0",
+    "metro-config": "^0.66.1",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
     "react": "^17.0.2",

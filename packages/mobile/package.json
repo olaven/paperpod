@@ -14,7 +14,7 @@
     },
     "scripts": {
         "dev:android": "react-native run-android",
-        "dev:ios": "export RCT_METRO_PORT=8089 && react-native run-ios",
+        "dev:ios": "react-native run-ios",
         "start": "react-native start",
         "test": "jest"
     },

@@ -1,6 +1,6 @@
 {
   "name": "Paperpod",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Convert any article on the web to podcasts!",
   "icons": {
     "16": "assets/logo_circle_16.png",

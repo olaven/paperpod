@@ -1,4 +1,5 @@
 #build files for extension 
+**.zip
 extension-build.zip 
 extension.crx
 extension.pem

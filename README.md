@@ -5,7 +5,7 @@
 ## Sponsors
 
 Please consider [sponsoring](https://github.com/sponsors/olaven/) this project.
-This will allow me to give you perks in return for your gratitude!
+This will allow me to give you perks in return for your kindness!
 
 ## Assets
 

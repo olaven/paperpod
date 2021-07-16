@@ -36,11 +36,11 @@ export const getToken = (request: express.Request): string | null => {
 
 export const withAuthentication =
   (
-    handler: (
+    handler: <T>(
       request: express.Request,
       response: express.Response,
       user: models.User
-    ) => any
+    ) => Promise<T> | T
   ) =>
   (request: express.Request, response: express.Response) => {
     const token = getToken(request);

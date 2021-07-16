@@ -1,5 +1,4 @@
 import express from "express";
-import { nanoid } from "nanoid";
 import { logger, models } from "@paperpod/common";
 import { middleware } from "@paperpod/server";
 import { withTextualData, withStorageUri } from "@paperpod/converter";

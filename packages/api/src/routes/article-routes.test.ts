@@ -50,6 +50,15 @@ describe("The api for articles", () => {
       expect(status).toEqual(UNAUTHORIZED);
     });
 
+    it("Does respond with FORBIDDEN if user does not have an active subscription", async () => {
+      const token = jwt.sign({
+        ...test.mocks.user(),
+        subscription: "inactive",
+      });
+      const { status } = await post(token);
+      expect(status).toEqual(FORBIDDEN);
+    });
+
     it("Does respond with 201 if a valid request is made", async () => {
       const token = jwt.sign(test.mocks.user());
       const { status } = await post(token);
@@ -114,12 +123,31 @@ describe("The api for articles", () => {
       const { status } = await get(token);
       expect(status).toEqual(OK);
     });
+
+    it("Does respond with FORBIDDEN if user does not have an active subscription", async () => {
+      const token = jwt.sign({
+        ...test.mocks.user(),
+        subscription: "inactive",
+      });
+      const { status } = await get(token);
+      expect(status).toEqual(FORBIDDEN);
+    });
   });
 
   describe("The endpoint for deleting articles", () => {
     it("Responds with UNAUTHORIZED if not logged in", async () => {
       const { status } = await del(null, "some-article-id");
       expect(status).toEqual(UNAUTHORIZED);
+    });
+
+    it("Does respond with FORBIDDEN if user does not have an active subscription", async () => {
+      const token = jwt.sign({
+        ...test.mocks.user(),
+        subscription: "inactive",
+      });
+      const article = await articles.persist(test.mocks.article());
+      const { status } = await del(token, article.id);
+      expect(status).toEqual(FORBIDDEN);
     });
 
     it("Responds with NOT_FOUND if the article does not exist", async () => {
@@ -138,7 +166,10 @@ describe("The api for articles", () => {
     });
 
     it("Responds with NO_CONTENT if the user tries to delete their own article", async () => {
-      const user = test.mocks.user();
+      const user: models.User = {
+        ...test.mocks.user(),
+        subscription: "active",
+      };
       const article = await articles.persist({
         ...test.mocks.article(),
         owner_id: user.id,
@@ -151,7 +182,10 @@ describe("The api for articles", () => {
     });
 
     it("Does actually delete article on valid request", async () => {
-      const user = test.mocks.user();
+      const user: models.User = {
+        ...test.mocks.user(),
+        subscription: "active",
+      };
       const article = await articles.persist({
         ...test.mocks.article(),
         owner_id: user.id,

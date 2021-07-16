@@ -1,7 +1,10 @@
 import express from "express";
+import { get } from "node-kall";
 import * as database from "../database/database";
 import { getRSSFeed } from "@paperpod/converter";
 import { OK, UNAUTHORIZED } from "node-kall";
+
+import { logger } from "@paperpod/common";
 
 export const rssRoutes = express
   .Router()
@@ -18,6 +21,7 @@ export const rssRoutes = express
     if (!user_id || user_id === "null" || user_id === "undefined")
       return response.status(UNAUTHORIZED).send();
 
+    //FIXME: implement an internal endpoint to the user service
     //TODO: Check if valid subscription
 
     const articles = await database.articles.getByOwner(user_id);
@@ -27,4 +31,14 @@ export const rssRoutes = express
       .status(OK)
       .contentType("application/rss+xml") //content-type as defined here: https://www.rssboard.org/rss-mime-type-application.txt
       .send(feed);
+  })
+  //FIXME: remove this. Just for testing IPC communication options
+  .get("/send", async (request, response) => {
+    logger.debug(`SENDING to ${process.env.AUTHENTICATION_PORT}`);
+    const [status, body] = await get(
+      `http://authentication:${process.env.AUTHENTICATION_PORT}/authentication/receiver`
+    );
+    logger.debug({ status, body });
+
+    return response.json({ status, body });
   });

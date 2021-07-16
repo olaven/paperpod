@@ -38,6 +38,15 @@ export const credentialsAreValid = async ({
 
 export const userRoutes = express
   .Router()
+  //FIXME: remove this. Just for testing IPC communication options
+  .get("/receiver", async (request, response) => {
+    logger.debug("RECEIVING");
+    return response.json({
+      message: "Got request from ",
+      hostname: request.hostname,
+      headers: request.headers,
+    });
+  })
   .post("/users/sessions", async (request, response) => {
     const credentials = request.body as models.UserCredentials;
     if (await credentialsAreValid(credentials)) {
@@ -112,7 +121,7 @@ export const userRoutes = express
        * This currently applies to subscription.
        */
       const updatedUser = await database.users.getById(user.id);
-      response.json({
+      return response.json({
         ...updatedUser,
         password_hash: undefined,
       });

@@ -10,9 +10,9 @@ export const withActiveSubscription = (
     user: models.User
   ) => any
 ) =>
-  withAuthentication((request, response, user) => {
+  withAuthentication(async (request, response, user) => {
     if (user.subscription === "active") {
-      return handler(request, response, user);
+      return await handler(request, response, user);
     } else {
       return response.status(FORBIDDEN).end();
     }

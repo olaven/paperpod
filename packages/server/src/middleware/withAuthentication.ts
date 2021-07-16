@@ -36,11 +36,11 @@ export const getToken = (request: express.Request): string | null => {
 
 export const withAuthentication =
   (
-    handler: <T>(
+    handler: (
       request: express.Request,
       response: express.Response,
       user: models.User
-    ) => Promise<T> | T
+    ) => Promise<express.Response> | express.Response
   ) =>
   (request: express.Request, response: express.Response) => {
     const token = getToken(request);
@@ -53,7 +53,7 @@ export const withAuthentication =
       if (!user || !user.id || !user.email || !user.password_hash)
         return response.status(FORBIDDEN).end();
 
-      handler(request, response, user);
+      return handler(request, response, user);
     } catch (error) {
       //i.e. malformed token
       logger.error({

@@ -87,7 +87,7 @@ export const UserContextProvider = ({
   };
 
   asyncEffect(async () => {
-    const id = setInterval(async () => {
+    const refreshToken = async () => {
       const [status, response] = await fetchers.auth.refreshToken(
         await getToken()
       );
@@ -98,7 +98,12 @@ export const UserContextProvider = ({
       } else {
         console.error(`error refreshing token ${status} with token ${token}`);
       }
-    }, 1000 * 60 * 5); //i.e. five minutes
+    };
+
+    /*do an initial refresh on load
+    -> user may have just been updated in db through getting a subscription*/
+    await refreshToken();
+    const id = setInterval(refreshToken, 1000 * 60 * 5); //i.e. five minutes
 
     return () => {
       clearInterval(id);

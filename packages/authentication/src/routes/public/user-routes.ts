@@ -39,15 +39,6 @@ export const credentialsAreValid = async ({
 
 export const userRoutes = express
   .Router()
-  //FIXME: remove this. Just for testing IPC communication options
-  .get("/receiver", async (request, response) => {
-    logger.debug(JSON.stringify(request.headers, null, 4));
-    return response.json({
-      message: "Got request from ",
-      hostname: request.hostname,
-      headers: request.headers,
-    });
-  })
   .post("/users/sessions", async (request, response) => {
     const credentials = request.body as models.UserCredentials;
     if (await credentialsAreValid(credentials)) {
@@ -80,7 +71,9 @@ export const userRoutes = express
   )
   .put(
     "/users/sessions",
-    middleware.withAuthentication(async (request, response, user) => {
+    middleware.withAuthentication(async (request, response, jwtUser) => {
+      //make sure new token is signed with updated user.
+      const user = await database.users.getById(jwtUser.id);
       const token = jwt.sign(user);
       return withTokenCookie(token, response).status(OK).send({ token });
     })

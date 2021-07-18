@@ -32,19 +32,4 @@ export const rssRoutes = express
       .status(OK)
       .contentType("application/rss+xml") //content-type as defined here: https://www.rssboard.org/rss-mime-type-application.txt
       .send(feed);
-  })
-  //FIXME: remove this. Just for testing IPC communication options
-  .get("/send", async (request, response) => {
-    logger.debug(`SENDING to ${process.env.AUTHENTICATION_PORT}`);
-    const [status, body] = await get(
-      `http://authentication:${process.env.AUTHENTICATION_PORT}/authentication/receiver`,
-      {
-        headers: {
-          host: "testhost",
-        },
-      }
-    );
-    logger.debug({ status, body });
-
-    return response.json({ status, body });
   });

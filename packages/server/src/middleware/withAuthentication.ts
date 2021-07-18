@@ -48,6 +48,10 @@ export const withAuthentication =
 
     try {
       const user = jwt.decode<models.User>(token);
+      logger.debug({
+        message: "Validating subscription of",
+        user,
+      });
 
       //NOTE: basic user validation
       if (!user || !user.id || !user.email || !user.password_hash)

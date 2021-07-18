@@ -2,9 +2,10 @@ import express from "express";
 import { get } from "node-kall";
 import * as database from "../database/database";
 import { getRSSFeed } from "@paperpod/converter";
-import { OK, UNAUTHORIZED } from "node-kall";
+import { OK, UNAUTHORIZED, FORBIDDEN } from "node-kall";
 
 import { logger } from "@paperpod/common";
+import { ipc } from "@paperpod/server";
 
 export const rssRoutes = express
   .Router()
@@ -12,8 +13,6 @@ export const rssRoutes = express
    * NOTE:
    * The client cannot be expected to use JWT for this route, as
    * any podcast player must be able to fetch it.
-   *
-   * Check wether the user is associated with an active subscription <- TODO
    */
   .get("/feeds/:user_id/", async (request, response) => {
     const user_id = request.params.user_id;
@@ -21,8 +20,10 @@ export const rssRoutes = express
     if (!user_id || user_id === "null" || user_id === "undefined")
       return response.status(UNAUTHORIZED).send();
 
-    //FIXME: implement an internal endpoint to the user service
-    //TODO: Check if valid subscription
+    const hasSubscription = await ipc.hasValidSubscription(user_id);
+    if (!hasSubscription) {
+      return response.status(FORBIDDEN).end();
+    }
 
     const articles = await database.articles.getByOwner(user_id);
     const feed = getRSSFeed(articles);

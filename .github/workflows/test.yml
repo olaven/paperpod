@@ -50,6 +50,8 @@ jobs:
           POSTGRES_USER: ci_user
           POSTGRES_PASSWORD: ci_password
           TEST_STRIPE_API_KEY: ${{ secrets.TEST_STRIPE_API_KEY }}
+          ADMIN_USERNAME: test_admin_username
+          ADMIN_PASSWORD: test_admin_password
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready

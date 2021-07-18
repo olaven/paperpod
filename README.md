@@ -16,9 +16,12 @@ This will allow me to give you perks in return for your kindness!
 ## Setup
 
 - `.env` containing:
+  - ADMIN_USERNAME
+  - ADMIN_PASSWORD
   - GATEWAY_PORT=8080
   - API_PORT=8082
   - AUTHENTICATION_PORT=8081
+  - AUTHENTICATION_INTERNAL_PORT=8090
   - WEB_PORT=3000
   - JWT_SECRET=some-long-secret-hush-now-please
   - PGDATABASE_API=some-database-name

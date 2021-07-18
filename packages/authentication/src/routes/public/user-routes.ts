@@ -1,8 +1,7 @@
 import { constants, logger, models, validators } from "@paperpod/common";
 import { jwt, middleware } from "@paperpod/server";
-import { hash } from "../cryptography/cryptography";
 import express from "express";
-import * as database from "../authdatabase/authdatabase";
+import * as database from "../../authdatabase/authdatabase";
 import {
   BAD_REQUEST,
   CONFLICT,
@@ -11,6 +10,8 @@ import {
   OK,
   UNAUTHORIZED,
 } from "node-kall";
+import { useCallback } from "react";
+import { hash } from "../../cryptography/cryptography";
 
 const withTokenCookie = (token: string | null, response: express.Response) =>
   response.cookie(constants.TOKEN_COOKIE_HEADER(), token, {
@@ -40,7 +41,7 @@ export const userRoutes = express
   .Router()
   //FIXME: remove this. Just for testing IPC communication options
   .get("/receiver", async (request, response) => {
-    logger.debug("RECEIVING");
+    logger.debug(JSON.stringify(request.headers, null, 4));
     return response.json({
       message: "Got request from ",
       hostname: request.hostname,

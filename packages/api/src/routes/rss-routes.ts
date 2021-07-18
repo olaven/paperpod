@@ -36,7 +36,12 @@ export const rssRoutes = express
   .get("/send", async (request, response) => {
     logger.debug(`SENDING to ${process.env.AUTHENTICATION_PORT}`);
     const [status, body] = await get(
-      `http://authentication:${process.env.AUTHENTICATION_PORT}/authentication/receiver`
+      `http://authentication:${process.env.AUTHENTICATION_PORT}/authentication/receiver`,
+      {
+        headers: {
+          host: "testhost",
+        },
+      }
     );
     logger.debug({ status, body });
 

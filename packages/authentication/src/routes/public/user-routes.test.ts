@@ -1,8 +1,7 @@
 import express from "express";
 import faker from "faker";
 import { constants, logger, models, test } from "@paperpod/common";
-import { jwt } from "@paperpod/server";
-import * as database from "../authdatabase/authdatabase";
+import * as database from "../../authdatabase/authdatabase";
 import {
   OK,
   BAD_REQUEST,
@@ -12,15 +11,16 @@ import {
   FORBIDDEN,
 } from "node-kall";
 import supertest from "supertest";
-import { app } from "../app";
-import { hash } from "../cryptography/cryptography";
+import { publicAuthenticationApp } from "../../app";
+import { hash } from "../../cryptography/cryptography";
 import { credentialsAreValid } from "./user-routes";
-import { decode } from "../../../server/src/jwt/jwt";
-import { extractCookieByName } from "../test-utils/test-utils";
+
+import { extractCookieByName } from "../../test-utils/test-utils";
+import { jwt } from "@paperpod/server";
 
 const signUp = (
   credentials = test.mocks.credentials(),
-  agent = supertest.agent(app)
+  agent = supertest.agent(publicAuthenticationApp)
 ) =>
   agent
     .post("/users")
@@ -37,7 +37,7 @@ const extractBearerToken = async (test: supertest.Test) => {
 
 const login = (
   credentials = test.mocks.credentials(),
-  agent = supertest.agent(app)
+  agent = supertest.agent(publicAuthenticationApp)
 ) => agent.post("/users/sessions").send(credentials as any);
 
 describe("The authentication endpoint for users", () => {
@@ -202,7 +202,7 @@ describe("The authentication endpoint for users", () => {
         const persistedUser = await database.users.getByEmail(
           credentials.email
         );
-        const decodedUser = decode(cookie.value);
+        const decodedUser = jwt.decode(cookie.value);
 
         expect(persistedUser).toEqual(decodedUser);
       });
@@ -230,7 +230,7 @@ describe("The authentication endpoint for users", () => {
       } = await signUp(credentials);
 
       const persistedUser = await database.users.getByEmail(credentials.email);
-      const decodedUser = decode(token);
+      const decodedUser = jwt.decode(token);
 
       expect(persistedUser).toEqual(decodedUser);
     });
@@ -346,7 +346,7 @@ describe("The authentication endpoint for users", () => {
         const persistedUser = await database.users.getByEmail(
           credentials.email
         );
-        const decodedUser = decode(cookie.value);
+        const decodedUser = jwt.decode(cookie.value);
 
         expect(persistedUser).toEqual(decodedUser);
       });
@@ -435,7 +435,7 @@ describe("The authentication endpoint for users", () => {
 });
 
 describe("GET endpoint for retrieving information about the logged in user", () => {
-  const getMe = (token: string, agent = supertest(app)) =>
+  const getMe = (token: string, agent = supertest(publicAuthenticationApp)) =>
     agent.get("/users/me").set("Authorization", "Bearer " + token);
 
   it("Responds with UNAUTHORIZED if the user is not logged in", async () => {
@@ -496,7 +496,10 @@ describe("GET endpoint for retrieving information about the logged in user", () 
 });
 
 describe("PUT endpont for token refresh", () => {
-  const refreshToken = (oldToken: string, agent = supertest(app)) =>
+  const refreshToken = (
+    oldToken: string,
+    agent = supertest(publicAuthenticationApp)
+  ) =>
     agent
       .put("/users/sessions")
       .set("Authorization", "Bearer " + oldToken)
@@ -524,7 +527,7 @@ describe("PUT endpont for token refresh", () => {
   describe("Cookie behavior after refreshing session", () => {
     const setupCookieTestForRefreshing = async () => {
       const credentials = test.mocks.credentials();
-      const agent = supertest.agent(app);
+      const agent = supertest.agent(publicAuthenticationApp);
       const oldToken = await extractBearerToken(signUp(credentials));
       const { headers } = await refreshToken(oldToken, agent);
 
@@ -543,7 +546,7 @@ describe("PUT endpont for token refresh", () => {
       const { cookie, credentials } = await setupCookieTestForRefreshing();
 
       const persistedUser = await database.users.getByEmail(credentials.email);
-      const decodedUser = decode(cookie.value);
+      const decodedUser = jwt.decode(cookie.value);
 
       expect(persistedUser).toEqual(decodedUser);
     });

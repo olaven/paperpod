@@ -3,8 +3,6 @@ import readPkg from "read-pkg-up";
 import express from "express";
 import { appWithEnvironment } from "./app/appWithEnvironment";
 
-const port = process.env.PORT;
-
 /**
  * Returns a nice health response
  * for the service
@@ -27,9 +25,15 @@ const createHealthHandler =
 export const boot = (
   path: string,
   app = appWithEnvironment(),
-  id = path.replace("/", "")
-) =>
-  express()
+  options: {
+    id?: string;
+    port?: number;
+  } = {}
+) => {
+  const id = options.id ?? path.replace("/", "");
+  const port = options.port ?? process.env.PORT;
+
+  return express()
     .get(`${path}/health`, createHealthHandler(id))
     .use(path, app)
     .listen(port, () => {
@@ -39,3 +43,4 @@ export const boot = (
         status: `listening`,
       });
     });
+};

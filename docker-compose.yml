@@ -32,6 +32,9 @@ services:
     environment:
       PORT: $API_PORT
       # IPC for user subscription check where JWT is not available
+      AUTHENTICATION_INTERNAL_PORT: $AUTHENTICATION_INTERNAL_PORT
+      ADMIN_USERNAME: $ADMIN_USERNAME
+      ADMIN_PASSWORD: $ADMIN_PASSWORD
       AUTHENTICATION_PORT: $AUTHENTICATION_PORT
       JWT_SECRET: $JWT_SECRET
       PGHOST: database
@@ -54,6 +57,10 @@ services:
       - .:/paperpod
     environment:
       PORT: $AUTHENTICATION_PORT
+      # IPC for user subscription check where JWT is not available
+      INTERNAL_PORT: $AUTHENTICATION_INTERNAL_PORT
+      ADMIN_USERNAME: $ADMIN_USERNAME
+      ADMIN_PASSWORD: $ADMIN_PASSWORD
       JWT_SECRET: $JWT_SECRET
       PGHOST: database
       PAPERPOD_SCHEMA: authentication

@@ -24,8 +24,11 @@ describe("Testing internal state middleware", () => {
   });
 
   describe("The internal auth middleware", () => {
-    const runWith = (username: string, password: string) => {
-      const handler = jest.fn();
+    const runWith = (
+      username: string,
+      password: string,
+      handler = jest.fn()
+    ) => {
       const request = mockRequest(username, password);
       const response = {
         status: (code: number) => ({
@@ -47,11 +50,11 @@ describe("Testing internal state middleware", () => {
       expect(password).not.toEqual(process.env.ADMIN_PASSWORD);
     });
 
-    it("Does not forward  if username is invalid", () => {
+    it("Does not forward if username is invalid", () => {
       const spy = jest.fn();
 
       const username = faker.internet.userName();
-      const password = process.env.USER_PASSWORD;
+      const password = process.env.ADMIN_PASSWORD;
       runWith(username, password);
 
       expect(spy).not.toHaveBeenCalled();
@@ -60,15 +63,15 @@ describe("Testing internal state middleware", () => {
     });
 
     it("Does forward if username and password is valid", () => {
-      const spy = jest.fn();
+      const handler = jest.fn();
 
       const username = process.env.ADMIN_USERNAME;
       const password = process.env.ADMIN_PASSWORD;
-      runWith(username, password);
+      runWith(username, password, handler);
 
-      expect(spy).toHaveBeenCalled();
+      expect(handler).toHaveBeenCalled();
       expect(username).toEqual(process.env.ADMIN_USERNAME);
-      expect(username).toEqual(process.env.ADMIN_PASSWORD);
+      expect(password).toEqual(process.env.ADMIN_PASSWORD);
     });
   });
 

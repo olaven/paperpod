@@ -38,6 +38,8 @@ jobs:
           PGUSER: ci_user
           PGPASSWORD: ci_password
           PAPERPOD_SCHEMA: api
+          ADMIN_USERNAME: test_admin_username
+          ADMIN_PASSWORD: test_admin_password
 
   test-authentication:
     runs-on: ubuntu-latest

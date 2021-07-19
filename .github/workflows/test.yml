@@ -122,6 +122,8 @@ jobs:
         run: yarn server test
         env:
           JWT_SECRET: The JWT secret in CI test environment for server tests
+          ADMIN_USERNAME: test_admin_username
+          ADMIN_PASSWORD: test_admin_password
   test-web:
     runs-on: ubuntu-latest
     steps:

@@ -3,7 +3,6 @@ import * as kall from "node-kall";
 import { models, test } from "@paperpod/common";
 import * as database from "../database/database";
 import { app } from "../app";
-import { mockSubscriptionStatusCall } from "./route-test-utils";
 
 jest.mock("node-kall", () => {
   return {

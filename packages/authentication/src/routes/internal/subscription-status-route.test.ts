@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import { NOT_IMPLEMENTED, FORBIDDEN, NOT_FOUND, OK } from "node-kall";
 import faker from "faker";
-import { models, test } from "@paperpod/common";
+import { logger, models, test } from "@paperpod/common";
 import { internalUserApp } from "../../internal-user-app";
 import { users } from "../../authdatabase/authdatabase";
 
@@ -88,12 +88,19 @@ describe("Internal route for getting user subscription status", () => {
     const user = await insertUserWithSubscription("inactive");
 
     expect(user.subscription).toEqual("inactive");
-    const { body } = await get({
+    const { body, status } = await get({
       user,
       username: process.env.ADMIN_USERNAME,
       password: process.env.ADMIN_PASSWORD,
     });
 
+    logger.debug({
+      message: "Send test credentials",
+      username: process.env.ADMIN_USERNAME,
+      password: process.env.ADMIN_PASSWORD,
+    });
+
+    expect(status).toEqual(OK);
     expect(body.subscription).toEqual("inactive");
   });
 });

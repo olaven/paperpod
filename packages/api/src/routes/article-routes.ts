@@ -58,16 +58,19 @@ export const articleRoutes = express
     "/articles/:id",
     middleware.withActiveSubscription(async (request, response, user) => {
       const id = request.params.id;
-
-      if (!id) return response.status(BAD_REQUEST);
+      if (!id) {
+        return response.status(BAD_REQUEST).end();
+      }
 
       const article = await database.articles.getById(id);
-
-      if (!article) return response.status(NOT_FOUND);
-
-      if (article.owner_id !== user.id) return response.status(FORBIDDEN);
+      if (!article) {
+        return response.status(NOT_FOUND).end();
+      }
+      if (article.owner_id !== user.id) {
+        return response.status(FORBIDDEN).end();
+      }
 
       await database.articles.deleteById(id);
-      return response.status(NO_CONTENT);
+      return response.status(NO_CONTENT).end();
     })
   );

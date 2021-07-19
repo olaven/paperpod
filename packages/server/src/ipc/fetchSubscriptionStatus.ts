@@ -1,6 +1,6 @@
 import { get, OK } from "node-kall";
 import { models } from "@paperpod/common";
-import { getAdminBasic } from "./ipc-env-check";
+import { getAdminBasic } from "./getAdminBasic";
 
 export const hasValidSubscription = async (id: string) => {
   const [status, payload] = await get<models.UserSubscriptionStatusResponse>(

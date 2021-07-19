@@ -2,7 +2,7 @@ import express from "express";
 import { get } from "node-kall";
 import * as database from "../database/database";
 import { getRSSFeed } from "@paperpod/converter";
-import { OK, UNAUTHORIZED, FORBIDDEN } from "node-kall";
+import * as kall from "node-kall";
 
 import { logger } from "@paperpod/common";
 import { ipc } from "@paperpod/server";
@@ -18,18 +18,18 @@ export const rssRoutes = express
     const user_id = request.params.user_id;
 
     if (!user_id || user_id === "null" || user_id === "undefined")
-      return response.status(UNAUTHORIZED).send();
+      return response.status(kall.UNAUTHORIZED).send();
 
     const hasSubscription = await ipc.hasValidSubscription(user_id);
     if (!hasSubscription) {
-      return response.status(FORBIDDEN).end();
+      return response.status(kall.FORBIDDEN).end();
     }
 
     const articles = await database.articles.getByOwner(user_id);
     const feed = getRSSFeed(articles);
 
     return response
-      .status(OK)
+      .status(kall.OK)
       .contentType("application/rss+xml") //content-type as defined here: https://www.rssboard.org/rss-mime-type-application.txt
       .send(feed);
   });

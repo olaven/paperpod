@@ -75,7 +75,6 @@ describe("Internal route for getting user subscription status", () => {
   it("Gives active subscription if user subscription is active in database", async () => {
     const user = await insertUserWithSubscription("active");
     expect(user.subscription).toEqual("active");
-    console.log("OT PAST FIRST CHECK");
     const { body } = await get({
       user,
       username: process.env.ADMIN_USERNAME,

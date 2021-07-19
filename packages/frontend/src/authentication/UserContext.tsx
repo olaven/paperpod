@@ -92,11 +92,10 @@ export const UserContextProvider = ({
         await getToken()
       );
 
-      console.log("Going to refresh token");
       if (status === OK) {
         setToken(response.token);
       } else {
-        console.error(`error refreshing token ${status} with token ${token}`);
+        logger.error(`error refreshing token ${status} with token ${token}`);
       }
     };
 

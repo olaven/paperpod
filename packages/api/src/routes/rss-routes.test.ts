@@ -6,7 +6,6 @@ import { app } from "../app";
 import { mockSubscriptionStatusCall } from "./route-test-utils";
 
 jest.mock("node-kall", () => {
-  console.log("INSIDE KALL MOCK");
   return {
     ...(jest.requireActual("node-kall") as object),
     get: async (path: string) => [200, { subscription: "active" }],

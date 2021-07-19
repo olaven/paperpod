@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { logger } from "../../../../common/src";
+import { logger } from "@paperpod/common";
 import { users } from "../../authdatabase/authdatabase";
 
 export const customerSubscriptionDeleted = async (event: Stripe.Event) => {
@@ -8,7 +8,6 @@ export const customerSubscriptionDeleted = async (event: Stripe.Event) => {
   const { userId } = subscription.metadata;
 
   const user = await users.getById(userId);
-  console.log("LOOKING OFR USER ID", userId, "FOUND", user);
 
   if (!user) {
     const message = `${userId} does not exist.`;

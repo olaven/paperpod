@@ -183,7 +183,6 @@ describe("The api for articles", () => {
 
       const token = jwt.sign(user);
 
-      console.log("GONG TO CALL DELETE");
       await del(token, article.id);
 
       const after = await articles.getById(article.id);

@@ -88,19 +88,11 @@ describe("Internal route for getting user subscription status", () => {
     const user = await insertUserWithSubscription("inactive");
 
     expect(user.subscription).toEqual("inactive");
-    const { body, status } = await get({
+    const { body } = await get({
       user,
       username: process.env.ADMIN_USERNAME,
       password: process.env.ADMIN_PASSWORD,
     });
-
-    logger.debug({
-      message: "Send test credentials",
-      username: process.env.ADMIN_USERNAME,
-      password: process.env.ADMIN_PASSWORD,
-    });
-
-    expect(status).toEqual(OK);
     expect(body.subscription).toEqual("inactive");
   });
 });

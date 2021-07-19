@@ -77,6 +77,8 @@ jobs:
           PGUSER: ci_user
           PGPASSWORD: ci_password
           PAPERPOD_SCHEMA: authentication
+          ADMIN_USERNAME: test_admin_username
+          ADMIN_PASSWORD: test_admin_password
   test-converter:
     runs-on: ubuntu-latest
     steps:

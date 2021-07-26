@@ -40,7 +40,7 @@ export const withAuthentication =
       request: express.Request,
       response: express.Response,
       user: models.User
-    ) => any
+    ) => Promise<express.Response> | express.Response
   ) =>
   (request: express.Request, response: express.Response) => {
     const token = getToken(request);
@@ -48,12 +48,16 @@ export const withAuthentication =
 
     try {
       const user = jwt.decode<models.User>(token);
+      logger.debug({
+        message: "Validating subscription of",
+        user,
+      });
 
       //NOTE: basic user validation
       if (!user || !user.id || !user.email || !user.password_hash)
         return response.status(FORBIDDEN).end();
 
-      handler(request, response, user);
+      return handler(request, response, user);
     } catch (error) {
       //i.e. malformed token
       logger.error({

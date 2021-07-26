@@ -1,4 +1,4 @@
-import { app } from "../app";
+import { publicAuthenticationApp } from "../../app";
 import {
   FOUND,
   NOT_IMPLEMENTED,
@@ -11,20 +11,20 @@ import {
 import supertest from "supertest";
 import { constants, test } from "@paperpod/common";
 import faker from "faker";
-import { jwt } from "../../../server/src";
+import { jwt } from "@paperpod/server";
 import { nanoid } from "nanoid";
-import { stripeResource } from "../test-utils/test-utils";
-import { users } from "../authdatabase/authdatabase";
+import { stripeResource } from "../../test-utils/test-utils";
+import { users } from "../../authdatabase/authdatabase";
 
 const postCheckoutSession = ({
   token = jwt.sign(test.mocks.user()),
-  agent = supertest.agent(app),
+  agent = supertest.agent(publicAuthenticationApp),
 } = {}) =>
   agent.post("/checkout-session").set("Authorization", "Bearer " + token);
 
 const getSuccessEndpoint = ({
   sessionId = faker.datatype.uuid(),
-  agent = supertest.agent(app),
+  agent = supertest.agent(publicAuthenticationApp),
 } = {}) => agent.get(`/payment/success?session_id=${sessionId}`);
 
 const sessionStore: {
@@ -39,7 +39,7 @@ const randomSession = ({
   client_reference_id,
 });
 
-jest.mock("../payment/stripe", () => {
+jest.mock("../../payment/stripe", () => {
   return {
     makeStripeFunctions: () => ({
       getProducts: () => stripeResource([{ id: nanoid() }]),

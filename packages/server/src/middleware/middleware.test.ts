@@ -11,7 +11,11 @@ import * as middleware from "./middleware";
  */
 
 describe("The exported modules from index", () => {
-  it("does export models", () => {
+  it("does export withAuthentication", () => {
     expect(middleware.withAuthentication).toBeDefined();
+  });
+
+  it("does export withActiveSubscription", () => {
+    expect(middleware.withActiveSubscription).toBeDefined();
   });
 });

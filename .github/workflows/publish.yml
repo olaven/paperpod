@@ -242,6 +242,9 @@ jobs:
               API_PORT=${{ secrets.API_PORT }} \
               DOCS_PORT=${{ secrets.DOCS_PORT }} \
               AUTHENTICATION_PORT=${{ secrets.AUTHENTICATION_PORT }} \
+              AUTHENTICATION_INTERNAL_PORT=${{ secrets.AUTHENTICATION_INTERNAL_PORT }} \
+              ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }} \
+              ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }} \
               JWT_SECRET=${{ secrets.JWT_SECRET }} \
               STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }} \
               AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
@@ -262,7 +265,10 @@ jobs:
               WEB_PORT=$WEB_PORT \
               API_PORT=$API_PORT \
               AUTHENTICATION_PORT=$AUTHENTICATION_PORT \
+              AUTHENTICATION_INTERNAL_PORT=$AUTHENTICATION_INTERNAL_PORT \
               DOCS_PORT=$DOCS_PORT \
+              ADMIN_USERNAME=$ADMIN_USERNAME \
+              ADMIN_PASSWORD=$ADMIN_PASSWORD \
               JWT_SECRET=$JWT_SECRET \
               STRIPE_API_KEY=$STRIPE_API_KEY \
               AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \

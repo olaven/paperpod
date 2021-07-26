@@ -1,30 +1,32 @@
 import supertest from "supertest";
-import { OK, UNAUTHORIZED } from "node-kall";
+import * as kall from "node-kall";
 import { models, test } from "@paperpod/common";
 import * as database from "../database/database";
 import { app } from "../app";
+
+jest.mock("node-kall", () => {
+  return {
+    ...(jest.requireActual("node-kall") as object),
+    get: async (path: string) => [200, { subscription: "active" }],
+  };
+});
 
 describe("The RSS file endpoint", () => {
   const persistArticle = (article: Partial<models.Article> = {}) =>
     database.articles.persist(test.mocks.article(article));
 
-  describe("The endpoint for getting perosnal RSS-feeds", () => {
+  describe("The endpoint for getting personal RSS-feeds", () => {
     const getFeed = (user = test.mocks.user()) =>
       supertest(app).get(`/feeds/${user?.id}/`);
 
-    it("Can be found", async () => {
+    it("Can be reached", async () => {
       const { status } = await getFeed();
-      expect(status).toEqual(OK);
+      expect(status).toEqual(kall.OK);
     });
 
-    it("Should pass", async () => {
-      const { status } = await supertest(app).get("/articles");
-      expect(status).not.toEqual(404);
-    });
-
-    it("Does return UNAUTHORZED if no user id is specified", async () => {
+    it("Does return UNAUTHORIZED if no user id is specified", async () => {
       const { status } = await getFeed(null);
-      expect(status).toEqual(UNAUTHORIZED);
+      expect(status).toEqual(kall.UNAUTHORIZED);
     });
 
     it("Does application/rss+xml on successful request", async () => {
@@ -34,7 +36,7 @@ describe("The RSS file endpoint", () => {
       );
     });
 
-    it("Does convert an rss field containint the data from all articles", async () => {
+    it("Does convert an rss field containing the data from all articles", async () => {
       const user = test.mocks.user();
 
       const articles = [

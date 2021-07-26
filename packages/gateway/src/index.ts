@@ -18,4 +18,4 @@ export const app = withProxies(
     .get("/health/all", healthAll)
 );
 
-server.boot("", app, "gateway");
+server.boot("", app, { id: "gateway" });

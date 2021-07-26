@@ -10,10 +10,6 @@ export const Login: React.FunctionComponent = () => {
   const [email, setEmail] = React.useState<string>(null);
   const [password, setPassword] = React.useState<string>(null);
 
-  console.log(
-    "LOADING LOGIN WIHT APPLICATION URL",
-    constants.APPLICATION_URL()
-  );
   const onLogin = async () => {
     const [status, response] = await fetchers.auth.login({
       email,

@@ -5,3 +5,4 @@ export type { UserCredentials } from "./UserCredentials";
 export type { TokenResponse } from "./TokenResponse";
 export type { ArticlePayload } from "./ArticlePayload";
 export type { CheckoutSessionResponse } from "./CheckoutSessionResponse";
+export type { UserSubscriptionStatusResponse } from "./UserSubscriptionStatusResponse";

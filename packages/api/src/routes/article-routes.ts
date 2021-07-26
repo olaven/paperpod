@@ -1,5 +1,4 @@
 import express from "express";
-import { nanoid } from "nanoid";
 import { logger, models } from "@paperpod/common";
 import { middleware } from "@paperpod/server";
 import { withTextualData, withStorageUri } from "@paperpod/converter";
@@ -24,7 +23,7 @@ export const articleRoutes = express
   .Router()
   .post(
     "/articles",
-    middleware.withAuthentication(async (request, response, user) => {
+    middleware.withActiveSubscription(async (request, response, user) => {
       const { link } = request.body as models.ArticlePayload;
 
       logger.debug(`provided link ${link} is valid: ${isValidURL(link)}`);
@@ -45,28 +44,31 @@ export const articleRoutes = express
         )
       );
 
-      response.status(CREATED).json(article);
+      return response.status(CREATED).json(article);
     })
   )
   .get(
     "/articles",
-    middleware.withAuthentication(async (request, response, user) => {
+    middleware.withActiveSubscription(async (request, response, user) => {
       const articles = await database.articles.getByOwner(user.id);
-      response.status(OK).json(articles);
+      return response.status(OK).json(articles);
     })
   )
   .delete(
     "/articles/:id",
-    middleware.withAuthentication(async (request, response, user) => {
+    middleware.withActiveSubscription(async (request, response, user) => {
       const id = request.params.id;
-
-      if (!id) return response.status(BAD_REQUEST).end();
+      if (!id) {
+        return response.status(BAD_REQUEST).end();
+      }
 
       const article = await database.articles.getById(id);
-
-      if (!article) return response.status(NOT_FOUND).end();
-
-      if (article.owner_id !== user.id) return response.status(FORBIDDEN).end();
+      if (!article) {
+        return response.status(NOT_FOUND).end();
+      }
+      if (article.owner_id !== user.id) {
+        return response.status(FORBIDDEN).end();
+      }
 
       await database.articles.deleteById(id);
       return response.status(NO_CONTENT).end();

@@ -7,14 +7,14 @@ import {
   NOT_FOUND,
   BAD_REQUEST,
 } from "node-kall";
-import { withAuthentication } from "../../../server/src/middleware/withAuthentication";
+import { middleware } from "@paperpod/server";
 import { constants, logger, models } from "@paperpod/common";
-import { makeStripeFunctions, stripe } from "../payment/stripe";
-import { users } from "../authdatabase/authdatabase";
+import { makeStripeFunctions, stripe } from "../../payment/stripe";
+import { users } from "../../authdatabase/authdatabase";
 import {
   getWebhookHandler,
   StripeEventType,
-} from "../payment/webhooks/webhooks";
+} from "../../payment/webhooks/webhooks";
 
 const { createPaymentSession, getSession, assignUserToSubscriptionMetadata } =
   makeStripeFunctions(stripe);
@@ -24,7 +24,7 @@ export const paymentRoutes = express
   //https://stripe.com/docs/billing/subscriptions/checkout
   .post(
     "/checkout-session",
-    withAuthentication(async (request, response, user) => {
+    middleware.withAuthentication(async (request, response, user) => {
       const session = await createPaymentSession(user);
 
       return response.status(CREATED).send(<models.CheckoutSessionResponse>{

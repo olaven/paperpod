@@ -1,6 +1,6 @@
-import { sign, decode } from "../jwt/jwt";
+import { sign } from "../jwt/jwt";
 import faker from "faker";
-import { constants, models } from "@paperpod/common";
+import { constants } from "@paperpod/common";
 import { FORBIDDEN } from "kall";
 import express from "express";
 import {
@@ -8,39 +8,16 @@ import {
   getBearerToken,
   getToken,
 } from "./withAuthentication";
-import { mocks } from "@paperpod/common/src/test/test";
+import { test } from "@paperpod/common";
+import { createFakeUserMiddlewareRunner } from "./middleware-test-utils";
 
 describe("Authentication verifying that caller is authenticated", () => {
-  const useWithToken = (
-    token: {
-      bearer?: string;
-      cookie?: string;
-    },
-    handler: (
-      request: express.Request,
-      response: express.Response,
-      user: models.User
-    ) => void
-  ) =>
-    withAuthentication(handler)(
-      {
-        headers: {
-          authorization: `Bearer ${token.bearer}`,
-        },
-        cookies: {
-          [constants.TOKEN_COOKIE_HEADER()]: token.cookie,
-        },
-      } as any,
-      {
-        status: (code: number) => ({
-          end: () => {},
-        }),
-      } as any
-    );
+  const fakeWithAuthentication =
+    createFakeUserMiddlewareRunner(withAuthentication);
 
   it("Does not forward if token is invalid", () => {
     const spy = jest.fn();
-    useWithToken(
+    fakeWithAuthentication(
       { bearer: faker.random.alphaNumeric() },
       (request, response, user) => {
         spy();
@@ -51,10 +28,10 @@ describe("Authentication verifying that caller is authenticated", () => {
   });
 
   it("Does forward if a user was encrypted with that token", () => {
-    const token = sign(mocks.user());
+    const token = sign(test.mocks.user());
     const spy = jest.fn();
 
-    useWithToken({ bearer: token }, (request, response, user) => {
+    fakeWithAuthentication({ bearer: token }, (request, response, user) => {
       spy();
     });
 
@@ -62,29 +39,38 @@ describe("Authentication verifying that caller is authenticated", () => {
   });
 
   it("Does forward the same user as the one signed with the token", () => {
-    const originalUser = mocks.user();
+    const originalUser = test.mocks.user();
     const token = sign(originalUser);
 
-    useWithToken({ bearer: token }, (request, response, forwardedUser) => {
-      expect(forwardedUser).toEqual(originalUser);
-    });
+    fakeWithAuthentication(
+      { bearer: token },
+      (request, response, forwardedUser) => {
+        expect(forwardedUser).toEqual(originalUser);
+      }
+    );
   });
 
   it("Does forward user based on cookie token, if it's present", () => {
-    const originalUser = mocks.user();
+    const originalUser = test.mocks.user();
     const bearer = null;
     const cookie = sign(originalUser);
 
-    useWithToken({ bearer, cookie }, (request, response, forwardedUser) => {
-      expect(forwardedUser).toEqual(originalUser);
-    });
+    fakeWithAuthentication(
+      { bearer, cookie },
+      (request, response, forwardedUser) => {
+        expect(forwardedUser).toEqual(originalUser);
+      }
+    );
   });
 
   it("Does not forward if there is no token at all", () => {
     const spy = jest.fn();
-    useWithToken({ bearer: null, cookie: null }, (req, response, user) => {
-      spy();
-    });
+    fakeWithAuthentication(
+      { bearer: null, cookie: null },
+      (req, response, user) => {
+        spy();
+      }
+    );
 
     expect(spy).not.toHaveBeenCalled();
   });
@@ -92,7 +78,7 @@ describe("Authentication verifying that caller is authenticated", () => {
   it("returns FORBIDDEN if there's no user", () => {
     const token = sign({});
 
-    useWithToken({ bearer: token }, (request, response, user) => {
+    fakeWithAuthentication({ bearer: token }, (request, response, user) => {
       expect(user).toBeNull();
       expect(response.statusCode).toEqual(FORBIDDEN);
     });

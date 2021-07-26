@@ -1,16 +1,7 @@
 import faker from "faker";
-import { logger, models, test } from "@paperpod/common";
+import { models, test } from "@paperpod/common";
 import { jwt } from "@paperpod/server";
-import {
-  OK,
-  BAD_REQUEST,
-  CREATED,
-  UNAUTHORIZED,
-  NOT_IMPLEMENTED,
-  NOT_FOUND,
-  FORBIDDEN,
-  NO_CONTENT,
-} from "node-kall";
+import * as kall from "node-kall";
 import supertest from "supertest";
 import { app } from "../app";
 import { articles } from "../database/database";
@@ -35,25 +26,33 @@ describe("The api for articles", () => {
   describe("the POST-endpoint for articles", () => {
     jest.mock("@paperpod/converter", () => ({
       convertToText: (article: models.Article) => {
-        logger.trace("INSIDE AUDIO TEXT MOCK");
         return article;
       },
     }));
 
     it("Does respond with something other than NOT_IMPLEMENTED", async () => {
       const { status } = await supertest(app).post("/articles");
-      expect(status).not.toEqual(NOT_IMPLEMENTED);
+      expect(status).not.toEqual(kall.NOT_IMPLEMENTED);
     });
 
     it("Does respond with UNAUTHORIZED if no token is passed", async () => {
       const { status } = await post(null);
-      expect(status).toEqual(UNAUTHORIZED);
+      expect(status).toEqual(kall.UNAUTHORIZED);
+    });
+
+    it("Does respond with FORBIDDEN if user does not have an active subscription", async () => {
+      const token = jwt.sign({
+        ...test.mocks.user(),
+        subscription: "inactive",
+      });
+      const { status } = await post(token);
+      expect(status).toEqual(kall.FORBIDDEN);
     });
 
     it("Does respond with 201 if a valid request is made", async () => {
       const token = jwt.sign(test.mocks.user());
       const { status } = await post(token);
-      expect(status).toEqual(CREATED);
+      expect(status).toEqual(kall.CREATED);
     });
 
     it("Does return an article on valid request", async () => {
@@ -90,7 +89,7 @@ describe("The api for articles", () => {
       const token = jwt.sign(test.mocks.user());
       post(token, {
         link: "not-a-url",
-      }).expect(BAD_REQUEST);
+      }).expect(kall.BAD_REQUEST);
     });
 
     it("Does not respond with NOT_IMPLEMENTED if link leads to a pdf", async () => {
@@ -99,34 +98,53 @@ describe("The api for articles", () => {
         link: "https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf",
       });
 
-      expect(status).not.toBe(NOT_IMPLEMENTED);
+      expect(status).not.toBe(kall.NOT_IMPLEMENTED);
     });
   });
 
   describe("Retrieving articles", () => {
     it("Does respond with UNAUTHORIZED if not logged in", async () => {
       const { status } = await get(null);
-      expect(status).toEqual(UNAUTHORIZED);
+      expect(status).toEqual(kall.UNAUTHORIZED);
     });
 
     it("responds with OK if user is logged in", async () => {
       const token = jwt.sign(test.mocks.user());
       const { status } = await get(token);
-      expect(status).toEqual(OK);
+      expect(status).toEqual(kall.OK);
+    });
+
+    it("Does respond with FORBIDDEN if user does not have an active subscription", async () => {
+      const token = jwt.sign({
+        ...test.mocks.user(),
+        subscription: "inactive",
+      });
+      const { status } = await get(token);
+      expect(status).toEqual(kall.FORBIDDEN);
     });
   });
 
   describe("The endpoint for deleting articles", () => {
     it("Responds with UNAUTHORIZED if not logged in", async () => {
       const { status } = await del(null, "some-article-id");
-      expect(status).toEqual(UNAUTHORIZED);
+      expect(status).toEqual(kall.UNAUTHORIZED);
+    });
+
+    it("Does respond with FORBIDDEN if user does not have an active subscription", async () => {
+      const token = jwt.sign({
+        ...test.mocks.user(),
+        subscription: "inactive",
+      });
+      const article = await articles.persist(test.mocks.article());
+      const { status } = await del(token, article.id);
+      expect(status).toEqual(kall.FORBIDDEN);
     });
 
     it("Responds with NOT_FOUND if the article does not exist", async () => {
       const token = jwt.sign(test.mocks.user());
       const { status } = await del(token, faker.datatype.uuid());
 
-      expect(status).toEqual(NOT_FOUND);
+      expect(status).toEqual(kall.NOT_FOUND);
     });
 
     it("Responds with FORBIDDEN if the user does not own the article", async () => {
@@ -134,11 +152,14 @@ describe("The api for articles", () => {
       const token = jwt.sign(test.mocks.user());
 
       const { status } = await del(token, article.id);
-      expect(status).toEqual(FORBIDDEN);
+      expect(status).toEqual(kall.FORBIDDEN);
     });
 
     it("Responds with NO_CONTENT if the user tries to delete their own article", async () => {
-      const user = test.mocks.user();
+      const user: models.User = {
+        ...test.mocks.user(),
+        subscription: "active",
+      };
       const article = await articles.persist({
         ...test.mocks.article(),
         owner_id: user.id,
@@ -147,11 +168,14 @@ describe("The api for articles", () => {
       const token = jwt.sign(user);
 
       const { status } = await del(token, article.id);
-      expect(status).toEqual(NO_CONTENT);
+      expect(status).toEqual(kall.NO_CONTENT);
     });
 
     it("Does actually delete article on valid request", async () => {
-      const user = test.mocks.user();
+      const user: models.User = {
+        ...test.mocks.user(),
+        subscription: "active",
+      };
       const article = await articles.persist({
         ...test.mocks.article(),
         owner_id: user.id,

@@ -38,6 +38,8 @@ jobs:
           PGUSER: ci_user
           PGPASSWORD: ci_password
           PAPERPOD_SCHEMA: api
+          ADMIN_USERNAME: test_admin_username
+          ADMIN_PASSWORD: test_admin_password
 
   test-authentication:
     runs-on: ubuntu-latest
@@ -50,6 +52,8 @@ jobs:
           POSTGRES_USER: ci_user
           POSTGRES_PASSWORD: ci_password
           TEST_STRIPE_API_KEY: ${{ secrets.TEST_STRIPE_API_KEY }}
+          ADMIN_USERNAME: test_admin_username
+          ADMIN_PASSWORD: test_admin_password
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -73,6 +77,8 @@ jobs:
           PGUSER: ci_user
           PGPASSWORD: ci_password
           PAPERPOD_SCHEMA: authentication
+          ADMIN_USERNAME: test_admin_username
+          ADMIN_PASSWORD: test_admin_password
   test-converter:
     runs-on: ubuntu-latest
     steps:
@@ -118,6 +124,8 @@ jobs:
         run: yarn server test
         env:
           JWT_SECRET: The JWT secret in CI test environment for server tests
+          ADMIN_USERNAME: test_admin_username
+          ADMIN_PASSWORD: test_admin_password
   test-web:
     runs-on: ubuntu-latest
     steps:

@@ -1,8 +1,7 @@
 import { constants, logger, models, validators } from "@paperpod/common";
 import { jwt, middleware } from "@paperpod/server";
-import { hash } from "../cryptography/cryptography";
 import express from "express";
-import * as database from "../authdatabase/authdatabase";
+import * as database from "../../authdatabase/authdatabase";
 import {
   BAD_REQUEST,
   CONFLICT,
@@ -11,6 +10,8 @@ import {
   OK,
   UNAUTHORIZED,
 } from "node-kall";
+import { useCallback } from "react";
+import { hash } from "../../cryptography/cryptography";
 
 const withTokenCookie = (token: string | null, response: express.Response) =>
   response.cookie(constants.TOKEN_COOKIE_HEADER(), token, {
@@ -70,7 +71,9 @@ export const userRoutes = express
   )
   .put(
     "/users/sessions",
-    middleware.withAuthentication(async (request, response, user) => {
+    middleware.withAuthentication(async (request, response, jwtUser) => {
+      //make sure new token is signed with updated user.
+      const user = await database.users.getById(jwtUser.id);
       const token = jwt.sign(user);
       return withTokenCookie(token, response).status(OK).send({ token });
     })
@@ -112,7 +115,7 @@ export const userRoutes = express
        * This currently applies to subscription.
        */
       const updatedUser = await database.users.getById(user.id);
-      response.json({
+      return response.json({
         ...updatedUser,
         password_hash: undefined,
       });

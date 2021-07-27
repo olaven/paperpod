@@ -1,3 +1,6 @@
 rootProject.name = 'mobile'
-apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+/**
+ * YOUR PATH TO REACT NATIVE CLI (from android folder) 
+ */
+apply from: file("../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'

@@ -16,9 +16,7 @@ const app = server.app
     redoc({
       title: "Documentation - Paperpod",
       specUrl:
-        process.env.NODE_ENV === "development"
-          ? "docs/openapi.yml"
-          : "openapi.yml",
+        process.env.NODE_ENV === "dev" ? "docs/openapi.yml" : "openapi.yml",
     })
   );
 

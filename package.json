@@ -18,7 +18,8 @@
     "ui": "yarn workspace @paperpod/ui",
     "frontend": "yarn workspace @paperpod/frontend",
     "infrastructure": "yarn workspace @paperpod/infrastructure",
-    "docs": "yarn workspace @paperpod/docs"
+    "docs": "yarn workspace @paperpod/docs",
+    "mobile": "yarn workspace @paperpod/mobile"
   },
   "resolutions": {
     "**/react": "^17.0.2",
@@ -26,10 +27,13 @@
   },
   "dependencies": {
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-native": "^0.64.2"
   },
   "devDependencies": {
+    "@react-native-community/cli": "^5.0.1",
     "husky": "^5.2.0",
+    "metro-config": "^0.66.2",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
     "react": "^17.0.2",

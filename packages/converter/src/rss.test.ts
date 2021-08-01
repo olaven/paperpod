@@ -1,6 +1,7 @@
 import { test, models, constants } from "@paperpod/common";
 import { serialize } from "serialize-xml";
-import { APPLICATION_URL } from "../../common/src/constants/constants";
+import xmlParser from "fast-xml-parser";
+
 import { convertToRSSFeed, toItemTag } from "./rss";
 
 describe("Conversion from articles to RSS", () => {
@@ -31,7 +32,7 @@ describe("Conversion from articles to RSS", () => {
     }
   };
 
-  describe("Converting article to single item", () => {
+  describe("Converting article to single RSS item", () => {
     it("Does not throw", () => {
       const article = test.mocks.article();
       expect(() => {
@@ -39,7 +40,15 @@ describe("Conversion from articles to RSS", () => {
       }).not.toThrow();
     });
 
-    hasTags(["title", "link", "description", "guid", "pubDate", "author"]);
+    hasTags([
+      "title",
+      "link",
+      "description",
+      "itunes:summary",
+      "guid",
+      "pubDate",
+      "author",
+    ]);
 
     hasTagWithValue([
       ["title", (article) => article.title],
@@ -48,6 +57,7 @@ describe("Conversion from articles to RSS", () => {
         (article) => `${constants.APPLICATION_URL()}/api/files/${article.id}`,
       ],
       ["description", (article) => article.description],
+      ["itunes:summary", (article) => article.description],
       ["guid", (article) => article.id],
       ["pubDate", (article) => new Date(article.added_time).toUTCString()],
       ["author", (article) => article.author],
@@ -74,7 +84,7 @@ describe("Conversion from articles to RSS", () => {
       const serialized = serializeItem(article);
 
       expect(serialized).toContain(
-        `<enclosure url="${APPLICATION_URL()}/api/files/${
+        `<enclosure url="${constants.APPLICATION_URL()}/api/files/${
           article.id
         }" length="10" type="audio/mpeg"`
       );
@@ -88,6 +98,34 @@ describe("Conversion from articles to RSS", () => {
       expect(rss).toContain("<channel>");
       expect(rss).toContain("<link>");
       expect(rss).toContain("<author>Paperpod by Krets AS</author>");
+    });
+
+    describe("The channel cover image", () => {
+      const getImageTag = () => {
+        const rss = convertToRSSFeed([]);
+        const {
+          rss: {
+            channel: { image },
+          },
+        } = xmlParser.parse(rss);
+        return image;
+      };
+
+      it("Does return RSS with image", () => {
+        expect(getImageTag()).toBeDefined();
+      });
+
+      it("Does return an image with url to cover", () => {
+        const { url } = getImageTag();
+        expect(url).toEqual(`${constants.APPLICATION_URL()}/podcast_cover.png`);
+      });
+
+      it("Does return link element corresponding to header link", () => {
+        //is the URL of the site, when the channel is rendered, the image is a link to the site.
+        //[ref](https://validator.w3.org/feed/docs/rss2.html#ltimagegtSubelementOfLtchannelgt)
+        const { link } = getImageTag();
+        expect(link).toEqual(constants.APPLICATION_URL());
+      });
     });
   });
 });

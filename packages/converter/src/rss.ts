@@ -25,7 +25,7 @@ export const convertToRSSFeed = (articles: models.Article[]) =>
 
 export const toImageTag = () =>
   tag("image", [
-    tag("url", `${constants.APPLICATION_URL()}/logo.svg`), //TODO: image that's friendly for podcast players
+    tag("url", `${constants.APPLICATION_URL()}/podcast_cover.png`), //TODO: image that's friendly for podcast players
     tag("link", constants.APPLICATION_URL()),
     tag("title", "Paperpod Feed"),
   ]);
@@ -35,6 +35,7 @@ export const toItemTag = (article: models.Article) =>
     tag("title", `${article.title}`),
     tag("link", `${constants.APPLICATION_URL()}/api/files/${article.id}`),
     tag("description", article.description || "TODO: default description"),
+    tag("itunes:summary", article.description || "TODO: default description"),
     tag("guid", `${article.id}`),
     tag("pubDate", new Date(article.added_time).toUTCString()), //compatible with RFC822
     tag("author", article.author || "Unspecified Author"),

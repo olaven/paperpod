@@ -48,7 +48,7 @@ describe("Database configuration module", () => {
 
     it(
       "Returns an empty object if in development",
-      withMockedNodeEnv("development", () => {
+      withMockedNodeEnv("dev", () => {
         expect(getConfiguration()).toEqual({});
       })
     );

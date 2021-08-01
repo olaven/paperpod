@@ -25,6 +25,7 @@
     "@types/node-fetch": "^2.5.8",
     "@types/pdf-parse": "^1.1.0",
     "faker": "^5.5.3",
+    "fast-xml-parser": "^3.19.0",
     "jest": "^26.6.3",
     "node-fetch": "^2.6.1",
     "ts-jest": "^26.4.4",

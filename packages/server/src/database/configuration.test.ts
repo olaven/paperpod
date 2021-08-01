@@ -6,7 +6,7 @@ import { getCertificate, getConfiguration } from "./configuration";
 // frontend modules
 // `Cannot assign to 'NODE_ENV' because it is a read-only property.`
 export const withMockedNodeEnv =
-  (value: "production" | "development" | "test", action: () => void) => () => {
+  (value: "production" | "dev" | "test", action: () => void) => () => {
     const previous = process.env.NODE_ENV;
     process.env.NODE_ENV = value;
     action();

@@ -14,7 +14,7 @@ import { APPLICATION_URL, TOKEN_COOKIE_HEADER } from "./constants";
 // frontend modules
 // `Cannot assign to 'NODE_ENV' because it is a read-only property.`
 export const withMockedNodeEnv =
-  (value: "production" | "development" | "test", action: () => void) => () => {
+  (value: "production" | "dev" | "test", action: () => void) => () => {
     const previous = process.env.NODE_ENV;
     process.env.NODE_ENV = value;
     action();
@@ -41,8 +41,8 @@ describe("Paperpod constants", () => {
 
     it(
       "uses localhost when node env is development",
-      withMockedNodeEnv("development", () => {
-        expect(process.env.NODE_ENV).toEqual("development");
+      withMockedNodeEnv("dev", () => {
+        expect(process.env.NODE_ENV).toEqual("dev");
         expect(APPLICATION_URL()).toEqual("http://localhost:8080");
       })
     );

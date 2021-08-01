@@ -25,7 +25,6 @@
     "@types/jest": "^26.0.23",
     "@types/react-native": "^0.64.5",
     "@types/react-test-renderer": "^16.9.2",
-    "get-yarn-workspaces": "^1.0.2",
     "install": "^0.13.0",
     "metro-config": "^0.66.2",
     "pod-install": "^0.1.23",

@@ -1,15 +1,15 @@
 const path = require("path");
 
-console.log(`Running config from ${__dirname}`);
 const pathToMobile = path.resolve(__dirname, "packages", "mobile");
-console.log(`Path to mobile is ${pathToMobile}`);
 
-console.log({
-  message: "config metadata",
-  location: __dirname,
-  pathToMobile,
-});
-
+/**
+ * Metro config must be in the root
+ * of the project. Ideally, it should
+ * be possible to have it in `packages/mobile`.
+ *
+ * This issue is tracked already.
+ * [link to issue](https://github.com/facebook/metro/issues/588)
+ */
 module.exports = {
   watchFolders: [path.resolve(__dirname)],
   projectRoot: pathToMobile,

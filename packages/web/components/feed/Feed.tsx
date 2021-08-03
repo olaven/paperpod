@@ -9,7 +9,7 @@ export const Feed = () => {
   return (
     <>
       <br />
-      Din feed: <a href={feed}>{feed}</a>
+      Add this feed to your podcast player: <a href={feed}>{feed}</a>
     </>
   );
 };

@@ -1,8 +1,8 @@
-import { A, Paragraph } from "@paperpod/ui";
+import { A, H3, Paragraph } from "@paperpod/ui";
 
 export const ExtensionLinks = () => (
   <>
-    <h3>Browser extensions:</h3>
+    <H3>Browser extensions:</H3>
     <Paragraph>
       The browser extensions make adding articles easy!
       <ul>

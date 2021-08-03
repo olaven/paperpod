@@ -1,6 +1,6 @@
 import { styled } from "./stitches.config";
 
-export const Paragraph = styled("p", {
+const commonTextStyles = {
   fontFamily: "Roboto, sans-serif",
   fontWeight: "lighter",
   fontSize: "$twentyone",
@@ -26,4 +26,11 @@ export const Paragraph = styled("p", {
       },
     },
   },
+} as const;
+
+export const Paragraph = styled("p", { ...commonTextStyles });
+
+export const H3 = styled("h3", {
+  ...commonTextStyles,
+  fontSize: "$thirtyfour",
 });

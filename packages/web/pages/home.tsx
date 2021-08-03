@@ -4,6 +4,7 @@ import { authentication, fetchers } from "@paperpod/frontend";
 import { Button, A } from "@paperpod/ui";
 import { SubscribeButton } from "../components/SubscribeButton";
 import { Feed } from "../components/feed/Feed";
+import { ExtensionLinks } from "../components/extensionlinks/ExtensionLinks";
 
 const SubscribedUser = () => {
   const { user, token, setToken } = React.useContext(
@@ -19,6 +20,7 @@ const SubscribedUser = () => {
     <div>
       Hello, {user.email}!
       <Feed />
+      <ExtensionLinks />
       <Button onClick={onLogOut}>Log out</Button>
       {/* <Articles /> */}
     </div>

@@ -20,7 +20,7 @@ const SubscribedUser = () => {
     <div>
       you are logged in as {user.email}
       <Button onClick={onLogOut}>Log out</Button>
-      <Articles />
+      {/* <Articles /> */}
       <Feed />
     </div>
   );

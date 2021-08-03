@@ -3,7 +3,6 @@ import Link from "next/link";
 import { authentication, fetchers } from "@paperpod/frontend";
 import { Button, A } from "@paperpod/ui";
 import { SubscribeButton } from "../components/SubscribeButton";
-import { Articles } from "../components/articles/Articles";
 import { Feed } from "../components/feed/Feed";
 
 const SubscribedUser = () => {
@@ -18,10 +17,10 @@ const SubscribedUser = () => {
 
   return (
     <div>
-      you are logged in as {user.email}
+      Hello, {user.email}!
+      <Feed />
       <Button onClick={onLogOut}>Log out</Button>
       {/* <Articles /> */}
-      <Feed />
     </div>
   );
 };

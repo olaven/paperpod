@@ -3,8 +3,8 @@ import Link from "next/link";
 import { authentication, fetchers } from "@paperpod/frontend";
 import { Button, A } from "@paperpod/ui";
 import { SubscribeButton } from "../components/SubscribeButton";
-import { Articles } from "../components/articles/Articles";
 import { Feed } from "../components/feed/Feed";
+import { ExtensionLinks } from "../components/extensionlinks/ExtensionLinks";
 
 const SubscribedUser = () => {
   const { user, token, setToken } = React.useContext(
@@ -18,10 +18,11 @@ const SubscribedUser = () => {
 
   return (
     <div>
-      you are logged in as {user.email}
-      <Button onClick={onLogOut}>Log out</Button>
-      <Articles />
+      Hello, {user.email}!
       <Feed />
+      <ExtensionLinks />
+      <Button onClick={onLogOut}>Log out</Button>
+      {/* <Articles /> */}
     </div>
   );
 };

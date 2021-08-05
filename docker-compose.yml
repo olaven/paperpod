@@ -131,3 +131,18 @@ services:
       - POSTGRES_DB=$PGDATABASE
       - POSTGRES_USER=$PGUSER
       - POSTGRES_PASSWORD=$PGPASSWORD
+
+  metabase:
+    image: metabase/metabase
+    env_file:
+      - .env
+    ports:
+      - $METABASE_PORT:3000
+    environment:
+      - MB_DB_TYPE=postgres
+      - MB_DB_DBNAME=$PGDATABASE
+      - MB_DB_PORT=$PGPORT
+      - MB_DB_USER=$PGUSER
+      - MB_DB_PASS=$PGPASSWORD
+      - MB_DB_HOST=database
+      - JAVA_TIMEZONE=Europe/Oslo

@@ -10,7 +10,6 @@ import {
   OK,
   UNAUTHORIZED,
 } from "node-kall";
-import { useCallback } from "react";
 import { hash } from "../../cryptography/cryptography";
 
 const withTokenCookie = (token: string | null, response: express.Response) =>

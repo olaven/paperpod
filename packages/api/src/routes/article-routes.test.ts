@@ -49,7 +49,7 @@ describe("The api for articles", () => {
       expect(status).toEqual(kall.FORBIDDEN);
     });
 
-    it("Does respond with 201 if a valid request is made", async () => {
+    it("Does respond with CREATED if a valid request is made", async () => {
       const token = jwt.sign(test.mocks.user());
       const { status } = await post(token);
       expect(status).toEqual(kall.CREATED);

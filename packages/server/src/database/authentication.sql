@@ -18,3 +18,6 @@ $$;
 
 ALTER TABLE authentication.users
 ADD COLUMN IF NOT EXISTS subscription Subscription NOT NULL DEFAULT 'inactive'; 
+
+ALTER TABLE authentication.users
+ADD COLUMN IF NOT EXISTS subscription_id text DEFAULT null; 

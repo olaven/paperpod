@@ -3,4 +3,5 @@ export interface User {
   email: string;
   password_hash?: string;
   subscription: "active" | "inactive";
+  subscription_id: string | null
 }

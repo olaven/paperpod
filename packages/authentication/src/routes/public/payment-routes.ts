@@ -15,6 +15,7 @@ import {
   getWebhookHandler,
   StripeEventType,
 } from "../../payment/webhooks/webhooks";
+import { activateSubscription } from "../../payment/subscriptions";
 
 const { createPaymentSession, getSession, assignUserToSubscriptionMetadata } =
   makeStripeFunctions(stripe);
@@ -49,20 +50,7 @@ export const paymentRoutes = express
     const user = await users.getById(userId);
     if (!user) return response.status(FORBIDDEN).send();
 
-    /**
-     * Ties the user id to the Stripe subscription.
-     * This allows us to retrieve the user
-     * in webhook events, where the Stripe subscription
-     * objects are available
-     */
-    await assignUserToSubscriptionMetadata(
-      user,
-      session.subscription as string
-    );
-    await users.setSubscriptionStatus({
-      ...user,
-      subscription: "active",
-    });
+    await activateSubscription(user, session.subscription  as string);
 
     response.redirect(constants.APPLICATION_URL());
   })

@@ -1,6 +1,6 @@
 import { Stripe } from "stripe";
 
-import { constants, logger, models } from "../../../common/src";
+import { constants, logger, models } from "@paperpod/common";
 
 /**
  * Default stripe configuration.
@@ -105,6 +105,10 @@ const _getCustomer = (stripe: Stripe) => async (id: string) => {
   return customer as Stripe.Customer;
 };
 
+const _deleteSubscription = (stripe: Stripe) => async (user: models.User) => {
+  stripe.subscriptions.del(user.subscription_id);
+};
+
 export const makeStripeFunctions = (stripe: Stripe) => ({
   createPaymentSession: _createPaymentSession(stripe),
   getProducts: _getProducts(stripe),
@@ -112,4 +116,5 @@ export const makeStripeFunctions = (stripe: Stripe) => ({
   getSession: _getSession(stripe),
   assignUserToSubscriptionMetadata: _assignUserToSubscriptionMetadata(stripe),
   getCustomer: _getCustomer(stripe),
+  deleteSubscription: _deleteSubscription(stripe),
 });

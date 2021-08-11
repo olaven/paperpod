@@ -1,4 +1,4 @@
-import { models } from "@paperpod/common";
+import { logger, models } from "@paperpod/common";
 import { setSubscriptionStatus } from "../authdatabase/users";
 import { makeStripeFunctions, stripe } from "./stripe";
 
@@ -19,6 +19,12 @@ export const activateSubscription = async (
     ...user,
     subscription: "active",
     subscription_id: subscriptionId,
+  });
+
+  logger.trace({
+    message: "setting subscription id",
+    subscriptionId,
+    updated,
   });
 
   return updated;

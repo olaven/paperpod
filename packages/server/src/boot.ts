@@ -30,6 +30,11 @@ export const boot = (
     port?: number;
   } = {}
 ) => {
+  logger.info({
+    message: `Booting ${path} in ${process.env.NODE_ENV}`,
+    env: process.env.NODE_ENV,
+  });
+
   const id = options.id ?? path.replace("/", "");
   const port = options.port ?? process.env.PORT;
 

@@ -30,6 +30,7 @@ services:
     volumes:
       - .:/paperpod
     environment:
+      NODE_ENV: dev
       PORT: $API_PORT
       # IPC for user subscription check where JWT is not available
       AUTHENTICATION_INTERNAL_PORT: $AUTHENTICATION_INTERNAL_PORT
@@ -56,6 +57,7 @@ services:
     volumes:
       - .:/paperpod
     environment:
+      NODE_ENV: dev
       PORT: $AUTHENTICATION_PORT
       # IPC for user subscription check where JWT is not available
       INTERNAL_PORT: $AUTHENTICATION_INTERNAL_PORT
@@ -94,6 +96,7 @@ services:
     volumes:
       - .:/paperpod
     environment:
+      - NODE_ENV=dev
       - PORT=$DOCS_PORT
       - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod

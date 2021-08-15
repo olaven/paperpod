@@ -6,6 +6,7 @@ logger.debug({
 });
 
 export const APPLICATION_URL = () =>
+  //@ts-ignore 'web' types this to never be "dev"
   process.env.NODE_ENV === "dev" ||
   process.env.NODE_ENV === "development" ||
   process.env.NODE_ENV === "test"

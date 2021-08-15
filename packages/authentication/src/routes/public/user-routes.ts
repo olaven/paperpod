@@ -10,7 +10,6 @@ import {
   OK,
   UNAUTHORIZED,
 } from "node-kall";
-import { useCallback } from "react";
 import { hash } from "../../cryptography/cryptography";
 
 const withTokenCookie = (token: string | null, response: express.Response) =>
@@ -97,6 +96,7 @@ export const userRoutes = express
       id: null,
       email: credentials.email.toLowerCase(),
       password_hash: await hash.hash(credentials.password),
+      subscription_id: null,
       subscription: "inactive",
     });
 
@@ -115,6 +115,10 @@ export const userRoutes = express
        * This currently applies to subscription.
        */
       const updatedUser = await database.users.getById(user.id);
+      logger.debug({
+        message: "going to return user",
+        user: updatedUser,
+      });
       return response.json({
         ...updatedUser,
         password_hash: undefined,

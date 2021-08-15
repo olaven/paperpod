@@ -7,6 +7,7 @@ export const user = (template: Partial<models.User> = {}): models.User => ({
   email: faker.internet.email().toLowerCase(),
   password_hash: faker.random.alpha(),
   subscription: "active",
+  subscription_id: null, 
   ...template,
 });
 

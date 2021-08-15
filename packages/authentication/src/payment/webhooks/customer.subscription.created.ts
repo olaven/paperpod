@@ -1,6 +1,5 @@
 import Stripe from "stripe";
-import { logger } from "../../../../common/src";
-import { users } from "../../authdatabase/authdatabase";
+import { logger } from "@paperpod/common";
 import { makeStripeFunctions, stripe } from "../stripe";
 
 export const _customerSubscriptionCreated =

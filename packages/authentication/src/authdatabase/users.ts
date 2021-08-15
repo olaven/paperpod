@@ -23,11 +23,11 @@ export const setSubscriptionStatus = async (user: models.User) =>
   (await database()).first<models.User>(
     `
     UPDATE authentication.users
-    SET subscription = $2
+    SET subscription = $2, subscription_id = $3
     where id = $1
     RETURNING *; 
   `,
-    [user.id, user.subscription]
+    [user.id, user.subscription, user.subscription_id]
   );
 
 export const insert = async (user: models.User) =>

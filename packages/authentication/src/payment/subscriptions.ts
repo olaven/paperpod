@@ -31,7 +31,7 @@ export const activateSubscription = async (
 };
 
 export const deleteSubscription = async (user: models.User) => {
-  stripe.subscriptions.del(user.subscription_id);
+  await makeStripeFunctions(stripe).deleteSubscription(user);
   const updated = await setSubscriptionStatus({
     ...user,
     subscription: "inactive",

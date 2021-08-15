@@ -22,9 +22,7 @@ export const CancelSubscriptionButton = () => {
       await token()
     );
 
-    console.log("Got status", status);
     if (status === NO_CONTENT) {
-      console.log("Setting null token");
       setToken(null);
     } else {
       setError(true);

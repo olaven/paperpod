@@ -6,6 +6,14 @@ import { jwt } from "@paperpod/server";
 import { users } from "../../authdatabase/authdatabase";
 import { publicAuthenticationApp } from "../../app";
 
+jest.mock("../../payment/stripe", () => {
+  return {
+    makeStripeFunctions: () => ({
+      deleteSubscription: async () => "DONE WITH MOCK STRIP DELETE",
+    }),
+  };
+});
+
 describe("Endpoints for user management of subscription", () => {
   describe("Endpoint for ending a subscription", () => {
     const deleteSubscription = (user: models.User, as = user) => {
@@ -38,7 +46,7 @@ describe("Endpoints for user management of subscription", () => {
     it("Does respond with NO_CONTENT on successful request", async () => {
       const user = await insertSubscribingUser();
       const { status } = await deleteSubscription(user);
-      expect(status).not.toEqual(NO_CONTENT);
+      expect(status).toEqual(NO_CONTENT);
     });
 
     it("Does set subscription status to 'inactive' on successful request", async () => {
@@ -63,13 +71,15 @@ describe("Endpoints for user management of subscription", () => {
     });
 
     it("Does not set subscription status to 'inactive' on FORBIDDEN request", async () => {
-      const user = await insertSubscribingUser();
-      const original = await users.getById(user.id);
+      const actualUser = await insertSubscribingUser();
+      const impostor = await insertSubscribingUser();
 
-      const { status } = await deleteSubscription(user);
+      const original = await users.getById(actualUser.id);
+
+      const { status } = await deleteSubscription(actualUser, impostor);
       expect(status).toEqual(FORBIDDEN);
 
-      const updated = await users.getById(user.id);
+      const updated = await users.getById(actualUser.id);
 
       expect(original.subscription).toEqual("active");
       expect(original.subscription).toEqual(updated.subscription);

@@ -11,7 +11,6 @@ import * as express from "express";
 import { middleware } from "@paperpod/server";
 import { FORBIDDEN, NO_CONTENT } from "node-kall";
 import { deleteSubscription } from "../../payment/subscriptions";
-import { logger } from "@paperpod/common";
 export const subscriptionManagementRoutes = express.Router().delete(
   "/users/:id/subscription",
   middleware.withAuthentication(async (request, response, user) => {

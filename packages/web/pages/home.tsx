@@ -5,6 +5,7 @@ import { Button, A } from "@paperpod/ui";
 import { SubscribeButton } from "../components/SubscribeButton";
 import { Feed } from "../components/feed/Feed";
 import { ExtensionLinks } from "../components/extensionlinks/ExtensionLinks";
+import { CancelSubscriptionButton } from "../components/CancelSubscriptionButton";
 
 const SubscribedUser = () => {
   const { user, token, setToken } = React.useContext(
@@ -22,7 +23,7 @@ const SubscribedUser = () => {
       <Feed />
       <ExtensionLinks />
       <Button onClick={onLogOut}>Log out</Button>
-      {/* <Articles /> */}
+      <CancelSubscriptionButton />
     </div>
   );
 };

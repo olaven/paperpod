@@ -50,7 +50,7 @@ export const paymentRoutes = express
     const user = await users.getById(userId);
     if (!user) return response.status(FORBIDDEN).send();
 
-    await activateSubscription(user, session.subscription  as string);
+    await activateSubscription(user, session.subscription as string);
 
     response.redirect(constants.APPLICATION_URL());
   })

@@ -11,14 +11,15 @@ import * as express from "express";
 import { middleware } from "@paperpod/server";
 import { FORBIDDEN, NO_CONTENT } from "node-kall";
 import { deleteSubscription } from "../../payment/subscriptions";
-export const subscriptionRoutes = express.Router().delete(
+import { logger } from "@paperpod/common";
+export const subscriptionManagementRoutes = express.Router().delete(
   "/users/:id/subscription",
   middleware.withAuthentication(async (request, response, user) => {
     const { id } = request.params;
-    if (user.id !== id) return response.status(FORBIDDEN);
+    if (user.id !== id) return response.status(FORBIDDEN).send();
 
     await deleteSubscription(user);
 
-    return response.status(NO_CONTENT);
+    return response.status(NO_CONTENT).send();
   })
 );

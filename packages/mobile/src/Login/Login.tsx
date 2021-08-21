@@ -4,9 +4,12 @@ import { Button, TextInput, View, StyleSheet, Text } from "react-native";
 
 const styles = StyleSheet.create({
   input: {
-    height: 20,
-    padding: 10,
-    margin: 10,
+    color: "#000",
+    paddingRight: 5,
+    paddingLeft: 5,
+    fontSize: 18,
+    lineHeight: 23,
+    flex: 2,
   },
 });
 
@@ -17,18 +20,18 @@ export const Login = () => {
   return (
     <View>
       <TextInput
-        style={styles.input}
         value={email}
         placeholder="email"
         textContentType="emailAddress"
         onChangeText={setEmail}
-      ></TextInput>
-      <TextInput
         style={styles.input}
+      />
+      <TextInput
         value={password}
         placeholder="password"
         textContentType="password"
         onChangeText={setPassword}
+        style={styles.input}
       ></TextInput>
 
       <Text>

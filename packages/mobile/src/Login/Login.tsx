@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { authentication } from "@paperpod/frontend";
 
 import { Button, TextInput, View, StyleSheet, Text } from "react-native";
 
@@ -14,8 +15,11 @@ const styles = StyleSheet.create({
 });
 
 export const Login = () => {
+  const { user } = React.useContext(authentication.UserContext);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  console.log("user", user);
 
   return (
     <View>

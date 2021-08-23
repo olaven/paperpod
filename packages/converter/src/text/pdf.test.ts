@@ -1,9 +1,7 @@
 import { test } from "@paperpod/common";
 import { getTextFromPdfStream, downloadPDF } from "./pdf";
 
-
 describe("Functions for converting pdf data to articles", () => {
-
   const convertComplexPDF = async (
     article = test.mocks.articleWithoutTextualData()
   ) =>
@@ -19,9 +17,7 @@ describe("Functions for converting pdf data to articles", () => {
   ) =>
     getTextFromPdfStream(
       article,
-      await downloadPDF(
-        "https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf"
-      )
+      await downloadPDF("http://www.africau.edu/images/default/sample.pdf")
     );
 
   it("is defined and can be called", () => {
@@ -45,13 +41,11 @@ describe("Functions for converting pdf data to articles", () => {
   it("Does return text containing some of the text from pdf", async () => {
     //NOTE: This tests assumes that the content of the test-PDF is https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf
     const article = await convertSimplePDF();
-    expect(article.text).toContain(
-      "Adobe® Portable Document Format (PDF) is a universal file format that preserves all"
-    );
+    expect(article.text).toContain("This is a small demonstration .pdf file");
   });
 
   it("Does return a title", async () => {
-    const article = await convertSimplePDF();
+    const article = await convertComplexPDF();
     expect(article.title).toBeTruthy();
   });
 
@@ -59,7 +53,7 @@ describe("Functions for converting pdf data to articles", () => {
     const article = await convertSimplePDF();
 
     expect(typeof article.publication_time).toEqual("object");
-    const timestamp = article.publication_time.getTime(); 
+    const timestamp = article.publication_time.getTime();
     expect(typeof timestamp).toEqual("number");
 
     expect(article.publication_time).toBeTruthy();
@@ -69,20 +63,20 @@ describe("Functions for converting pdf data to articles", () => {
     //NOTE: This test assumes a specific sample-pdf;
     const article = await convertSimplePDF();
     const year = article.publication_time.getFullYear();
-    expect(year).toEqual(2000);
+    expect(year).toEqual(2006);
   });
 
   it("Does return a time with the correct month", async () => {
     //NOTE: This test assumes a specific sample-pdf;
     const article = await convertSimplePDF();
     const month = article.publication_time.getMonth();
-    expect(month).toEqual(5);
+    expect(month).toEqual(2);
   });
 
   it("Does return an author field with PDF creator", async () => {
     //NOTE: This test assumes a specific sample-pdf;
-    const article = await convertSimplePDF();
-    expect(article.author).toEqual("cdaily");
+    const article = await convertComplexPDF();
+    expect(article.author).toEqual("IEEE");
   });
 
   it("Does not include footnotes in text", async () => {

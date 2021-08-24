@@ -50,6 +50,6 @@ export const toItemTag = (article: models.Article) =>
     tag("enclosure", "", [
       ["url", `${constants.APPLICATION_URL()}/api/files/${article.id}`],
       ["length", "10"], //FIXME: actual length
-      ["type", "audio/mpeg"],
+      ["type", "audio/mpeg3"],
     ]),
   ]);

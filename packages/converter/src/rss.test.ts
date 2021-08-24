@@ -1,6 +1,7 @@
 import { test, models, constants } from "@paperpod/common";
 import { serialize } from "serialize-xml";
 import xmlParser from "fast-xml-parser";
+import faker from "faker";
 
 import { convertToRSSFeed, toItemTag } from "./rss";
 
@@ -40,15 +41,7 @@ describe("Conversion from articles to RSS", () => {
       }).not.toThrow();
     });
 
-    hasTags([
-      "title",
-      "link",
-      "description",
-      "itunes:summary",
-      "guid",
-      "pubDate",
-      "author",
-    ]);
+    hasTags(["title", "link", "description", "itunes:summary", "pubDate"]);
 
     hasTagWithValue([
       ["title", (article) => article.title],
@@ -58,9 +51,7 @@ describe("Conversion from articles to RSS", () => {
       ],
       ["description", (article) => article.description],
       ["itunes:summary", (article) => article.description],
-      ["guid", (article) => article.id],
       ["pubDate", (article) => new Date(article.added_time).toUTCString()],
-      ["author", (article) => article.author],
     ]);
 
     it("adds default article description if none is present", () => {
@@ -71,14 +62,6 @@ describe("Conversion from articles to RSS", () => {
       expect(serialized).toContain(`default description`);
     });
 
-    it("adds 'Unspecified Author' if no author is present", () => {
-      const serialized = serializeItem({
-        ...test.mocks.article(),
-        author: "",
-      });
-      expect(serialized).toContain("Unspecified Author");
-    });
-
     it("Adds proper enclosure tag", () => {
       const article = test.mocks.article();
       const serialized = serializeItem(article);
@@ -86,7 +69,7 @@ describe("Conversion from articles to RSS", () => {
       expect(serialized).toContain(
         `<enclosure url="${constants.APPLICATION_URL()}/api/files/${
           article.id
-        }" length="10" type="audio/mpeg"`
+        }" length="10" type="audio/mpeg3"`
       );
     });
   });
@@ -132,6 +115,24 @@ describe("Conversion from articles to RSS", () => {
         const { link } = getImageTag();
         expect(link).toEqual(constants.APPLICATION_URL());
       });
+    });
+  });
+
+  //Escaping done with `serialize-xml`: https://github.com/olaven/serialize-xml/pull/13
+  describe("Escaping of XML", () => {
+    it("Escapes in title", () => {
+      const firstWord = faker.lorem.word();
+      const secondWord = faker.lorem.word();
+
+      const title = `${firstWord} & ${secondWord}`;
+      const rss = convertToRSSFeed([
+        {
+          ...test.mocks.article(),
+          title,
+        },
+      ]);
+
+      expect(rss).toContain(`<title>${firstWord} &amp; ${secondWord}</title>`);
     });
   });
 });

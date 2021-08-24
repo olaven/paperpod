@@ -94,10 +94,16 @@ describe("Conversion from articles to RSS", () => {
   describe("Converting list of articles to feed", () => {
     it("Does return something looking like RSS", () => {
       const rss = convertToRSSFeed([]);
-      expect(rss).toContain('<rss version="2.0">');
+      expect(rss).toContain('<?xml version="1.0" encoding="UTF-8"?>');
+      expect(rss).toContain(
+        '<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/">'
+      );
       expect(rss).toContain("<channel>");
       expect(rss).toContain("<link>");
-      expect(rss).toContain("<author>Paperpod by Krets AS</author>");
+    });
+
+    it("Print to show", () => {
+      console.log(convertToRSSFeed([test.mocks.article()]));
     });
 
     describe("The channel cover image", () => {

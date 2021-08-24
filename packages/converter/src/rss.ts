@@ -1,15 +1,18 @@
-import { serialize, tag } from "serialize-xml";
+import { serialize, tag, declaration } from "serialize-xml";
 import { models, constants } from "@paperpod/common";
 
 export const convertToRSSFeed = (articles: models.Article[]) =>
   serialize(
+    declaration([
+      ["version", "1.0"],
+      ["encoding", "UTF-8"],
+    ]),
     tag(
       "rss",
       [
         tag("channel", [
           tag("title", "Paperpod Feed"),
           tag("link", constants.APPLICATION_URL()),
-          tag("author", "Paperpod by Krets AS"),
           tag(
             "description",
             "This is your Paperpod Feed. Thanks for using Paperpod! Send articles, and they will appear here"
@@ -19,7 +22,11 @@ export const convertToRSSFeed = (articles: models.Article[]) =>
           ...articles.map(toItemTag),
         ]),
       ],
-      [["version", "2.0"]]
+      [
+        ["version", "2.0"],
+        ["xmlns:itunes", "http://www.itunes.com/dtds/podcast-1.0.dtd"],
+        ["xmlns:content", "http://purl.org/rss/1.0/modules/content/"],
+      ]
     )
   );
 

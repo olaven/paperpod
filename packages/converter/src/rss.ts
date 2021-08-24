@@ -43,13 +43,13 @@ export const toItemTag = (article: models.Article) =>
     tag("link", `${constants.APPLICATION_URL()}/api/files/${article.id}`),
     tag("description", article.description || "TODO: default description"),
     tag("itunes:summary", article.description || "TODO: default description"),
-    tag("guid", `${article.id}`),
+    tag("guid", `${article.id}`, [["isPermaLink", "false"]]),
     tag("pubDate", new Date(article.added_time).toUTCString()), //compatible with RFC822
-    tag("author", article.author || "Unspecified Author"),
+    /*omitting author, as it has to be an email and is optional. 
+    tag("author", article.author || "Unspecified Author"),*/
     tag("enclosure", "", [
       ["url", `${constants.APPLICATION_URL()}/api/files/${article.id}`],
       ["length", "10"], //FIXME: actual length
       ["type", "audio/mpeg"],
     ]),
-    /* <enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3" length="12216320" type="audio/mpeg" /> */
   ]);

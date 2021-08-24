@@ -3,7 +3,7 @@ import { serialize } from "serialize-xml";
 import xmlParser from "fast-xml-parser";
 import faker from "faker";
 
-import { convertToRSSFeed, escape, toItemTag } from "./rss";
+import { convertToRSSFeed, toItemTag } from "./rss";
 
 describe("Conversion from articles to RSS", () => {
   const serializeItem = (article = test.mocks.article()) =>
@@ -69,7 +69,7 @@ describe("Conversion from articles to RSS", () => {
       expect(serialized).toContain(
         `<enclosure url="${constants.APPLICATION_URL()}/api/files/${
           article.id
-        }" length="10" type="audio/mpeg"`
+        }" length="10" type="audio/mpeg3"`
       );
     });
   });

@@ -13,7 +13,6 @@ export const convertToRSSFeed = (articles: models.Article[]) =>
         tag("channel", [
           tag("title", "Paperpod Feed"),
           tag("link", constants.APPLICATION_URL()),
-          tag("author", "Paperpod by Krets AS"),
           tag(
             "description",
             "This is your Paperpod Feed. Thanks for using Paperpod! Send articles, and they will appear here"

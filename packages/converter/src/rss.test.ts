@@ -100,7 +100,6 @@ describe("Conversion from articles to RSS", () => {
       );
       expect(rss).toContain("<channel>");
       expect(rss).toContain("<link>");
-      expect(rss).toContain("<author>Paperpod by Krets AS</author>");
     });
 
     it("Print to show", () => {

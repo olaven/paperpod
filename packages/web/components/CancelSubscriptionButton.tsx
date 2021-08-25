@@ -17,15 +17,19 @@ export const CancelSubscriptionButton = () => {
   const [error, setError] = react.useState(false);
 
   const onCancel = async () => {
-    const [status] = await fetchers.subscription.cancelSubscription(
-      user,
-      await token()
-    );
+    alert("cancelling subscription cannot be undone.");
+    const sureCheck = prompt("type your email to confirm.");
+    if (sureCheck === user.email) {
+      const [status] = await fetchers.subscription.cancelSubscription(
+        user,
+        await token()
+      );
 
-    if (status === NO_CONTENT) {
-      setToken(null);
-    } else {
-      setError(true);
+      if (status === NO_CONTENT) {
+        setToken(null);
+      } else {
+        setError(true);
+      }
     }
   };
 

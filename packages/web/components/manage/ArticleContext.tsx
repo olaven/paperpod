@@ -1,5 +1,5 @@
 import * as React from "react";
-import { models } from "@paperpod/common";
+import { logger, models } from "@paperpod/common";
 import { OK } from "node-kall";
 import { fetchers, asyncEffect } from "@paperpod/frontend";
 import { authentication } from "@paperpod/frontend";
@@ -20,10 +20,12 @@ export const ArticleContextProvider = ({ children }: any) => {
       await token()
     );
     if (status === OK) {
+      logger.debug({ message: "Refreshing articles", articles });
       setArticles(articles);
     }
   };
   asyncEffect(resfreshArticles, [user]);
+  logger.debug({ message: "ArticleContext has articles", articles });
   return (
     <ArticleContext.Provider value={{ articles, resfreshArticles }}>
       {children}

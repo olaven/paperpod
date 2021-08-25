@@ -22,6 +22,11 @@ const SubscribedUser = () => {
       Hello, {user.email}!
       <Feed />
       <ExtensionLinks />
+      <Button>
+        <Link href="/manage">
+          <A>Manage your articles</A>
+        </Link>
+      </Button>
       <Button onClick={onLogOut}>Log out</Button>
       <CancelSubscriptionButton />
     </div>

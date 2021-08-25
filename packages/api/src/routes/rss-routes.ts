@@ -17,6 +17,11 @@ export const rssRoutes = express
   .get("/feeds/:user_id/", async (request, response) => {
     const user_id = request.params.user_id;
 
+    logger.trace({
+      message: "Returning feed for",
+      user_id,
+    });
+
     if (!user_id || user_id === "null" || user_id === "undefined")
       return response.status(kall.UNAUTHORIZED).send();
 

@@ -30,6 +30,11 @@ const commonTextStyles = {
 
 export const Paragraph = styled("p", { ...commonTextStyles });
 
+export const H2 = styled("h2", {
+  ...commonTextStyles,
+  fontSize: "$fiftyfive",
+});
+
 export const H3 = styled("h3", {
   ...commonTextStyles,
   fontSize: "$thirtyfour",

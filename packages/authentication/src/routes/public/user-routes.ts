@@ -44,6 +44,7 @@ export const userRoutes = express
       const user = await database.users.getByEmail(
         credentials.email.toLowerCase()
       );
+
       const token = jwt.sign(user);
 
       logger.debug({
@@ -85,8 +86,9 @@ export const userRoutes = express
       !credentials.password ||
       !validators.validatePassword(credentials.password) ||
       !validators.validateEmail(credentials.email)
-    )
+    ) {
       return response.status(BAD_REQUEST).send();
+    }
 
     const existing = await database.users.getByEmail(credentials.email);
 

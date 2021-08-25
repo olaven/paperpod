@@ -5,6 +5,7 @@ import { NO_CONTENT } from "node-kall";
 import { authentication } from "@paperpod/frontend";
 import { Player } from "../player/Player";
 import { ArticleContext } from "./ArticleContext";
+import { Paragraph } from "@paperpod/ui";
 
 const DeleteButton = ({ article }: { article: models.Article }) => {
   const { resfreshArticles } = React.useContext(ArticleContext);
@@ -31,9 +32,12 @@ export const ArticleList = () => {
 
   return (
     <>
+      {articles.length === 0 && (
+        <Paragraph>You haven't added any articles yet.. :)</Paragraph>
+      )}
       {articles.map((article) => (
         <div id={article.id}>
-          <p>{article.title}</p>
+          <Paragraph>{article.title}</Paragraph>
           <Player article_id={article.id} />
           <DeleteButton article={article} />
         </div>

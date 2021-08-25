@@ -5,7 +5,7 @@ import { NO_CONTENT } from "node-kall";
 import { authentication } from "@paperpod/frontend";
 import { Player } from "../player/Player";
 import { ArticleContext } from "./ArticleContext";
-import { Paragraph } from "@paperpod/ui";
+import { Button, Paragraph } from "@paperpod/ui";
 
 const DeleteButton = ({ article }: { article: models.Article }) => {
   const { resfreshArticles } = React.useContext(ArticleContext);
@@ -24,7 +24,7 @@ const DeleteButton = ({ article }: { article: models.Article }) => {
     }
   };
 
-  return <button onClick={onDelete}>delete article</button>;
+  return <Button onClick={onDelete}>delete article</Button>;
 };
 
 export const ArticleList = () => {

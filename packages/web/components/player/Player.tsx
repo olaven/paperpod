@@ -2,6 +2,7 @@ import * as React from "react";
 import { logger } from "@paperpod/common";
 import { authentication } from "@paperpod/frontend";
 import { fetchers } from "@paperpod/frontend";
+import { Button } from "@paperpod/ui";
 
 export const Player = ({ article_id }: { article_id: string }) => {
   const { token } = React.useContext(authentication.UserContext);
@@ -28,12 +29,12 @@ export const Player = ({ article_id }: { article_id: string }) => {
   }, [playing]);
 
   return (
-    <button
+    <Button
       onClick={() => {
         setPlaying(!playing);
       }}
     >
       {playing ? "Stopp" : "Spill"}
-    </button>
+    </Button>
   );
 };

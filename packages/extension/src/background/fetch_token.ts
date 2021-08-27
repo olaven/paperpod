@@ -12,8 +12,7 @@ const fetchToken = async () => {
   const [status, newToken] = await fetchers.auth.refreshToken(existingToken);
 
   if (status === 200) {
-    await updateLoggedIn(true);
-    await updateSessionToken(newToken);
+    await Promise.all([updateLoggedIn(true), updateSessionToken(newToken)]);
   } else {
     updateLoggedIn(false);
   }
@@ -22,7 +21,7 @@ const fetchToken = async () => {
 const run = async () => {
   const loggedIn = await retrieveLoggedIn();
   if (loggedIn) {
-    setInterval(fetchToken, 1000 * 600); //i.e. ten minutes)
+    setInterval(fetchToken, 10 * 60 * 1000); //i.e. ten minutes)
   }
 };
 

@@ -102,7 +102,7 @@ export const UserContextProvider = ({
     /*do an initial refresh on load
     -> user may have just been updated in db through getting a subscription*/
     await refreshToken();
-    const id = setInterval(refreshToken, 1000 * 60 * 5); //i.e. five minutes
+    const id = setInterval(refreshToken, 1000 * 60 * 15); //i.e. fifteen
 
     return () => {
       clearInterval(id);

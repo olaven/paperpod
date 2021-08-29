@@ -1,7 +1,7 @@
 {
   "name": "@paperpod/extension",
   "license": "UNLICENSED",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "main": "./src/index.ts",
   "scripts": {
     "dev": "NODE_ENV=development parcel watch src/index.html src/background/*.ts --public-url=./",

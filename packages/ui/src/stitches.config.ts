@@ -4,10 +4,10 @@ import { createCss } from "@stitches/react";
 export const { styled, css, getCssString } = createCss({
   theme: {
     colors: {
-      primary: "white",
-      secondary: "black",
-      grey: "hsl(0, 0%, 36%)",
+      white: "$FAFAF8",
+      black: "black",
       error: "red",
+      action: "#006A64", //dark green
     },
     space: {
       one: "1px",

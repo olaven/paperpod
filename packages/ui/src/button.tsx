@@ -1,8 +1,8 @@
 import { styled } from "./stitches.config";
 
 export const Button = styled("button", {
-  color: "$secondary",
-  backgroundColor: "$primary",
+  color: "$black",
+  backgroundColor: "$white",
   padding: "$thirteen",
   paddingLeft: "$fiftyfive",
   paddingRight: "$fiftyfive",
@@ -22,6 +22,13 @@ export const Button = styled("button", {
     opacity: 0.79,
     "&:hover": {
       cursor: "default",
+    },
+  },
+  variants: {
+    primary: {
+      true: {
+        backgroundColor: "$action",
+      },
     },
   },
 });

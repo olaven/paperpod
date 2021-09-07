@@ -1,20 +1,14 @@
-import { Button, Input, styled } from "@paperpod/ui";
+import * as ui from "@paperpod/ui";
 
-const FlowButtonContainer = styled("div", {
-  backgroundColor: "orange",
-  marginLeft: "$five $five $zero $zero",
+const Container = ui.styled("div", {
   display: "flex",
-  width: "$seventynine%",
-  padding: "$five",
-  paddingLeft: "$twentyone",
   justifyContent: "center",
   alignItems: "center",
-  margin: "auto",
-  borderRadius: "15px",
-  border: "1px solid red",
+  borderRadius: "11.5px",
+  border: "1px inset $action",
 });
 
-const FlowInput = styled(Input, {
+const Input = ui.styled(ui.Input, {
   width: "100%",
   heigth: "54px",
   background: "none",
@@ -23,22 +17,40 @@ const FlowInput = styled(Input, {
   outline: "none",
 });
 
-const FlowButton = styled(Button, {
-  height: "54px",
-  width: "94px",
-  backgroundColor: "blue",
-  color: "purple",
+const Button = ui.styled(ui.Button, {
+  color: "$white",
+  fontWeight: "bolder",
+  height: "50px",
+  width: "79px",
   borderStyle: "none",
-  borderRadius: "15px",
+  borderRadius: "11.5px",
   cursor: "pointer",
   outline: "none",
+  backgroundColor: "$action",
+  "&:disabled": {
+    opacity: 0.79,
+    backgroundColor: "$faded_action",
+    "&:hover": {
+      cursor: "default",
+    },
+  },
 });
 
+type Options = { placeholder: string; disabled: boolean };
+const FlowInput = ({ placeholder, disabled }: Options) => (
+  <Container>
+    <Input placeholder={placeholder}></Input>
+    <Button disabled={disabled}>
+      <ui.icons.RightArrow color="white"></ui.icons.RightArrow>
+    </Button>
+  </Container>
+);
+
 const NewSignup = () => (
-  <FlowButtonContainer>
-    <FlowInput></FlowInput>
-    <FlowButton>OK!</FlowButton>
-  </FlowButtonContainer>
+  <>
+    <FlowInput disabled={false} placeholder="active" />
+    <FlowInput disabled={true} placeholder="disabled" />
+  </>
 );
 
 export default NewSignup;

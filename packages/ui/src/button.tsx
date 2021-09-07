@@ -3,10 +3,6 @@ import { styled } from "./stitches.config";
 export const Button = styled("button", {
   color: "$black",
   backgroundColor: "$white",
-  padding: "$thirteen",
-  paddingLeft: "$fiftyfive",
-  paddingRight: "$fiftyfive",
-  margin: "$five",
   fontSize: "$twentyone",
   fontWeight: "lighter",
   outline: "none",

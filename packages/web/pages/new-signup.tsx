@@ -1,11 +1,20 @@
 import * as ui from "@paperpod/ui";
+import * as React from "react";
 
 const Container = ui.styled("div", {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  margin: "10px",
   borderRadius: "11.5px",
-  border: "1px inset $action",
+  border: "1px solid $action",
+  variants: {
+    disabled: {
+      true: {
+        borderColor: "rgba(171, 183, 183, .5)",
+      },
+    },
+  },
 });
 
 const Input = ui.styled(ui.Input, {
@@ -26,7 +35,18 @@ const Button = ui.styled(ui.Button, {
   borderRadius: "11.5px",
   cursor: "pointer",
   outline: "none",
+  scale: "1.049",
   backgroundColor: "$action",
+  transitionTimingFunction: "ease-in",
+  transitionProperty: "scale",
+  transitionDuration: "1s",
+  variants: {
+    enlarge: {
+      true: {
+        scale: "1.049",
+      },
+    },
+  },
   "&:disabled": {
     opacity: 0.79,
     backgroundColor: "$faded_action",
@@ -38,19 +58,29 @@ const Button = ui.styled(ui.Button, {
 
 type Options = { placeholder: string; disabled: boolean };
 const FlowInput = ({ placeholder, disabled }: Options) => (
-  <Container>
+  <Container disabled={disabled}>
     <Input placeholder={placeholder}></Input>
-    <Button disabled={disabled}>
+    <Button disabled={disabled} enlarge={!disabled}>
       <ui.icons.RightArrow color="white"></ui.icons.RightArrow>
     </Button>
   </Container>
 );
 
-const NewSignup = () => (
-  <>
-    <FlowInput disabled={false} placeholder="active" />
-    <FlowInput disabled={true} placeholder="disabled" />
-  </>
-);
+const NewSignup = () => {
+  const [disabled, setDisabled] = React.useState(false);
+  React.useEffect(() => {
+    const clear = setInterval(() => {
+      setDisabled(!disabled);
+    }, 2_000);
+    return () => clearInterval(clear);
+  }, []);
+  return (
+    <>
+      <FlowInput disabled={false} placeholder="active" />
+      <FlowInput disabled={true} placeholder="disabled" />
+      <FlowInput disabled={disabled} placeholder="pulsing" />
+    </>
+  );
+};
 
 export default NewSignup;

@@ -3,6 +3,9 @@ import { createCss } from "@stitches/react";
 
 export const { styled, css, getCssString } = createCss({
   theme: {
+    fonts: {
+      worksans: "'Work Sans', sans-serif",
+    },
     colors: {
       white: "#FAFAF8",
       black: "black",

@@ -18,6 +18,8 @@ const Container = ui.styled("div", {
 });
 
 const Input = ui.styled(ui.Input, {
+  fontFamily: "$worksans",
+  fontWeight: "lighter",
   width: "100%",
   heigth: "54px",
   background: "none",
@@ -69,10 +71,10 @@ const FlowInput = ({ placeholder, disabled }: Options) => (
 const NewSignup = () => {
   const [disabled, setDisabled] = React.useState(false);
   React.useEffect(() => {
-    const clear = setInterval(() => {
+    const interval = setInterval(() => {
       setDisabled(!disabled);
     }, 2_000);
-    return () => clearInterval(clear);
+    return () => clearInterval(interval);
   }, []);
   return (
     <>

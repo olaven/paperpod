@@ -1,4 +1,4 @@
-**This project is still very much work in progress.** More details to come.
+**This project is currently inactive. If you're interested regardless, please reach out :).** 
 
 # Paperpod
 

@@ -43,27 +43,4 @@ const getHtml = (url: string): Promise<string> =>
       logger.debug({ message: `Got HTML from zombie`, html, url });
       resolve(html);
     });
-
-    /*
-      NOTE: replaced puppeteer in favour of zombie because puppeteer 
-      does not run on arm systems in Docker..
-      [They're working on it though](https://github.com/garris/BackstopJS/issues/1300#issuecomment-1096969710)
-
-      TODO: Consider switching back to puppeteer; Zombie is not actively maintained.
-
-      const browser = await puppeteer.launch({
-        executablePath: process.env.PUPPETEER_EXEC_PATH,
-        headless: true,
-        //FIXME: security considerations without sandbox? Read up on this.
-        args: ["--disable-setuid-sandbox", "--no-sandbox"],
-        ignoreHTTPSErrors: true,
-      });
-      const page = await browser.newPage();
-      await page.goto(url);
-
-      await page.waitFor("*");
-
-      const html = await page.content();
-      await browser.close();
-    */
   });

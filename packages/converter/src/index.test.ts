@@ -3,7 +3,7 @@ import { withStorageUri } from ".";
 import { withTextualData, getRSSFeed } from "./index";
 
 describe("converter", () => {
-  jest.mock("puppeteer");
+  jest.mock("zombie");
 
   describe("withTextualData", () => {
     it("Does not throw", () => {

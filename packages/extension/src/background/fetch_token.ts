@@ -25,7 +25,6 @@ const run = async () => {
   }
 };
 
-logger.debug("AM her at all");
 run().then(() => {
   logger.debug(`Running token background script`);
 });

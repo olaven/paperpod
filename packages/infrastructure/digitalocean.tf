@@ -4,20 +4,6 @@ variable "do_token" {
   sensitive   = true
 }
 
-#FIXME: Remove this? 
-variable "droplet_username" {
-  type = string 
-  description = "the username of Digitalocean droplet"
-  sensitive = true 
-}
-
-#FIXME: Remove this? 
-variable "droplet_password" {
-  type = string 
-  description = "the password of Digitalocean droplet"
-  sensitive = true
-}
-
 provider "digitalocean" {
   token = var.do_token
 }

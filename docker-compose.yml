@@ -140,6 +140,8 @@ services:
     build:
       context: .
       dockerfile: ./packages/infrastructure/Dockerfile
+    volumes:
+      - ./packages/infrastructure:/infrastructure
     env_file:
       - .env
     # keep it running to enable SSH-ing into it: https://stackoverflow.com/a/45450456/8543529
@@ -149,6 +151,8 @@ services:
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
       TF_VAR_stripe_api_token: $STRIPE_API_KEY
       TF_VAR_test_user_coupon_code: $STRIPE_COUPON_CODE
+      TF_VAR_do_token: $DO_TOKEN
+      TF_VAR_github_api_token: $GH_TOKEN
 
   metabase:
     image: metabase/metabase

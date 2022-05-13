@@ -12,14 +12,6 @@ export const readMigrationFile = async (schema: SchemaName) => {
 
 export type SchemaName = "api" | "authentication";
 
-/**
- * Runs migration.
- * Is singleton, and will only run once.
- *
- * Requires
- * 1. migrations written with in file name matching schema.
- * 2. migrations being entirely idempotent.
- */
 export const migrate = async (options: {
   configuration: Configuration;
   schema: SchemaName;

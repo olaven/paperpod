@@ -46,6 +46,7 @@ STRIPE_PUBLISHABLE_KEY=<STRIPE_PUBLISHABLE_KEY>
 STRIPE_API_KEY=<STRIPE_API_KEY> # must have permissions to deal with payments and products
 ULTRAHOOK_API_KEY=<ULTRAHOOK_API_KEY>
 LOG_LEVEL=trace
+STRIPE_COUPON_CODE=coupon_code_for_development
 ```
 
 ### Working with the code 

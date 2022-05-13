@@ -1,6 +1,7 @@
 # Infrastructure
 
 The infrastructure is set up with [terraform](https://www.terraform.io/).
+Please see [installation instructions for your system](https://learn.hashicorp.com/tutorials/terraform/install-cli) to install the CLI.
 
 ## Expected environment variables
 
@@ -16,8 +17,9 @@ TODO: update when actually implemented
 - validates/plans on every push
 - actually applies if merged to `main`
 
-## What does it confgure?
+## What's managed by it?
 
 - [Backend](https://www.terraform.io/docs/language/settings/backends/index.html) in [Amazon S3](https://aws.amazon.com/s3/)
 - TODO: Stripe
 - TODO: Digitalocean
+- TODO: Github

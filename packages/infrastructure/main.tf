@@ -9,7 +9,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 2.70"
+      version = "~> 4.14"
     }
 
     stripe = {
@@ -19,7 +19,7 @@ terraform {
 
     github = {
       source  = "integrations/github"
-      version = "~> 4.4.0"
+      version = "~> 4.24.1"
     }
 
     digitalocean = {

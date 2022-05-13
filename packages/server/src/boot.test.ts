@@ -22,7 +22,7 @@ describe("The function for booting apps at specific paths", () => {
         const server = boot("/path", appWithEnvironment());
         setTimeout(() => {
           resolve(server.close());
-        }, 5_000);
+        }, 2_500);
       })
     ).resolves.not.toThrow();
   });

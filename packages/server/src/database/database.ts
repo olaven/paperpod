@@ -1,7 +1,7 @@
 import { withConfiguration } from "klart";
-import { logger } from "../../../common/src";
+import { logger } from "@paperpod/common";
 import { getConfiguration } from "./configuration";
-import { ensureMigrated, SchemaName } from "./migrate";
+import { SchemaName } from "./migrate";
 
 export const database = async () => {
   const schema = process.env.PAPERPOD_SCHEMA as SchemaName;
@@ -12,7 +12,6 @@ export const database = async () => {
     message: "Got configuration",
     configuration,
   });
-  await ensureMigrated({ configuration, schema });
 
   return withConfiguration(configuration);
 };

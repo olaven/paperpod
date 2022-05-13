@@ -85,10 +85,6 @@ describe("Conversion from articles to RSS", () => {
       expect(rss).toContain("<link>");
     });
 
-    it("Print to show", () => {
-      console.log(convertToRSSFeed([test.mocks.article()]));
-    });
-
     describe("The channel cover image", () => {
       const getImageTag = () => {
         const rss = convertToRSSFeed([]);

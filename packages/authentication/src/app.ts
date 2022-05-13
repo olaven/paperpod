@@ -5,7 +5,6 @@ import { subscriptionManagementRoutes } from "./routes/public/subscription-manag
 import { userRoutes } from "./routes/public/user-routes";
 
 export const publicAuthenticationApp = server.app
-
   .appWithEnvironment(
     server.app.appWithBodyParser(server.app.appWithCookieParser())
   )

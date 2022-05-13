@@ -19,9 +19,7 @@ services:
       - LOG_LEVEL=$LOG_LEVEL
     working_dir: /paperpod
   api:
-    build:
-      context: .
-      dockerfile: ./packages/api/Dockerfile
+    build: .
     env_file:
       - .env
     ports:
@@ -78,7 +76,7 @@ services:
       - .env
     ports:
       - $WEB_PORT:$WEB_PORT
-    command: yarn web dev
+    command: yarn web dev --port $WEB_PORT
     volumes:
       - .:/paperpod
     environment:

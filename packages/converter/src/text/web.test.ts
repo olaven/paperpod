@@ -1,10 +1,10 @@
-import { models, test } from "@paperpod/common";
+import { test } from "@paperpod/common";
 import { extractTextFromWeb } from "./web";
 
 describe("extracting text", () => {
-  jest.mock("puppeteer");
+  jest.mock("zombie");
 
-  it("Does mock puppeteer", async () => {
+  it("Does mock zombie", async () => {
     const content = extractTextFromWeb(test.mocks.article());
     expect(content).toBeDefined();
   });

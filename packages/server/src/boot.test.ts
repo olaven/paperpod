@@ -2,6 +2,7 @@ import supertest from "supertest";
 import { OK } from "node-kall";
 import { appWithEnvironment } from "./app/app";
 import { boot } from "./boot";
+
 describe("The function for booting apps at specific paths", () => {
   it("Does not crash", () => {
     expect(() => {

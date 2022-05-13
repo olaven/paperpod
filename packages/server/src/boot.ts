@@ -24,6 +24,11 @@ const createHealthHandler =
     });
   };
 
+type BootOptions = {
+  id?: string;
+  port?: number;
+};
+
 export const bootWithMigrations = async (
   schema: SchemaName,
   app = appWithEnvironment(),
@@ -32,11 +37,6 @@ export const bootWithMigrations = async (
   const configuration = getConfiguration();
   await migrate({ configuration, schema });
   return boot(`/${schema}`, app, options);
-};
-
-type BootOptions = {
-  id?: string;
-  port?: number;
 };
 
 export const boot = (

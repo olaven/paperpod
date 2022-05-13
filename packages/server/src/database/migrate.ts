@@ -12,6 +12,13 @@ export const readMigrationFile = async (schema: SchemaName) => {
 
 export type SchemaName = "api" | "authentication";
 
+/**
+ * Runs database migrations.
+ * DANGER: this is a costly operation that should only run on server startup.
+ * Prefer using `bootWithMigrations` instead of calling this function directly.
+ *
+ * This is exported for use in tests only.
+ */
 export const migrate = async (options: {
   configuration: Configuration;
   schema: SchemaName;

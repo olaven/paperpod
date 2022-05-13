@@ -15,7 +15,10 @@ import { publicAuthenticationApp } from "../../app";
 import { hash } from "../../cryptography/cryptography";
 import { credentialsAreValid } from "./user-routes";
 
-import { extractCookieByName } from "../../test-utils/test-utils";
+import {
+  extractCookieByName,
+  setupMigrations,
+} from "../../test-utils/test-utils";
 import { jwt } from "@paperpod/server";
 
 const signUp = (
@@ -41,6 +44,7 @@ const login = (
 ) => agent.post("/users/sessions").send(credentials as any);
 
 describe("The authentication endpoint for users", () => {
+  setupMigrations();
   describe("Local test utils", () => {
     describe("extractBearerToken", () => {
       it("Does extract something defined", async () => {

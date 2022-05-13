@@ -2,6 +2,8 @@ import { nanoid } from "nanoid";
 import faker from "faker";
 import Stripe from "stripe";
 import { makeStripeFunctions } from "../payment/stripe";
+import { migrate } from "@paperpod/server";
+import { getConfiguration } from "@paperpod/server/src/database/configuration";
 
 export const stripeResource = <T>(resources: T[]) => ({
   data: resources.map((resource) => ({
@@ -73,3 +75,11 @@ const extractCookies = (
 
 export const extractCookieByName = (name: string, headers: object) =>
   extractCookies(headers).find((cookie) => cookie.name === name);
+
+export const setupMigrations = () =>
+  beforeAll(async () => {
+    await migrate({
+      configuration: getConfiguration(),
+      schema: "authentication",
+    });
+  });

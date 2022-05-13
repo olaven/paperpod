@@ -5,6 +5,7 @@ import { jwt } from "@paperpod/server";
 
 import { users } from "../../authdatabase/authdatabase";
 import { publicAuthenticationApp } from "../../app";
+import { setupMigrations } from "../../test-utils/test-utils";
 
 jest.mock("../../payment/stripe", () => {
   return {
@@ -15,6 +16,7 @@ jest.mock("../../payment/stripe", () => {
 });
 
 describe("Endpoints for user management of subscription", () => {
+  setupMigrations();
   describe("Endpoint for ending a subscription", () => {
     const deleteSubscription = (user: models.User, as = user) => {
       const token = jwt.sign(as);

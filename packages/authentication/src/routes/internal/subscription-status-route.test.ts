@@ -1,11 +1,14 @@
 import supertest from "supertest";
 import { NOT_IMPLEMENTED, FORBIDDEN, NOT_FOUND, OK } from "node-kall";
 import faker from "faker";
-import { logger, models, test } from "@paperpod/common";
+import { models, test } from "@paperpod/common";
 import { internalUserApp } from "../../internal-user-app";
 import { users } from "../../authdatabase/authdatabase";
+import { setupMigrations } from "../../test-utils/test-utils";
 
 describe("Internal route for getting user subscription status", () => {
+  setupMigrations();
+
   const get = ({
     user,
     username,

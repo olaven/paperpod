@@ -4,6 +4,7 @@ import { app } from "../app";
 import { articles } from "../database/database";
 import * as kall from "node-kall";
 import { test } from "@paperpod/common";
+import { setupMigrations } from "../test-utils/test-utils";
 
 jest.mock("node-kall", () => {
   return {
@@ -13,6 +14,7 @@ jest.mock("node-kall", () => {
 });
 
 describe("The api route for streaming files", () => {
+  setupMigrations();
   const get = (article_id: string) =>
     supertest(app).get(`/files/${article_id}`);
 

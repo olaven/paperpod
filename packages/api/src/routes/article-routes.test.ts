@@ -5,8 +5,10 @@ import * as kall from "node-kall";
 import supertest from "supertest";
 import { app } from "../app";
 import { articles } from "../database/database";
+import { setupMigrations } from "../test-utils/test-utils";
 
 describe("The api for articles", () => {
+  setupMigrations();
   const post = (token: string, payload = test.mocks.articlePayload()) =>
     supertest(app)
       .post("/articles")

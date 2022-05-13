@@ -76,6 +76,10 @@ const extractCookies = (
 export const extractCookieByName = (name: string, headers: object) =>
   extractCookies(headers).find((cookie) => cookie.name === name);
 
+/*
+TODO: very similar to a function in test-utils@api. 
+Is it the beginning of a shared-test package?
+*/
 export const setupMigrations = () =>
   beforeAll(async () => {
     await migrate({

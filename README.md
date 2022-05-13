@@ -46,7 +46,11 @@ STRIPE_PUBLISHABLE_KEY=<STRIPE_PUBLISHABLE_KEY>
 STRIPE_API_KEY=<STRIPE_API_KEY> # must have permissions to deal with payments and products
 ULTRAHOOK_API_KEY=<ULTRAHOOK_API_KEY>
 LOG_LEVEL=trace
-STRIPE_COUPON_CODE=coupon_code_for_development
+# below only relevant for infra development:
+STRIPE_COUPON_CODE=<STRIPE_COUPON_CODE>
+STATE_BUCKET_NAME=<STATE_BUCKET_NAME>
+DO_TOKEN= <DO_TOKEN>
+GH_TOKEN=<GH_TOKEN>
 ```
 
 ### Working with the code 

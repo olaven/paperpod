@@ -149,6 +149,7 @@ services:
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
       TF_VAR_stripe_api_token: $STRIPE_API_KEY
       TF_VAR_test_user_coupon_code: $STRIPE_COUPON_CODE
+      TF_VAR_state_bucket_name: $STATE_BUCKET_NAME
 
   metabase:
     image: metabase/metabase

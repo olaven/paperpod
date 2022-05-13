@@ -1,13 +1,7 @@
 terraform {
 
-  variable "state_bucket_name" {
-    type        = string
-    description = "The bucket name of the state."
-    sensitive   = true
-  }
-
   backend "s3" {
-    bucket = var.state_bucket_name #"paperpod-terraform-state"
+    bucket = "paperpod-terraform-state"
     key    = "state"
     region = "eu-north-1"
   }

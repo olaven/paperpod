@@ -11,7 +11,6 @@ jobs:
       TF_VAR_github_api_token: ${{ secrets.TF_VAR_github_api_token }}
       TF_VAR_test_user_coupon_code: ${{ secrets.TF_VAR_test_user_coupon_code }}
       TF_VAR_do_token: ${{ secrets.TF_VAR_do_token }}
-      TF_VAR_state_bucket_name: ${{ secrets.TF_VAR_state_bucket_name }}
 
     runs-on: ubuntu-latest
     steps:

@@ -40,7 +40,7 @@ export const bootWithMigrations = async (
 };
 
 export const boot = (
-  path: `/${string}`,
+  path: string,
   app = appWithEnvironment(),
   options: BootOptions = {}
 ) => {

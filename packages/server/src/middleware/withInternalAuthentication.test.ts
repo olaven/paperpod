@@ -4,6 +4,7 @@ import {
   withInternalAuthentication,
   getBasicAuth,
 } from "./withInternalAuthentication";
+import { withInternalAuth } from "./middleware";
 
 const mockRequest = (username: string, password) =>
   ({
@@ -37,6 +38,23 @@ describe("Testing internal state middleware", () => {
       } as any;
       return withInternalAuthentication(handler)(request, response);
     };
+
+    it("Returns forbidden if there are no credentials", () => {
+      const request = {
+        headers: {
+          /* NOTE: no auth header */
+        },
+      } as express.Request;
+
+      const handler = jest.fn();
+      withInternalAuthentication(handler)(request, {
+        status: (code: number) => ({
+          end: () => {},
+        }),
+      } as any);
+
+      expect(handler).not.toHaveBeenCalled();
+    });
 
     it("Does not forward if password is invalid", () => {
       const spy = jest.fn();

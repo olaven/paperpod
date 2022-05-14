@@ -1,4 +1,3 @@
-import { UserSubscriptionStatusResponse } from "@paperpod/common/src/models/UserSubscriptionStatusResponse";
 import { hasValidSubscription } from "./fetchSubscriptionStatus";
 
 jest.mock("node-kall", () => {

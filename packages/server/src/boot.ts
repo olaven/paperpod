@@ -2,6 +2,8 @@ import { logger } from "@paperpod/common";
 import readPkg from "read-pkg-up";
 import express from "express";
 import { appWithEnvironment } from "./app/appWithEnvironment";
+import { migrate, SchemaName } from "./database/migrate";
+import { getConfiguration } from "./database/configuration";
 
 /**
  * Returns a nice health response
@@ -22,13 +24,25 @@ const createHealthHandler =
     });
   };
 
-export const boot = (
-  path: string,
+type BootOptions = {
+  id?: string;
+  port?: number;
+};
+
+export const bootWithMigrations = async (
+  schema: SchemaName,
   app = appWithEnvironment(),
-  options: {
-    id?: string;
-    port?: number;
-  } = {}
+  options: BootOptions = {}
+) => {
+  const configuration = getConfiguration();
+  await migrate({ configuration, schema });
+  return boot(`/${schema}`, app, options);
+};
+
+export const boot = (
+  path: `/${string}`,
+  app = appWithEnvironment(),
+  options: BootOptions = {}
 ) => {
   logger.info({
     message: `Booting ${path} in ${process.env.NODE_ENV}`,

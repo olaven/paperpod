@@ -2,6 +2,7 @@ import supertest from "supertest";
 import { OK } from "node-kall";
 import { appWithEnvironment } from "./app/app";
 import { boot } from "./boot";
+
 describe("The function for booting apps at specific paths", () => {
   it("Does not crash", () => {
     expect(() => {
@@ -22,7 +23,7 @@ describe("The function for booting apps at specific paths", () => {
         const server = boot("/path", appWithEnvironment());
         setTimeout(() => {
           resolve(server.close());
-        }, 5_000);
+        }, 2_500);
       })
     ).resolves.not.toThrow();
   });

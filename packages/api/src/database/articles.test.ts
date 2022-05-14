@@ -1,6 +1,8 @@
 import { test } from "@paperpod/common";
+import { setupMigrations } from "../test-utils/test-utils";
 import { getById, persist, deleteById } from "./articles";
 describe("The database interface for articles", () => {
+  setupMigrations();
   describe("Getting articles by id", () => {
     it("Does get an article", async () => {
       const persisted = await persist(test.mocks.article());

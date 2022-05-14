@@ -3,6 +3,7 @@ import * as kall from "node-kall";
 import { models, test } from "@paperpod/common";
 import * as database from "../database/database";
 import { app } from "../app";
+import { setupMigrations } from "../test-utils/test-utils";
 
 jest.mock("node-kall", () => {
   return {
@@ -12,6 +13,7 @@ jest.mock("node-kall", () => {
 });
 
 describe("The RSS file endpoint", () => {
+  setupMigrations();
   const persistArticle = (article: Partial<models.Article> = {}) =>
     database.articles.persist(test.mocks.article(article));
 

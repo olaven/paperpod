@@ -17,6 +17,7 @@ export const customerSubscriptionDeleted = async (event: Stripe.Event) => {
       event,
       message,
     });
+    throw message;
   } else {
     await users.setSubscriptionStatus({
       ...user,

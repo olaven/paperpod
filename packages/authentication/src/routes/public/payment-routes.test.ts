@@ -13,7 +13,7 @@ import { constants, test } from "@paperpod/common";
 import faker from "faker";
 import { jwt } from "@paperpod/server";
 import { nanoid } from "nanoid";
-import { stripeResource } from "../../test-utils/test-utils";
+import { setupMigrations, stripeResource } from "../../test-utils/test-utils";
 import { users } from "../../authdatabase/authdatabase";
 
 const postCheckoutSession = ({
@@ -54,6 +54,7 @@ jest.mock("../../payment/stripe", () => {
 });
 
 describe("Payment endpoints", () => {
+  setupMigrations();
   describe("Creating a checkout session", () => {
     it("Does respond", async () => {
       const { status } = await postCheckoutSession();

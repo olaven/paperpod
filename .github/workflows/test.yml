@@ -126,6 +126,7 @@ jobs:
           JWT_SECRET: The JWT secret in CI test environment for server tests
           ADMIN_USERNAME: test_admin_username
           ADMIN_PASSWORD: test_admin_password
+          PAPERPOD_SCHEMA: test_paperpod_schema
   test-web:
     runs-on: ubuntu-latest
     steps:

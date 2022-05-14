@@ -1,4 +1,3 @@
-import klart from "klart";
 import { database } from "./database";
 
 describe("The database module", () => {
@@ -7,5 +6,12 @@ describe("The database module", () => {
 
   it("Does not throw", () => {
     expect(database()).resolves.not.toThrow();
+  });
+
+  it("Returns a database instance", async () => {
+    const db = await database();
+    expect(db.first).toBeDefined();
+    expect(db.rows).toBeDefined();
+    expect(db.run).toBeDefined();
   });
 });

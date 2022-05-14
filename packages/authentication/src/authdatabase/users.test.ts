@@ -1,5 +1,6 @@
 import { test } from "@paperpod/common";
 import faker from "faker";
+import { setupMigrations } from "../test-utils/test-utils";
 import {
   insert,
   getByEmail,
@@ -9,6 +10,7 @@ import {
 } from "./users";
 
 describe("The database interface for users", () => {
+  setupMigrations();
   describe("authentication.users.subscription-column", () => {
     it("Does exist", async () => {
       const user = await insert(test.mocks.user());

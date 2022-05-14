@@ -2,17 +2,7 @@ import fs from "fs";
 import path from "path";
 import { withConfiguration } from "klart";
 import { Configuration } from "./configuration";
-import { logger } from "../../../common/src";
-
-//TODO: move to general util?
-export const singleton = <T, G>(action: (input?: G) => T) => {
-  let executed = false;
-  return (first: G) => {
-    if (executed) return;
-    executed = true;
-    return action(first);
-  };
-};
+import { logger } from "@paperpod/common";
 
 export const readMigrationFile = async (schema: SchemaName) => {
   const filepath = path.resolve(__dirname, `${schema}.sql`);
@@ -23,24 +13,25 @@ export const readMigrationFile = async (schema: SchemaName) => {
 export type SchemaName = "api" | "authentication";
 
 /**
- * Runs migration.
- * Is singleton, and will only run once.
+ * Runs database migrations.
+ * DANGER: this is a costly operation that should only run on server startup.
+ * Prefer using `bootWithMigrations` instead of calling this function directly.
  *
- * Requires
- * 1. migrations written with in file name matching schema.
- * 2. migrations being entirely idempotent.
+ * This is exported for use in tests only.
  */
-export const ensureMigrated = singleton(
-  async (options: { configuration: Configuration; schema: SchemaName }) => {
-    const sql = await readMigrationFile(options.schema);
-    logger.trace({
-      message: "Going to run migration with",
-      sql,
-    });
-    try {
-      await withConfiguration(options.configuration).run(sql);
-    } catch (error) {
-      logger.error({ message: `Error when running migration`, error });
-    }
+export const migrate = async (options: {
+  configuration: Configuration;
+  schema: SchemaName;
+}) => {
+  const sql = await readMigrationFile(options.schema);
+  logger.trace({
+    message: "Going to run migration with",
+    sql,
+  });
+
+  try {
+    await withConfiguration(options.configuration).run(sql);
+  } catch (error) {
+    logger.error({ message: `Error when running migration`, error });
   }
-);
+};

@@ -1,4 +1,7 @@
-import { boot } from "@paperpod/server";
+import { logger } from "@paperpod/common";
+import { bootWithMigrations } from "@paperpod/server/src/boot";
 import { app } from "./app";
 
-boot("/api", app);
+bootWithMigrations("api", app).catch((error) =>
+  logger.error({ message: "an error occurred when booting api", error })
+);

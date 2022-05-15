@@ -198,7 +198,7 @@ jobs:
         with:
           host: ${{ steps.infrastructure-output.outputs.droplet_uri }}
           username: root
-          password: ${{ secrets.TF_VAR_droplet_password }}
+          password: ${{ secrets.DROPLET_PASSWORD }}
           port: 22
           script_stop: true
           script: |
@@ -210,7 +210,7 @@ jobs:
         with:
           host: ${{ steps.infrastructure-output.outputs.droplet_uri }}
           username: root
-          password: ${{ secrets.TF_VAR_droplet_password }}
+          password: ${{ secrets.DROPLET_PASSWORD }}
           port: 22
           script_stop: true
           script: |
@@ -220,7 +220,7 @@ jobs:
         with:
           host: ${{ steps.infrastructure-output.outputs.droplet_uri }}
           username: root
-          password: ${{ secrets.TF_VAR_droplet_password }}
+          password: ${{ secrets.DROPLET_PASSWORD }}
           port: 22
           script_stop: true
           script: |

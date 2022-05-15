@@ -195,6 +195,7 @@ describe("The authentication endpoint for users", () => {
        * email.
        */
       const credentials = test.mocks.credentials();
+      console.log("before", credentials);
       const statuses = await Promise.all([
         signUp(credentials),
         signUp(credentials),
@@ -209,6 +210,8 @@ describe("The authentication endpoint for users", () => {
         signUp(credentials),
         signUp(credentials),
       ]);
+
+      console.log("statuses", statuses);
 
       const successfulCount = statuses.filter(
         (response) => response.status === CREATED

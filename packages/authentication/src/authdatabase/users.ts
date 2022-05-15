@@ -35,8 +35,8 @@ export const insert = async (user: models.User) =>
     `
       INSERT INTO 
       authentication.users (email, password_hash)
-      VALUES ($1, $2)
-      RETURNING *; 
+      VALUES ('tes2t1@email.com', 'test_made_manually')
+      RETURNING *;
     `,
     [user.email, user.password_hash]
   );

@@ -17,7 +17,12 @@ END
 $$;
 
 ALTER TABLE authentication.users
-ADD COLUMN IF NOT EXISTS subscription Subscription NOT NULL DEFAULT 'inactive'; 
+    ADD COLUMN IF NOT EXISTS subscription Subscription NOT NULL DEFAULT 'inactive'; 
 
 ALTER TABLE authentication.users
-ADD COLUMN IF NOT EXISTS subscription_id text DEFAULT null; 
+    ADD COLUMN IF NOT EXISTS subscription_id text DEFAULT null; 
+
+-- email has to be unique to avoid race conditions creating multiple users
+ALTER TABLE authentication.users
+    DROP CONSTRAINT IF EXISTS email_unique
+    ADD CONSTRAINT IF NOT EXISTS email_unique UNIQUE (email);

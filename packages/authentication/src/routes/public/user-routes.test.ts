@@ -177,6 +177,51 @@ describe("The authentication endpoint for users", () => {
       expect(status).toEqual(CREATED);
     });
 
+    it("Responds with CONFLICT if user already exists", async () => {
+      const credentials = test.mocks.credentials();
+      const { status: firstStatus } = await signUp(credentials);
+
+      expect(firstStatus).toBe(CREATED);
+
+      const { status: secondStatus } = await signUp(credentials);
+      expect(secondStatus).toBe(CONFLICT);
+    });
+
+    it("Does not create multiple users in parallel", async () => {
+      /**
+       * Regression test for a race condition where
+       * multiple signups at ~the same time would
+       * result in multiple users with the same
+       * email.
+       */
+      const credentials = test.mocks.credentials();
+      const statuses = await Promise.all([
+        signUp(credentials),
+        signUp(credentials),
+        signUp(credentials),
+        signUp(credentials),
+        signUp(credentials),
+        signUp(credentials),
+        signUp(credentials),
+        signUp(credentials),
+        signUp(credentials),
+        signUp(credentials),
+        signUp(credentials),
+        signUp(credentials),
+      ]);
+
+      const successfulCount = statuses.filter(
+        (response) => response.status === CREATED
+      ).length;
+
+      const failureCount = statuses.filter(
+        (response) => response.status === CONFLICT
+      ).length;
+
+      expect(successfulCount).toBe(1);
+      expect(failureCount).toBe(statuses.length - 1);
+    });
+
     describe("Cookie behavior after signing up", () => {
       const setupCookieTestForSignup = async () => {
         const credentials = test.mocks.credentials();

@@ -3,6 +3,7 @@ import { jwt, middleware } from "@paperpod/server";
 import express from "express";
 import * as database from "../../authdatabase/authdatabase";
 import {
+  INTERNAL_SERVER_ERROR,
   BAD_REQUEST,
   CONFLICT,
   CREATED,
@@ -92,19 +93,35 @@ export const userRoutes = express
 
     const existing = await database.users.getByEmail(credentials.email);
 
-    if (existing) return response.status(CONFLICT).send();
+    if (existing) {
+      return response.status(CONFLICT).send();
+    }
 
-    const user = await database.users.insert({
-      id: null,
-      email: credentials.email.toLowerCase(),
-      password_hash: await hash.hash(credentials.password),
-      subscription_id: null,
-      subscription: "inactive",
-    });
+    try {
+      const user = await database.users.insert({
+        id: null,
+        email: credentials.email.toLowerCase(),
+        password_hash: await hash.hash(credentials.password),
+        subscription_id: null,
+        subscription: "inactive",
+      });
+      const token = jwt.sign(user);
 
-    const token = jwt.sign(user);
+      return withTokenCookie(token, response).status(CREATED).send({ token });
+    } catch (error) {
+      if (
+        error.detail ===
+        `Key (email)=(${credentials.email.toLowerCase()}) already exists.`
+      ) {
+        return response.status(CONFLICT).send();
+      }
 
-    return withTokenCookie(token, response).status(CREATED).send({ token });
+      logger.error({
+        message: `POST user unexpectedly errored`,
+        error,
+      });
+      return response.status(INTERNAL_SERVER_ERROR).send();
+    }
   })
   .get(
     "/users/me",

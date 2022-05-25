@@ -187,7 +187,7 @@ describe("The authentication endpoint for users", () => {
       expect(secondStatus).toBe(CONFLICT);
     });
 
-    it.only("Does not create multiple users in parallel", async () => {
+    it("Does not create multiple users in parallel", async () => {
       /**
        * Regression test for a race condition where
        * multiple signups at ~the same time would
@@ -195,7 +195,6 @@ describe("The authentication endpoint for users", () => {
        * email.
        */
       const credentials = test.mocks.credentials();
-      console.log("before", credentials);
       const statuses = await Promise.all([
         signUp(credentials),
         signUp(credentials),
@@ -211,14 +210,13 @@ describe("The authentication endpoint for users", () => {
         signUp(credentials),
       ]);
 
-      console.log("statuses", statuses);
-
       const successfulCount = statuses.filter(
         (response) => response.status === CREATED
-      );
+      ).length;
+
       const failureCount = statuses.filter(
         (response) => response.status === CONFLICT
-      );
+      ).length;
 
       expect(successfulCount).toBe(1);
       expect(failureCount).toBe(statuses.length - 1);

@@ -38,9 +38,12 @@ describe("The database module", () => {
   }); 
 
   it("Returns a database instance", async () => {
-    const db = await database();
-    expect(db.first).toBeDefined();
-    expect(db.rows).toBeDefined();
-    expect(db.run).toBeDefined();
+
+    await withMockedSchemaVariable("authentication", async () => {
+      const db = await database();
+      expect(db.first).toBeDefined();
+      expect(db.rows).toBeDefined();
+      expect(db.run).toBeDefined();
+    }); 
   });
 });

@@ -9,6 +9,8 @@ services:
       - $GATEWAY_PORT:$GATEWAY_PORT
     volumes:
       - .:/paperpod
+      # node-modules not synced
+      - /paperpod/node_modules
     environment:
       - PORT=$GATEWAY_PORT
       - WEB_PORT=$WEB_PORT
@@ -27,6 +29,8 @@ services:
     command: yarn api dev
     volumes:
       - .:/paperpod
+       # node-modules not synced
+      - /paperpod/node_modules
     environment:
       NODE_ENV: dev
       PORT: $API_PORT
@@ -54,6 +58,8 @@ services:
     command: yarn authentication dev
     volumes:
       - .:/paperpod
+       # node-modules not synced
+      - /paperpod/node_modules
     environment:
       NODE_ENV: dev
       PORT: $AUTHENTICATION_PORT
@@ -79,6 +85,8 @@ services:
     command: yarn web dev --port $WEB_PORT
     volumes:
       - .:/paperpod
+       # node-modules not synced
+      - /paperpod/node_modules
     environment:
       - LOG_LEVEL=$LOG_LEVEL
       - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$STRIPE_PUBLISHABLE_KEY
@@ -93,6 +101,8 @@ services:
     command: yarn docs dev
     volumes:
       - .:/paperpod
+       # node-modules not synced
+      - /paperpod/node_modules
     environment:
       - NODE_ENV=dev
       - PORT=$DOCS_PORT

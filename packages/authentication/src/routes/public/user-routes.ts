@@ -1,16 +1,14 @@
 import { constants, logger, models, validators } from "@paperpod/common";
 import { jwt, middleware } from "@paperpod/server";
 import express from "express";
-import * as database from "../../authdatabase/authdatabase";
 import {
-  INTERNAL_SERVER_ERROR,
   BAD_REQUEST,
   CONFLICT,
-  CREATED,
-  NO_CONTENT,
+  CREATED, INTERNAL_SERVER_ERROR, NO_CONTENT,
   OK,
-  UNAUTHORIZED,
+  UNAUTHORIZED
 } from "node-kall";
+import * as database from "../../authdatabase/authdatabase";
 import { hash } from "../../cryptography/cryptography";
 
 const withTokenCookie = (token: string | null, response: express.Response) =>

@@ -1,8 +1,8 @@
-import fs from "fs";
-import path from "path";
-import { withConfiguration } from "klart";
-import { Configuration } from "./configuration";
 import { logger } from "@paperpod/common";
+import fs from "fs";
+import { withConfiguration } from "klart";
+import path from "path";
+import { Configuration } from "./configuration";
 
 export const readMigrationFile = async (schema: SchemaName) => {
   const filepath = path.resolve(__dirname, `${schema}.sql`);
@@ -10,7 +10,8 @@ export const readMigrationFile = async (schema: SchemaName) => {
   return Buffer.from(buffer).toString("utf-8");
 };
 
-export type SchemaName = "api" | "authentication";
+export const validSchemaNames = ["api", "authentication"] as const; 
+export type SchemaName = typeof validSchemaNames[number];
 
 /**
  * Runs database migrations.

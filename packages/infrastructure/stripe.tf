@@ -59,7 +59,7 @@ resource "stripe_coupon" "paperpod_test_user_coupon" {
   duration           = "forever"
   amount_off         = 800 # resolves to 8$
   currency           = "usd" # lowercase
-  redeem_by       = "2022-09-02T12:34:56-08:00" # RFC3339, in the future
+  redeem_by       =  1703541517 # "Mon Dec 25 2023 21:58:37 GMT+0000"
   metadata = {
     # "collection" is a grouping defined by me, not stripe.
     collection: "paperpod"

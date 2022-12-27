@@ -1,9 +1,9 @@
 import { logger } from "@paperpod/common";
-import readPkg from "read-pkg-up";
 import express from "express";
+import readPkg from "read-pkg-up";
 import { appWithEnvironment } from "./app/appWithEnvironment";
-import { migrate, SchemaName } from "./database/migrate";
 import { getConfiguration } from "./database/configuration";
+import { migrate, SchemaName } from "./database/migrate";
 
 /**
  * Returns a nice health response
@@ -35,6 +35,7 @@ export const bootWithMigrations = async (
   options: BootOptions = {}
 ) => {
   const configuration = getConfiguration();
+  logger.debug({message: "In boot with migrations", configuration, schema})
   await migrate({ configuration, schema });
   return boot(`/${schema}`, app, options);
 };

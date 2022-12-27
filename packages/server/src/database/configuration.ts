@@ -17,7 +17,7 @@ export type Configuration = {
 /**
  * @returns env-dependent db configuration
  */
-export const getConfiguration = () => {}
+export const getConfiguration = () => ({})
   /* 
   FIXME: adapt if not needed with DO app spec 
   process.env.NODE_ENV === "production"

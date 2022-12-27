@@ -17,9 +17,7 @@ export type Configuration = {
 /**
  * @returns env-dependent db configuration
  */
-export const getConfiguration = () => ({})
-  /* 
-  FIXME: adapt if not needed with DO app spec 
+export const getConfiguration = () => ({})  
   process.env.NODE_ENV === "production"
     ? {
         ssl: {
@@ -28,4 +26,4 @@ export const getConfiguration = () => ({})
         },
       }
     : {};
- */
+

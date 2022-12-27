@@ -17,7 +17,7 @@ export type Configuration = {
 /**
  * @returns env-dependent db configuration
  */
-export const getConfiguration = () => ({})  
+export const getConfiguration = () =>
   process.env.NODE_ENV === "production"
     ? {
         ssl: {

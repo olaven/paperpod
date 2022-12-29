@@ -24,7 +24,9 @@ export const migrate = async (options: {
   configuration: Configuration;
   schema: SchemaName;
 }) => {
+  logger.trace({message: "Starting migrate function", ...options})
   const sql = await readMigrationFile(options.schema);
+  logger.trace({message: "Got SQL", sql}) 
   logger.trace({
     message: "Going to run migration with",
     sql,
@@ -32,6 +34,7 @@ export const migrate = async (options: {
 
   try {
     await withConfiguration(options.configuration).run(sql);
+    logger.trace({message: "Done running migrations without error"})
   } catch (error) {
     logger.error({ message: `Error when running migration`, error });
   }

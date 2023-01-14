@@ -36,6 +36,7 @@ export const migrate = async (options: {
     await withConfiguration(options.configuration).run(sql);
     logger.trace({message: "Done running migrations without error"})
   } catch (error) {
+    logger.info({message: "DB PORT", port: process.env.PGPORT});
     logger.error({ message: `Error when running migration`, error });
   }
 };

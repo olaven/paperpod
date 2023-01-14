@@ -24,7 +24,7 @@ terraform {
 
     digitalocean = {
       source  = "digitalocean/digitalocean"
-      version = "2.10.1"
+      version = "2.25.2"
     }
   }
 }

@@ -40,6 +40,11 @@ variable "stripe_api_key" {
   description = "the private stripe API key"
 }
 
+variable "stripe_publishable_key" {
+  type = string 
+  description = "the PUBLIC stripe API key"
+}
+
 ## API 
 variable "authentication_internal_port" {
   type = number 
@@ -194,6 +199,30 @@ resource "digitalocean_app" "paperpod-app" {
         operator = "GREATER_THAN"
         window   = "TEN_MINUTES"
         rule     = "CPU_UTILIZATION"
+      }
+    }
+    service {
+      name               = "web"
+      instance_count     = 1
+      instance_size_slug = "basic-xxs"
+
+      github {
+        branch         = "main"
+        deploy_on_push = true
+        repo           = "olaven/paperpod"
+      }
+
+      dockerfile_path = "dockerfiles/Dockerfile.web"
+      internal_ports = [var.web_port]
+
+      env {
+        key = "LOG_LEVEL"
+        value = var.log_level
+      }
+
+      env {
+        key = "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY"
+        value = var.stripe_publishable_key
       }
     }
 

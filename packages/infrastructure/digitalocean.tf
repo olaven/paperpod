@@ -118,6 +118,7 @@ resource "digitalocean_app" "paperpod-app" {
     database {
       name       = "db"
       engine     = "PG"
+      # TODO: revert to production DB at some point by reverting af88a1e03ccdddece7c99ee1ac86611f221ed643
       production = false
     }
     

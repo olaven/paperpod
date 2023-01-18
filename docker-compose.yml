@@ -160,21 +160,35 @@ services:
       AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
       TF_VAR_stripe_api_token: $STRIPE_API_KEY
+      TF_VAR_stripe_api_key: $STRIPE_API_KEY
+      TF_VAR_stripe_publishable_key: $STRIPE_PUBLISHABLE_KEY
       TF_VAR_test_user_coupon_code: $STRIPE_COUPON_CODE
       TF_VAR_do_token: $DO_TOKEN
       TF_VAR_github_api_token: $GH_TOKEN
+      TF_VAR_gateway_port: $GATEWAY_PORT
+      TF_VAR_web_port: $WEB_PORT
+      TF_VAR_docs_port: $DOCS_PORT
+      TF_VAR_api_port: $API_PORT
+      TF_VAR_authentication_port: $AUTHENTICATION_PORT
+      TF_VAR_log_level: $LOG_LEVEL
+      TF_VAR_authentication_internal_port: $AUTHENTICATION_INTERNAL_PORT
+      TF_VAR_admin_username: $ADMIN_USERNAME
+      TF_VAR_admin_password: $ADMIN_PASSWORD
+      TF_VAR_jwt_secret: $JWT_SECRET
+      TF_VAR_aws_access_key_id: $AWS_ACCESS_KEY_ID
+      TF_VAR_aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
 
-  metabase:
-    image: metabase/metabase
-    env_file:
-      - .env
-    ports:
-      - $METABASE_PORT:3000
-    environment:
-      - MB_DB_TYPE=postgres
-      - MB_DB_DBNAME=$PGDATABASE
-      - MB_DB_PORT=$PGPORT
-      - MB_DB_USER=$PGUSER
-      - MB_DB_PASS=$PGPASSWORD
-      - MB_DB_HOST=database
-      - JAVA_TIMEZONE=Europe/Oslo
+  # metabase:
+  #   image: metabase/metabase
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - $METABASE_PORT:3000
+  #   environment:
+  #     - MB_DB_TYPE=postgres
+  #     - MB_DB_DBNAME=$PGDATABASE
+  #     - MB_DB_PORT=$PGPORT
+  #     - MB_DB_USER=$PGUSER
+  #     - MB_DB_PASS=$PGPASSWORD
+  #     - MB_DB_HOST=database
+  #     - JAVA_TIMEZONE=Europe/Oslo

@@ -8,6 +8,7 @@ Please see [installation instructions for your system](https://learn.hashicorp.c
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `TF_VAR_stripe_api_token`
+- `TF_VAR_stripe_publishable_key`
 - `TF_VAR_test_user_coupon_code`
 
 ## When does it run?

@@ -22,5 +22,5 @@ bootWithMigrations("authentication", publicAuthenticationApp)
     });
   })
   .catch((error) =>
-    logger.error({ message: "an error occurred when booting api", error })
+    logger.error({ message: "an error occurred when booting authentication", error })
   );

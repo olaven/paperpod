@@ -97,12 +97,27 @@ resource "digitalocean_project" "paperpod-project" {
 resource "digitalocean_project_resources" "project-to-resource-mapping" {
   project = digitalocean_project.paperpod-project.id
   resources = [
-    digitalocean_app.paperpod-app.urn, digitalocean_domain.default.urn 
+    digitalocean_app.paperpod-app.urn, digitalocean_domain.default.urn,  digitalocean_database_cluster.database-cluster.urn,
   ]
 }
 
 resource "digitalocean_domain" "default" {
   name       = "paperpod.fm"
+}
+
+
+resource "digitalocean_database_cluster" "database-cluster" {
+  name       = "database-cluster"
+  engine     = "pg"
+  version    = "11"
+  size       = "db-s-1vcpu-1gb"
+  region     = "ams3"
+  node_count = 1
+}
+
+
+data "digitalocean_database_ca" "ca" {
+  cluster_id = digitalocean_database_cluster.database-cluster.id
 }
 
 
@@ -118,8 +133,8 @@ resource "digitalocean_app" "paperpod-app" {
     database {
       name       = "db"
       engine     = "PG"
-      # TODO: revert to production DB at some point by reverting af88a1e03ccdddece7c99ee1ac86611f221ed643
-      production = false
+      production = true
+      cluster_name = digitalocean_database_cluster.database-cluster.name
     }
     
     alert {
@@ -307,7 +322,7 @@ resource "digitalocean_app" "paperpod-app" {
       
       env {
         key = "PGPORT"
-        value = "$${db.PORT}"
+        value = digitalocean_database_cluster.database-cluster.port
       }
 
       alert {

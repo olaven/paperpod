@@ -421,7 +421,7 @@ resource "digitalocean_app" "paperpod-app" {
 
       env {
         key = "PGUSER"
-        value = "$${_self.USERNAME}"
+        value = "$${db.USERNAME}"
       }
 
       env {

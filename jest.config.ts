@@ -8,7 +8,6 @@ dotenv.config({
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  transform: {},
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*"],
   coverageThreshold: {

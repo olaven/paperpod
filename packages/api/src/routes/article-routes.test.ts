@@ -89,9 +89,11 @@ describe("The api for articles", () => {
 
     it("Does not accept an article if it's not containting a valid link", async () => {
       const token = jwt.sign(test.mocks.user());
-      post(token, {
+      const { status } = await post(token, {
         link: "not-a-url",
-      }).expect(kall.BAD_REQUEST);
+      });
+
+      expect(status).toEqual(kall.BAD_REQUEST);
     });
 
     it("Does not respond with NOT_IMPLEMENTED if link leads to a pdf", async () => {

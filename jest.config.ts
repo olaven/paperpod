@@ -9,6 +9,7 @@ module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
   collectCoverage: true,
+  transform: {},
   collectCoverageFrom: ["src/**/*"],
   coverageThreshold: {
     global: {

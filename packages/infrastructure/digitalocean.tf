@@ -401,7 +401,7 @@ resource "digitalocean_app" "paperpod-app" {
       
       env {
         key = "PAPERPOD_SCHEMA"
-        value = "api"
+        value = "authentication"
         # FIXME make all secret
       }
 

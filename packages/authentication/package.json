@@ -17,7 +17,7 @@
     "nanoid": "^3.1.20",
     "node-kall": "^1.0.83",
     "stripe": "^8.154.0",
-    "ts-node": "^9.1.1"
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

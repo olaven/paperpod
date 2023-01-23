@@ -162,36 +162,44 @@ resource "digitalocean_app" "paperpod-app" {
       env { 
         key = "PORT"
         value = var.gateway_port
+        type = "SECRET"
       }
 
       env { 
         key = "WEB_PORT"
         value = var.web_port
+        type = "SECRET"
       }
 
       env { 
         key = "DOCS_PORT"
         value = var.docs_port
+        type = "SECRET"
       }
       
       env { 
         key = "API_PORT"
         value = var.api_port
+        type = "SECRET"
       }
       
       env { 
         key = "AUTHENTICATION_PORT"
         value = var.authentication_port
+        type = "SECRET"
       }
       
       env { 
         key = "NODE_ENV"
         value = "production"
+        type = "SECRET"
       }
+    
       
       env { 
         key = "LOG_LEVEL"
         value = var.log_level
+        type = "SECRET"
       }
 
       alert {
@@ -218,11 +226,13 @@ resource "digitalocean_app" "paperpod-app" {
       env {
         key = "LOG_LEVEL"
         value = var.log_level
+        type = "SECRET"
       }
 
       env {
         key = "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY"
         value = var.stripe_publishable_key
+        type = "SECRET"
       }
     }
 
@@ -243,86 +253,103 @@ resource "digitalocean_app" "paperpod-app" {
        env { 
         key = "PORT"
         value = var.api_port
+        type = "SECRET"
       }
 
       env {
         key = "AUTHENTICATION_INTERNAL_PORT"
         value = var.authentication_internal_port
+        type = "SECRET"
       }
 
       env {
         key = "ADMIN_USERNAME"
         value = var.admin_username
+        type = "SECRET"
       }
 
       env {
         key = "ADMIN_PASSWORD"
         value = var.admin_password
+        type = "SECRET"
       }
 
       env {
         key = "JWT_SECRET"
         value = var.jwt_secret
+        type = "SECRET"
       }
       
       env {
         key = "AUTHENTICATION_PORT"
         value = var.authentication_port
+        type = "SECRET"
       }
       
       env {
         key = "PGPORT"
         value = "$${db.PORT}"
+        type = "SECRET"
       }
       env {
         key = "PGHOST"
         value = "$${db.HOSTNAME}"
+        type = "SECRET"
       }
 
       env {
         key = "PGDATABASE"
         value = "$${db.DATABASE}"
+        type = "SECRET"
       }
 
       env {
         key = "PGUSER"
         value = "$${db.USERNAME}"
+        type = "SECRET"
       }
 
       env {
         key = "PGPASSWORD"
         value = "$${db.PASSWORD}"
+        type = "SECRET"
       }
 
       env {
         key = "DATABASE_CA"
         value = "$${db.CA_CERT}"
+        type = "SECRET"
       }
 
       env {
         key = "PAPERPOD_SCHEMA"
         value = "api"
+        type = "SECRET"
       }
 
 
       env {
         key = "AWS_ACCESS_KEY_ID"
         value = var.aws_access_key_id
+        type = "SECRET"
       }
       
       env {
         key = "AWS_SECRET_ACCESS_KEY"
         value = var.aws_secret_access_key
+        type = "SECRET"
       }
 
       env {
         key = "LOG_LEVEL"
         value = var.log_level
+        type = "SECRET"
       }
       
       env {
         key = "PGPORT"
         value = digitalocean_database_cluster.database-cluster.port
+        type = "SECRET"
       }
 
       alert {
@@ -376,72 +403,85 @@ resource "digitalocean_app" "paperpod-app" {
       env { 
         key = "PORT"
         value = var.authentication_port
+        type = "SECRET"
       }
 
       env {
         key = "INTERNAL_PORT"
         value = var.authentication_internal_port
+        type = "SECRET"
       }
 
 
       env {
         key = "ADMIN_USERNAME"
         value = var.admin_username
+        type = "SECRET"
       }
 
       env {
         key = "ADMIN_PASSWORD"
         value = var.admin_password
+        type = "SECRET"
       }
 
       env {
         key = "JWT_SECRET"
         value = var.jwt_secret
+        type = "SECRET"
       }
       
       env {
         key = "PAPERPOD_SCHEMA"
         value = "authentication"
-        # FIXME make all secret
+        type = "SECRET"
       }
 
       env {
         key = "PGPORT"
         value = "$${db.PORT}"
+        type = "SECRET"
       }
       env {
         key = "PGHOST"
         value = "$${db.HOSTNAME}"
+        type = "SECRET"
       }
 
       env {
         key = "PGDATABASE"
         value = "$${db.DATABASE}"
+        type = "SECRET"
       }
 
       env {
         key = "PGUSER"
         value = "$${db.USERNAME}"
+        type = "SECRET"
       }
 
       env {
         key = "PGPASSWORD"
         value = "$${db.PASSWORD}"
+        type = "SECRET"
       }
 
       env {
         key = "DATABASE_CA"
         value = "$${db.CA_CERT}"
+        type = "SECRET"
       }
 
       env {
         key = "STRIPE_API_KEY"
         value = var.stripe_api_key
+        type = "SECRET"
       }
 
       env { 
         key = "LOG_LEVEL"
         value = var.log_level
+        type = "SECRET"
       }
 
       alert {

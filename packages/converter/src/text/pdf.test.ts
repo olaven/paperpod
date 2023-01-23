@@ -17,7 +17,7 @@ describe("Functions for converting pdf data to articles", () => {
   ) =>
     getTextFromPdfStream(
       article,
-      await downloadPDF("http://www.africau.edu/images/default/sample.pdf")
+      await downloadPDF("https://olaven.org/assets/documents/CV.pdf")
     );
 
   it("is defined and can be called", () => {
@@ -39,9 +39,9 @@ describe("Functions for converting pdf data to articles", () => {
   });
 
   it("Does return text containing some of the text from pdf", async () => {
-    //NOTE: This tests assumes that the content of the test-PDF is https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf
+    //NOTE: This tests assumes that the content of the test-PDF is https://olaven.org/assets/documents/CV.pdf
     const article = await convertSimplePDF();
-    expect(article.text).toContain("This is a small demonstration .pdf file");
+    expect(article.text).toContain("Curriculum Vitae");
   });
 
   it("Does return a title", async () => {
@@ -60,17 +60,17 @@ describe("Functions for converting pdf data to articles", () => {
   });
 
   it("Does return a time with the correct year", async () => {
-    //NOTE: This test assumes a specific sample-pdf;
+    //NOTE: This test assumes a specific sample-pdf: https://olaven.org/assets/documents/CV.pdf
     const article = await convertSimplePDF();
     const year = article.publication_time.getFullYear();
-    expect(year).toEqual(2006);
+    expect(year).toEqual(2023);
   });
 
   it("Does return a time with the correct month", async () => {
-    //NOTE: This test assumes a specific sample-pdf;
+    //NOTE: This test assumes a specific sample-pdf: https://olaven.org/assets/documents/CV.pdf
     const article = await convertSimplePDF();
     const month = article.publication_time.getMonth();
-    expect(month).toEqual(2);
+    expect(month).toEqual(0);
   });
 
   it("Does return an author field with PDF creator", async () => {

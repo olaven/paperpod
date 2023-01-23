@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { models } from "@paperpod/common";
+import { logger, models } from "@paperpod/common";
 import pdf from "pdf-parse";
 
 export const downloadPDF = async (url: string) => {

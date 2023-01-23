@@ -1,5 +1,16 @@
 import { getAdminBasic } from "./getAdminBasic";
 
+const withMockedEnv =
+  (overrides: Record<string, string>, action: () => void) => () => {
+    const previous = process.env;
+    process.env = {
+      ...process.env,
+      ...overrides,
+    };
+    action();
+    process.env = previous;
+  };
+
 describe("Getting basic auth with admin credentials", () => {
   it("Does not throw", () => {
     expect(getAdminBasic).not.toThrow();
@@ -21,5 +32,17 @@ describe("Getting basic auth with admin credentials", () => {
     expect(Authorization).toEqual(
       `Basic ${process.env.ADMIN_USERNAME}:${process.env.ADMIN_PASSWORD}`
     );
+  });
+
+  it("Throws if ADMIN_USERNAME is missing", () => {
+    withMockedEnv({ ADMIN_USERNAME: undefined }, () => {
+      expect(getAdminBasic()).toThrow();
+    });
+  });
+
+  it("Throws if ADMIN_PASSWORD is missing", () => {
+    withMockedEnv({ ADMIN_PASSWORD: undefined }, () => {
+      expect(getAdminBasic()).toThrow();
+    });
   });
 });

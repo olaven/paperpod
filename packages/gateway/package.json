@@ -14,7 +14,7 @@
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.6",
     "node-kall": "^1.0.83",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.4.0"
   },
   "devDependencies": {
     "ts-node-dev": "^2.0.0",

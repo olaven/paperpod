@@ -1,4 +1,5 @@
 import { logger } from "@paperpod/common";
+import stream from "stream";
 
 export class S3 {
   constructor(options) {}
@@ -6,7 +7,7 @@ export class S3 {
   public getObject() {
     logger.trace("inside S3 mock");
     return {
-      Body: new ReadableStream(),
+      Body: stream.Readable.from([]),
     };
   }
 }

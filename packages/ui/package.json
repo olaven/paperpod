@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@stitches/react": "^0.1.4",
-    "react": "^17.0.2"
+    "react": "^18.0.9"
   },
   "husky": {
     "hooks": {

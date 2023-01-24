@@ -24,19 +24,19 @@
     "node": "19"
   },
   "resolutions": {
-    "**/react": "^17.0.2",
-    "**/react-dom": "^17.0.2"
+    "**/react": "^18.0.9",
+    "**/react-dom": "^18.0.9"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^18.0.9",
+    "react-dom": "^18.0.9"
   },
   "devDependencies": {
     "husky": "^5.2.0",
     "metro-config": "^0.66.2",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^18.0.9",
+    "react-dom": "^18.0.9"
   }
 }

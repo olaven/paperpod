@@ -10,11 +10,12 @@
     },
     "dependencies": {
         "@paperpod/server": "0.0.1",
-        "redoc-express": "^1.0.0"
+        "redoc-express": "^1.0.0",
+        "ts-node": "^10.4.0",
+        "typescript": "^4.1.3"
     },
     "devDependencies": {
         "redoc-cli": "^0.10.2",
-        "ts-node": "^10.4.0",
         "ts-node-dev": "^1.1.6"
     }
 }

@@ -9,7 +9,7 @@ COPY ./packages/common /app/packages/common
 COPY ./packages/server /app/packages/server
 COPY ./packages/docs /app/packages/docs
 
-RUN yarn install
+RUN yarn install --production
 
 ENV NODE_ENV production
 CMD ["yarn", "docs", "start"]

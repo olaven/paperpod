@@ -1,135 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      rel="stylesheet"
-      href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"
-    />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap"
-      rel="stylesheet"
-    />
-    <link href="./style.css" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
 
-    <title>Paperpod</title>
+  <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet" />
+  <link href="./style.css" rel="stylesheet" />
 
-    <style>
+  <title>Paperpod</title>
+
+  <style>
+    #logo-container,
+    #text-container {
+      display: flex;
+      justify-content: center;
+      width: 50vw;
+    }
+
+    @media screen and (max-width: 992px) {
+
       #logo-container,
       #text-container {
+        font-size: 1.2em;
+        width: 95vw;
+      }
+
+      form {
         display: flex;
-        justify-content: center;
-        width: 50vw;
-      }
-
-      @media screen and (max-width: 992px) {
-        #logo-container,
-        #text-container {
-          font-size: 1.2em;
-          width: 95vw;
-        }
-
-        form {
-          display: flex;
-          flex-direction: column;
-        }
-
-        form * {
-          margin-bottom: 1em;
-        }
-      }
-
-      #logo-container img {
-        width: 79%;
-      }
-
-      #text-container {
-        font-size: 1.79em;
         flex-direction: column;
-        align-items: center;
       }
 
-      #terms-and-conditions {
-        margin-top: 0.24em;
-        font-size: 0.5em;
+      form * {
+        margin-bottom: 1em;
       }
+    }
 
-      #email-input {
-        padding: 5px;
-      }
+    #logo-container img {
+      width: 79%;
+    }
 
-      #submit {
-        border: none;
-        background-color: white;
-        text-decoration: underline;
-      }
+    #text-container {
+      font-size: 1.79em;
+      flex-direction: column;
+      align-items: center;
+    }
 
-      #faq-link {
-        position: absolute;
-        text-decoration: underline;
-        bottom: 5vh;
-        right: 5vw;
-        padding: 0.5vw;
-        border-radius: 15px;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div id="container">
-      <div id="logo-container">
-        <img id="logo" src="./logo.svg" />
-      </div>
-      <div id="text-container">
-        <p class="about">
-          Don't have <b>time</b> to read the articles you want?
-          <br />
-          How about <b>listening</b> to them instead? <br /><br />
-          <b>Paperpod</b> converts any article on the web.
+    #mail-link {
+      text-decoration: none;
+      border: solid 1px;
+      border-radius: 20px;
+      padding: 8px;
+      box-shadow: 1px 1px 1px 1px;
+    }
 
-          <br />
-          <br />
-          Sign up below to stay in the loop ٩(^‿^)۶
-        </p>
-        <div id="revue-embed">
-          <form
-            action="https://www.getrevue.co/profile/olaven/add_subscriber"
-            method="post"
-            id="revue-form"
-            name="revue-form"
-            target="_blank"
-          >
-            <input
-              id="email-input"
-              placeholder="your@email.com"
-              type="email"
-              name="member[email]"
-              id="member_email"
-            />
-            <input
-              type="submit"
-              value="Subscribe"
-              name="member[subscribe]"
-              id="submit"
-            />
-            <div id="terms-and-conditions">
-              By subscribing, you agree with Revue’s
-              <a target="_blank" href="https://www.getrevue.co/terms">Terms</a>
-              and
-              <a target="_blank" href="https://www.getrevue.co/privacy"
-                >Privacy Policy</a
-              >.
-            </div>
-          </form>
-        </div>
-      </div>
-      <a id="faq-link" href="./faq.html"> I have more questions </a>
+
+
+    #faq-link {
+      position: absolute;
+      text-decoration: underline;
+      bottom: 5vh;
+      right: 5vw;
+      padding: 0.5vw;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="logo-container">
+      <img id="logo" src="./logo.svg" />
     </div>
-  </body>
+    <div id="text-container">
+      <p class="about">
+        Don't have <b>time</b> to read the articles you want?
+        <br />
+        How about <b>listening</b> to them instead? <br /><br />
+        <b>Paperpod</b> converts any article on the web.
+      <p>
+        <a id="mail-link"
+          href="mailto:olav@sundfoer.com?subject=Keep me in the loop / Paperpod&body=I want to be kept updated on Paperpod">
+          Click to stay in the loop ٩(^‿^)۶
+        </a>
+      </p>
+      </p>
+    </div>
+    <a id="faq-link" href="./faq.html"> I have more questions </a>
+  </div>
+</body>
+
 </html>

@@ -3,10 +3,10 @@ name: Validate Infrastructure
 on: [push]
 
 jobs:
+  strategy:
+    matrix:
+      - node-version: [19.x]
   plan-infrastructure:
-    strategy:
-      matrix:
-        - node-version: [19.x]
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_TERRAFORM_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_TERRAFORM_SECRET_ACCESS_KEY }}

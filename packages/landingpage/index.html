@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+
+  <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet" />
+  <link href="./style.css" rel="stylesheet" />
+
+  <title>Paperpod</title>
+
+  <style>
+    #logo-container,
+    #text-container {
+      display: flex;
+      justify-content: center;
+      width: 50vw;
+    }
+
+    @media screen and (max-width: 992px) {
+
+      #logo-container,
+      #text-container {
+        font-size: 1.2em;
+        width: 95vw;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      form * {
+        margin-bottom: 1em;
+      }
+    }
+
+    #logo-container img {
+      width: 79%;
+    }
+
+    #text-container {
+      font-size: 1.79em;
+      flex-direction: column;
+      align-items: center;
+    }
+
+
+    #mail-link {
+      text-decoration: none;
+      border: solid 1px;
+      border-radius: 20px;
+      padding: 8px;
+      box-shadow: 1px 1px 1px 1px;
+    }
+
+
+
+    #faq-link {
+      position: absolute;
+      text-decoration: underline;
+      bottom: 5vh;
+      right: 5vw;
+      padding: 0.5vw;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="logo-container">
+      <img id="logo" src="./logo.svg" />
+    </div>
+    <div id="text-container">
+      <p class="about">
+        Don't have <b>time</b> to read the articles you want?
+        <br />
+        How about <b>listening</b> to them instead? <br /><br />
+        <b>Paperpod</b> converts any article on the web.
+      <p>
+        <a id="mail-link"
+          href="mailto:olav@sundfoer.com?subject=Keep me in the loop / Paperpod&body=I want to be kept updated on Paperpod">
+          Click to stay in the loop ٩(^‿^)۶
+        </a>
+      </p>
+      </p>
+    </div>
+    <a id="faq-link" href="./faq.html"> I have more questions </a>
+  </div>
+</body>
+
+</html>

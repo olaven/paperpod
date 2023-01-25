@@ -140,6 +140,21 @@ resource "digitalocean_app" "paperpod-app" {
     alert {
       rule = "DEPLOYMENT_FAILED"
     }
+
+    static_site {
+      name = "landingpage"
+      source_dir = "packages/landingpage"
+
+      github {
+        branch         = "main"
+        deploy_on_push = true
+        repo           = "olaven/paperpod"
+      }
+
+      routes { 
+        path = "/landingpage"
+      }
+    }
     
     service {
       name               = "gateway"

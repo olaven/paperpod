@@ -7,14 +7,15 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-  strategy:
-    matrix:
-      - node-version: [19.x]
     steps:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_wrapper: false
+      - name: Use node:19
+        uses: actions/setup-node@v1
+        with:
+          node-version: "19.x"
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: initializing Terraform

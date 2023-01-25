@@ -16,6 +16,6 @@
     },
     "devDependencies": {
         "redoc-cli": "^0.10.2",
-        "ts-node-dev": "^1.1.6"
+        "ts-node-dev": "^2.0.0"
     }
 }
